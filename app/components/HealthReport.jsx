@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import {
   UploadCloud,
   Link2,
@@ -346,7 +347,9 @@ export default function KickMyAppsHealthReport() {
           </div>
           <button className="analyze-btn">
             <Sparkles size={16} strokeWidth={2.3} />
-            Yeniden Analiz Et
+            <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>
+              Yeni Analiz
+            </Link>
           </button>
         </div>
 
