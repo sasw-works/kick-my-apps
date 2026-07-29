@@ -67,8 +67,7 @@ async function callGeminiModel(model, parts) {
         contents: [{ parts }],
         generationConfig: {
           responseMimeType: "application/json",
-          maxOutputTokens: 4096,
-          thinkingConfig: { thinkingBudget: 0 },
+          maxOutputTokens: 8192,
         },
       }),
     }
