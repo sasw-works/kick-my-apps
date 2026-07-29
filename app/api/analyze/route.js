@@ -54,22 +54,7 @@ Kurallar:
 - En az 3, en fazla 7 finding döndür.
 - Skorları abartma; gerçekten gördüğün sorunlara göre dürüst bir değerlendirme yap.`;
 
-async function analyzeWithGemini({ images, reviews }) {
-  const parts = [{ text: SCHEMA_INSTRUCTIONS }];
-
-  for (const img of images) {
-    parts.push({ inline_data: { mime_type: img.mediaType, data: img.base64 } });
-  }
-
-  if (reviews?.length) {
-    const reviewText = reviews
-      .map((r) => `[${r.rating}★] ${r.title}: ${r.content}`)
-      .join("\n---\n")
-      .slice(0, 12000);
-    parts.push({ text: `Kullanıcı yorumları (App Store):\n${reviewText}` });
-  }
-
-  const model = "gemini-3.6-flash";
+async function callGeminiModel(model, parts) {
   const res = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
     {
@@ -87,16 +72,58 @@ async function analyzeWithGemini({ images, reviews }) {
       }),
     }
   );
+  return res;
+}
 
-  if (!res.ok) {
-    const errText = await res.text();
-    throw new Error(`Gemini API hatası: ${res.status} ${errText}`);
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+async function analyzeWithGemini({ images, reviews }) {
+  const parts = [{ text: SCHEMA_INSTRUCTIONS }];
+
+  for (const img of images) {
+    parts.push({ inline_data: { mime_type: img.mediaType, data: img.base64 } });
   }
 
-  const data = await res.json();
-  const raw = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? "{}";
-  const cleaned = raw.replace(/```json|```/g, "").trim();
-  return JSON.parse(cleaned);
+  if (reviews?.length) {
+    const reviewText = reviews
+      .map((r) => `[${r.rating}★] ${r.title}: ${r.content}`)
+      .join("\n---\n")
+      .slice(0, 12000);
+    parts.push({ text: `Kullanıcı yorumları (App Store):\n${reviewText}` });
+  }
+
+  // Ana model + yoğunluk anında düşülecek yedek model.
+  const modelsToTry = ["gemini-3.6-flash", "gemini-3.5-flash-lite"];
+  const maxAttemptsPerModel = 2;
+
+  let lastError;
+
+  for (const model of modelsToTry) {
+    for (let attempt = 1; attempt <= maxAttemptsPerModel; attempt++) {
+      const res = await callGeminiModel(model, parts);
+
+      if (res.ok) {
+        const data = await res.json();
+        const raw = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? "{}";
+        const cleaned = raw.replace(/```json|```/g, "").trim();
+        return JSON.parse(cleaned);
+      }
+
+      const errText = await res.text();
+      lastError = new Error(`Gemini API hatası: ${res.status} ${errText}`);
+
+      // 503 (yoğunluk) ve 429 (rate limit) geçici hatalardır — kısa bekleyip tekrar dene.
+      if (res.status === 503 || res.status === 429) {
+        await sleep(attempt * 800);
+        continue;
+      }
+
+      // Başka türde bir hata (400, 403, 404 vb.) tekrar denemekle düzelmez, sıradaki modele geç.
+      break;
+    }
+  }
+
+  throw lastError;
 }
 
 export async function POST(req) {
