@@ -109,6 +109,9 @@ export default function Header() {
         </nav>
 
         <div className="kma-header-right">
+          <Link href="/dashboard" className="kma-header-history">
+            Uygulamalarım
+          </Link>
           <Link href="/history" className="kma-header-history">
             Geçmiş Analizlerim
           </Link>

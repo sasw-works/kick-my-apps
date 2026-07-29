@@ -11,6 +11,8 @@ export default function Home() {
   const [reportData, setReportData] = useState(null);
   const [appLabel, setAppLabel] = useState("Uygulaman");
   const [history, setHistory] = useState([]);
+  const [scanId, setScanId] = useState(null);
+  const [scanStoreUrl, setScanStoreUrl] = useState("");
 
   const handleAnalyze = async (files, storeUrl, appName) => {
     setAnalyzing(true);
@@ -30,13 +32,14 @@ export default function Home() {
 
       setReportData(data);
       setAppLabel(appName);
+      setScanStoreUrl(storeUrl || "");
 
       const badCount = (data.findings || []).filter((f) => f.status === "bad").length;
       const warnCount = (data.findings || []).filter((f) => f.status === "warn").length;
       const goodCount = (data.findings || []).filter((f) => f.status === "good").length;
 
       try {
-        await fetch("/api/history", {
+        const saveRes = await fetch("/api/history", {
           method: "POST",
           headers: { "content-type": "application/json" },
           body: JSON.stringify({
@@ -46,10 +49,13 @@ export default function Home() {
             warnCount,
             goodCount,
             resultJson: data,
+            storeUrl,
           }),
         });
+        const saveData = await saveRes.json();
+        setScanId(saveData.id ?? null);
       } catch {
-        // sessizce yut, geçmiş kaydı ürünün ana akışını bloklamamalı
+        setScanId(null);
       }
 
       try {
@@ -73,6 +79,8 @@ export default function Home() {
     setReportData(null);
     setErrorMessage("");
     setHistory([]);
+    setScanId(null);
+    setScanStoreUrl("");
   };
 
   return (
@@ -81,7 +89,14 @@ export default function Home() {
         {stage === "upload" ? (
           <UploadFlow onAnalyze={handleAnalyze} analyzing={analyzing} errorMessage={errorMessage} />
         ) : (
-          <HealthReport data={reportData} appLabel={appLabel} onReset={handleReset} history={history} />
+          <HealthReport
+            data={reportData}
+            appLabel={appLabel}
+            onReset={handleReset}
+            history={history}
+            scanId={scanId}
+            storeUrl={scanStoreUrl}
+          />
         )}
       </div>
     </main>

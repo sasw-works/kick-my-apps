@@ -9,11 +9,11 @@ const STATUS_COLOR = (score) => {
   return "var(--kick)";
 };
 
-export default function HistoryList({ onBack, onCompare }) {
+export default function HistoryList({ onBack, onCompare, preselectId, appNameFilter }) {
   const [scans, setScans] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState(preselectId ? [Number(preselectId)] : []);
 
   useEffect(() => {
     (async () => {
@@ -21,14 +21,15 @@ export default function HistoryList({ onBack, onCompare }) {
         const res = await fetch("/api/history?all=true");
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Geçmiş alınamadı.");
-        setScans(data.scans || []);
+        const all = data.scans || [];
+        setScans(appNameFilter ? all.filter((s) => s.app_name === appNameFilter) : all);
       } catch (err) {
         setError(err.message);
       } finally {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [appNameFilter]);
 
   const toggleSelect = (id) => {
     setSelected((prev) => {
@@ -97,14 +98,18 @@ export default function HistoryList({ onBack, onCompare }) {
       `}</style>
 
       <div className="history-header">
-        <div className="history-title">Geçmiş Analizlerim</div>
+        <div className="history-title">{appNameFilter ? `${appNameFilter} — Geçmiş` : "Geçmiş Analizlerim"}</div>
         <button className="back-btn" onClick={onBack}>
           <ArrowLeft size={15} />
           Geri
         </button>
       </div>
 
-      <div className="hint">Karşılaştırmak için en fazla 2 tarama seç.</div>
+      <div className="hint">
+        {preselectId
+          ? "Mevcut taraman seçili — şimdi karşılaştırmak istediğin ikinci taramayı (örn. rakibinin) seç."
+          : "Karşılaştırmak için en fazla 2 tarama seç."}
+      </div>
 
       {loading ? (
         <div className="empty-state">

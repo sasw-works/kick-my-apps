@@ -28,6 +28,8 @@ import {
   Loader2,
   AlignLeft,
   BadgeCheck,
+  GitCompare,
+  Mail,
 } from "lucide-react";
 
 // ---------------------------------------------------------------------------
@@ -195,6 +197,62 @@ function FindingRow({ f }) {
   );
 }
 
+function SubscribeForm({ appName, storeUrl }) {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState("idle"); // idle | sending | done | error
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const handleSubmit = async () => {
+    if (!email.trim()) return;
+    setStatus("sending");
+    setErrorMsg("");
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ email: email.trim(), appName, storeUrl }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Kayıt başarısız oldu.");
+      setStatus("done");
+    } catch (err) {
+      setStatus("error");
+      setErrorMsg(err.message);
+    }
+  };
+
+  return (
+    <div className="panel subscribe-panel">
+      <div className="subscribe-icon">
+        <Mail size={16} color="var(--muted)" />
+      </div>
+      <div className="subscribe-text">
+        <div className="subscribe-title">Haftalık Yorum Özeti Al</div>
+        <div className="subscribe-desc">
+          {appName} için her hafta yeni App Store yorumlarının özetini e-posta ile al.
+        </div>
+      </div>
+      {status === "done" ? (
+        <div className="subscribe-done">Kaydedildi ✓</div>
+      ) : (
+        <div className="subscribe-form-row">
+          <input
+            type="email"
+            placeholder="e-posta@ornek.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="subscribe-input"
+          />
+          <button className="subscribe-btn" onClick={handleSubmit} disabled={status === "sending"}>
+            {status === "sending" ? "…" : "Abone Ol"}
+          </button>
+        </div>
+      )}
+      {status === "error" && <div className="subscribe-error">{errorMsg}</div>}
+    </div>
+  );
+}
+
 function ComplaintBar({ label, pct }) {
   return (
     <div className="complaint-row">
@@ -311,7 +369,7 @@ function HistoryPanel({ history }) {
 // Main
 // ---------------------------------------------------------------------------
 
-export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", onReset, history = [], onViewHistory }) {
+export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", onReset, history = [], onViewHistory, scanId, storeUrl }) {
   const usingRealData = Boolean(data);
   const reportRef = useRef(null);
   const [exporting, setExporting] = useState(false);
@@ -397,7 +455,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           border-radius: 12px;
           padding: 20px 22px;
           display: grid;
-          grid-template-columns: 1fr 1fr auto auto auto;
+          grid-template-columns: 1fr 1fr auto auto auto auto;
           gap: 16px;
           align-items: center;
           box-shadow: var(--shadow);
@@ -496,6 +554,32 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
         }
 
+        .subscribe-panel {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          flex-wrap: wrap;
+        }
+        .subscribe-icon {
+          width: 34px; height: 34px; border-radius: 9px; background: var(--ink-3);
+          display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .subscribe-text { flex: 1; min-width: 180px; }
+        .subscribe-title { font-size: 13.5px; font-weight: 600; }
+        .subscribe-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+        .subscribe-form-row { display: flex; gap: 8px; }
+        .subscribe-input {
+          background: var(--ink); border: 1px solid var(--ink-3); border-radius: 999px;
+          padding: 9px 14px; font-size: 13px; color: var(--chalk); outline: none; width: 200px;
+        }
+        .subscribe-btn {
+          background: var(--kick); color: #FFFFFF; font-weight: 600; font-size: 13px;
+          padding: 9px 16px; border-radius: 999px; border: none; cursor: pointer; white-space: nowrap;
+        }
+        .subscribe-btn:disabled { opacity: 0.6; cursor: default; }
+        .subscribe-done { font-size: 13px; color: var(--teal); font-weight: 600; }
+        .subscribe-error { width: 100%; font-size: 12px; color: var(--kick); margin-top: 6px; }
+
         .soon-row {
           display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
           font-size: 12px; color: var(--muted); padding-top: 4px;
@@ -533,6 +617,12 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
               <History size={16} strokeWidth={2.3} />
               Geçmiş
             </button>
+          )}
+          {scanId && (
+            <Link href={`/history?preselect=${scanId}`} className="analyze-btn" style={{ background: "var(--ink-3)", color: "var(--chalk)", textDecoration: "none" }}>
+              <GitCompare size={16} strokeWidth={2.3} />
+              Rakiple Karşılaştır
+            </Link>
           )}
           <button className="analyze-btn" onClick={onReset}>
             <Sparkles size={16} strokeWidth={2.3} />
@@ -652,6 +742,8 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           </div>
         </div>
         )}
+
+        {storeUrl && <SubscribeForm appName={appLabel} storeUrl={storeUrl} />}
 
         <div className="soon-row">
           <span className="soon-label">Yakında</span>
