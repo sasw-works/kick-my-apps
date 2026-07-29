@@ -98,7 +98,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           --yellow: #F5A623;
           --teal: #0EA5A0;
           --shadow: 0 1px 2px rgba(26,31,54,0.04), 0 8px 24px rgba(26,31,54,0.06);
-          --font-display: 'Anton', sans-serif;
+          --font-display: 'Fraunces', serif;
           --font-body: 'Inter', sans-serif;
           --font-mono: 'IBM Plex Mono', monospace;
 
@@ -112,10 +112,10 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           flex-direction: column;
           align-items: center;
         }
-        @import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
         .upload-hero { text-align: center; margin-bottom: 32px; }
-        .upload-logo { font-family: var(--font-display); font-size: 28px; margin-bottom: 8px; }
+        .upload-logo { font-family: var(--font-display); font-size: 28px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 8px; }
         .upload-logo span { color: var(--kick); }
         .upload-sub { color: var(--muted); font-size: 14.5px; max-width: 480px; margin: 0 auto; }
 

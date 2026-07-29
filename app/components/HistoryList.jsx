@@ -51,7 +51,7 @@ export default function HistoryList({ onBack, onCompare }) {
           --yellow: #F5A623;
           --teal: #0EA5A0;
           --shadow: 0 1px 2px rgba(26,31,54,0.04), 0 8px 24px rgba(26,31,54,0.06);
-          --font-display: 'Anton', sans-serif;
+          --font-display: 'Fraunces', serif;
           --font-body: 'Inter', sans-serif;
           --font-mono: 'IBM Plex Mono', monospace;
 
@@ -62,10 +62,10 @@ export default function HistoryList({ onBack, onCompare }) {
           border-radius: 12px;
           padding: 28px 32px;
         }
-        @import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
         .history-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
-        .history-title { font-family: var(--font-display); font-size: 22px; }
+        .history-title { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
         .back-btn {
           display: flex; align-items: center; gap: 6px;
           background: var(--ink-2); border: 1px solid var(--ink-3); color: var(--chalk);

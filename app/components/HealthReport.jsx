@@ -16,7 +16,6 @@ import {
   MessageSquare,
   ChevronDown,
   Lock,
-  ArrowUpRight,
   CheckCircle2,
   AlertTriangle,
   XCircle,
@@ -128,13 +127,13 @@ function HealthDial({ score = 58, size = 220 }) {
   const rad = (deg) => (deg * Math.PI) / 180;
   const cx = size / 2;
   const cy = size / 2 + 6;
-  const r = size / 2 - 18;
+  const r = size / 2 - 14;
   const zoneColor = score >= 75 ? "var(--teal)" : score >= 50 ? "var(--yellow)" : "var(--kick)";
-  const needleLen = r - 14;
+  const needleLen = r - 20;
   const nx = cx + needleLen * Math.cos(rad(angle));
   const ny = cy + needleLen * Math.sin(rad(angle));
 
-  const arc = (startDeg, endDeg, color, width = 14) => {
+  const arc = (startDeg, endDeg, color, width = 9) => {
     const s = rad(startDeg);
     const e = rad(endDeg);
     const x1 = cx + r * Math.cos(s);
@@ -143,19 +142,19 @@ function HealthDial({ score = 58, size = 220 }) {
     const y2 = cy + r * Math.sin(e);
     const large = endDeg - startDeg > 180 ? 1 : 0;
     return (
-      <path d={`M ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2}`} stroke={color} strokeWidth={width} fill="none" strokeLinecap="butt" />
+      <path d={`M ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2}`} stroke={color} strokeWidth={width} fill="none" strokeLinecap="round" />
     );
   };
 
   return (
     <svg width={size} height={size / 2 + 46} viewBox={`0 0 ${size} ${size / 2 + 46}`}>
-      {arc(-90, -20, "var(--kick)")}
-      {arc(-20, 15, "var(--yellow)")}
-      {arc(15, 90, "var(--teal)")}
-      <circle cx={cx} cy={cy} r={5} fill="var(--chalk)" />
-      <line x1={cx} y1={cy} x2={nx} y2={ny} stroke="var(--chalk)" strokeWidth={3} strokeLinecap="round" style={{ filter: `drop-shadow(0 1px 2px rgba(26,31,54,0.25))` }} />
-      <text x={cx} y={cy - 26} textAnchor="middle" style={{ fontFamily: "var(--font-display)", fontSize: 44, fill: "var(--chalk)" }}>{score}</text>
-      <text x={cx} y={cy - 4} textAnchor="middle" style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.14em", fill: "var(--muted)" }}>APP HEALTH SCORE</text>
+      {arc(-90, -23, "var(--kick)")}
+      {arc(-19, 12, "var(--yellow)")}
+      {arc(16, 90, "var(--teal)")}
+      <circle cx={cx} cy={cy} r={4} fill="var(--chalk)" />
+      <line x1={cx} y1={cy} x2={nx} y2={ny} stroke="var(--chalk)" strokeWidth={2} strokeLinecap="round" style={{ filter: `drop-shadow(0 1px 1px rgba(26,31,54,0.2))` }} />
+      <text x={cx} y={cy - 24} textAnchor="middle" style={{ fontFamily: "var(--font-display)", fontSize: 46, fontWeight: 500, letterSpacing: "-0.02em", fill: "var(--chalk)" }}>{score}</text>
+      <text x={cx} y={cy - 3} textAnchor="middle" style={{ fontFamily: "var(--font-mono)", fontSize: 10.5, letterSpacing: "0.14em", fill: "var(--muted)" }}>APP HEALTH SCORE</text>
     </svg>
   );
 }
@@ -164,26 +163,24 @@ function HealthDial({ score = 58, size = 220 }) {
 // UI pieces
 // ---------------------------------------------------------------------------
 
-function FindingCard({ f }) {
+function FindingRow({ f }) {
   const meta = STATUS_META[f.status];
   const StatusIcon = meta.Icon;
   const Icon = f.icon;
   return (
-    <div className="finding-card">
-      <div className="finding-top">
-        <div className="finding-title-group">
-          <Icon size={16} strokeWidth={2.2} color="var(--muted)" />
-          <span className="finding-title">{f.title}</span>
-        </div>
+    <div className="finding-row" style={{ borderLeftColor: meta.color }}>
+      <div className="finding-row-top">
+        <Icon size={15} strokeWidth={2} color="var(--muted)" />
+        <span className="finding-title">{f.title}</span>
         <span className="finding-status" style={{ color: meta.color }}>
-          <StatusIcon size={14} strokeWidth={2.2} />
+          <StatusIcon size={13} strokeWidth={2.2} />
           {meta.label}
         </span>
       </div>
       <p className="finding-text">{f.finding}</p>
       {f.status !== "good" && (
         <div className="finding-suggestion">
-          <Lightbulb size={13} strokeWidth={2.2} color="var(--yellow)" />
+          <Lightbulb size={12} strokeWidth={2.2} color="var(--yellow)" />
           <span>{f.suggestion}</span>
         </div>
       )}
@@ -224,14 +221,30 @@ function HistorySparkline({ points, width = 560, height = 90 }) {
     return [x, y];
   });
   const path = coords.map(([x, y], i) => `${i === 0 ? "M" : "L"} ${x} ${y}`).join(" ");
+  const areaPath = `${path} L ${width} ${height} L 0 ${height} Z`;
   const last = points[points.length - 1];
   const lastColor = last.health_score >= 75 ? "var(--teal)" : last.health_score >= 50 ? "var(--yellow)" : "var(--kick)";
 
   return (
     <svg width={width} height={height + 24} viewBox={`0 0 ${width} ${height + 24}`}>
-      <path d={path} stroke="var(--muted)" strokeWidth={2} fill="none" opacity={0.7} />
+      <defs>
+        <linearGradient id="sparkFill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={lastColor} stopOpacity={0.16} />
+          <stop offset="100%" stopColor={lastColor} stopOpacity={0} />
+        </linearGradient>
+      </defs>
+      <path d={areaPath} fill="url(#sparkFill)" stroke="none" />
+      <path d={path} stroke={lastColor} strokeWidth={2} fill="none" strokeLinecap="round" strokeLinejoin="round" opacity={0.85} />
       {coords.map(([x, y], i) => (
-        <circle key={i} cx={x} cy={y} r={3.5} fill={i === coords.length - 1 ? lastColor : "var(--ink-3)"} stroke="var(--muted)" strokeWidth={1} />
+        <circle
+          key={i}
+          cx={x}
+          cy={y}
+          r={i === coords.length - 1 ? 4 : 2.5}
+          fill={i === coords.length - 1 ? lastColor : "var(--ink-2)"}
+          stroke={i === coords.length - 1 ? "var(--ink-2)" : "var(--muted)"}
+          strokeWidth={i === coords.length - 1 ? 2 : 1}
+        />
       ))}
     </svg>
   );
@@ -330,7 +343,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           --yellow: #F5A623;
           --teal: #0EA5A0;
           --shadow: 0 1px 2px rgba(26,31,54,0.04), 0 8px 24px rgba(26,31,54,0.06);
-          --font-display: 'Anton', sans-serif;
+          --font-display: 'Fraunces', serif;
           --font-body: 'Inter', sans-serif;
           --font-mono: 'IBM Plex Mono', monospace;
 
@@ -341,7 +354,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           border-radius: 12px;
           overflow: hidden;
         }
-        @import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
         .kma-header {
           display: flex;
@@ -350,7 +363,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           padding: 18px 28px;
           border-bottom: 1px solid var(--ink-3);
         }
-        .kma-logo { font-family: var(--font-display); font-size: 22px; display: flex; align-items: baseline; gap: 8px; }
+        .kma-logo { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.01em; display: flex; align-items: baseline; gap: 8px; }
         .kma-logo span.dot { color: var(--kick); }
         .app-picker {
           display: flex; align-items: center; gap: 6px;
@@ -395,13 +408,25 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .summary-row { display: flex; align-items: center; gap: 10px; font-size: 13.5px; }
         .summary-count { font-family: var(--font-mono); font-weight: 700; width: 20px; }
 
-        .finding-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-        .finding-card { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; box-shadow: var(--shadow); }
-        .finding-top { display: flex; align-items: center; justify-content: space-between; }
-        .finding-title-group { display: flex; align-items: center; gap: 8px; }
-        .finding-title { font-size: 13.5px; font-weight: 600; }
-        .finding-status { display: flex; align-items: center; gap: 4px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em; }
-        .finding-text { font-size: 13px; color: var(--muted); line-height: 1.45; margin: 0; }
+        .finding-list { display: flex; flex-direction: column; gap: 10px; }
+        .finding-row {
+          background: var(--ink-2);
+          border: 1px solid var(--ink-3);
+          border-left: 3px solid var(--ink-3);
+          border-radius: 8px;
+          padding: 14px 16px;
+          box-shadow: var(--shadow);
+        }
+        .finding-row-top { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+        .finding-title { font-size: 13.5px; font-weight: 600; flex: 1; }
+        .finding-status { display: flex; align-items: center; gap: 4px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.04em; }
+        .finding-text { font-size: 13px; color: var(--muted); line-height: 1.5; margin: 0 0 0 23px; }
+        .finding-suggestion {
+          display: flex; align-items: flex-start; gap: 8px;
+          background: var(--ink-3); border-radius: 6px; padding: 8px 10px;
+          font-size: 12.5px; color: var(--muted); line-height: 1.4;
+          margin: 8px 0 0 23px;
+        }
         .finding-suggestion {
           display: flex; align-items: flex-start; gap: 8px;
           background: var(--ink-3); border-radius: 6px; padding: 9px 10px;
@@ -411,7 +436,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         .review-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
         .review-meta { display: flex; align-items: baseline; gap: 14px; margin-bottom: 14px; }
-        .review-count { font-family: var(--font-display); font-size: 28px; }
+        .review-count { font-family: var(--font-display); font-size: 28px; font-weight: 500; letter-spacing: -0.01em; }
         .review-rating { font-family: var(--font-mono); color: var(--yellow); font-size: 13px; }
         .complaint-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
         .complaint-label { font-size: 12.5px; width: 150px; color: var(--chalk); flex-shrink: 0; }
@@ -427,14 +452,13 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
         }
 
-        .soon-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-        .soon-card {
-          border: 1px solid var(--ink-3); border-radius: 12px; padding: 16px 18px;
-          display: flex; align-items: center; gap: 12px; opacity: 0.65;
+        .soon-row {
+          display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+          font-size: 12px; color: var(--muted); padding-top: 4px;
         }
-        .soon-icon { width: 32px; height: 32px; border-radius: 8px; background: var(--ink-3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .soon-title { font-size: 13.5px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
-        .soon-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+        .soon-label { font-family: var(--font-mono); letter-spacing: 0.1em; font-size: 10.5px; margin-right: 4px; }
+        .soon-item { display: inline-flex; align-items: center; gap: 5px; }
+        .soon-dot { margin-left: 6px; opacity: 0.6; }
         .soon-badge { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; color: var(--muted); border: 1px solid var(--ink-3); padding: 2px 6px; border-radius: 4px; }
       `}</style>
 
@@ -502,9 +526,9 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         <div>
           <div className="panel-title" style={{ marginBottom: 14 }}>BULGULAR</div>
-          <div className="finding-grid">
+          <div className="finding-list">
             {findings.map((f) => (
-              <FindingCard key={f.key} f={f} />
+              <FindingRow key={f.key} f={f} />
             ))}
           </div>
         </div>
@@ -540,19 +564,15 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         </div>
         )}
 
-        <div>
-          <div className="panel-title" style={{ marginBottom: 14 }}>YAKINDA</div>
-          <div className="soon-strip">
-            {COMING_SOON.map((s) => (
-              <div className="soon-card" key={s.title}>
-                <div className="soon-icon"><Lock size={15} color="var(--muted)" /></div>
-                <div>
-                  <div className="soon-title">{s.title} <ArrowUpRight size={13} color="var(--muted)" /></div>
-                  <div className="soon-desc">{s.desc}</div>
-                </div>
-              </div>
-            ))}
-          </div>
+        <div className="soon-row">
+          <span className="soon-label">Yakında</span>
+          {COMING_SOON.map((s, i) => (
+            <span key={s.title} className="soon-item">
+              <Lock size={11} color="var(--muted)" />
+              {s.title}
+              {i < COMING_SOON.length - 1 && <span className="soon-dot">·</span>}
+            </span>
+          ))}
         </div>
       </div>
     </div>
