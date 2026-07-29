@@ -22,6 +22,7 @@ import {
   XCircle,
   Lightbulb,
   Download,
+  History,
 } from "lucide-react";
 
 // ---------------------------------------------------------------------------
@@ -271,7 +272,7 @@ function HistoryPanel({ history }) {
 // Main
 // ---------------------------------------------------------------------------
 
-export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", onReset, history = [] }) {
+export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", onReset, history = [], onViewHistory }) {
   const usingRealData = Boolean(data);
   const reportRef = useRef(null);
   const [exporting, setExporting] = useState(false);
@@ -365,7 +366,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           border-radius: 12px;
           padding: 20px 22px;
           display: grid;
-          grid-template-columns: 1fr 1fr auto auto;
+          grid-template-columns: 1fr 1fr auto auto auto;
           gap: 16px;
           align-items: center;
         }
@@ -457,6 +458,12 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
             <Download size={16} strokeWidth={2.3} />
             {exporting ? "Hazırlanıyor…" : "PDF İndir"}
           </button>
+          {onViewHistory && (
+            <button className="analyze-btn" onClick={onViewHistory} style={{ background: "var(--ink-3)", color: "var(--chalk)" }}>
+              <History size={16} strokeWidth={2.3} />
+              Geçmiş
+            </button>
+          )}
           <button className="analyze-btn" onClick={onReset}>
             <Sparkles size={16} strokeWidth={2.3} />
             {onReset ? (

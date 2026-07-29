@@ -3,7 +3,7 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { UploadCloud, Search, Check, Loader2, X, Sparkles } from "lucide-react";
 
-export default function UploadFlow({ onAnalyze, analyzing, errorMessage }) {
+export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewHistory }) {
   const [files, setFiles] = useState([]);
   const [query, setQuery] = useState("");
   const [selectedApp, setSelectedApp] = useState(null); // { name, storeUrl, icon, developer }
@@ -279,6 +279,23 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage }) {
           Uygulama adını yaz, App Store'dan seç — ekran görüntülerini de eklersen AI, UX sağlığını
           ve mağaza yorumlarını analiz edip sana bir rapor çıkarsın.
         </p>
+        {onViewHistory && (
+          <button
+            onClick={onViewHistory}
+            style={{
+              marginTop: 14,
+              background: "transparent",
+              border: "none",
+              color: "var(--muted)",
+              fontFamily: "var(--font-mono)",
+              fontSize: 12,
+              textDecoration: "underline",
+              cursor: "pointer",
+            }}
+          >
+            Geçmiş Analizlerim →
+          </button>
+        )}
       </div>
 
       <div className="upload-card">
