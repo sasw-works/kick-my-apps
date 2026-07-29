@@ -1,14 +1,8 @@
 import React from "react";
-import { ChevronDown } from "lucide-react";
+import Link from "next/link";
 import ThemeToggle from "./ThemeToggle";
 
-const NAV_ITEMS = [
-  { label: "Özellikler", hasDropdown: true },
-  { label: "Kaynaklar", hasDropdown: true },
-  { label: "Kullanım Alanları", hasDropdown: true },
-  { label: "Fiyatlandırma", hasDropdown: false },
-  { label: "Blog", hasDropdown: false },
-];
+const NAV_ITEMS = ["Özellikler", "Kaynaklar", "Kullanım Alanları", "Fiyatlandırma", "Blog"];
 
 export default function Header() {
   return (
@@ -16,7 +10,7 @@ export default function Header() {
       <style>{`
         .kma-header-wrap {
           position: sticky;
-          top: 0;
+          top: 25px;
           z-index: 50;
           display: flex;
           justify-content: center;
@@ -34,8 +28,7 @@ export default function Header() {
           background: var(--ink-2);
           border: 1px solid var(--ink-3);
           border-radius: 999px;
-          padding: 10px 12px 10px 18px;
-          box-shadow: var(--shadow);
+          padding: 15px 12px 15px 18px;
           font-family: 'Inter', sans-serif;
         }
         .kma-header-logo {
@@ -46,8 +39,9 @@ export default function Header() {
           font-size: 15px;
           color: var(--chalk);
           letter-spacing: -0.01em;
-          margin-right: 8px;
           white-space: nowrap;
+          text-decoration: none;
+          cursor: pointer;
         }
         .kma-header-mark {
           width: 24px;
@@ -56,16 +50,13 @@ export default function Header() {
           background: var(--kick);
           flex-shrink: 0;
         }
+        .kma-header-spacer { flex: 1; }
         .kma-header-nav {
           display: flex;
           align-items: center;
           gap: 22px;
-          flex: 1;
         }
         .kma-header-navitem {
-          display: flex;
-          align-items: center;
-          gap: 3px;
           font-size: 14px;
           font-weight: 500;
           color: var(--chalk);
@@ -76,9 +67,18 @@ export default function Header() {
         .kma-header-right {
           display: flex;
           align-items: center;
-          gap: 16px;
+          gap: 18px;
+          white-space: nowrap;
+          margin-left: 22px;
+        }
+        .kma-header-history {
+          font-size: 13.5px;
+          font-weight: 500;
+          color: var(--chalk);
+          text-decoration: none;
           white-space: nowrap;
         }
+        .kma-header-history:hover { text-decoration: underline; }
 
         @media (max-width: 780px) {
           .kma-header-nav { display: none; }
@@ -86,21 +86,25 @@ export default function Header() {
       `}</style>
 
       <div className="kma-header-pill">
-        <div className="kma-header-logo">
+        <Link href="/" className="kma-header-logo">
           <div className="kma-header-mark" />
           Kick My Apps
-        </div>
+        </Link>
+
+        <div className="kma-header-spacer" />
 
         <nav className="kma-header-nav">
-          {NAV_ITEMS.map((item) => (
-            <span className="kma-header-navitem" key={item.label}>
-              {item.label}
-              {item.hasDropdown && <ChevronDown size={13} strokeWidth={2} />}
+          {NAV_ITEMS.map((label) => (
+            <span className="kma-header-navitem" key={label}>
+              {label}
             </span>
           ))}
         </nav>
 
         <div className="kma-header-right">
+          <Link href="/history" className="kma-header-history">
+            Geçmiş Analizlerim
+          </Link>
           <ThemeToggle />
         </div>
       </div>

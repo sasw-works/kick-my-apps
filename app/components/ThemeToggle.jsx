@@ -26,8 +26,8 @@ export default function ThemeToggle() {
     <button className="theme-toggle-btn" onClick={toggle} aria-label="Temayı değiştir">
       <style>{`
         .theme-toggle-btn {
-          width: 30px;
-          height: 30px;
+          width: 40px;
+          height: 40px;
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -39,9 +39,9 @@ export default function ThemeToggle() {
         }
       `}</style>
       {theme === "dark" ? (
-        <Sun size={15} color="var(--muted)" strokeWidth={2} />
+        <Sun size={25} color="var(--muted)" strokeWidth={2} />
       ) : (
-        <Moon size={15} color="var(--muted)" strokeWidth={2} />
+        <Moon size={25} color="var(--muted)" strokeWidth={2} />
       )}
     </button>
   );

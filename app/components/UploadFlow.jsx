@@ -135,7 +135,6 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           border: 1px solid var(--ink-3);
           border-radius: 999px;
           padding: 16px 22px;
-          box-shadow: var(--shadow);
           transition: border-color 0.15s ease;
         }
         .hero-search-pill:focus-within { border-color: var(--kick); }
@@ -163,7 +162,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
 
         .upload-card {
           width: 100%;
-          max-width: 560px;
+          max-width: 640px;
           display: flex;
           flex-direction: column;
           gap: 20px;
@@ -387,12 +386,6 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
             ? "App Store'dan eşleşti — yorumlar da analize dahil edilecek."
             : "Listeden seçmezsen sadece ekran görüntüsü analizi yapılır."}
         </div>
-
-        {onViewHistory && (
-          <button className="history-link" onClick={onViewHistory}>
-            Geçmiş Analizlerim →
-          </button>
-        )}
       </div>
 
       <div className="upload-card">
