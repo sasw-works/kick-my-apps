@@ -71,10 +71,13 @@ async function analyzeWithGemini({ images, reviews }) {
 
   const model = "gemini-2.5-flash";
   const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${process.env.GEMINI_API_KEY}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
     {
       method: "POST",
-      headers: { "content-type": "application/json" },
+      headers: {
+        "content-type": "application/json",
+        "x-goog-api-key": process.env.GEMINI_API_KEY,
+      },
       body: JSON.stringify({
         contents: [{ parts }],
         generationConfig: {
@@ -149,6 +152,9 @@ export async function POST(req) {
     return Response.json(result);
   } catch (err) {
     console.error(err);
-    return Response.json({ error: "Analiz sırasında bir hata oluştu. Tekrar dener misin?" }, { status: 500 });
+    return Response.json(
+      { error: "Analiz sırasında bir hata oluştu: " + (err.message || "bilinmeyen hata") },
+      { status: 500 }
+    );
   }
 }
