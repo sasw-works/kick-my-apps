@@ -98,14 +98,14 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           font-family: var(--font-body);
           min-height: 100%;
           border-radius: 12px;
-          padding: 40px 32px;
+          padding: 0 32px 40px;
           display: flex;
           flex-direction: column;
           align-items: center;
         }
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
-        .upload-hero { text-align: center; margin-bottom: 28px; max-width: 720px; }
+        .upload-hero { text-align: center; margin-top: 100px; margin-bottom: 28px; max-width: 720px; }
         .hero-title {
           font-family: var(--font-display);
           font-size: 44px;
@@ -149,7 +149,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           font-size: 15px;
         }
         .hero-search-pill input::placeholder { color: var(--muted); }
-        .hero-search-hint { font-size: 12.5px; color: var(--muted); margin-top: 10px; text-align: center; }
+        .hero-search-hint { font-size: 12.5px; color: var(--muted); margin-top: 35px; text-align: center; }
         .history-link {
           margin-top: 10px;
           background: transparent;
@@ -325,7 +325,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           font-weight: 700;
           font-size: 14.5px;
           padding: 14px 20px;
-          border-radius: 10px;
+          border-radius: 999px;
           border: none;
           cursor: pointer;
           transition: opacity 0.15s ease;
@@ -339,11 +339,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
       `}</style>
 
       <div className="upload-hero">
-        <h1 className="hero-title">
-          Uygulamanı yayınlamadan önce
-          <br />
-          kick at.
-        </h1>
+        <h1 className="hero-title">Find what's hurting your app.</h1>
       </div>
 
       <div className="hero-search-wrap">
@@ -352,7 +348,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
             <Search size={18} color="var(--muted)" />
             <input
               type="text"
-              placeholder="Uygulama adı yaz (örn. PulseFit)"
+              placeholder="Search any app…"
               value={query}
               onChange={(e) => handleQueryChange(e.target.value)}
               onFocus={() => suggestions.length > 0 && setShowDropdown(true)}

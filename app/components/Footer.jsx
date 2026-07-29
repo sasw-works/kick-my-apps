@@ -1,5 +1,4 @@
 import React from "react";
-import ThemeToggle from "./ThemeToggle";
 
 const COLUMNS = [
   {
@@ -91,7 +90,6 @@ export default function Footer() {
           font-size: 12.5px;
           color: var(--muted);
         }
-        .kma-footer-right { display: flex; align-items: center; gap: 20px; }
         .kma-footer-legal { display: flex; gap: 18px; }
         .kma-footer-legal span { cursor: default; user-select: none; }
 
@@ -127,13 +125,10 @@ export default function Footer() {
 
         <div className="kma-footer-bottom">
           <span>© 2026 Kick My Apps. Tüm hakları saklıdır.</span>
-          <div className="kma-footer-right">
-            <div className="kma-footer-legal">
-              {LEGAL_LINKS.map((l) => (
-                <span key={l}>{l}</span>
-              ))}
-            </div>
-            <ThemeToggle />
+          <div className="kma-footer-legal">
+            {LEGAL_LINKS.map((l) => (
+              <span key={l}>{l}</span>
+            ))}
           </div>
         </div>
       </div>

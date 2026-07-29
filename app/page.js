@@ -97,7 +97,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen p-4 md:p-8" style={{ background: "var(--ink)" }}>
+    <main className="min-h-screen px-4 pb-4 md:px-8 md:pb-8" style={{ background: "var(--ink)" }}>
       <div className="max-w-6xl mx-auto">
         {stage === "upload" && (
           <UploadFlow

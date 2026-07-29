@@ -11,7 +11,8 @@ export default function ThemeToggle() {
     setTheme(isDark ? "dark" : "light");
   }, []);
 
-  const applyTheme = (next) => {
+  const toggle = () => {
+    const next = theme === "dark" ? "light" : "dark";
     setTheme(next);
     document.documentElement.classList.toggle("dark", next === "dark");
     try {
@@ -22,12 +23,11 @@ export default function ThemeToggle() {
   };
 
   return (
-    <div className="theme-toggle">
+    <button className="theme-toggle-btn" onClick={toggle} aria-label="Temayı değiştir">
       <style>{`
-        .theme-toggle { display: flex; align-items: center; gap: 6px; }
-        .theme-btn {
-          width: 28px;
-          height: 28px;
+        .theme-toggle-btn {
+          width: 30px;
+          height: 30px;
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -35,26 +35,14 @@ export default function ThemeToggle() {
           border: 1px solid var(--ink-3);
           background: var(--ink-2);
           cursor: pointer;
-          transition: border-color 0.15s ease;
+          flex-shrink: 0;
         }
-        .theme-btn-active { border-color: var(--kick); }
       `}</style>
-      <button
-        className={`theme-btn ${theme === "light" ? "theme-btn-active" : ""}`}
-        onClick={() => applyTheme("light")}
-        aria-label="Açık tema"
-        aria-pressed={theme === "light"}
-      >
-        <Sun size={14} color={theme === "light" ? "var(--kick)" : "var(--muted)"} strokeWidth={2} />
-      </button>
-      <button
-        className={`theme-btn ${theme === "dark" ? "theme-btn-active" : ""}`}
-        onClick={() => applyTheme("dark")}
-        aria-label="Koyu tema"
-        aria-pressed={theme === "dark"}
-      >
-        <Moon size={14} color={theme === "dark" ? "var(--kick)" : "var(--muted)"} strokeWidth={2} />
-      </button>
-    </div>
+      {theme === "dark" ? (
+        <Sun size={15} color="var(--muted)" strokeWidth={2} />
+      ) : (
+        <Moon size={15} color="var(--muted)" strokeWidth={2} />
+      )}
+    </button>
   );
 }

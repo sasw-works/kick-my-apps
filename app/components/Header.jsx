@@ -79,23 +79,6 @@ export default function Header() {
           gap: 16px;
           white-space: nowrap;
         }
-        .kma-header-signin {
-          font-size: 14px;
-          font-weight: 500;
-          color: var(--chalk);
-          cursor: default;
-          user-select: none;
-        }
-        .kma-header-cta {
-          background: var(--kick);
-          color: #FFFFFF;
-          font-size: 14px;
-          font-weight: 600;
-          padding: 9px 18px;
-          border-radius: 999px;
-          border: none;
-          cursor: default;
-        }
 
         @media (max-width: 780px) {
           .kma-header-nav { display: none; }
@@ -119,8 +102,6 @@ export default function Header() {
 
         <div className="kma-header-right">
           <ThemeToggle />
-          <span className="kma-header-signin">Giriş Yap</span>
-          <button className="kma-header-cta">Başla</button>
         </div>
       </div>
     </div>
