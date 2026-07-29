@@ -39,9 +39,9 @@ export default function CompareView({ scans, onBack }) {
           --yellow: #F5A623;
           --teal: #0EA5A0;
           --shadow: 0 1px 2px rgba(26,31,54,0.04), 0 8px 24px rgba(26,31,54,0.06);
-          --font-display: 'Fraunces', serif;
+          --font-display: 'Inter', sans-serif;
           --font-body: 'Inter', sans-serif;
-          --font-mono: 'IBM Plex Mono', monospace;
+          --font-mono: 'Inter', sans-serif;
 
           background: var(--ink);
           color: var(--chalk);
@@ -50,7 +50,7 @@ export default function CompareView({ scans, onBack }) {
           border-radius: 12px;
           padding: 28px 32px;
         }
-        @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
         .cmp-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
         .cmp-title { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }

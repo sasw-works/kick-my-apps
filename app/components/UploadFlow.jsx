@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import { UploadCloud, Search, Check, Loader2, X, Sparkles } from "lucide-react";
+import { UploadCloud, Search, Check, Loader2, X, Sparkles, FileText } from "lucide-react";
 
 export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewHistory }) {
   const [files, setFiles] = useState([]);
@@ -98,9 +98,9 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           --yellow: #F5A623;
           --teal: #0EA5A0;
           --shadow: 0 1px 2px rgba(26,31,54,0.04), 0 8px 24px rgba(26,31,54,0.06);
-          --font-display: 'Fraunces', serif;
+          --font-display: 'Inter', sans-serif;
           --font-body: 'Inter', sans-serif;
-          --font-mono: 'IBM Plex Mono', monospace;
+          --font-mono: 'Inter', sans-serif;
 
           background: var(--ink);
           color: var(--chalk);
@@ -112,16 +112,67 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           flex-direction: column;
           align-items: center;
         }
-        @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
-        .upload-hero { text-align: center; margin-bottom: 32px; }
-        .upload-logo { font-family: var(--font-display); font-size: 28px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 8px; }
-        .upload-logo span { color: var(--kick); }
-        .upload-sub { color: var(--muted); font-size: 14.5px; max-width: 480px; margin: 0 auto; }
+        .upload-hero { text-align: center; margin-bottom: 28px; max-width: 720px; }
+        .hero-title {
+          font-family: var(--font-display);
+          font-size: 44px;
+          font-weight: 800;
+          letter-spacing: -0.025em;
+          line-height: 1.08;
+          color: var(--chalk);
+          margin: 0;
+        }
+
+        .hero-search-wrap {
+          position: relative;
+          width: 100%;
+          max-width: 640px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-bottom: 36px;
+        }
+        .hero-search-anchor { position: relative; width: 100%; }
+        .hero-search-pill {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          background: var(--ink-2);
+          border: 1px solid var(--ink-3);
+          border-radius: 999px;
+          padding: 16px 22px;
+          box-shadow: var(--shadow);
+          transition: border-color 0.15s ease;
+        }
+        .hero-search-pill:focus-within { border-color: var(--kick); }
+        .hero-search-pill input {
+          flex: 1;
+          background: transparent;
+          border: none;
+          outline: none;
+          color: var(--chalk);
+          font-family: var(--font-body);
+          font-size: 15px;
+        }
+        .hero-search-pill input::placeholder { color: var(--muted); }
+        .hero-search-hint { font-size: 12.5px; color: var(--muted); margin-top: 10px; text-align: center; }
+        .history-link {
+          margin-top: 10px;
+          background: transparent;
+          border: none;
+          color: var(--muted);
+          font-family: var(--font-body);
+          font-size: 12.5px;
+          text-decoration: underline;
+          cursor: pointer;
+        }
 
         .upload-card {
           width: 100%;
-          max-width: 640px;
+          max-width: 560px;
           display: flex;
           flex-direction: column;
           gap: 20px;
@@ -137,8 +188,20 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         }
         .dropzone-active { border-color: var(--kick); background: var(--ink-2); }
         .dropzone:hover { border-color: var(--muted); }
-        .dropzone-label { font-size: 14px; color: var(--chalk); margin-top: 10px; font-weight: 600; }
+        .dropzone-label { font-size: 14.5px; color: var(--chalk); margin-top: 14px; font-weight: 600; }
         .dropzone-hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
+        .dropzone-btn {
+          display: inline-block;
+          margin-top: 16px;
+          background: var(--ink-2);
+          border: 1px solid var(--ink-3);
+          color: var(--chalk);
+          font-size: 13px;
+          font-weight: 500;
+          padding: 8px 18px;
+          border-radius: 999px;
+          box-shadow: var(--shadow);
+        }
 
         .thumb-row {
           display: flex;
@@ -279,35 +342,17 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
       `}</style>
 
       <div className="upload-hero">
-        <div className="upload-logo">KICK MY APPS<span>.</span></div>
-        <p className="upload-sub">
-          Uygulama adını yaz, App Store'dan seç — ekran görüntülerini de eklersen AI, UX sağlığını
-          ve mağaza yorumlarını analiz edip sana bir rapor çıkarsın.
-        </p>
-        {onViewHistory && (
-          <button
-            onClick={onViewHistory}
-            style={{
-              marginTop: 14,
-              background: "transparent",
-              border: "none",
-              color: "var(--muted)",
-              fontFamily: "var(--font-mono)",
-              fontSize: 12,
-              textDecoration: "underline",
-              cursor: "pointer",
-            }}
-          >
-            Geçmiş Analizlerim →
-          </button>
-        )}
+        <h1 className="hero-title">
+          Uygulamanı yayınlamadan önce
+          <br />
+          kick at.
+        </h1>
       </div>
 
-      <div className="upload-card">
-        <div style={{ position: "relative" }}>
-          <div className="field-label">UYGULAMA ARA</div>
-          <div className="url-input-wrap">
-            <Search size={16} color="var(--muted)" />
+      <div className="hero-search-wrap">
+        <div className="hero-search-anchor">
+          <div className="hero-search-pill">
+            <Search size={18} color="var(--muted)" />
             <input
               type="text"
               placeholder="Uygulama adı yaz (örn. PulseFit)"
@@ -316,8 +361,8 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
               onFocus={() => suggestions.length > 0 && setShowDropdown(true)}
               onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
             />
-            {searching && <Loader2 size={15} className="spin" color="var(--muted)" />}
-            {selectedApp && !searching && <Check size={16} color="var(--teal)" />}
+            {searching && <Loader2 size={16} className="spin" color="var(--muted)" />}
+            {selectedApp && !searching && <Check size={17} color="var(--teal)" />}
           </div>
 
           {showDropdown && suggestions.length > 0 && (
@@ -342,16 +387,23 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
               ))}
             </div>
           )}
-
-          <div className="dropzone-hint" style={{ marginTop: 6 }}>
-            {selectedApp
-              ? "App Store'dan eşleşti — yorumlar da analize dahil edilecek."
-              : "Listeden seçmezsen sadece ekran görüntüsü analizi yapılır, yorum verisi olmaz."}
-          </div>
         </div>
 
+        <div className="hero-search-hint">
+          {selectedApp
+            ? "App Store'dan eşleşti — yorumlar da analize dahil edilecek."
+            : "Listeden seçmezsen sadece ekran görüntüsü analizi yapılır."}
+        </div>
+
+        {onViewHistory && (
+          <button className="history-link" onClick={onViewHistory}>
+            Geçmiş Analizlerim →
+          </button>
+        )}
+      </div>
+
+      <div className="upload-card">
         <div>
-          <div className="field-label">EKRAN GÖRÜNTÜLERİ</div>
           <label
             className={`dropzone ${dragActive ? "dropzone-active" : ""}`}
             onDragOver={(e) => {
@@ -369,9 +421,10 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
               style={{ display: "none" }}
               onChange={(e) => addFiles(e.target.files)}
             />
-            <UploadCloud size={26} color="var(--yellow)" style={{ margin: "0 auto" }} />
-            <div className="dropzone-label">Sürükle-bırak ya da tıkla</div>
-            <div className="dropzone-hint">PNG, JPG — en fazla 12 görsel</div>
+            <FileText size={30} color="var(--muted)" strokeWidth={1.4} style={{ margin: "0 auto" }} />
+            <div className="dropzone-label">Ekran görüntülerini sürükle bırak</div>
+            <div className="dropzone-hint">En fazla 12 görsel · PNG, JPG</div>
+            <span className="dropzone-btn">Dosya Seç</span>
           </label>
 
           {files.length > 0 && (
