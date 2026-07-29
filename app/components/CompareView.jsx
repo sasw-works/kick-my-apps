@@ -30,14 +30,15 @@ export default function CompareView({ scans, onBack }) {
     <div className="cmp-root">
       <style>{`
         .cmp-root {
-          --ink: #14151a;
-          --ink-2: #1c1e26;
-          --ink-3: #24262f;
-          --chalk: #f5f3ee;
-          --muted: #8a8f9c;
-          --kick: #ff4a32;
-          --yellow: #ffc93c;
-          --teal: #2dd4bf;
+          --ink: #F6F8FA;
+          --ink-2: #FFFFFF;
+          --ink-3: #E3E8EF;
+          --chalk: #1A1F36;
+          --muted: #697386;
+          --kick: #F5433A;
+          --yellow: #F5A623;
+          --teal: #0EA5A0;
+          --shadow: 0 1px 2px rgba(26,31,54,0.04), 0 8px 24px rgba(26,31,54,0.06);
           --font-display: 'Anton', sans-serif;
           --font-body: 'Inter', sans-serif;
           --font-mono: 'IBM Plex Mono', monospace;
@@ -60,7 +61,7 @@ export default function CompareView({ scans, onBack }) {
         }
 
         .cmp-score-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 18px; align-items: center; margin-bottom: 26px; }
-        .cmp-score-card { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 14px; padding: 20px; text-align: center; }
+        .cmp-score-card { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 14px; padding: 20px; text-align: center; box-shadow: var(--shadow); }
         .cmp-score-name { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
         .cmp-score-date { font-size: 11px; color: var(--muted); font-family: var(--font-mono); margin-bottom: 10px; }
         .cmp-score-value { font-family: var(--font-display); font-size: 44px; }

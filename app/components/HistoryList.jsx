@@ -42,14 +42,15 @@ export default function HistoryList({ onBack, onCompare }) {
     <div className="history-root">
       <style>{`
         .history-root {
-          --ink: #14151a;
-          --ink-2: #1c1e26;
-          --ink-3: #24262f;
-          --chalk: #f5f3ee;
-          --muted: #8a8f9c;
-          --kick: #ff4a32;
-          --yellow: #ffc93c;
-          --teal: #2dd4bf;
+          --ink: #F6F8FA;
+          --ink-2: #FFFFFF;
+          --ink-3: #E3E8EF;
+          --chalk: #1A1F36;
+          --muted: #697386;
+          --kick: #F5433A;
+          --yellow: #F5A623;
+          --teal: #0EA5A0;
+          --shadow: 0 1px 2px rgba(26,31,54,0.04), 0 8px 24px rgba(26,31,54,0.06);
           --font-display: 'Anton', sans-serif;
           --font-body: 'Inter', sans-serif;
           --font-mono: 'IBM Plex Mono', monospace;
@@ -81,7 +82,8 @@ export default function HistoryList({ onBack, onCompare }) {
         .scan-row {
           display: flex; align-items: center; gap: 14px;
           background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 10px;
-          padding: 12px 16px; cursor: pointer; transition: border-color 0.15s ease;
+          padding: 12px 16px; cursor: pointer; transition: border-color 0.15s ease, box-shadow 0.15s ease;
+          box-shadow: var(--shadow);
         }
         .scan-row-selected { border-color: var(--kick); }
         .scan-checkbox {

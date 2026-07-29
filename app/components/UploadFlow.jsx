@@ -89,14 +89,15 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
     <div className="upload-root">
       <style>{`
         .upload-root {
-          --ink: #14151a;
-          --ink-2: #1c1e26;
-          --ink-3: #24262f;
-          --chalk: #f5f3ee;
-          --muted: #8a8f9c;
-          --kick: #ff4a32;
-          --yellow: #ffc93c;
-          --teal: #2dd4bf;
+          --ink: #F6F8FA;
+          --ink-2: #FFFFFF;
+          --ink-3: #E3E8EF;
+          --chalk: #1A1F36;
+          --muted: #697386;
+          --kick: #F5433A;
+          --yellow: #F5A623;
+          --teal: #0EA5A0;
+          --shadow: 0 1px 2px rgba(26,31,54,0.04), 0 8px 24px rgba(26,31,54,0.06);
           --font-display: 'Anton', sans-serif;
           --font-body: 'Inter', sans-serif;
           --font-mono: 'IBM Plex Mono', monospace;
@@ -155,6 +156,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           align-items: center;
           justify-content: center;
           overflow: hidden;
+          box-shadow: var(--shadow);
         }
         .thumb img { width: 100%; height: 100%; object-fit: cover; }
         .thumb-remove {
@@ -188,7 +190,10 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           border: 1px solid var(--ink-3);
           border-radius: 10px;
           padding: 12px 14px;
+          box-shadow: var(--shadow);
+          transition: border-color 0.15s ease;
         }
+        .url-input-wrap:focus-within { border-color: var(--kick); }
         .url-input-wrap input {
           background: transparent;
           border: none;
@@ -209,7 +214,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           border-radius: 10px;
           overflow: hidden;
           z-index: 20;
-          box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+          box-shadow: 0 4px 6px rgba(26,31,54,0.05), 0 16px 32px rgba(26,31,54,0.12);
         }
         .suggestion-row {
           width: 100%;

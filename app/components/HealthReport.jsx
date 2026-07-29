@@ -153,7 +153,7 @@ function HealthDial({ score = 58, size = 220 }) {
       {arc(-20, 15, "var(--yellow)")}
       {arc(15, 90, "var(--teal)")}
       <circle cx={cx} cy={cy} r={5} fill="var(--chalk)" />
-      <line x1={cx} y1={cy} x2={nx} y2={ny} stroke="var(--chalk)" strokeWidth={3} strokeLinecap="round" style={{ filter: `drop-shadow(0 0 6px ${zoneColor})` }} />
+      <line x1={cx} y1={cy} x2={nx} y2={ny} stroke="var(--chalk)" strokeWidth={3} strokeLinecap="round" style={{ filter: `drop-shadow(0 1px 2px rgba(26,31,54,0.25))` }} />
       <text x={cx} y={cy - 26} textAnchor="middle" style={{ fontFamily: "var(--font-display)", fontSize: 44, fill: "var(--chalk)" }}>{score}</text>
       <text x={cx} y={cy - 4} textAnchor="middle" style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.14em", fill: "var(--muted)" }}>APP HEALTH SCORE</text>
     </svg>
@@ -321,14 +321,15 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
     <div className="kma-root" ref={reportRef}>
       <style>{`
         .kma-root {
-          --ink: #14151a;
-          --ink-2: #1c1e26;
-          --ink-3: #24262f;
-          --chalk: #f5f3ee;
-          --muted: #8a8f9c;
-          --kick: #ff4a32;
-          --yellow: #ffc93c;
-          --teal: #2dd4bf;
+          --ink: #F6F8FA;
+          --ink-2: #FFFFFF;
+          --ink-3: #E3E8EF;
+          --chalk: #1A1F36;
+          --muted: #697386;
+          --kick: #F5433A;
+          --yellow: #F5A623;
+          --teal: #0EA5A0;
+          --shadow: 0 1px 2px rgba(26,31,54,0.04), 0 8px 24px rgba(26,31,54,0.06);
           --font-display: 'Anton', sans-serif;
           --font-body: 'Inter', sans-serif;
           --font-mono: 'IBM Plex Mono', monospace;
@@ -362,13 +363,14 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         .upload-panel {
           background: var(--ink-2);
-          border: 1px dashed var(--ink-3);
+          border: 1px solid var(--ink-3);
           border-radius: 12px;
           padding: 20px 22px;
           display: grid;
           grid-template-columns: 1fr 1fr auto auto auto;
           gap: 16px;
           align-items: center;
+          box-shadow: var(--shadow);
         }
         .upload-slot {
           display: flex; align-items: center; gap: 10px;
@@ -382,7 +384,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           padding: 12px 20px; border-radius: 8px; border: none; cursor: pointer; white-space: nowrap;
         }
 
-        .panel { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 12px; padding: 18px 20px; }
+        .panel { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 12px; padding: 18px 20px; box-shadow: var(--shadow); }
         .panel-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--muted); margin-bottom: 12px; }
 
         .top-grid { display: grid; grid-template-columns: 260px 1fr; gap: 18px; }
@@ -394,7 +396,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .summary-count { font-family: var(--font-mono); font-weight: 700; width: 20px; }
 
         .finding-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-        .finding-card { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; }
+        .finding-card { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; box-shadow: var(--shadow); }
         .finding-top { display: flex; align-items: center; justify-content: space-between; }
         .finding-title-group { display: flex; align-items: center; gap: 8px; }
         .finding-title { font-size: 13.5px; font-weight: 600; }
