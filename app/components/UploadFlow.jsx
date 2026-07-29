@@ -179,12 +179,18 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         }
 
         .dropzone {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
           border: 2px dashed var(--ink-3);
           border-radius: 14px;
           padding: 32px 20px;
           text-align: center;
           cursor: pointer;
           transition: border-color 0.15s ease, background 0.15s ease;
+          box-sizing: border-box;
         }
         .dropzone-active { border-color: var(--kick); background: var(--ink-2); }
         .dropzone:hover { border-color: var(--muted); }
