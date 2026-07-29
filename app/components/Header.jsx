@@ -1,5 +1,6 @@
 import React from "react";
 import { ChevronDown } from "lucide-react";
+import ThemeToggle from "./ThemeToggle";
 
 const NAV_ITEMS = [
   { label: "Özellikler", hasDropdown: true },
@@ -117,6 +118,7 @@ export default function Header() {
         </nav>
 
         <div className="kma-header-right">
+          <ThemeToggle />
           <span className="kma-header-signin">Giriş Yap</span>
           <button className="kma-header-cta">Başla</button>
         </div>
