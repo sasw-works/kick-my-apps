@@ -1,4 +1,5 @@
 import React from "react";
+import ThemeToggle from "./ThemeToggle";
 
 const COLUMNS = [
   {
@@ -26,9 +27,9 @@ export default function Footer() {
     <footer className="kma-footer">
       <style>{`
         .kma-footer {
-          background: #F6F8FA;
+          background: var(--ink);
           font-family: 'Inter', sans-serif;
-          border-top: 1px solid #E3E8EF;
+          border-top: 1px solid var(--ink-3);
           margin-top: 40px;
           padding: 48px 24px 24px;
         }
@@ -48,7 +49,7 @@ export default function Footer() {
           gap: 8px;
           font-weight: 700;
           font-size: 15px;
-          color: #1A1F36;
+          color: var(--chalk);
           letter-spacing: -0.01em;
           margin-bottom: 12px;
         }
@@ -56,11 +57,11 @@ export default function Footer() {
           width: 22px;
           height: 22px;
           border-radius: 6px;
-          background: #F5433A;
+          background: var(--kick);
         }
         .kma-footer-desc {
           font-size: 13px;
-          color: #697386;
+          color: var(--muted);
           line-height: 1.6;
           max-width: 240px;
         }
@@ -68,13 +69,13 @@ export default function Footer() {
           font-size: 11px;
           font-weight: 600;
           letter-spacing: 0.08em;
-          color: #9AA2B1;
+          color: var(--muted);
           margin-bottom: 14px;
         }
         .kma-footer-link {
           display: block;
           font-size: 13.5px;
-          color: #1A1F36;
+          color: var(--chalk);
           margin-bottom: 11px;
           cursor: default;
           user-select: none;
@@ -85,11 +86,12 @@ export default function Footer() {
           justify-content: space-between;
           flex-wrap: wrap;
           gap: 12px;
-          border-top: 1px solid #E3E8EF;
+          border-top: 1px solid var(--ink-3);
           padding-top: 20px;
           font-size: 12.5px;
-          color: #9AA2B1;
+          color: var(--muted);
         }
+        .kma-footer-right { display: flex; align-items: center; gap: 20px; }
         .kma-footer-legal { display: flex; gap: 18px; }
         .kma-footer-legal span { cursor: default; user-select: none; }
 
@@ -125,10 +127,13 @@ export default function Footer() {
 
         <div className="kma-footer-bottom">
           <span>© 2026 Kick My Apps. Tüm hakları saklıdır.</span>
-          <div className="kma-footer-legal">
-            {LEGAL_LINKS.map((l) => (
-              <span key={l}>{l}</span>
-            ))}
+          <div className="kma-footer-right">
+            <div className="kma-footer-legal">
+              {LEGAL_LINKS.map((l) => (
+                <span key={l}>{l}</span>
+              ))}
+            </div>
+            <ThemeToggle />
           </div>
         </div>
       </div>

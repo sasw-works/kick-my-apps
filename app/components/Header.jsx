@@ -20,7 +20,7 @@ export default function Header() {
           display: flex;
           justify-content: center;
           padding: 16px 20px 0;
-          background: linear-gradient(to bottom, #F6F8FA 60%, transparent);
+          background: linear-gradient(to bottom, var(--ink) 60%, transparent);
         }
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
@@ -30,11 +30,11 @@ export default function Header() {
           display: flex;
           align-items: center;
           gap: 8px;
-          background: #FFFFFF;
-          border: 1px solid #E3E8EF;
+          background: var(--ink-2);
+          border: 1px solid var(--ink-3);
           border-radius: 999px;
           padding: 10px 12px 10px 18px;
-          box-shadow: 0 1px 2px rgba(26,31,54,0.04), 0 8px 24px rgba(26,31,54,0.07);
+          box-shadow: var(--shadow);
           font-family: 'Inter', sans-serif;
         }
         .kma-header-logo {
@@ -43,7 +43,7 @@ export default function Header() {
           gap: 8px;
           font-weight: 700;
           font-size: 15px;
-          color: #1A1F36;
+          color: var(--chalk);
           letter-spacing: -0.01em;
           margin-right: 8px;
           white-space: nowrap;
@@ -52,7 +52,7 @@ export default function Header() {
           width: 24px;
           height: 24px;
           border-radius: 7px;
-          background: #F5433A;
+          background: var(--kick);
           flex-shrink: 0;
         }
         .kma-header-nav {
@@ -67,7 +67,7 @@ export default function Header() {
           gap: 3px;
           font-size: 14px;
           font-weight: 500;
-          color: #1A1F36;
+          color: var(--chalk);
           cursor: default;
           user-select: none;
           white-space: nowrap;
@@ -81,12 +81,12 @@ export default function Header() {
         .kma-header-signin {
           font-size: 14px;
           font-weight: 500;
-          color: #1A1F36;
+          color: var(--chalk);
           cursor: default;
           user-select: none;
         }
         .kma-header-cta {
-          background: #F5433A;
+          background: var(--kick);
           color: #FFFFFF;
           font-size: 14px;
           font-weight: 600;

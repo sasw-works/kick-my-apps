@@ -334,15 +334,6 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
     <div className="kma-root" ref={reportRef}>
       <style>{`
         .kma-root {
-          --ink: #F6F8FA;
-          --ink-2: #FFFFFF;
-          --ink-3: #E3E8EF;
-          --chalk: #1A1F36;
-          --muted: #697386;
-          --kick: #F5433A;
-          --yellow: #F5A623;
-          --teal: #0EA5A0;
-          --shadow: 0 1px 2px rgba(26,31,54,0.04), 0 8px 24px rgba(26,31,54,0.06);
           --font-display: 'Inter', sans-serif;
           --font-body: 'Inter', sans-serif;
           --font-mono: 'Inter', sans-serif;
