@@ -67,7 +67,8 @@ async function callGeminiModel(model, parts) {
         contents: [{ parts }],
         generationConfig: {
           responseMimeType: "application/json",
-          maxOutputTokens: 2000,
+          maxOutputTokens: 4096,
+          thinkingConfig: { thinkingBudget: 0 },
         },
       }),
     }
@@ -106,7 +107,13 @@ async function analyzeWithGemini({ images, reviews }) {
         const data = await res.json();
         const raw = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? "{}";
         const cleaned = raw.replace(/```json|```/g, "").trim();
-        return JSON.parse(cleaned);
+        try {
+          return JSON.parse(cleaned);
+        } catch (parseErr) {
+          throw new Error(
+            `Model cevabı bozuk/eksik JSON döndürdü (muhtemelen yarıda kesildi): ${parseErr.message}`
+          );
+        }
       }
 
       const errText = await res.text();
