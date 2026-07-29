@@ -24,35 +24,94 @@ async function fetchAppStoreReviews(storeUrl) {
       rating: Number(e["im:rating"]?.label ?? 0),
       title: e.title?.label ?? "",
       content: e.content?.label ?? "",
+      version: e["im:version"]?.label ?? null,
+      helpfulVotes: Number(e["im:voteSum"]?.label ?? 0),
     }));
 }
 
-const SCHEMA_INSTRUCTIONS = `Sen bir mobil UX denetçisisin. Sana verilen ekran görüntülerini ve/veya kullanıcı
-yorumlarını analiz et ve SADECE aşağıdaki JSON şemasında bir cevap döndür. Başka hiçbir açıklama,
-markdown işareti veya ön/art metin ekleme.
+// ---------------------------------------------------------------------------
+// Deterministic review analytics — computed from real data, not the model,
+// so these numbers are always exactly accurate (no AI arithmetic/hallucination).
+// ---------------------------------------------------------------------------
+function computeReviewAnalytics(reviews) {
+  const ratingDistribution = [1, 2, 3, 4, 5].map((star) => ({
+    star,
+    count: reviews.filter((r) => r.rating === star).length,
+  }));
+
+  const negativeReviews = reviews.filter((r) => r.rating <= 2);
+  const mostHelpfulNegative = negativeReviews.length
+    ? negativeReviews.reduce((best, r) => (r.helpfulVotes > (best?.helpfulVotes ?? -1) ? r : best), null)
+    : null;
+
+  // Sürüme göre grupla, en az 2 farklı sürüm varsa trend hesapla.
+  const byVersion = {};
+  for (const r of reviews) {
+    if (!r.version) continue;
+    if (!byVersion[r.version]) byVersion[r.version] = [];
+    byVersion[r.version].push(r.rating);
+  }
+  const versions = Object.keys(byVersion);
+  let versionTrend = null;
+  if (versions.length >= 2) {
+    const avgByVersion = versions
+      .map((v) => ({
+        version: v,
+        avg: byVersion[v].reduce((a, b) => a + b, 0) / byVersion[v].length,
+        count: byVersion[v].length,
+      }))
+      .filter((v) => v.count >= 2);
+    if (avgByVersion.length >= 2) {
+      versionTrend = avgByVersion.slice(0, 4);
+    }
+  }
+
+  return { ratingDistribution, mostHelpfulNegative, versionTrend };
+}
+
+const SCHEMA_INSTRUCTIONS = `Sen deneyimli bir mobil UX denetçisisin. Sana verilen ekran görüntülerini ve/veya
+kullanıcı yorumlarını DERİNLEMESİNE analiz et ve SADECE aşağıdaki JSON şemasında bir cevap döndür.
+Başka hiçbir açıklama, markdown işareti veya ön/art metin ekleme.
 
 {
   "healthScore": <0-100 arası tam sayı, genel sağlık skoru>,
   "findings": [
     {
-      "key": "<onboarding|cta|contrast|typography|accessibility|permissions|conversion içinden biri>",
+      "key": "<onboarding|cta|contrast|typography|accessibility|permissions|conversion|navigation|empty_states|consistency|loading|copy|trust içinden biri>",
       "title": "<Türkçe kısa başlık>",
       "status": "<good|warn|bad>",
-      "finding": "<gözlemi 1 cümlede açıkla>",
-      "suggestion": "<somut, uygulanabilir bir öneri>"
+      "finding": "<gözlemi 1-2 cümlede somut şekilde açıkla, hangi ekranda ne gördüğünü belirt>",
+      "suggestion": "<somut, uygulanabilir bir öneri>",
+      "screenshotIndex": <bu bulgunun dayandığı ekran görüntüsünün sırası, 1'den başlar; ekran görüntüsüne dayanmıyorsa null>
     }
   ],
   "reviewSummary": {
     "topComplaints": [{ "label": "<kısa şikayet başlığı>", "pct": <0-100 arası tahmini yüzde> }],
-    "roadmap": ["<öncelik sırasına göre 3 aksiyon önerisi>"]
+    "roadmap": ["<öncelik sırasına göre 3-4 aksiyon önerisi>"]
   }
 }
 
+Kategori rehberi (ekran görüntüsü verildiyse hepsini değerlendirmeye çalış):
+- onboarding: ilk kullanım akışının uzunluğu/karmaşıklığı
+- cta: birincil aksiyon butonlarının görünürlüğü ve netliği
+- contrast: metin/arka plan renk kontrastı (WCAG mantığıyla)
+- typography: başlık/gövde/etiket hiyerarşisinin netliği
+- accessibility: dokunma alanı boyutları, okunabilirlik
+- permissions: istenen izinlerin sayısı ve zamanlaması (varsa)
+- conversion: ödeme/kayıt gibi kritik akışlarda sürtünme noktaları
+- navigation: alt/üst navigasyonun netliği, kullanıcının kaybolma riski
+- empty_states: boş/hata durumlarının kullanıcıya yol gösterip göstermediği
+- consistency: ekranlar arası görsel tutarlılık (boşluk, ikon stili, renk kullanımı)
+- loading: yükleme/bekleme anlarında geri bildirim olup olmadığı
+- copy: buton ve yönlendirme metinlerinin netliği/tutarlılığı
+- trust: güven sinyalleri (değerlendirme, güvenlik rozeti, sosyal kanıt) varlığı
+
 Kurallar:
-- Ekran görüntüsü verilmediyse görsel kategoriler (cta, contrast, typography, accessibility) hakkında tahmin YAPMA, findings listesine ekleme.
+- Ekran görüntüsü verilmediyse görsel kategoriler hakkında tahmin YAPMA, findings listesine ekleme.
 - Yorum verisi verilmediyse reviewSummary alanını null yap.
-- En az 3, en fazla 7 finding döndür.
-- Skorları abartma; gerçekten gördüğün sorunlara göre dürüst bir değerlendirme yap.`;
+- En az 5, en fazla 11 finding döndür — verilen görsel sayısına göre gerçekçi ol, uydurma detay ekleme.
+- Skorları abartma; gerçekten gördüğün sorunlara göre dürüst bir değerlendirme yap.
+- Aynı ekran görüntüsünden birden fazla farklı kategori bulgusu çıkarabilirsin.`;
 
 async function callGeminiModel(model, parts) {
   const res = await fetch(
@@ -80,13 +139,14 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 async function analyzeWithGemini({ images, reviews }) {
   const parts = [{ text: SCHEMA_INSTRUCTIONS }];
 
-  for (const img of images) {
+  images.forEach((img, i) => {
+    parts.push({ text: `Ekran görüntüsü #${i + 1}:` });
     parts.push({ inline_data: { mime_type: img.mediaType, data: img.base64 } });
-  }
+  });
 
   if (reviews?.length) {
     const reviewText = reviews
-      .map((r) => `[${r.rating}★] ${r.title}: ${r.content}`)
+      .map((r) => `[${r.rating}★${r.version ? ` v${r.version}` : ""}] ${r.title}: ${r.content}`)
       .join("\n---\n")
       .slice(0, 12000);
     parts.push({ text: `Kullanıcı yorumları (App Store):\n${reviewText}` });
@@ -174,12 +234,16 @@ export async function POST(req) {
     const result = await analyzeWithGemini({ images, reviews });
 
     if (reviews?.length && result.reviewSummary) {
-      const avgRating =
-        reviews.reduce((sum, r) => sum + (r.rating || 0), 0) / reviews.length;
+      const avgRating = reviews.reduce((sum, r) => sum + (r.rating || 0), 0) / reviews.length;
+      const analytics = computeReviewAnalytics(reviews);
+
       result.reviewSummary.totalReviews = reviews.length;
       result.reviewSummary.avgRating = Math.round(avgRating * 10) / 10;
       result.reviewSummary.sampleNote =
         "En son " + reviews.length + " yorum örneklendi (Apple RSS feed limiti)";
+      result.reviewSummary.ratingDistribution = analytics.ratingDistribution;
+      result.reviewSummary.mostHelpfulNegative = analytics.mostHelpfulNegative;
+      result.reviewSummary.versionTrend = analytics.versionTrend;
     }
 
     return Response.json(result);

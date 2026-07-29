@@ -22,6 +22,12 @@ import {
   Lightbulb,
   Download,
   History,
+  Compass,
+  Inbox,
+  LayoutGrid,
+  Loader2,
+  AlignLeft,
+  BadgeCheck,
 } from "lucide-react";
 
 // ---------------------------------------------------------------------------
@@ -172,6 +178,7 @@ function FindingRow({ f }) {
       <div className="finding-row-top">
         <Icon size={15} strokeWidth={2} color="var(--muted)" />
         <span className="finding-title">{f.title}</span>
+        {f.screenshotIndex && <span className="finding-shot-ref">Ekran #{f.screenshotIndex}</span>}
         <span className="finding-status" style={{ color: meta.color }}>
           <StatusIcon size={13} strokeWidth={2.2} />
           {meta.label}
@@ -200,6 +207,19 @@ function ComplaintBar({ label, pct }) {
   );
 }
 
+function RatingBar({ star, count, total }) {
+  const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+  return (
+    <div className="complaint-row">
+      <span className="complaint-label" style={{ width: 42 }}>{star}★</span>
+      <div className="complaint-track">
+        <div className="complaint-fill" style={{ width: `${pct}%`, background: star >= 4 ? "var(--teal)" : star === 3 ? "var(--yellow)" : "var(--kick)" }} />
+      </div>
+      <span className="complaint-pct">{count}</span>
+    </div>
+  );
+}
+
 const ICON_MAP = {
   onboarding: Layers,
   cta: MousePointerClick,
@@ -208,6 +228,12 @@ const ICON_MAP = {
   accessibility: Accessibility,
   permissions: ShieldAlert,
   conversion: TrendingDown,
+  navigation: Compass,
+  empty_states: Inbox,
+  consistency: LayoutGrid,
+  loading: Loader2,
+  copy: AlignLeft,
+  trust: BadgeCheck,
 };
 
 function HistorySparkline({ points, width = 560, height = 90 }) {
@@ -411,6 +437,10 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .finding-row-top { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
         .finding-title { font-size: 13.5px; font-weight: 600; flex: 1; }
         .finding-status { display: flex; align-items: center; gap: 4px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.04em; }
+        .finding-shot-ref {
+          font-family: var(--font-mono); font-size: 10px; color: var(--muted);
+          background: var(--ink-3); padding: 2px 7px; border-radius: 999px;
+        }
         .finding-text { font-size: 13px; color: var(--muted); line-height: 1.5; margin: 0 0 0 23px; }
         .finding-suggestion {
           display: flex; align-items: flex-start; gap: 8px;
@@ -434,6 +464,29 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .complaint-track { flex: 1; height: 6px; background: var(--ink-3); border-radius: 3px; overflow: hidden; }
         .complaint-fill { height: 100%; background: var(--kick); border-radius: 3px; }
         .complaint-pct { font-family: var(--font-mono); font-size: 12px; color: var(--muted); width: 34px; text-align: right; }
+
+        .review-subtitle {
+          font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em;
+          color: var(--muted); margin: 16px 0 8px;
+        }
+
+        .helpful-negative {
+          margin-top: 16px; background: var(--ink-3); border-radius: 8px; padding: 12px 14px;
+        }
+        .helpful-negative-label {
+          font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 6px;
+        }
+        .helpful-negative-stars { color: var(--yellow); font-size: 13px; margin-bottom: 6px; }
+        .helpful-negative-text { font-size: 12.5px; color: var(--chalk); line-height: 1.5; margin: 0; }
+
+        .version-trend { margin-top: 16px; }
+        .version-trend-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .version-chip {
+          display: flex; align-items: center; gap: 6px; background: var(--ink-3);
+          border-radius: 999px; padding: 5px 11px;
+        }
+        .version-chip-num { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+        .version-chip-avg { font-family: var(--font-mono); font-size: 12px; font-weight: 700; }
 
         .roadmap-list { display: flex; flex-direction: column; gap: 10px; }
         .roadmap-item { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; }
@@ -536,6 +589,51 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
               {reviewSummary.topComplaints.map((c) => (
                 <ComplaintBar key={c.label} label={c.label} pct={c.pct} />
               ))}
+
+              {reviewSummary.ratingDistribution && (
+                <>
+                  <div className="review-subtitle">YILDIZ DAĞILIMI</div>
+                  {reviewSummary.ratingDistribution
+                    .slice()
+                    .reverse()
+                    .map((r) => (
+                      <RatingBar key={r.star} star={r.star} count={r.count} total={reviewSummary.totalReviews} />
+                    ))}
+                </>
+              )}
+
+              {reviewSummary.mostHelpfulNegative && (
+                <div className="helpful-negative">
+                  <div className="helpful-negative-label">EN ÇOK OY ALAN OLUMSUZ YORUM</div>
+                  <div className="helpful-negative-stars">{"★".repeat(reviewSummary.mostHelpfulNegative.rating)}{"☆".repeat(5 - reviewSummary.mostHelpfulNegative.rating)}</div>
+                  <p className="helpful-negative-text">
+                    {(reviewSummary.mostHelpfulNegative.content || "").slice(0, 220)}
+                    {(reviewSummary.mostHelpfulNegative.content || "").length > 220 ? "…" : ""}
+                  </p>
+                </div>
+              )}
+
+              {reviewSummary.versionTrend && reviewSummary.versionTrend.length >= 2 && (
+                <div className="version-trend">
+                  <div className="helpful-negative-label">SÜRÜME GÖRE PUAN TRENDİ</div>
+                  <div className="version-trend-row">
+                    {reviewSummary.versionTrend
+                      .slice()
+                      .reverse()
+                      .map((v) => (
+                        <div className="version-chip" key={v.version}>
+                          <span className="version-chip-num">v{v.version}</span>
+                          <span
+                            className="version-chip-avg"
+                            style={{ color: v.avg >= 4 ? "var(--teal)" : v.avg >= 2.5 ? "var(--yellow)" : "var(--kick)" }}
+                          >
+                            {v.avg.toFixed(1)}★
+                          </span>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              )}
             </div>
             <div>
               <div className="panel-title" style={{ marginBottom: 10 }}>
