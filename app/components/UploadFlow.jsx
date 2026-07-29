@@ -6,6 +6,7 @@ import { UploadCloud, Link2, Sparkles, X, Loader2 } from "lucide-react";
 export default function UploadFlow({ onAnalyze, analyzing, errorMessage }) {
   const [files, setFiles] = useState([]);
   const [storeUrl, setStoreUrl] = useState("");
+  const [appName, setAppName] = useState("");
   const [dragActive, setDragActive] = useState(false);
 
   const addFiles = useCallback((fileList) => {
@@ -23,11 +24,12 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage }) {
     setFiles((prev) => prev.filter((_, i) => i !== idx));
   };
 
-  const canAnalyze = (files.length > 0 || storeUrl.trim().length > 0) && !analyzing;
+  const canAnalyze =
+    appName.trim().length > 0 && (files.length > 0 || storeUrl.trim().length > 0) && !analyzing;
 
   const handleAnalyze = () => {
     if (!canAnalyze) return;
-    onAnalyze(files, storeUrl.trim());
+    onAnalyze(files, storeUrl.trim(), appName.trim());
   };
 
   return (
@@ -176,6 +178,21 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage }) {
       </div>
 
       <div className="upload-card">
+        <div>
+          <div className="field-label">UYGULAMA ADI</div>
+          <div className="url-input-wrap">
+            <input
+              type="text"
+              placeholder="Örn. PulseFit"
+              value={appName}
+              onChange={(e) => setAppName(e.target.value)}
+            />
+          </div>
+          <div className="dropzone-hint" style={{ marginTop: 6 }}>
+            Bu adı geçmiş analizleri ve skor trendini takip etmek için kullanacağız — her seferinde aynı adı kullan.
+          </div>
+        </div>
+
         <div>
           <div className="field-label">EKRAN GÖRÜNTÜLERİ</div>
           <label

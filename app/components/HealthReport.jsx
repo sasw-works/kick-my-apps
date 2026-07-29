@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useState } from "react";
 import Link from "next/link";
 import {
   UploadCloud,
@@ -21,6 +21,7 @@ import {
   AlertTriangle,
   XCircle,
   Lightbulb,
+  Download,
 } from "lucide-react";
 
 // ---------------------------------------------------------------------------
@@ -211,12 +212,99 @@ const ICON_MAP = {
   conversion: TrendingDown,
 };
 
+function HistorySparkline({ points, width = 560, height = 90 }) {
+  if (points.length < 2) return null;
+  const max = 100;
+  const min = 0;
+  const stepX = width / (points.length - 1);
+  const coords = points.map((p, i) => {
+    const x = i * stepX;
+    const y = height - ((p.health_score - min) / (max - min)) * height;
+    return [x, y];
+  });
+  const path = coords.map(([x, y], i) => `${i === 0 ? "M" : "L"} ${x} ${y}`).join(" ");
+  const last = points[points.length - 1];
+  const lastColor = last.health_score >= 75 ? "var(--teal)" : last.health_score >= 50 ? "var(--yellow)" : "var(--kick)";
+
+  return (
+    <svg width={width} height={height + 24} viewBox={`0 0 ${width} ${height + 24}`}>
+      <path d={path} stroke="var(--muted)" strokeWidth={2} fill="none" opacity={0.7} />
+      {coords.map(([x, y], i) => (
+        <circle key={i} cx={x} cy={y} r={3.5} fill={i === coords.length - 1 ? lastColor : "var(--ink-3)"} stroke="var(--muted)" strokeWidth={1} />
+      ))}
+    </svg>
+  );
+}
+
+function HistoryPanel({ history }) {
+  if (!history || history.length === 0) return null;
+
+  const first = history[0];
+  const last = history[history.length - 1];
+  const delta = last.health_score - first.health_score;
+
+  return (
+    <div className="panel">
+      <div className="panel-title">GEÇMİŞ &amp; TREND · {history.length} tarama</div>
+      {history.length >= 2 ? (
+        <>
+          <HistorySparkline points={history} />
+          <div style={{ fontSize: 12.5, color: "var(--muted)", marginTop: 4 }}>
+            İlk taramadan bu yana{" "}
+            <span style={{ color: delta >= 0 ? "var(--teal)" : "var(--kick)", fontWeight: 700 }}>
+              {delta >= 0 ? "+" : ""}
+              {delta}
+            </span>{" "}
+            puan değişim
+          </div>
+        </>
+      ) : (
+        <div style={{ fontSize: 13, color: "var(--muted)" }}>
+          Bu ilk tarama — bir sonraki taramadan sonra burada trend göreceksin.
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
 
-export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", onReset }) {
+export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", onReset, history = [] }) {
   const usingRealData = Boolean(data);
+  const reportRef = useRef(null);
+  const [exporting, setExporting] = useState(false);
+
+  const handleExportPdf = async () => {
+    if (!reportRef.current) return;
+    setExporting(true);
+    try {
+      const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
+        import("html2canvas"),
+        import("jspdf"),
+      ]);
+
+      const canvas = await html2canvas(reportRef.current, {
+        backgroundColor: "#14151a",
+        scale: 2,
+        ignoreElements: (el) => el.classList?.contains("no-print"),
+      });
+      const imgData = canvas.toDataURL("image/png");
+
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "px",
+        format: [canvas.width, canvas.height],
+      });
+      pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+      pdf.save(`${appLabel || "kick-my-apps"}-saglik-raporu.pdf`);
+    } catch (err) {
+      console.error("PDF export failed", err);
+    } finally {
+      setExporting(false);
+    }
+  };
 
   const healthScore = usingRealData ? data.healthScore : HEALTH_SCORE;
   const findings = usingRealData
@@ -229,7 +317,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
   const goodCount = findings.filter((f) => f.status === "good").length;
 
   return (
-    <div className="kma-root">
+    <div className="kma-root" ref={reportRef}>
       <style>{`
         .kma-root {
           --ink: #14151a;
@@ -277,7 +365,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           border-radius: 12px;
           padding: 20px 22px;
           display: grid;
-          grid-template-columns: 1fr 1fr auto;
+          grid-template-columns: 1fr 1fr auto auto;
           gap: 16px;
           align-items: center;
         }
@@ -356,7 +444,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
       </div>
 
       <div className="kma-main">
-        <div className="upload-panel">
+        <div className="upload-panel no-print">
           <div className="upload-slot">
             <UploadCloud size={18} color="var(--yellow)" />
             <span>Analiz {usingRealData ? "tamamlandı" : "örnek veriyle gösteriliyor"}</span>
@@ -365,6 +453,10 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
             <Link2 size={18} color="var(--yellow)" />
             <span>{reviewSummary ? `${reviewSummary.totalReviews} yorum incelendi` : "Yorum verisi yok"}</span>
           </div>
+          <button className="analyze-btn" onClick={handleExportPdf} disabled={exporting} style={{ opacity: exporting ? 0.6 : 1 }}>
+            <Download size={16} strokeWidth={2.3} />
+            {exporting ? "Hazırlanıyor…" : "PDF İndir"}
+          </button>
           <button className="analyze-btn" onClick={onReset}>
             <Sparkles size={16} strokeWidth={2.3} />
             {onReset ? (
@@ -396,6 +488,8 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
             </div>
           </div>
         </div>
+
+        <HistoryPanel history={history} />
 
         <div>
           <div className="panel-title" style={{ marginBottom: 14 }}>BULGULAR</div>
