@@ -69,7 +69,7 @@ async function analyzeWithGemini({ images, reviews }) {
     parts.push({ text: `Kullanıcı yorumları (App Store):\n${reviewText}` });
   }
 
-  const model = "gemini-2.5-flash";
+  const model = "gemini-3.6-flash";
   const res = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
     {
