@@ -1,13 +1,17 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
-import { UploadCloud, Link2, Sparkles, X, Loader2 } from "lucide-react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
+import { UploadCloud, Search, Check, Loader2, X, Sparkles } from "lucide-react";
 
 export default function UploadFlow({ onAnalyze, analyzing, errorMessage }) {
   const [files, setFiles] = useState([]);
-  const [storeUrl, setStoreUrl] = useState("");
-  const [appName, setAppName] = useState("");
+  const [query, setQuery] = useState("");
+  const [selectedApp, setSelectedApp] = useState(null); // { name, storeUrl, icon, developer }
+  const [suggestions, setSuggestions] = useState([]);
+  const [searching, setSearching] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
   const [dragActive, setDragActive] = useState(false);
+  const debounceRef = useRef(null);
 
   const addFiles = useCallback((fileList) => {
     const incoming = Array.from(fileList).filter((f) => f.type.startsWith("image/"));
@@ -24,12 +28,61 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage }) {
     setFiles((prev) => prev.filter((_, i) => i !== idx));
   };
 
-  const canAnalyze =
-    appName.trim().length > 0 && (files.length > 0 || storeUrl.trim().length > 0) && !analyzing;
+  // Yazarken 3+ karakterden sonra, kısa bir gecikmeyle öneri ara.
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+
+    if (selectedApp && query === selectedApp.name) {
+      setSuggestions([]);
+      setShowDropdown(false);
+      return;
+    }
+
+    if (query.trim().length < 3) {
+      setSuggestions([]);
+      setShowDropdown(false);
+      return;
+    }
+
+    debounceRef.current = setTimeout(async () => {
+      setSearching(true);
+      try {
+        const res = await fetch(`/api/search-app?term=${encodeURIComponent(query.trim())}`);
+        const data = await res.json();
+        setSuggestions(data.results || []);
+        setShowDropdown(true);
+      } catch {
+        setSuggestions([]);
+      } finally {
+        setSearching(false);
+      }
+    }, 350);
+
+    return () => clearTimeout(debounceRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query]);
+
+  const handleSelect = (app) => {
+    setSelectedApp(app);
+    setQuery(app.name);
+    setSuggestions([]);
+    setShowDropdown(false);
+  };
+
+  const handleQueryChange = (val) => {
+    setQuery(val);
+    if (selectedApp && val !== selectedApp.name) {
+      setSelectedApp(null); // önceki seçim artık geçerli değil
+    }
+  };
+
+  const canAnalyze = query.trim().length > 0 && (files.length > 0 || selectedApp) && !analyzing;
 
   const handleAnalyze = () => {
     if (!canAnalyze) return;
-    onAnalyze(files, storeUrl.trim(), appName.trim());
+    const appName = selectedApp ? selectedApp.name : query.trim();
+    const storeUrl = selectedApp ? selectedApp.storeUrl : "";
+    onAnalyze(files, storeUrl, appName);
   };
 
   return (
@@ -146,6 +199,57 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage }) {
         }
         .url-input-wrap input::placeholder { color: var(--muted); }
 
+        .suggestion-dropdown {
+          position: absolute;
+          top: calc(100% + 4px);
+          left: 0;
+          right: 0;
+          background: var(--ink-2);
+          border: 1px solid var(--ink-3);
+          border-radius: 10px;
+          overflow: hidden;
+          z-index: 20;
+          box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+        .suggestion-row {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 9px 12px;
+          background: transparent;
+          border: none;
+          border-bottom: 1px solid var(--ink-3);
+          cursor: pointer;
+          text-align: left;
+        }
+        .suggestion-row:last-child { border-bottom: none; }
+        .suggestion-row:hover { background: var(--ink-3); }
+        .suggestion-icon {
+          width: 32px;
+          height: 32px;
+          border-radius: 7px;
+          background: var(--ink-3);
+          flex-shrink: 0;
+          object-fit: cover;
+        }
+        .suggestion-text { min-width: 0; }
+        .suggestion-name {
+          font-size: 13px;
+          color: var(--chalk);
+          font-weight: 600;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .suggestion-dev {
+          font-size: 11.5px;
+          color: var(--muted);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
         .analyze-btn {
           display: flex;
           align-items: center;
@@ -172,24 +276,55 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage }) {
       <div className="upload-hero">
         <div className="upload-logo">KICK MY APPS<span>.</span></div>
         <p className="upload-sub">
-          Ekran görüntülerini yükle veya App Store / Play Store linkini yapıştır — AI, uygulamanın
-          UX sağlığını ve mağaza yorumlarını analiz edip sana bir rapor çıkarsın.
+          Uygulama adını yaz, App Store'dan seç — ekran görüntülerini de eklersen AI, UX sağlığını
+          ve mağaza yorumlarını analiz edip sana bir rapor çıkarsın.
         </p>
       </div>
 
       <div className="upload-card">
-        <div>
-          <div className="field-label">UYGULAMA ADI</div>
+        <div style={{ position: "relative" }}>
+          <div className="field-label">UYGULAMA ARA</div>
           <div className="url-input-wrap">
+            <Search size={16} color="var(--muted)" />
             <input
               type="text"
-              placeholder="Örn. PulseFit"
-              value={appName}
-              onChange={(e) => setAppName(e.target.value)}
+              placeholder="Uygulama adı yaz (örn. PulseFit)"
+              value={query}
+              onChange={(e) => handleQueryChange(e.target.value)}
+              onFocus={() => suggestions.length > 0 && setShowDropdown(true)}
+              onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
             />
+            {searching && <Loader2 size={15} className="spin" color="var(--muted)" />}
+            {selectedApp && !searching && <Check size={16} color="var(--teal)" />}
           </div>
+
+          {showDropdown && suggestions.length > 0 && (
+            <div className="suggestion-dropdown">
+              {suggestions.map((app) => (
+                <button
+                  key={app.trackId}
+                  className="suggestion-row"
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => handleSelect(app)}
+                >
+                  {app.icon ? (
+                    <img src={app.icon} alt="" className="suggestion-icon" />
+                  ) : (
+                    <div className="suggestion-icon" />
+                  )}
+                  <div className="suggestion-text">
+                    <div className="suggestion-name">{app.name}</div>
+                    <div className="suggestion-dev">{app.developer}</div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+
           <div className="dropzone-hint" style={{ marginTop: 6 }}>
-            Bu adı geçmiş analizleri ve skor trendini takip etmek için kullanacağız — her seferinde aynı adı kullan.
+            {selectedApp
+              ? "App Store'dan eşleşti — yorumlar da analize dahil edilecek."
+              : "Listeden seçmezsen sadece ekran görüntüsü analizi yapılır, yorum verisi olmaz."}
           </div>
         </div>
 
@@ -235,19 +370,6 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage }) {
               ))}
             </div>
           )}
-        </div>
-
-        <div>
-          <div className="field-label">APP STORE / PLAY STORE LİNKİ</div>
-          <div className="url-input-wrap">
-            <Link2 size={16} color="var(--muted)" />
-            <input
-              type="url"
-              placeholder="https://apps.apple.com/app/..."
-              value={storeUrl}
-              onChange={(e) => setStoreUrl(e.target.value)}
-            />
-          </div>
         </div>
 
         <button className="analyze-btn" disabled={!canAnalyze} onClick={handleAnalyze}>
