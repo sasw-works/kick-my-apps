@@ -14,9 +14,16 @@ export default function Header() {
           z-index: 50;
           display: flex;
           justify-content: center;
-          padding: 16px 20px 0;
-          background: linear-gradient(to bottom, var(--ink) 60%, transparent);
+          padding: 16px 20px 60px;
+          margin-bottom: -60px;
+          pointer-events: none;
+          background: linear-gradient(to bottom, var(--ink) 35%, transparent 100%);
+          -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+          -webkit-mask-image: linear-gradient(to bottom, black 0%, black 40%, transparent 100%);
+          mask-image: linear-gradient(to bottom, black 0%, black 40%, transparent 100%);
         }
+        .kma-header-pill { pointer-events: auto; }
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
         .kma-header-pill {

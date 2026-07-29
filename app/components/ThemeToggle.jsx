@@ -39,9 +39,9 @@ export default function ThemeToggle() {
         }
       `}</style>
       {theme === "dark" ? (
-        <Sun size={25} color="var(--muted)" strokeWidth={2} />
+        <Sun size={25} color="var(--muted)" strokeWidth={1.2} />
       ) : (
-        <Moon size={25} color="var(--muted)" strokeWidth={2} />
+        <Moon size={25} color="var(--muted)" strokeWidth={1.2} />
       )}
     </button>
   );
