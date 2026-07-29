@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import {
   UploadCloud,
@@ -201,12 +201,32 @@ function ComplaintBar({ label, pct }) {
   );
 }
 
+const ICON_MAP = {
+  onboarding: Layers,
+  cta: MousePointerClick,
+  contrast: Palette,
+  typography: Type,
+  accessibility: Accessibility,
+  permissions: ShieldAlert,
+  conversion: TrendingDown,
+};
+
 // ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
 
-export default function KickMyAppsHealthReport() {
-  const [uploaded, setUploaded] = useState(true); // mock: pretend a scan already ran
+export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", onReset }) {
+  const usingRealData = Boolean(data);
+
+  const healthScore = usingRealData ? data.healthScore : HEALTH_SCORE;
+  const findings = usingRealData
+    ? (data.findings || []).map((f) => ({ ...f, icon: ICON_MAP[f.key] || Sparkles }))
+    : FINDINGS;
+  const reviewSummary = usingRealData ? data.reviewSummary : REVIEW_STATS;
+
+  const badCount = findings.filter((f) => f.status === "bad").length;
+  const warnCount = findings.filter((f) => f.status === "warn").length;
+  const goodCount = findings.filter((f) => f.status === "good").length;
 
   return (
     <div className="kma-root">
@@ -330,7 +350,7 @@ export default function KickMyAppsHealthReport() {
       <div className="kma-header">
         <div className="kma-logo">KICK MY APPS<span className="dot">.</span></div>
         <div className="app-picker">
-          PulseFit
+          {appLabel}
           <ChevronDown size={14} />
         </div>
       </div>
@@ -339,32 +359,40 @@ export default function KickMyAppsHealthReport() {
         <div className="upload-panel">
           <div className="upload-slot">
             <UploadCloud size={18} color="var(--yellow)" />
-            <span><strong>8 ekran görüntüsü</strong> yüklendi</span>
+            <span>Analiz {usingRealData ? "tamamlandı" : "örnek veriyle gösteriliyor"}</span>
           </div>
           <div className="upload-slot">
             <Link2 size={18} color="var(--yellow)" />
-            <span><strong>apps.apple.com/pulsefit</strong> bağlandı</span>
+            <span>{reviewSummary ? `${reviewSummary.totalReviews} yorum incelendi` : "Yorum verisi yok"}</span>
           </div>
-          <button className="analyze-btn">
+          <button className="analyze-btn" onClick={onReset}>
             <Sparkles size={16} strokeWidth={2.3} />
-            <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>
-              Yeni Analiz
-            </Link>
+            {onReset ? (
+              "Yeni Analiz"
+            ) : (
+              <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>
+                Yeni Analiz
+              </Link>
+            )}
           </button>
         </div>
 
         <div className="top-grid">
           <div className="panel dial-panel">
-            <HealthDial score={HEALTH_SCORE} />
-            <div className="dial-caption">7 bulgudan 2'si kritik, 3'ü dikkat gerektiriyor</div>
+            <HealthDial score={healthScore} />
+            <div className="dial-caption">
+              {findings.length} bulgudan {badCount} kritik, {warnCount} dikkat gerektiriyor
+            </div>
           </div>
           <div className="panel">
             <div className="panel-title">ÖZET</div>
             <div className="summary-list">
-              <div className="summary-row"><span className="summary-count" style={{ color: "var(--kick)" }}>2</span> Kritik seviyede sorun (CTA kontrastı, dönüşüm riski)</div>
-              <div className="summary-row"><span className="summary-count" style={{ color: "var(--yellow)" }}>3</span> Dikkat gerektiren bulgu (onboarding, erişilebilirlik, izinler)</div>
-              <div className="summary-row"><span className="summary-count" style={{ color: "var(--teal)" }}>1</span> Sorunsuz alan (font hiyerarşisi)</div>
-              <div className="summary-row"><span className="summary-count" style={{ color: "var(--chalk)" }}>1,240</span> App Store yorumu ayrıca analiz edildi</div>
+              <div className="summary-row"><span className="summary-count" style={{ color: "var(--kick)" }}>{badCount}</span> Kritik seviyede sorun</div>
+              <div className="summary-row"><span className="summary-count" style={{ color: "var(--yellow)" }}>{warnCount}</span> Dikkat gerektiren bulgu</div>
+              <div className="summary-row"><span className="summary-count" style={{ color: "var(--teal)" }}>{goodCount}</span> Sorunsuz alan</div>
+              {reviewSummary && (
+                <div className="summary-row"><span className="summary-count" style={{ color: "var(--chalk)" }}>{reviewSummary.totalReviews}</span> App Store yorumu ayrıca analiz edildi</div>
+              )}
             </div>
           </div>
         </div>
@@ -372,21 +400,22 @@ export default function KickMyAppsHealthReport() {
         <div>
           <div className="panel-title" style={{ marginBottom: 14 }}>BULGULAR</div>
           <div className="finding-grid">
-            {FINDINGS.map((f) => (
+            {findings.map((f) => (
               <FindingCard key={f.key} f={f} />
             ))}
           </div>
         </div>
 
+        {reviewSummary && (
         <div className="panel">
           <div className="panel-title">APP STORE YORUM ANALİZİ</div>
           <div className="review-grid">
             <div>
               <div className="review-meta">
-                <span className="review-count">{REVIEW_STATS.totalReviews.toLocaleString("tr-TR")}</span>
-                <span className="review-rating">★ {REVIEW_STATS.avgRating} ortalama</span>
+                <span className="review-count">{reviewSummary.totalReviews.toLocaleString("tr-TR")}</span>
+                <span className="review-rating">★ {reviewSummary.avgRating} ortalama</span>
               </div>
-              {REVIEW_STATS.topComplaints.map((c) => (
+              {reviewSummary.topComplaints.map((c) => (
                 <ComplaintBar key={c.label} label={c.label} pct={c.pct} />
               ))}
             </div>
@@ -396,7 +425,7 @@ export default function KickMyAppsHealthReport() {
                 ÖNERİLEN ROADMAP
               </div>
               <div className="roadmap-list">
-                {REVIEW_STATS.roadmap.map((item, i) => (
+                {reviewSummary.roadmap.map((item, i) => (
                   <div className="roadmap-item" key={i}>
                     <span className="roadmap-num">{i + 1}</span>
                     <span>{item}</span>
@@ -406,6 +435,7 @@ export default function KickMyAppsHealthReport() {
             </div>
           </div>
         </div>
+        )}
 
         <div>
           <div className="panel-title" style={{ marginBottom: 14 }}>YAKINDA</div>

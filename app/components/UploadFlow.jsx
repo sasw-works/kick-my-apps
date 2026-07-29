@@ -1,15 +1,12 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import { useRouter } from "next/navigation";
-import { UploadCloud, Link2, Sparkles, X, ImageIcon, Loader2 } from "lucide-react";
+import { UploadCloud, Link2, Sparkles, X, Loader2 } from "lucide-react";
 
-export default function UploadFlow() {
-  const router = useRouter();
+export default function UploadFlow({ onAnalyze, analyzing, errorMessage }) {
   const [files, setFiles] = useState([]);
   const [storeUrl, setStoreUrl] = useState("");
   const [dragActive, setDragActive] = useState(false);
-  const [analyzing, setAnalyzing] = useState(false);
 
   const addFiles = useCallback((fileList) => {
     const incoming = Array.from(fileList).filter((f) => f.type.startsWith("image/"));
@@ -30,12 +27,7 @@ export default function UploadFlow() {
 
   const handleAnalyze = () => {
     if (!canAnalyze) return;
-    setAnalyzing(true);
-    // NOTE: gerçek AI analizi henüz bağlı değil — bir sonraki adımda
-    // bu kısım /api/analyze uç noktasına gerçek bir istek atacak.
-    setTimeout(() => {
-      router.push("/report");
-    }, 1400);
+    onAnalyze(files, storeUrl.trim());
   };
 
   return (
@@ -254,6 +246,9 @@ export default function UploadFlow() {
             </>
           )}
         </button>
+        {errorMessage && (
+          <div style={{ color: "var(--kick)", fontSize: 13, textAlign: "center" }}>{errorMessage}</div>
+        )}
       </div>
     </div>
   );
