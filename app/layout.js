@@ -1,4 +1,3 @@
-import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 
 export const metadata = {
@@ -8,10 +7,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider>
-      <html lang="tr" className="h-full antialiased">
-        <body className="min-h-full flex flex-col">{children}</body>
-      </html>
-    </ClerkProvider>
+    <html lang="tr" className="h-full antialiased">
+      <body className="min-h-full flex flex-col">{children}</body>
+    </html>
   );
 }

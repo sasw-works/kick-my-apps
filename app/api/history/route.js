@@ -1,5 +1,4 @@
 import { sql } from "@vercel/postgres";
-import { auth } from "@clerk/nextjs/server";
 
 export const runtime = "nodejs";
 
@@ -7,7 +6,6 @@ async function ensureTable() {
   await sql`
     CREATE TABLE IF NOT EXISTS scans (
       id SERIAL PRIMARY KEY,
-      user_id TEXT NOT NULL,
       app_name TEXT NOT NULL,
       health_score INTEGER NOT NULL,
       bad_count INTEGER DEFAULT 0,
@@ -20,11 +18,6 @@ async function ensureTable() {
 
 export async function POST(req) {
   try {
-    const { userId } = await auth();
-    if (!userId) {
-      return Response.json({ error: "Giriş yapmalısın." }, { status: 401 });
-    }
-
     await ensureTable();
     const { appName, healthScore, badCount, warnCount, goodCount } = await req.json();
 
@@ -35,8 +28,8 @@ export async function POST(req) {
     const normalized = appName.trim();
 
     await sql`
-      INSERT INTO scans (user_id, app_name, health_score, bad_count, warn_count, good_count)
-      VALUES (${userId}, ${normalized}, ${healthScore}, ${badCount ?? 0}, ${warnCount ?? 0}, ${goodCount ?? 0});
+      INSERT INTO scans (app_name, health_score, bad_count, warn_count, good_count)
+      VALUES (${normalized}, ${healthScore}, ${badCount ?? 0}, ${warnCount ?? 0}, ${goodCount ?? 0});
     `;
 
     return Response.json({ ok: true });
@@ -48,11 +41,6 @@ export async function POST(req) {
 
 export async function GET(req) {
   try {
-    const { userId } = await auth();
-    if (!userId) {
-      return Response.json({ error: "Giriş yapmalısın." }, { status: 401 });
-    }
-
     await ensureTable();
     const { searchParams } = new URL(req.url);
     const appName = (searchParams.get("appName") || "").trim();
@@ -64,7 +52,7 @@ export async function GET(req) {
     const { rows } = await sql`
       SELECT health_score, bad_count, warn_count, good_count, created_at
       FROM scans
-      WHERE user_id = ${userId} AND app_name = ${appName}
+      WHERE app_name = ${appName}
       ORDER BY created_at ASC
       LIMIT 20;
     `;
