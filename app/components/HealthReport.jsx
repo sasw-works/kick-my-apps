@@ -359,6 +359,7 @@ const LENS_MAP = {
 };
 
 const LENS_ORDER = ["UI", "UX", "Erişilebilirlik", "Ürün"];
+const LENS_ICON = { UI: Palette, UX: Compass, Erişilebilirlik: Accessibility, Ürün: TrendingDown };
 
 // Hızlı Kazanımlar (Impact × Effort) için efor tahmini — kaba ama tutarlı bir sezgisel.
 const EFFORT_MAP = {
@@ -601,6 +602,17 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .qw-suggestion { font-size: 12.5px; color: var(--muted); margin: 0; line-height: 1.5; }
 
         .finding-list { display: flex; flex-direction: column; gap: 10px; }
+        .lens-group { margin-bottom: 22px; }
+        .lens-group:last-child { margin-bottom: 0; }
+        .lens-group-header {
+          display: flex; align-items: center; gap: 8px;
+          font-size: 12.5px; font-weight: 700; letter-spacing: 0.02em;
+          color: var(--chalk); margin-bottom: 10px;
+        }
+        .lens-group-count {
+          font-family: var(--font-mono); font-size: 10.5px; color: var(--muted);
+          background: var(--ink-3); padding: 1px 7px; border-radius: 999px; margin-left: 2px;
+        }
         .finding-row {
           background: var(--ink-2);
           border: 1px solid var(--ink-3);
@@ -800,11 +812,24 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         <div>
           <div className="panel-title" style={{ marginBottom: 14 }}>BULGULAR</div>
-          <div className="finding-list">
-            {findings.map((f) => (
-              <FindingRow key={f.key} f={f} />
-            ))}
-          </div>
+          {LENS_ORDER.filter((lens) => findings.some((f) => LENS_MAP[f.key] === lens)).map((lens) => {
+            const items = findings.filter((f) => LENS_MAP[f.key] === lens);
+            const LensIcon = LENS_ICON[lens];
+            return (
+              <div key={lens} className="lens-group">
+                <div className="lens-group-header">
+                  <LensIcon size={14} strokeWidth={2.2} color="var(--muted)" />
+                  {lens}
+                  <span className="lens-group-count">{items.length}</span>
+                </div>
+                <div className="finding-list">
+                  {items.map((f) => (
+                    <FindingRow key={f.key} f={f} />
+                  ))}
+                </div>
+              </div>
+            );
+          })}
         </div>
 
         {quickWins.length > 0 && (
