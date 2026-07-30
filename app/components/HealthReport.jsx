@@ -127,42 +127,86 @@ const STATUS_META = {
 const HEALTH_SCORE = 58;
 
 // ---------------------------------------------------------------------------
-// Health Dial — same signature gauge, now reads as overall AI Health Score
+// Health Dial — full-circle radial tick gauge (Stripe-dashboard-style), reads as
+// overall AI Health Score. Ticks are colored along a fixed red→yellow→teal scale;
+// ticks beyond the current score fade to gray.
 // ---------------------------------------------------------------------------
 
-function HealthDial({ score = 58, size = 220 }) {
-  const angle = -90 + (score / 100) * 180;
-  const rad = (deg) => (deg * Math.PI) / 180;
-  const cx = size / 2;
-  const cy = size / 2 + 6;
-  const r = size / 2 - 14;
-  const zoneColor = score >= 75 ? "var(--teal)" : score >= 50 ? "var(--yellow)" : "var(--kick)";
-  const needleLen = r - 20;
-  const nx = cx + needleLen * Math.cos(rad(angle));
-  const ny = cy + needleLen * Math.sin(rad(angle));
+function zoneColorAt(pct) {
+  // 3 durak: kırmızı (0%) → sarı (50%) → teal (100%), HSL üzerinde yumuşak geçiş.
+  const stops = [
+    { p: 0, h: 6, s: 84, l: 58 },
+    { p: 50, h: 37, s: 88, l: 55 },
+    { p: 100, h: 175, s: 80, l: 34 },
+  ];
+  let a = stops[0];
+  let b = stops[1];
+  for (let i = 0; i < stops.length - 1; i++) {
+    if (pct >= stops[i].p && pct <= stops[i + 1].p) {
+      a = stops[i];
+      b = stops[i + 1];
+      break;
+    }
+  }
+  const t = b.p === a.p ? 0 : (pct - a.p) / (b.p - a.p);
+  const h = a.h + (b.h - a.h) * t;
+  const s = a.s + (b.s - a.s) * t;
+  const l = a.l + (b.l - a.l) * t;
+  return `hsl(${h}, ${s}%, ${l}%)`;
+}
 
-  const arc = (startDeg, endDeg, color, width = 9) => {
-    const s = rad(startDeg);
-    const e = rad(endDeg);
-    const x1 = cx + r * Math.cos(s);
-    const y1 = cy + r * Math.sin(s);
-    const x2 = cx + r * Math.cos(e);
-    const y2 = cy + r * Math.sin(e);
-    const large = endDeg - startDeg > 180 ? 1 : 0;
+function HealthDial({ score = 58, size = 220, delta = null }) {
+  const cx = size / 2;
+  const cy = size / 2;
+  const outerR = size / 2 - 10;
+  const innerR = outerR - 16;
+  const tickCount = 54;
+  const gapDeg = 3.2; // tikler arası nefes payı
+  const rad = (deg) => (deg * Math.PI) / 180;
+  const filledTicks = Math.round((score / 100) * tickCount);
+
+  const ticks = Array.from({ length: tickCount }, (_, i) => {
+    const angle = (360 / tickCount) * i - 90; // -90: en üstten başla
+    const a1 = rad(angle + gapDeg / 2);
+    const a2 = rad(angle + 360 / tickCount - gapDeg / 2);
+    const x1 = cx + innerR * Math.cos(a1);
+    const y1 = cy + innerR * Math.sin(a1);
+    const x2 = cx + outerR * Math.cos(a1);
+    const y2 = cy + outerR * Math.sin(a1);
+    const isFilled = i < filledTicks;
+    const color = isFilled ? zoneColorAt((i / tickCount) * 100) : "var(--ink-3)";
     return (
-      <path d={`M ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2}`} stroke={color} strokeWidth={width} fill="none" strokeLinecap="round" />
+      <line
+        key={i}
+        x1={x1}
+        y1={y1}
+        x2={x2}
+        y2={y2}
+        stroke={color}
+        strokeWidth={4}
+        strokeLinecap="round"
+        opacity={isFilled ? 1 : 0.5}
+      />
     );
-  };
+  });
+
+  const deltaColor = delta > 0 ? "var(--teal)" : delta < 0 ? "var(--kick)" : "var(--muted)";
 
   return (
-    <svg width={size} height={size / 2 + 46} viewBox={`0 0 ${size} ${size / 2 + 46}`}>
-      {arc(-90, -23, "var(--kick)")}
-      {arc(-19, 12, "var(--yellow)")}
-      {arc(16, 90, "var(--teal)")}
-      <circle cx={cx} cy={cy} r={4} fill="var(--chalk)" />
-      <line x1={cx} y1={cy} x2={nx} y2={ny} stroke="var(--chalk)" strokeWidth={2} strokeLinecap="round" style={{ filter: `drop-shadow(0 1px 1px rgba(26,31,54,0.2))` }} />
-      <text x={cx} y={cy - 24} textAnchor="middle" style={{ fontFamily: "var(--font-display)", fontSize: 46, fontWeight: 500, letterSpacing: "-0.02em", fill: "var(--chalk)" }}>{score}</text>
-      <text x={cx} y={cy - 3} textAnchor="middle" style={{ fontFamily: "var(--font-mono)", fontSize: 10.5, letterSpacing: "0.14em", fill: "var(--muted)" }}>APP HEALTH SCORE</text>
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+      {ticks}
+      <text x={cx} y={cy - (delta !== null ? 4 : 0)} textAnchor="middle" dominantBaseline="middle" style={{ fontFamily: "var(--font-display)", fontSize: 46, fontWeight: 500, letterSpacing: "-0.02em", fill: "var(--chalk)" }}>
+        {score}
+      </text>
+      {delta !== null && (
+        <text x={cx} y={cy + 22} textAnchor="middle" style={{ fontFamily: "var(--font-mono)", fontSize: 13, fontWeight: 600, fill: deltaColor }}>
+          {delta > 0 ? "+" : ""}
+          {delta}
+        </text>
+      )}
+      <text x={cx} y={cy + (delta !== null ? 44 : 30)} textAnchor="middle" style={{ fontFamily: "var(--font-mono)", fontSize: 10.5, letterSpacing: "0.14em", fill: "var(--muted)" }}>
+        APP HEALTH SCORE
+      </text>
     </svg>
   );
 }
@@ -333,42 +377,28 @@ const EFFORT_MAP = {
   conversion: "high",
 };
 
-function HistorySparkline({ points, width = 560, height = 90 }) {
-  if (points.length < 2) return null;
-  const max = 100;
-  const min = 0;
-  const stepX = width / (points.length - 1);
-  const coords = points.map((p, i) => {
-    const x = i * stepX;
-    const y = height - ((p.health_score - min) / (max - min)) * height;
-    return [x, y];
-  });
-  const path = coords.map(([x, y], i) => `${i === 0 ? "M" : "L"} ${x} ${y}`).join(" ");
-  const areaPath = `${path} L ${width} ${height} L 0 ${height} Z`;
-  const last = points[points.length - 1];
-  const lastColor = last.health_score >= 75 ? "var(--teal)" : last.health_score >= 50 ? "var(--yellow)" : "var(--kick)";
+function HistoryBarChart({ points, width = 560, height = 120 }) {
+  const shown = points.slice(-12); // en fazla son 12 tarama
+  const barW = width / shown.length;
+  const gap = Math.min(10, barW * 0.3);
 
   return (
-    <svg width={width} height={height + 24} viewBox={`0 0 ${width} ${height + 24}`}>
-      <defs>
-        <linearGradient id="sparkFill" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={lastColor} stopOpacity={0.16} />
-          <stop offset="100%" stopColor={lastColor} stopOpacity={0} />
-        </linearGradient>
-      </defs>
-      <path d={areaPath} fill="url(#sparkFill)" stroke="none" />
-      <path d={path} stroke={lastColor} strokeWidth={2} fill="none" strokeLinecap="round" strokeLinejoin="round" opacity={0.85} />
-      {coords.map(([x, y], i) => (
-        <circle
-          key={i}
-          cx={x}
-          cy={y}
-          r={i === coords.length - 1 ? 4 : 2.5}
-          fill={i === coords.length - 1 ? lastColor : "var(--ink-2)"}
-          stroke={i === coords.length - 1 ? "var(--ink-2)" : "var(--muted)"}
-          strokeWidth={i === coords.length - 1 ? 2 : 1}
-        />
-      ))}
+    <svg width={width} height={height + 26} viewBox={`0 0 ${width} ${height + 26}`}>
+      {shown.map((p, i) => {
+        const h = Math.max(4, (p.health_score / 100) * height);
+        const x = i * barW + gap / 2;
+        const w = barW - gap;
+        const color = p.health_score >= 75 ? "var(--teal)" : p.health_score >= 50 ? "var(--yellow)" : "var(--kick)";
+        const dateLabel = new Date(p.created_at).toLocaleDateString("tr-TR", { day: "2-digit", month: "2-digit" });
+        return (
+          <g key={i}>
+            <rect x={x} y={height - h} width={w} height={h} rx={w / 2} fill={color} opacity={i === shown.length - 1 ? 1 : 0.55} />
+            <text x={x + w / 2} y={height + 18} textAnchor="middle" style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, fill: "var(--muted)" }}>
+              {dateLabel}
+            </text>
+          </g>
+        );
+      })}
     </svg>
   );
 }
@@ -379,21 +409,23 @@ function HistoryPanel({ history }) {
   const first = history[0];
   const last = history[history.length - 1];
   const delta = last.health_score - first.health_score;
+  const deltaColor = delta >= 0 ? "var(--teal)" : "var(--kick)";
 
   return (
     <div className="panel">
-      <div className="panel-title">GEÇMİŞ &amp; TREND · {history.length} tarama</div>
+      <div className="hist-header">
+        <div className="panel-title" style={{ marginBottom: 0 }}>SAĞLIK SKORU TRENDİ · {history.length} tarama</div>
+      </div>
       {history.length >= 2 ? (
         <>
-          <HistorySparkline points={history} />
-          <div style={{ fontSize: 12.5, color: "var(--muted)", marginTop: 4 }}>
-            İlk taramadan bu yana{" "}
-            <span style={{ color: delta >= 0 ? "var(--teal)" : "var(--kick)", fontWeight: 700 }}>
-              {delta >= 0 ? "+" : ""}
-              {delta}
-            </span>{" "}
-            puan değişim
+          <div className="hist-bignum">
+            {last.health_score}
+            <span className="hist-delta" style={{ color: deltaColor }}>
+              ({delta >= 0 ? "+" : ""}
+              {delta}) ilk taramadan bu yana
+            </span>
           </div>
+          <HistoryBarChart points={history} />
         </>
       ) : (
         <div style={{ fontSize: 13, color: "var(--muted)" }}>
@@ -539,6 +571,13 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .top-grid { display: grid; grid-template-columns: 260px 1fr; gap: 18px; }
         .dial-panel { display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .dial-caption { font-size: 12px; color: var(--muted); text-align: center; margin-top: 4px; }
+
+        .hist-header { margin-bottom: 10px; }
+        .hist-bignum {
+          font-family: var(--font-display); font-size: 32px; font-weight: 700; letter-spacing: -0.02em;
+          color: var(--chalk); display: flex; align-items: baseline; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;
+        }
+        .hist-delta { font-family: var(--font-mono); font-size: 12.5px; font-weight: 600; }
 
         .summary-list { display: flex; flex-direction: column; gap: 8px; justify-content: center; height: 100%; }
         .summary-row { display: flex; align-items: center; gap: 10px; font-size: 13.5px; }
@@ -716,7 +755,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         <div className="top-grid">
           <div className="panel dial-panel">
-            <HealthDial score={healthScore} />
+            <HealthDial score={healthScore} delta={history.length >= 2 ? healthScore - history[history.length - 2].health_score : null} />
             <div className="dial-caption">
               {findings.length} bulgudan {badCount} kritik, {warnCount} dikkat gerektiriyor
             </div>
