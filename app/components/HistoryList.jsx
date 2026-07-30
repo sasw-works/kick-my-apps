@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { ArrowLeft, GitCompare, Loader2 } from "lucide-react";
+import Link from "next/link";
+import { ArrowLeft, GitCompare, Loader2, Eye } from "lucide-react";
 
 const STATUS_COLOR = (score) => {
   if (score >= 75) return "var(--teal)";
@@ -90,6 +91,13 @@ export default function HistoryList({ onBack, onCompare, preselectId, appNameFil
         .scan-name { font-size: 13.5px; font-weight: 600; }
         .scan-date { font-size: 11.5px; color: var(--muted); font-family: var(--font-mono); }
         .scan-counts { font-size: 11.5px; color: var(--muted); font-family: var(--font-mono); }
+        .scan-view-btn {
+          display: flex; align-items: center; justify-content: center;
+          width: 30px; height: 30px; border-radius: 50%;
+          background: var(--ink); border: 1px solid var(--ink-3);
+          flex-shrink: 0; margin-left: 8px;
+        }
+        .scan-view-btn:hover { border-color: var(--kick); }
 
         .empty-state { color: var(--muted); font-size: 14px; text-align: center; padding: 40px 0; }
         .hint { font-size: 12px; color: var(--muted); margin-bottom: 14px; }
@@ -144,6 +152,14 @@ export default function HistoryList({ onBack, onCompare, preselectId, appNameFil
                   <div className="scan-counts">
                     {s.bad_count} kritik · {s.warn_count} dikkat · {s.good_count} sorunsuz
                   </div>
+                  <Link
+                    href={`/history/${s.id}`}
+                    className="scan-view-btn"
+                    onClick={(e) => e.stopPropagation()}
+                    aria-label="Detayı gör"
+                  >
+                    <Eye size={16} color="var(--muted)" strokeWidth={2} />
+                  </Link>
                 </div>
               );
             })}

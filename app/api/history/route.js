@@ -52,6 +52,20 @@ export async function GET(req) {
     const appName = (searchParams.get("appName") || "").trim();
     const all = searchParams.get("all");
     const apps = searchParams.get("apps");
+    const id = searchParams.get("id");
+
+    if (id) {
+      const { rows } = await sql`
+        SELECT id, app_name, health_score, bad_count, warn_count, good_count, result_json, store_url, created_at
+        FROM scans
+        WHERE id = ${id}
+        LIMIT 1;
+      `;
+      if (rows.length === 0) {
+        return Response.json({ error: "Tarama bulunamadı." }, { status: 404 });
+      }
+      return Response.json({ scan: rows[0] });
+    }
 
     if (apps) {
       // Portfolio panosu: her uygulamanın en son taraması + toplam tarama sayısı.
