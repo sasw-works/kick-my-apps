@@ -117,7 +117,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         }
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-        .hero-bg-wrap { position: relative; width: 100%; display: flex; justify-content: center; }
+        .hero-bg-wrap { position: relative; width: 100%; max-height: 420px; display: flex; justify-content: center; overflow: hidden; }
         .blob {
           position: absolute;
           border-radius: 50%;
@@ -158,6 +158,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
 
         .hero-search-wrap {
           position: relative;
+          z-index: 2;
           width: 100%;
           max-width: 640px;
           display: flex;
@@ -206,6 +207,8 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         }
 
         .upload-card {
+          position: relative;
+          z-index: 2;
           width: 100%;
           max-width: 640px;
           display: flex;
