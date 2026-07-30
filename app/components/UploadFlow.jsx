@@ -117,7 +117,16 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         }
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-        .hero-bg-wrap { position: relative; width: 100%; max-height: 420px; display: flex; justify-content: center; overflow: hidden; }
+        .hero-bg-wrap {
+          position: relative;
+          width: 100%;
+          max-height: 420px;
+          display: flex;
+          justify-content: center;
+          overflow: hidden;
+          -webkit-mask-image: radial-gradient(ellipse 70% 65% at center, black 35%, transparent 92%);
+          mask-image: radial-gradient(ellipse 70% 65% at center, black 35%, transparent 92%);
+        }
         .blob {
           position: absolute;
           border-radius: 50%;
