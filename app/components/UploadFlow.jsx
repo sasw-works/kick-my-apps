@@ -117,39 +117,6 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         }
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-        .hero-bg-wrap {
-          position: relative;
-          width: 100%;
-          max-height: 420px;
-          display: flex;
-          justify-content: center;
-          overflow: hidden;
-          -webkit-mask-image: radial-gradient(ellipse 70% 65% at center, black 35%, transparent 92%);
-          mask-image: radial-gradient(ellipse 70% 65% at center, black 35%, transparent 92%);
-        }
-        .blob {
-          position: absolute;
-          border-radius: 50%;
-          filter: blur(100px);
-          opacity: 0.55;
-          animation-name: blob-move;
-          animation-timing-function: ease-in-out;
-          animation-iteration-count: infinite;
-          pointer-events: none;
-          z-index: 0;
-        }
-        .blob-1 { width: 65vw; height: 65vw; max-width: 780px; max-height: 780px; background: #FBCFE8; top: 20px; left: -18%; animation-duration: 18s; }
-        .blob-2 { width: 60vw; height: 60vw; max-width: 720px; max-height: 720px; background: #BBF7D0; top: -60px; right: -14%; animation-duration: 21s; animation-delay: -4s; }
-        .blob-3 { width: 55vw; height: 55vw; max-width: 660px; max-height: 660px; background: #C7D2FE; top: 260px; left: 28%; animation-duration: 15s; animation-delay: -8s; }
-        @keyframes blob-move {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          33% { transform: translate(30px, 24px) scale(1.1); }
-          66% { transform: translate(-24px, 30px) scale(0.94); }
-        }
-        @media (max-width: 720px) {
-          .blob { display: none; }
-        }
-
         .upload-hero { text-align: center; margin-top: 100px; margin-bottom: 53px; max-width: 720px; position: relative; z-index: 1; }
 
         .hero-title {
@@ -394,17 +361,12 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         @keyframes kma-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
       `}</style>
 
-      <div className="hero-bg-wrap">
-        <div className="blob blob-1" />
-        <div className="blob blob-2" />
-        <div className="blob blob-3" />
-        <div className="upload-hero">
-          <h1 className="hero-title">
-            Ready to
-            <br />
-            Kick Your Apps
-          </h1>
-        </div>
+      <div className="upload-hero">
+        <h1 className="hero-title">
+          Ready to
+          <br />
+          Kick Your Apps
+        </h1>
       </div>
 
       <div className="hero-search-wrap">
