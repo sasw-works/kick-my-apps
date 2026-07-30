@@ -363,9 +363,9 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
 
       <div className="upload-hero">
         <h1 className="hero-title">
-          Ready to
+          Ready to px
           <br />
-          Kick Your Apps
+          kick your apps
         </h1>
       </div>
 
