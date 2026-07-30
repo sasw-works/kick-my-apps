@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import { UploadCloud, Search, Check, Loader2, X, Sparkles, FileText } from "lucide-react";
+import { UploadCloud, Search, Check, Loader2, X, Sparkles, FileText, Star, MessageSquare, Palette, MousePointerClick, Accessibility, Compass } from "lucide-react";
 
 export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewHistory }) {
   const [files, setFiles] = useState([]);
@@ -118,6 +118,28 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
         .upload-hero { text-align: center; margin-top: 100px; margin-bottom: 28px; max-width: 720px; }
+
+        .hero-decoration-zone { position: relative; width: 100%; display: flex; justify-content: center; }
+        .float-icon {
+          position: absolute;
+          width: 44px; height: 44px; border-radius: 12px;
+          background: var(--ink-2); border: 1px solid var(--ink-3); box-shadow: var(--shadow);
+          display: flex; align-items: center; justify-content: center;
+          animation: float-bob 4.5s ease-in-out infinite;
+        }
+        .fi-1 { top: 12px; left: 8%; }
+        .fi-2 { top: 90px; left: 3%; }
+        .fi-3 { top: 4px; right: 10%; }
+        .fi-4 { top: 100px; right: 5%; }
+        .fi-5 { top: 150px; left: 18%; }
+        .fi-6 { top: 145px; right: 20%; }
+        @keyframes float-bob {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+        @media (max-width: 900px) {
+          .float-icon { display: none; }
+        }
         .hero-title {
           font-family: var(--font-display);
           font-size: 44px;
@@ -354,8 +376,17 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         @keyframes kma-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
       `}</style>
 
-      <div className="upload-hero">
-        <h1 className="hero-title">Find what's hurting your app.</h1>
+      <div className="hero-decoration-zone">
+        <div className="float-icon fi-1" style={{ animationDelay: "0s" }}><Star size={16} color="var(--yellow)" /></div>
+        <div className="float-icon fi-2" style={{ animationDelay: "0.6s" }}><MessageSquare size={16} color="var(--teal)" /></div>
+        <div className="float-icon fi-3" style={{ animationDelay: "1.2s" }}><Palette size={16} color="var(--kick)" /></div>
+        <div className="float-icon fi-4" style={{ animationDelay: "0.3s" }}><MousePointerClick size={16} color="var(--kick)" /></div>
+        <div className="float-icon fi-5" style={{ animationDelay: "0.9s" }}><Accessibility size={16} color="var(--teal)" /></div>
+        <div className="float-icon fi-6" style={{ animationDelay: "1.5s" }}><Compass size={16} color="var(--yellow)" /></div>
+
+        <div className="upload-hero">
+          <h1 className="hero-title">Find what's hurting your app.</h1>
+        </div>
       </div>
 
       <div className="hero-search-wrap">
