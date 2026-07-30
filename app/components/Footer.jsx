@@ -1,4 +1,5 @@
 import React from "react";
+import LogoMark from "./LogoMark";
 
 const COLUMNS = [
   {
@@ -53,10 +54,9 @@ export default function Footer() {
           margin-bottom: 12px;
         }
         .kma-footer-mark {
-          width: 22px;
-          height: 22px;
-          border-radius: 6px;
-          background: var(--kick);
+          display: flex;
+          align-items: center;
+          color: var(--chalk);
         }
         .kma-footer-desc {
           font-size: 13px;
@@ -102,7 +102,9 @@ export default function Footer() {
         <div className="kma-footer-grid">
           <div>
             <div className="kma-footer-brand">
-              <div className="kma-footer-mark" />
+              <div className="kma-footer-mark">
+                <LogoMark size={20} />
+              </div>
               Kick My Apps
             </div>
             <p className="kma-footer-desc">

@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import ThemeToggle from "./ThemeToggle";
+import LogoMark from "./LogoMark";
 
 const NAV_ITEMS = ["Özellikler", "Kaynaklar", "Kullanım Alanları", "Fiyatlandırma", "Blog"];
 
@@ -51,10 +52,9 @@ export default function Header() {
           cursor: pointer;
         }
         .kma-header-mark {
-          width: 24px;
-          height: 24px;
-          border-radius: 7px;
-          background: var(--kick);
+          display: flex;
+          align-items: center;
+          color: var(--chalk);
           flex-shrink: 0;
         }
         .kma-header-spacer { flex: 1; }
@@ -94,7 +94,9 @@ export default function Header() {
 
       <div className="kma-header-pill">
         <Link href="/" className="kma-header-logo">
-          <div className="kma-header-mark" />
+          <div className="kma-header-mark">
+            <LogoMark size={22} />
+          </div>
           Kick My Apps
         </Link>
 
