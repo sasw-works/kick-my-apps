@@ -427,19 +427,22 @@ const EFFORT_MAP = {
 function HistoryBarChart({ points, width = 560, height = 120 }) {
   const shown = points.slice(-12); // en fazla son 12 tarama
   const slot = width / shown.length;
-  const barW = Math.min(8, slot * 0.35);
+  const r = Math.min(22, slot * 0.32);
+  const padTop = r + 4;
+  const padBottom = r + 4;
+  const drawH = height - padTop - padBottom;
 
   return (
     <svg width={width} height={height + 26} viewBox={`0 0 ${width} ${height + 26}`}>
       {shown.map((p, i) => {
-        const h = Math.max(4, (p.health_score / 100) * height);
-        const x = i * slot + slot / 2 - barW / 2;
+        const cx = i * slot + slot / 2;
+        const cy = padTop + drawH - (p.health_score / 100) * drawH;
         const color = p.health_score >= 75 ? "var(--teal)" : p.health_score >= 50 ? "var(--yellow)" : "var(--kick)";
         const dateLabel = new Date(p.created_at).toLocaleDateString("tr-TR", { day: "2-digit", month: "2-digit" });
         return (
           <g key={i}>
-            <rect x={x} y={height - h} width={barW} height={h} rx={barW / 2.5} fill={color} opacity={i === shown.length - 1 ? 1 : 0.6} />
-            <text x={x + barW / 2} y={height + 18} textAnchor="middle" style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, fill: "var(--muted)" }}>
+            <circle cx={cx} cy={cy} r={r} fill={color} opacity={i === shown.length - 1 ? 1 : 0.6} />
+            <text x={cx} y={height + 18} textAnchor="middle" style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, fill: "var(--muted)" }}>
               {dateLabel}
             </text>
           </g>
