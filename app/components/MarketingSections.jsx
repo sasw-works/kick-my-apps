@@ -146,7 +146,7 @@ export default function MarketingSections() {
 
         .mkt-all-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 90px; }
         .mkt-all-card {
-          background: var(--ink-2); border: 1px solid var(--ink-3); border-top: 3px solid var(--card-accent);
+          background: var(--ink-2); border: 1px solid var(--ink-3);
           border-radius: 14px; padding: 20px; box-shadow: var(--shadow);
         }
         .mkt-all-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
@@ -293,7 +293,7 @@ export default function MarketingSections() {
           {ALL_FEATURES.map((f) => {
             const Icon = f.icon;
             return (
-              <div className="mkt-all-card" key={f.title} style={{ "--card-accent": f.color }}>
+              <div className="mkt-all-card" key={f.title}>
                 <div style={{ width: 34, height: 34, borderRadius: 9, marginBottom: 12, display: "flex", alignItems: "center", justifyContent: "center", background: f.color }}>
                   <Icon size={17} color="#FFFFFF" />
                 </div>
