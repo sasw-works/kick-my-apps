@@ -117,20 +117,21 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         }
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-        .hero-bg-wrap { position: relative; width: 100%; display: flex; justify-content: center; overflow: hidden; }
+        .hero-bg-wrap { position: relative; width: 100%; display: flex; justify-content: center; }
         .blob {
           position: absolute;
           border-radius: 50%;
-          filter: blur(70px);
-          opacity: 0.3;
+          filter: blur(100px);
+          opacity: 0.35;
           animation-name: blob-move;
           animation-timing-function: ease-in-out;
           animation-iteration-count: infinite;
           pointer-events: none;
+          z-index: 0;
         }
-        .blob-1 { width: 340px; height: 340px; background: var(--kick); top: -130px; left: 8%; animation-duration: 16s; }
-        .blob-2 { width: 300px; height: 300px; background: var(--teal); top: -90px; right: 10%; animation-duration: 19s; animation-delay: -4s; }
-        .blob-3 { width: 260px; height: 260px; background: var(--yellow); top: 30px; left: 42%; animation-duration: 13s; animation-delay: -8s; }
+        .blob-1 { width: 65vw; height: 65vw; max-width: 780px; max-height: 780px; background: #4F46E5; top: 60px; left: -22%; animation-duration: 18s; }
+        .blob-2 { width: 60vw; height: 60vw; max-width: 720px; max-height: 720px; background: #8B5CF6; top: 110px; right: -20%; animation-duration: 21s; animation-delay: -4s; }
+        .blob-3 { width: 48vw; height: 48vw; max-width: 560px; max-height: 560px; background: #3B82F6; top: 220px; left: 30%; animation-duration: 15s; animation-delay: -8s; }
         @keyframes blob-move {
           0%, 100% { transform: translate(0, 0) scale(1); }
           33% { transform: translate(30px, 24px) scale(1.1); }
@@ -149,11 +150,11 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           color: var(--chalk);
           margin: 0;
         }
-        .hero-title-light { font-size: 78px; font-weight: 300; }
-        .hero-title-medium { font-size: 88px; font-weight: 500; }
+        .hero-title-light { font-size: 68px; font-weight: 300; }
+        .hero-title-medium { font-size: 78px; font-weight: 500; }
         @media (max-width: 720px) {
-          .hero-title-light { font-size: 40px; }
-          .hero-title-medium { font-size: 48px; }
+          .hero-title-light { font-size: 32px; }
+          .hero-title-medium { font-size: 40px; }
         }
 
         .hero-search-wrap {
