@@ -237,6 +237,12 @@ function FindingRow({ f }) {
           <span>{f.suggestion}</span>
         </div>
       )}
+      {f.codeSnippet?.code && (
+        <div className="finding-code">
+          <div className="finding-code-lang">{f.codeSnippet.language}</div>
+          <pre><code>{f.codeSnippet.code}</code></pre>
+        </div>
+      )}
     </div>
   );
 }
@@ -487,6 +493,8 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
     ? (data.findings || []).map((f) => ({ ...f, icon: ICON_MAP[f.key] || Sparkles }))
     : FINDINGS;
   const reviewSummary = usingRealData ? data.reviewSummary : REVIEW_STATS;
+  const asoReview = usingRealData ? data.asoReview : null;
+  const approvalRisks = usingRealData ? data.approvalRisks || [] : [];
 
   const badCount = findings.filter((f) => f.status === "bad").length;
   const warnCount = findings.filter((f) => f.status === "warn").length;
@@ -652,6 +660,19 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         }
         .finding-suggestion span { flex: 1; }
 
+        .finding-code {
+          margin: 8px 0 0 23px;
+          background: #14151a;
+          border-radius: 6px;
+          overflow: hidden;
+        }
+        .finding-code-lang {
+          font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em;
+          color: #8a8f9c; padding: 6px 10px 0;
+        }
+        .finding-code pre { margin: 0; padding: 4px 10px 10px; overflow-x: auto; }
+        .finding-code code { font-family: var(--font-mono); font-size: 12px; color: #f5f3ee; white-space: pre; }
+
         .review-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
         .review-meta { display: flex; align-items: baseline; gap: 14px; margin-bottom: 14px; }
         .review-count { font-family: var(--font-display); font-size: 28px; font-weight: 500; letter-spacing: -0.01em; }
@@ -692,6 +713,19 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           background: var(--teal); width: 18px; height: 18px; border-radius: 50%;
           display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
         }
+
+        .aso-meta { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-bottom: 14px; display: flex; gap: 4px; flex-wrap: wrap; }
+        .aso-row { margin-bottom: 12px; }
+        .aso-label { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 3px; }
+        .aso-text { font-size: 13px; color: var(--chalk); line-height: 1.5; }
+        .aso-suggestions { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+        .aso-suggestion-row { display: flex; align-items: flex-start; gap: 8px; background: var(--ink-3); border-radius: 6px; padding: 8px 10px; font-size: 12.5px; color: var(--muted); }
+
+        .risk-disclaimer { font-size: 12px; color: var(--muted); margin-bottom: 12px; font-style: italic; }
+        .risk-list { display: flex; flex-direction: column; gap: 8px; }
+        .risk-row { display: flex; gap: 10px; background: var(--ink-3); border-left: 3px solid var(--ink-3); border-radius: 6px; padding: 10px 12px; }
+        .risk-issue { font-size: 13px; color: var(--chalk); font-weight: 600; margin-bottom: 2px; }
+        .risk-guideline { font-size: 11.5px; color: var(--muted); font-family: var(--font-mono); }
 
         .subscribe-panel {
           display: flex;
@@ -941,6 +975,56 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
             </div>
           </div>
         </div>
+        )}
+
+        {asoReview && (
+          <div className="panel">
+            <div className="panel-title">APP STORE LİSTELEME (ASO)</div>
+            <div className="aso-meta">
+              {asoReview.version && <span>Sürüm {asoReview.version}</span>}
+              {asoReview.genre && <span>· {asoReview.genre}</span>}
+              {typeof asoReview.screenshotCount === "number" && <span>· {asoReview.screenshotCount} mağaza görseli</span>}
+              {asoReview.storeAvgRating && <span>· ★ {asoReview.storeAvgRating.toFixed?.(1) ?? asoReview.storeAvgRating}</span>}
+            </div>
+            <div className="aso-row">
+              <div className="aso-label">Başlık</div>
+              <div className="aso-text">{asoReview.titleFeedback}</div>
+            </div>
+            <div className="aso-row">
+              <div className="aso-label">Açıklama</div>
+              <div className="aso-text">{asoReview.descriptionFeedback}</div>
+            </div>
+            {asoReview.suggestions?.length > 0 && (
+              <div className="aso-suggestions">
+                {asoReview.suggestions.map((s, i) => (
+                  <div className="aso-suggestion-row" key={i}>
+                    <Lightbulb size={12} color="var(--yellow)" />
+                    <span>{s}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {approvalRisks.length > 0 && (
+          <div className="panel">
+            <div className="panel-title">STORE ONAYLANMA RİSKİ</div>
+            <div className="risk-disclaimer">
+              Bu, kesin bir garanti değil — ekran görüntülerinde gözlemlenen olası risk sinyalleri.
+            </div>
+            <div className="risk-list">
+              {approvalRisks.map((r, i) => (
+                <div className="risk-row" key={i} style={{ borderLeftColor: r.severity === "high" ? "var(--kick)" : "var(--yellow)" }}>
+                  <AlertTriangle size={14} color={r.severity === "high" ? "var(--kick)" : "var(--yellow)"} />
+                  <div>
+                    <div className="risk-issue">{r.issue}</div>
+                    <div className="risk-guideline">{r.guideline}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         )}
 
         {storeUrl && <SubscribeForm appName={appLabel} storeUrl={storeUrl} />}

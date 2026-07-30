@@ -1,10 +1,10 @@
-import { fetchAppStoreReviews, computeReviewAnalytics } from "../../lib/reviews";
+import { fetchAppStoreReviews, fetchAppStoreListing, computeReviewAnalytics } from "../../lib/reviews";
 
 export const runtime = "nodejs";
 
 const SCHEMA_INSTRUCTIONS = `Sen deneyimli bir mobil UX denetçisisin. Sana verilen ekran görüntülerini ve/veya
-kullanıcı yorumlarını DERİNLEMESİNE analiz et ve SADECE aşağıdaki JSON şemasında bir cevap döndür.
-Başka hiçbir açıklama, markdown işareti veya ön/art metin ekleme.
+kullanıcı yorumlarını ve/veya mağaza listeleme metnini DERİNLEMESİNE analiz et ve SADECE aşağıdaki JSON
+şemasında bir cevap döndür. Başka hiçbir açıklama, markdown işareti veya ön/art metin ekleme.
 
 {
   "healthScore": <0-100 arası tam sayı, genel sağlık skoru>,
@@ -15,13 +15,22 @@ Başka hiçbir açıklama, markdown işareti veya ön/art metin ekleme.
       "status": "<good|warn|bad>",
       "finding": "<gözlemi 1-2 cümlede somut şekilde açıkla, hangi ekranda ne gördüğünü belirt>",
       "suggestion": "<somut, uygulanabilir bir öneri>",
-      "screenshotIndex": <bu bulgunun dayandığı ekran görüntüsünün sırası, 1'den başlar; ekran görüntüsüne dayanmıyorsa null>
+      "screenshotIndex": <bu bulgunun dayandığı ekran görüntüsünün sırası, 1'den başlar; ekran görüntüsüne dayanmıyorsa null>,
+      "codeSnippet": { "language": "<css|swift|kotlin>", "code": "<kısa, örnek/başlangıç niteliğinde kod>" } veya null
     }
   ],
   "reviewSummary": {
     "topComplaints": [{ "label": "<kısa şikayet başlığı>", "pct": <0-100 arası tahmini yüzde> }],
     "roadmap": ["<öncelik sırasına göre 3-4 aksiyon önerisi>"]
-  }
+  },
+  "asoReview": {
+    "titleFeedback": "<başlığın netliği/anahtar kelime kullanımı hakkında 1-2 cümle>",
+    "descriptionFeedback": "<açıklama metninin yapısı/netliği hakkında 1-2 cümle>",
+    "suggestions": ["<1-3 somut ASO önerisi>"]
+  },
+  "approvalRisks": [
+    { "issue": "<gözlemlenen somut risk>", "guideline": "<ilgili Apple/Google inceleme kuralı kategorisi, örn. 'Eksiksizlik' veya 'Yanıltıcı İçerik'>", "severity": "<high|medium>" }
+  ]
 }
 
 Kategori rehberi (ekran görüntüsü verildiyse hepsini değerlendirmeye çalış):
@@ -49,13 +58,22 @@ Kategori rehberi (ekran görüntüsü verildiyse hepsini değerlendirmeye çalı
 Kurallar:
 - Ekran görüntüsü verilmediyse görsel kategoriler hakkında tahmin YAPMA, findings listesine ekleme.
 - Yorum verisi verilmediyse reviewSummary alanını null yap.
+- Mağaza listeleme metni (başlık/açıklama) verilmediyse asoReview alanını null yap.
 - En az 5, en fazla 11 finding döndür — verilen görsel sayısına göre gerçekçi ol, uydurma detay ekleme.
 - Skorları abartma; gerçekten gördüğün sorunlara göre dürüst bir değerlendirme yap.
 - Aynı ekran görüntüsünden birden fazla farklı kategori bulgusu çıkarabilirsin.
 - conversion/trust/permissions bulgularında iş etkisine değin (ör. "bu sürtünme kullanıcıyı kayıt
   akışının ortasında kaybettirebilir") ama asla uydurma yüzde/rakam verme — sadece gözleme dayan.
 - consistency bulgularında en az iki farklı ekranı karşılaştırarak somut bir tutarsızlık örneği ver
-  (ör. "1. ekrandaki buton köşe yarıçapı 4. ekrandakinden farklı").`;
+  (ör. "1. ekrandaki buton köşe yarıçapı 4. ekrandakinden farklı").
+- codeSnippet SADECE kontrast, dokunma alanı boyutu, boşluk/spacing gibi gerçekten kısa bir kod
+  parçasıyla örneklenebilecek bulgular için doldur (onboarding akışı gibi kod-dışı konularda null bırak).
+  Kod her zaman GENEL/ÖRNEK bir başlangıç noktasıdır, kullanıcının gerçek koduna erişimin yok — bunu
+  varsayma, sadece "böyle bir yaklaşım dene" niteliğinde kısa bir örnek ver.
+- approvalRisks: SADECE ekran görüntülerinde gerçekten gördüğün somut, görsel kanıta dayalı riskleri
+  listele (ör. placeholder/lorem ipsum metin, boş/kırık görünen ekran, yarım kalmış özellik, yanıltıcı
+  abartılı iddialar). Yorumlarda çökme/hata şikayeti yoğunsa bunu da bir risk olarak ekleyebilirsin.
+  Hiçbir somut kanıt yoksa boş dizi döndür — riski UYDURMA.`;
 
 async function callGeminiModel(model, parts) {
   const res = await fetch(
@@ -80,7 +98,7 @@ async function callGeminiModel(model, parts) {
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-async function analyzeWithGemini({ images, reviews }) {
+async function analyzeWithGemini({ images, reviews, listing }) {
   const parts = [{ text: SCHEMA_INSTRUCTIONS }];
 
   images.forEach((img, i) => {
@@ -94,6 +112,12 @@ async function analyzeWithGemini({ images, reviews }) {
       .join("\n---\n")
       .slice(0, 12000);
     parts.push({ text: `Kullanıcı yorumları (App Store):\n${reviewText}` });
+  }
+
+  if (listing) {
+    parts.push({
+      text: `Mağaza listeleme bilgisi:\nBaşlık: ${listing.trackName}\nKategori: ${listing.genre}\nAçıklama:\n${(listing.description || "").slice(0, 4000)}`,
+    });
   }
 
   // Ana model + yoğunluk anında düşülecek yedek model.
@@ -157,11 +181,17 @@ export async function POST(req) {
     }
 
     let reviews = null;
+    let listing = null;
     if (storeUrl) {
       try {
         reviews = await fetchAppStoreReviews(storeUrl);
       } catch {
         reviews = null;
+      }
+      try {
+        listing = await fetchAppStoreListing(storeUrl);
+      } catch {
+        listing = null;
       }
     }
 
@@ -175,7 +205,7 @@ export async function POST(req) {
       );
     }
 
-    const result = await analyzeWithGemini({ images, reviews });
+    const result = await analyzeWithGemini({ images, reviews, listing });
 
     if (reviews?.length && result.reviewSummary) {
       const avgRating = reviews.reduce((sum, r) => sum + (r.rating || 0), 0) / reviews.length;
@@ -188,6 +218,15 @@ export async function POST(req) {
       result.reviewSummary.ratingDistribution = analytics.ratingDistribution;
       result.reviewSummary.mostHelpfulNegative = analytics.mostHelpfulNegative;
       result.reviewSummary.versionTrend = analytics.versionTrend;
+    }
+
+    if (listing && result.asoReview) {
+      result.asoReview.trackName = listing.trackName;
+      result.asoReview.genre = listing.genre;
+      result.asoReview.screenshotCount = listing.screenshotCount;
+      result.asoReview.version = listing.version;
+      result.asoReview.storeAvgRating = listing.averageRating;
+      result.asoReview.storeRatingCount = listing.ratingCount;
     }
 
     return Response.json(result);

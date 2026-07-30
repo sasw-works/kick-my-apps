@@ -27,7 +27,34 @@ export async function fetchAppStoreReviews(storeUrl) {
     }));
 }
 
-// Deterministic review analytics — computed from real data, not the model,
+// Apple's public Lookup API — real store listing metadata (title, description,
+// version notes). Used for the ASO / store listing review.
+export async function fetchAppStoreListing(storeUrl) {
+  const idMatch = storeUrl.match(/id(\d+)/);
+  if (!idMatch) return null;
+  const appId = idMatch[1];
+  const countryMatch = storeUrl.match(/apps\.apple\.com\/([a-z]{2})\//i);
+  const country = countryMatch ? countryMatch[1] : "us";
+
+  const res = await fetch(`https://itunes.apple.com/lookup?id=${appId}&country=${country}`);
+  if (!res.ok) return null;
+  const data = await res.json();
+  const app = data?.results?.[0];
+  if (!app) return null;
+
+  return {
+    trackName: app.trackName ?? "",
+    description: app.description ?? "",
+    releaseNotes: app.releaseNotes ?? "",
+    genre: app.primaryGenreName ?? "",
+    screenshotCount: (app.screenshotUrls?.length ?? 0) + (app.ipadScreenshotUrls?.length ?? 0),
+    version: app.version ?? "",
+    averageRating: app.averageUserRating ?? null,
+    ratingCount: app.userRatingCount ?? null,
+  };
+}
+
+
 // so these numbers are always exactly accurate (no AI arithmetic/hallucination).
 export function computeReviewAnalytics(reviews) {
   const ratingDistribution = [1, 2, 3, 4, 5].map((star) => ({
