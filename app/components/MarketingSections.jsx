@@ -17,10 +17,6 @@ import {
   Download,
   ShieldQuestion,
   Search,
-  Bell,
-  Smartphone,
-  LogIn,
-  Lock,
 } from "lucide-react";
 
 const SAMPLE_REVIEWS = [
@@ -51,12 +47,6 @@ const ALL_FEATURES = [
   { icon: LayoutDashboard, title: "Uygulamalarım Paneli", desc: "Takip ettiğin tüm uygulamalar tek ekranda.", color: "var(--brand)" },
   { icon: Mail, title: "Haftalık E-posta Özeti", desc: "Yeni yorumların özetini her hafta otomatik al.", color: "var(--teal)" },
   { icon: Download, title: "PDF Dışa Aktarma", desc: "Raporu tek tıkla indirip paylaşabilirsin.", color: "var(--yellow)" },
-];
-
-const COMING_SOON_HOME = [
-  { icon: Bell, title: "Bildirim / Alarm", desc: "Skor aniden düştüğünde anında haber ver." },
-  { icon: Smartphone, title: "Google Play Store", desc: "Android yorumlarını da analize dahil et." },
-  { icon: LogIn, title: "Giriş / Hesap Sistemi", desc: "Kendi özel, güvenli alanın." },
 ];
 
 const FAQ = [
@@ -151,14 +141,6 @@ export default function MarketingSections() {
         }
         .mkt-all-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
         .mkt-all-desc { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
-
-        .mkt-soon-strip { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-bottom: 90px; }
-        .mkt-soon-card {
-          display: flex; align-items: center; gap: 10px; background: var(--ink-2);
-          border: 1px dashed var(--ink-3); border-radius: 12px; padding: 12px 16px; opacity: 0.75;
-        }
-        .mkt-soon-title { font-size: 12.5px; font-weight: 600; display: flex; align-items: center; gap: 5px; }
-        .mkt-soon-desc { font-size: 11px; color: var(--muted); }
 
         .faq-list { max-width: 640px; margin: 0 auto 90px; display: flex; flex-direction: column; gap: 10px; }
         .faq-item { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 12px; padding: 4px 20px; }
@@ -299,26 +281,6 @@ export default function MarketingSections() {
                 </div>
                 <div className="mkt-all-title">{f.title}</div>
                 <div className="mkt-all-desc">{f.desc}</div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Yakında */}
-      <div>
-        <div className="mkt-section-title">Yakında</div>
-        <div className="mkt-section-sub">Bunlar üzerinde çalışıyoruz — henüz aktif değil.</div>
-        <div className="mkt-soon-strip">
-          {COMING_SOON_HOME.map((s) => {
-            const Icon = s.icon;
-            return (
-              <div className="mkt-soon-card" key={s.title}>
-                <Lock size={13} color="var(--muted)" />
-                <div>
-                  <div className="mkt-soon-title"><Icon size={13} color="var(--muted)" /> {s.title}</div>
-                  <div className="mkt-soon-desc">{s.desc}</div>
-                </div>
               </div>
             );
           })}
