@@ -95,7 +95,7 @@ export default function Header() {
       <div className="kma-header-pill">
         <Link href="/" className="kma-header-logo">
           <div className="kma-header-mark">
-            <LogoMark size={22} />
+            <LogoMark size={30} />
           </div>
           Kick My Apps
         </Link>

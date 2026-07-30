@@ -103,7 +103,7 @@ export default function Footer() {
           <div>
             <div className="kma-footer-brand">
               <div className="kma-footer-mark">
-                <LogoMark size={20} />
+                <LogoMark size={26} />
               </div>
               Kick My Apps
             </div>
