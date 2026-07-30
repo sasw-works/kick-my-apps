@@ -10,6 +10,17 @@ import {
   CheckCircle2,
   AlertTriangle,
   XCircle,
+  Code2,
+  ImageIcon,
+  History,
+  LayoutDashboard,
+  Download,
+  ShieldQuestion,
+  Search,
+  Bell,
+  Smartphone,
+  LogIn,
+  Lock,
 } from "lucide-react";
 
 const SAMPLE_REVIEWS = [
@@ -24,6 +35,28 @@ const PRIORITY_ITEMS = [
   { tag: "P2", title: "Yavaş ödeme akışı", meta: "218 bahsedilme · Sabit", color: "var(--kick)" },
   { tag: "P3", title: "Karanlık tema eksik", meta: "156 bahsedilme · Yeni", color: "var(--yellow)" },
   { tag: "P4", title: "Müşteri desteği", meta: "96 bahsedilme · Yeni", color: "var(--yellow)" },
+];
+
+// Ürünün gerçekten sahip olduğu tüm özellikler — Stripe tarzı renkli ikon kutularıyla.
+const ALL_FEATURES = [
+  { icon: ImageIcon, title: "Ekran Görüntüsü Analizi", desc: "13 kategori, 4 mercek altında derinlemesine UI/UX incelemesi.", color: "var(--brand)" },
+  { icon: Store, title: "Gerçek App Store Yorumları", desc: "Önbellek yok — her analizde canlı veri çekilir.", color: "var(--teal)" },
+  { icon: Search, title: "ASO / Mağaza İncelemesi", desc: "Başlık, açıklama ve mağaza listelemeni değerlendirir.", color: "var(--yellow)" },
+  { icon: ShieldQuestion, title: "Güncelleme Riski Kontrolü", desc: "Bir sonraki incelemede sorun çıkarabilecek sinyalleri yakalar.", color: "var(--brand)" },
+  { icon: Sparkles, title: "Hızlı Kazanımlar", desc: "Yüksek etki, düşük efor gerektiren düzeltmeleri öne çıkarır.", color: "var(--teal)" },
+  { icon: Code2, title: "Kod Seviyesinde Öneri", desc: "Bazı bulgular için örnek CSS/Swift/Kotlin kod parçacığı.", color: "var(--yellow)" },
+  { icon: ImageIcon, title: "Görsel İşaretleme", desc: "Bulgular, yüklediğin ekran görüntüsü üzerinde işaretlenir.", color: "var(--brand)" },
+  { icon: History, title: "Geçmiş & Trend", desc: "Her tarama kaydedilir, skorun zaman içindeki değişimini gör.", color: "var(--teal)" },
+  { icon: GitCompare, title: "Detaylı Karşılaştırma", desc: "İki taramayı (rakip dahil) kategori kategori kıyasla.", color: "var(--yellow)" },
+  { icon: LayoutDashboard, title: "Uygulamalarım Paneli", desc: "Takip ettiğin tüm uygulamalar tek ekranda.", color: "var(--brand)" },
+  { icon: Mail, title: "Haftalık E-posta Özeti", desc: "Yeni yorumların özetini her hafta otomatik al.", color: "var(--teal)" },
+  { icon: Download, title: "PDF Dışa Aktarma", desc: "Raporu tek tıkla indirip paylaşabilirsin.", color: "var(--yellow)" },
+];
+
+const COMING_SOON_HOME = [
+  { icon: Bell, title: "Bildirim / Alarm", desc: "Skor aniden düştüğünde anında haber ver." },
+  { icon: Smartphone, title: "Google Play Store", desc: "Android yorumlarını da analize dahil et." },
+  { icon: LogIn, title: "Giriş / Hesap Sistemi", desc: "Kendi özel, güvenli alanın." },
 ];
 
 const FAQ = [
@@ -87,7 +120,7 @@ export default function MarketingSections() {
           box-shadow: var(--shadow); padding: 26px;
         }
         .mkt-feature-icon {
-          width: 38px; height: 38px; border-radius: 10px; background: var(--ink-3);
+          width: 38px; height: 38px; border-radius: 10px;
           display: flex; align-items: center; justify-content: center; margin-bottom: 16px;
         }
         .mkt-feature-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
@@ -111,6 +144,22 @@ export default function MarketingSections() {
           display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; min-height: 120px;
         }
 
+        .mkt-all-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 90px; }
+        .mkt-all-card {
+          background: var(--ink-2); border: 1px solid var(--ink-3); border-top: 3px solid var(--card-accent);
+          border-radius: 14px; padding: 20px; box-shadow: var(--shadow);
+        }
+        .mkt-all-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+        .mkt-all-desc { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+
+        .mkt-soon-strip { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-bottom: 90px; }
+        .mkt-soon-card {
+          display: flex; align-items: center; gap: 10px; background: var(--ink-2);
+          border: 1px dashed var(--ink-3); border-radius: 12px; padding: 12px 16px; opacity: 0.75;
+        }
+        .mkt-soon-title { font-size: 12.5px; font-weight: 600; display: flex; align-items: center; gap: 5px; }
+        .mkt-soon-desc { font-size: 11px; color: var(--muted); }
+
         .faq-list { max-width: 640px; margin: 0 auto 90px; display: flex; flex-direction: column; gap: 10px; }
         .faq-item { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 12px; padding: 4px 20px; }
         .faq-q {
@@ -122,6 +171,7 @@ export default function MarketingSections() {
 
         @media (max-width: 780px) {
           .mkt-grid-2, .mkt-showcase { grid-template-columns: 1fr; }
+          .mkt-all-grid { grid-template-columns: 1fr 1fr; }
         }
       `}</style>
 
@@ -150,7 +200,7 @@ export default function MarketingSections() {
         <div className="mkt-section-sub">Ekran görüntüsü analizi ve gerçek kullanıcı yorumları, aynı raporda buluşuyor.</div>
         <div className="mkt-grid-2">
           <div className="mkt-feature-card">
-            <div className="mkt-feature-icon"><Store size={18} color="var(--kick)" /></div>
+            <div className="mkt-feature-icon" style={{ background: "var(--brand)" }}><Store size={18} color="#FFFFFF" /></div>
             <div className="mkt-feature-title">Gerçek App Store verisi</div>
             <div className="mkt-feature-desc">Uydurma değil — herkese açık App Store yorumlarını doğrudan analiz ediyoruz.</div>
             <div className="mkt-priority-row" style={{ justifyContent: "center" }}>
@@ -158,7 +208,7 @@ export default function MarketingSections() {
             </div>
           </div>
           <div className="mkt-feature-card">
-            <div className="mkt-feature-icon"><RefreshCw size={18} color="var(--kick)" /></div>
+            <div className="mkt-feature-icon" style={{ background: "var(--teal)" }}><RefreshCw size={18} color="#FFFFFF" /></div>
             <div className="mkt-feature-title">Her zaman taze</div>
             <div className="mkt-feature-desc">Önbellek yok — her analizde yorumlar gerçek zamanlı çekilir.</div>
             <div className="mkt-ticker">
@@ -180,13 +230,13 @@ export default function MarketingSections() {
         <div className="mkt-section-sub">13 kategori altında toplanan bulgular, tek bakışta önceliklendirilir.</div>
         <div className="mkt-grid-2">
           <div className="mkt-feature-card">
-            <div className="mkt-feature-icon"><LayoutGrid size={18} color="var(--kick)" /></div>
+            <div className="mkt-feature-icon" style={{ background: "var(--yellow)" }}><LayoutGrid size={18} color="#1A1F36" /></div>
             <div className="mkt-feature-title">13 kategori, 4 mercek</div>
             <div className="mkt-feature-desc">Onboarding'den erişilebilirliğe, her bulgu UI / UX / Erişilebilirlik / Ürün merceklerinden birine bağlanır.</div>
             <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UI</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>2 kritik · 1 dikkat</span></div>
           </div>
           <div className="mkt-feature-card">
-            <div className="mkt-feature-icon"><Sparkles size={18} color="var(--kick)" /></div>
+            <div className="mkt-feature-icon" style={{ background: "var(--brand)" }}><Sparkles size={18} color="#FFFFFF" /></div>
             <div className="mkt-feature-title">Etkiye göre önceliklendirilmiş</div>
             <div className="mkt-feature-desc">Hangisini önce düzeltmen gerektiğini, yüksek etki + düşük efor eşleştirmesiyle söylüyoruz.</div>
             <div className="mkt-priority-list">
@@ -208,7 +258,7 @@ export default function MarketingSections() {
         <div className="mkt-section-sub">Haftalık özetler ve rakip karşılaştırmasıyla, sürekli takipte kal.</div>
         <div className="mkt-showcase">
           <div className="mkt-feature-card">
-            <div className="mkt-feature-icon"><Mail size={18} color="var(--kick)" /></div>
+            <div className="mkt-feature-icon" style={{ background: "var(--teal)" }}><Mail size={18} color="#FFFFFF" /></div>
             <div className="mkt-feature-title">Haftalık yorum özeti</div>
             <div className="mkt-feature-desc">Takip ettiğin bir uygulamanın yeni yorumlarının özetini her hafta e-postana alırsın.</div>
             <div className="mkt-showcase-visual">
@@ -217,7 +267,7 @@ export default function MarketingSections() {
             </div>
           </div>
           <div className="mkt-feature-card">
-            <div className="mkt-feature-icon"><GitCompare size={18} color="var(--kick)" /></div>
+            <div className="mkt-feature-icon" style={{ background: "var(--yellow)" }}><GitCompare size={18} color="#1A1F36" /></div>
             <div className="mkt-feature-title">Rakiple karşılaştır</div>
             <div className="mkt-feature-desc">Kendi uygulamanı bir rakiple yan yana koy — skorlar ve bulgular tek ekranda.</div>
             <div className="mkt-showcase-visual" style={{ flexDirection: "row", gap: 24 }}>
@@ -232,6 +282,46 @@ export default function MarketingSections() {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Tüm özellikler */}
+      <div>
+        <div className="mkt-section-title">Artık gerçekten çok şey yapıyor</div>
+        <div className="mkt-section-sub">Kick My Apps'te şu an aktif olan tüm özellikler, tek bakışta.</div>
+        <div className="mkt-all-grid">
+          {ALL_FEATURES.map((f) => {
+            const Icon = f.icon;
+            return (
+              <div className="mkt-all-card" key={f.title} style={{ "--card-accent": f.color }}>
+                <div style={{ width: 34, height: 34, borderRadius: 9, marginBottom: 12, display: "flex", alignItems: "center", justifyContent: "center", background: f.color }}>
+                  <Icon size={17} color="#FFFFFF" />
+                </div>
+                <div className="mkt-all-title">{f.title}</div>
+                <div className="mkt-all-desc">{f.desc}</div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Yakında */}
+      <div>
+        <div className="mkt-section-title">Yakında</div>
+        <div className="mkt-section-sub">Bunlar üzerinde çalışıyoruz — henüz aktif değil.</div>
+        <div className="mkt-soon-strip">
+          {COMING_SOON_HOME.map((s) => {
+            const Icon = s.icon;
+            return (
+              <div className="mkt-soon-card" key={s.title}>
+                <Lock size={13} color="var(--muted)" />
+                <div>
+                  <div className="mkt-soon-title"><Icon size={13} color="var(--muted)" /> {s.title}</div>
+                  <div className="mkt-soon-desc">{s.desc}</div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 

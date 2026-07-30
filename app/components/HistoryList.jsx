@@ -66,7 +66,7 @@ export default function HistoryList({ onBack, onCompare, preselectId, appNameFil
         }
         .compare-btn {
           display: flex; align-items: center; gap: 8px;
-          background: var(--kick); color: var(--ink); font-weight: 700; font-size: 13.5px;
+          background: var(--brand); color: var(--ink); font-weight: 700; font-size: 13.5px;
           padding: 10px 18px; border-radius: 8px; border: none; cursor: pointer;
         }
         .compare-btn:disabled { opacity: 0.35; cursor: not-allowed; }
@@ -78,12 +78,12 @@ export default function HistoryList({ onBack, onCompare, preselectId, appNameFil
           padding: 12px 16px; cursor: pointer; transition: border-color 0.15s ease, box-shadow 0.15s ease;
           box-shadow: var(--shadow);
         }
-        .scan-row-selected { border-color: var(--kick); }
+        .scan-row-selected { border-color: var(--brand); }
         .scan-checkbox {
           width: 18px; height: 18px; border-radius: 5px; border: 2px solid var(--muted);
           flex-shrink: 0; display: flex; align-items: center; justify-content: center;
         }
-        .scan-checkbox-on { background: var(--kick); border-color: var(--kick); }
+        .scan-checkbox-on { background: var(--brand); border-color: var(--brand); }
         .scan-score {
           font-family: var(--font-mono); font-weight: 700; font-size: 16px; width: 36px; text-align: center;
         }

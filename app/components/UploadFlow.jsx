@@ -128,7 +128,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           color: var(--chalk);
           margin: 0;
         }
-        .hero-title-small { font-size: 36px; display: inline-block; }
+        .hero-title-small { font-size: 36px; display: inline-block; color: rgba(0, 14, 255, .5); }
         @media (max-width: 720px) {
           .hero-title { font-size: 42px; }
           .hero-title-small { font-size: 22px; }
@@ -156,7 +156,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           padding: 16px 22px;
           transition: border-color 0.15s ease;
         }
-        .hero-search-pill:focus-within { border-color: var(--kick); }
+        .hero-search-pill:focus-within { border-color: var(--brand); }
         .hero-search-pill input {
           flex: 1;
           background: transparent;
@@ -208,7 +208,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           transition: border-color 0.15s ease, background 0.15s ease;
           box-sizing: border-box;
         }
-        .dropzone-active { border-color: var(--kick); background: var(--ink-2); }
+        .dropzone-active { border-color: var(--brand); background: var(--ink-2); }
         .dropzone:hover { border-color: var(--muted); }
         .dropzone-label { font-size: 14.5px; color: var(--chalk); margin-top: 14px; font-weight: 600; }
         .dropzone-hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
@@ -278,7 +278,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           box-shadow: var(--shadow);
           transition: border-color 0.15s ease;
         }
-        .url-input-wrap:focus-within { border-color: var(--kick); }
+        .url-input-wrap:focus-within { border-color: var(--brand); }
         .url-input-wrap input {
           background: transparent;
           border: none;
@@ -345,12 +345,12 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           align-items: center;
           justify-content: center;
           gap: 8px;
-          background: var(--kick);
+          background: var(--brand);
           color: var(--ink);
           font-weight: 700;
           font-size: 14.5px;
           padding: 14px 20px;
-          border-radius: 999px;
+          border-radius: 16px;
           border: none;
           cursor: pointer;
           transition: opacity 0.15s ease;

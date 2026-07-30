@@ -69,7 +69,7 @@ export default function DashboardPage() {
             gap: 12px;
             transition: border-color 0.15s ease;
           }
-          .dash-card:hover { border-color: var(--kick); }
+          .dash-card:hover { border-color: var(--brand); }
           .dash-card-top { display: flex; align-items: flex-start; justify-content: space-between; }
           .dash-card-name { font-size: 15px; font-weight: 600; }
           .dash-card-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
@@ -93,7 +93,7 @@ export default function DashboardPage() {
             align-items: center;
             gap: 6px;
             margin-top: 12px;
-            background: var(--kick);
+            background: var(--brand);
             color: #FFFFFF;
             font-weight: 600;
             font-size: 13.5px;
