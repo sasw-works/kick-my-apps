@@ -72,9 +72,12 @@ Kurallar:
   Kod her zaman GENEL/ÖRNEK bir başlangıç noktasıdır, kullanıcının gerçek koduna erişimin yok — bunu
   varsayma, sadece "böyle bir yaklaşım dene" niteliğinde kısa bir örnek ver.
 - boundingBox tahminin YAKLAŞIK olmalı; emin değilsen null bırak, uydurma koordinat verme.
-- approvalRisks: SADECE ekran görüntülerinde gerçekten gördüğün somut, görsel kanıta dayalı riskleri
-  listele (ör. placeholder/lorem ipsum metin, boş/kırık görünen ekran, yarım kalmış özellik, yanıltıcı
-  abartılı iddialar). Yorumlarda çökme/hata şikayeti yoğunsa bunu da bir risk olarak ekleyebilirsin.
+- approvalRisks: Bu uygulama ZATEN yayında, yani "ilk onay" riski değil — Apple/Google HER güncellemede
+  yeniden inceleme yapıyor ve mevcut uygulamaları da sonradan işaretleyip kaldırabiliyor. Bu yüzden
+  bunları "bir sonraki güncellemede veya rastgele bir denetimde sorun çıkarabilecek" sinyaller olarak
+  çerçevele. SADECE ekran görüntülerinde gerçekten gördüğün somut, görsel kanıta dayalı riskleri listele
+  (ör. placeholder/lorem ipsum metin, boş/kırık görünen ekran, yarım kalmış özellik, yanıltıcı abartılı
+  iddialar). Yorumlarda çökme/hata şikayeti yoğunsa bunu da bir risk olarak ekleyebilirsin.
   Hiçbir somut kanıt yoksa boş dizi döndür — riski UYDURMA.`;
 
 async function callGeminiModel(model, parts) {

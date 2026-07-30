@@ -1070,9 +1070,10 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         {approvalRisks.length > 0 && (
           <div className="panel">
-            <div className="panel-title">STORE ONAYLANMA RİSKİ</div>
+            <div className="panel-title">GÜNCELLEME / İNCELEME RİSKİ</div>
             <div className="risk-disclaimer">
-              Bu, kesin bir garanti değil — ekran görüntülerinde gözlemlenen olası risk sinyalleri.
+              Uygulama zaten yayında — bunlar "ilk onay" riski değil, bir sonraki güncellemede veya
+              rastgele bir mağaza denetiminde sorun çıkarabilecek sinyaller. Kesin bir garanti değil.
             </div>
             <div className="risk-list">
               {approvalRisks.map((r, i) => (
