@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import UploadFlow from "./components/UploadFlow";
 import HealthReport from "./components/HealthReport";
+import MarketingSections from "./components/MarketingSections";
 
 export default function Home() {
   const [stage, setStage] = useState("upload"); // upload | report
@@ -87,7 +88,10 @@ export default function Home() {
     <main className="min-h-screen px-4 pb-4 md:px-8 md:pb-8" style={{ background: "var(--ink)" }}>
       <div className="max-w-6xl mx-auto">
         {stage === "upload" ? (
-          <UploadFlow onAnalyze={handleAnalyze} analyzing={analyzing} errorMessage={errorMessage} />
+          <>
+            <UploadFlow onAnalyze={handleAnalyze} analyzing={analyzing} errorMessage={errorMessage} />
+            <MarketingSections />
+          </>
         ) : (
           <HealthReport
             data={reportData}

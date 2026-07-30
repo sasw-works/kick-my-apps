@@ -1,0 +1,250 @@
+import React from "react";
+import {
+  Store,
+  RefreshCw,
+  LayoutGrid,
+  Sparkles,
+  Mail,
+  GitCompare,
+  ChevronDown,
+  CheckCircle2,
+  AlertTriangle,
+  XCircle,
+} from "lucide-react";
+
+const SAMPLE_REVIEWS = [
+  { stars: 5, title: "Yeni güncelleme harika!", body: "Her şey çok daha hızlı, arayüz de çok sadeleşmiş.", who: "Ayşe K. · 2 saat önce" },
+  { stars: 2, title: "Ödeme ekranı donuyor", body: "Satın alma tamamlanırken uygulama sürekli kilitleniyor.", who: "Mert D. · 5 saat önce" },
+  { stars: 4, title: "Karanlık tema gelse keşke", body: "Genel olarak çok iyi, tek eksik karanlık tema.", who: "Zeynep A. · 1 gün önce" },
+  { stars: 5, title: "Destek çok hızlı", body: "Yazdım, dakikalar içinde dönüş yaptılar.", who: "Kerem T. · 1 gün önce" },
+];
+
+const PRIORITY_ITEMS = [
+  { tag: "P1", title: "Giriş ekranında hata", meta: "342 bahsedilme · Yükseliyor ↑", color: "var(--kick)" },
+  { tag: "P2", title: "Yavaş ödeme akışı", meta: "218 bahsedilme · Sabit", color: "var(--kick)" },
+  { tag: "P3", title: "Karanlık tema eksik", meta: "156 bahsedilme · Yeni", color: "var(--yellow)" },
+  { tag: "P4", title: "Müşteri desteği", meta: "96 bahsedilme · Yeni", color: "var(--yellow)" },
+];
+
+const FAQ = [
+  {
+    q: "Hangi verileri topluyorsunuz?",
+    a: "Sadece herkese açık App Store yorumlarını ve senin yüklediğin ekran görüntülerini analiz ediyoruz. Hiçbir özel/gizli kullanıcı verisine erişmiyoruz.",
+  },
+  {
+    q: "Yorumlar ne kadar taze?",
+    a: "Her analizde App Store'dan gerçek zamanlı olarak çekiyoruz — önbellek kullanmıyoruz, her seferinde en güncel yorumları görürsün.",
+  },
+  {
+    q: "Rakip uygulamalarla karşılaştırma yapabilir miyim?",
+    a: "Evet — herhangi iki taramayı (kendi uygulaman ve bir rakibi dahil) yan yana karşılaştırabilirsin.",
+  },
+  {
+    q: "Bulgular nasıl önceliklendiriliyor?",
+    a: "Her bulgu kritik/dikkat/sorunsuz olarak etiketleniyor ve 'Hızlı Kazanımlar' paneli, yüksek etkili + düşük efor gerektiren maddeleri otomatik öne çıkarıyor.",
+  },
+  {
+    q: "Haftalık özet nasıl çalışır?",
+    a: "Bir uygulamayı takip etmeye başladığında, her hafta o uygulamanın yeni App Store yorumlarının özetini e-posta ile alırsın.",
+  },
+];
+
+function FaqItem({ q, a }) {
+  const [open, setOpen] = React.useState(false);
+  return (
+    <div className="faq-item">
+      <button className="faq-q" onClick={() => setOpen(!open)}>
+        {q}
+        <ChevronDown size={16} style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 0.15s ease" }} />
+      </button>
+      {open && <div className="faq-a">{a}</div>}
+    </div>
+  );
+}
+
+export default function MarketingSections() {
+  return (
+    <div className="mkt-root">
+      <style>{`
+        .mkt-root { width: 100%; max-width: 1000px; margin: 90px auto 0; font-family: 'Inter', sans-serif; }
+        .mkt-section-title { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; color: var(--chalk); text-align: center; margin-bottom: 10px; }
+        .mkt-section-sub { font-size: 14px; color: var(--muted); text-align: center; max-width: 480px; margin: 0 auto 40px; }
+
+        .mkt-preview-card {
+          background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 20px;
+          box-shadow: var(--shadow); padding: 28px; margin-bottom: 90px;
+        }
+        .mkt-preview-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+        .mkt-preview-score { display: flex; align-items: center; gap: 14px; }
+        .mkt-preview-score-num { font-family: var(--font-display); font-size: 40px; font-weight: 700; color: var(--teal); }
+        .mkt-preview-findings { display: flex; flex-direction: column; gap: 8px; }
+        .mkt-preview-row { display: flex; align-items: center; gap: 10px; background: var(--ink); border-radius: 8px; padding: 10px 14px; font-size: 13px; }
+        .mkt-preview-row span { flex: 1; color: var(--chalk); }
+
+        .mkt-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 90px; }
+        .mkt-feature-card {
+          background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 16px;
+          box-shadow: var(--shadow); padding: 26px;
+        }
+        .mkt-feature-icon {
+          width: 38px; height: 38px; border-radius: 10px; background: var(--ink-3);
+          display: flex; align-items: center; justify-content: center; margin-bottom: 16px;
+        }
+        .mkt-feature-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+        .mkt-feature-desc { font-size: 13.5px; color: var(--muted); line-height: 1.6; margin-bottom: 18px; }
+
+        .mkt-ticker { display: flex; flex-direction: column; gap: 8px; max-height: 168px; overflow: hidden; }
+        .mkt-review-card { background: var(--ink); border-radius: 8px; padding: 10px 12px; }
+        .mkt-review-stars { color: var(--yellow); font-size: 11px; margin-bottom: 3px; }
+        .mkt-review-title { font-size: 12.5px; font-weight: 600; color: var(--chalk); }
+        .mkt-review-body { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+
+        .mkt-priority-list { display: flex; flex-direction: column; gap: 8px; }
+        .mkt-priority-row { display: flex; align-items: center; gap: 10px; background: var(--ink); border-radius: 8px; padding: 8px 12px; }
+        .mkt-priority-tag { font-family: var(--font-mono); font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; }
+        .mkt-priority-title { font-size: 12.5px; font-weight: 600; color: var(--chalk); flex: 1; }
+        .mkt-priority-meta { font-size: 10.5px; color: var(--muted); font-family: var(--font-mono); }
+
+        .mkt-showcase { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 90px; }
+        .mkt-showcase-visual {
+          background: var(--ink); border-radius: 10px; padding: 20px;
+          display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; min-height: 120px;
+        }
+
+        .faq-list { max-width: 640px; margin: 0 auto 90px; display: flex; flex-direction: column; gap: 10px; }
+        .faq-item { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 12px; padding: 4px 20px; }
+        .faq-q {
+          width: 100%; display: flex; align-items: center; justify-content: space-between;
+          background: none; border: none; cursor: pointer; padding: 16px 0;
+          font-size: 14px; font-weight: 600; color: var(--chalk); text-align: left;
+        }
+        .faq-a { font-size: 13.5px; color: var(--muted); line-height: 1.6; padding-bottom: 16px; }
+
+        @media (max-width: 780px) {
+          .mkt-grid-2, .mkt-showcase { grid-template-columns: 1fr; }
+        }
+      `}</style>
+
+      {/* Rapor önizlemesi */}
+      <div>
+        <div className="mkt-section-title">Gerçek raporu keşfet</div>
+        <div className="mkt-section-sub">Ekran görüntülerin ve yorumların, tek ve net bir sağlık raporuna dönüşür.</div>
+        <div className="mkt-preview-card">
+          <div className="mkt-preview-header">
+            <div className="mkt-preview-score">
+              <div className="mkt-preview-score-num">82</div>
+              <div style={{ fontSize: 12, color: "var(--muted)" }}>APP HEALTH SCORE</div>
+            </div>
+          </div>
+          <div className="mkt-preview-findings">
+            <div className="mkt-preview-row"><CheckCircle2 size={15} color="var(--teal)" /><span>Font hiyerarşisi net ve tutarlı</span></div>
+            <div className="mkt-preview-row"><AlertTriangle size={15} color="var(--yellow)" /><span>Onboarding 7 ekran — biraz uzun</span></div>
+            <div className="mkt-preview-row"><XCircle size={15} color="var(--kick)" /><span>CTA butonu düşük kontrastta</span></div>
+          </div>
+        </div>
+      </div>
+
+      {/* Her mağaza tek yerde + Her zaman taze */}
+      <div>
+        <div className="mkt-section-title">Yorumların sana anlattığı her şey</div>
+        <div className="mkt-section-sub">Ekran görüntüsü analizi ve gerçek kullanıcı yorumları, aynı raporda buluşuyor.</div>
+        <div className="mkt-grid-2">
+          <div className="mkt-feature-card">
+            <div className="mkt-feature-icon"><Store size={18} color="var(--kick)" /></div>
+            <div className="mkt-feature-title">Gerçek App Store verisi</div>
+            <div className="mkt-feature-desc">Uydurma değil — herkese açık App Store yorumlarını doğrudan analiz ediyoruz.</div>
+            <div className="mkt-priority-row" style={{ justifyContent: "center" }}>
+              <span style={{ fontSize: 12.5, color: "var(--muted)" }}>★★★★☆ · 1.240 yorum analiz edildi</span>
+            </div>
+          </div>
+          <div className="mkt-feature-card">
+            <div className="mkt-feature-icon"><RefreshCw size={18} color="var(--kick)" /></div>
+            <div className="mkt-feature-title">Her zaman taze</div>
+            <div className="mkt-feature-desc">Önbellek yok — her analizde yorumlar gerçek zamanlı çekilir.</div>
+            <div className="mkt-ticker">
+              {SAMPLE_REVIEWS.map((r, i) => (
+                <div className="mkt-review-card" key={i}>
+                  <div className="mkt-review-stars">{"★".repeat(r.stars)}{"☆".repeat(5 - r.stars)}</div>
+                  <div className="mkt-review-title">{r.title}</div>
+                  <div className="mkt-review-body">{r.body} — {r.who}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 13 kategori + Hızlı Kazanımlar */}
+      <div>
+        <div className="mkt-section-title">Derinlemesine, ama dağınık değil</div>
+        <div className="mkt-section-sub">13 kategori altında toplanan bulgular, tek bakışta önceliklendirilir.</div>
+        <div className="mkt-grid-2">
+          <div className="mkt-feature-card">
+            <div className="mkt-feature-icon"><LayoutGrid size={18} color="var(--kick)" /></div>
+            <div className="mkt-feature-title">13 kategori, 4 mercek</div>
+            <div className="mkt-feature-desc">Onboarding'den erişilebilirliğe, her bulgu UI / UX / Erişilebilirlik / Ürün merceklerinden birine bağlanır.</div>
+            <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UI</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>2 kritik · 1 dikkat</span></div>
+          </div>
+          <div className="mkt-feature-card">
+            <div className="mkt-feature-icon"><Sparkles size={18} color="var(--kick)" /></div>
+            <div className="mkt-feature-title">Etkiye göre önceliklendirilmiş</div>
+            <div className="mkt-feature-desc">Hangisini önce düzeltmen gerektiğini, yüksek etki + düşük efor eşleştirmesiyle söylüyoruz.</div>
+            <div className="mkt-priority-list">
+              {PRIORITY_ITEMS.slice(0, 2).map((p) => (
+                <div className="mkt-priority-row" key={p.tag}>
+                  <span className="mkt-priority-tag" style={{ color: p.color, background: "var(--ink-3)" }}>{p.tag}</span>
+                  <span className="mkt-priority-title">{p.title}</span>
+                  <span className="mkt-priority-meta">{p.meta}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Haftalık özet + Compare */}
+      <div>
+        <div className="mkt-section-title">Hiçbir şeyi kaçırma</div>
+        <div className="mkt-section-sub">Haftalık özetler ve rakip karşılaştırmasıyla, sürekli takipte kal.</div>
+        <div className="mkt-showcase">
+          <div className="mkt-feature-card">
+            <div className="mkt-feature-icon"><Mail size={18} color="var(--kick)" /></div>
+            <div className="mkt-feature-title">Haftalık yorum özeti</div>
+            <div className="mkt-feature-desc">Takip ettiğin bir uygulamanın yeni yorumlarının özetini her hafta e-postana alırsın.</div>
+            <div className="mkt-showcase-visual">
+              <Mail size={22} color="var(--muted)" />
+              <span style={{ fontSize: 12, color: "var(--muted)" }}>Her Pazartesi, otomatik</span>
+            </div>
+          </div>
+          <div className="mkt-feature-card">
+            <div className="mkt-feature-icon"><GitCompare size={18} color="var(--kick)" /></div>
+            <div className="mkt-feature-title">Rakiple karşılaştır</div>
+            <div className="mkt-feature-desc">Kendi uygulamanı bir rakiple yan yana koy — skorlar ve bulgular tek ekranda.</div>
+            <div className="mkt-showcase-visual" style={{ flexDirection: "row", gap: 24 }}>
+              <div style={{ textAlign: "center" }}>
+                <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--teal)" }}>78</div>
+                <div style={{ fontSize: 10, color: "var(--muted)" }}>Sen</div>
+              </div>
+              <GitCompare size={16} color="var(--muted)" />
+              <div style={{ textAlign: "center" }}>
+                <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--yellow)" }}>61</div>
+                <div style={{ fontSize: 10, color: "var(--muted)" }}>Rakip</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* FAQ */}
+      <div>
+        <div className="mkt-section-title">Sorular? Cevaplar.</div>
+        <div className="mkt-section-sub">&nbsp;</div>
+        <div className="faq-list">
+          {FAQ.map((f) => (
+            <FaqItem key={f.q} q={f.q} a={f.a} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}

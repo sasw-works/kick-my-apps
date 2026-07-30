@@ -12,6 +12,18 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
   const [showDropdown, setShowDropdown] = useState(false);
   const [dragActive, setDragActive] = useState(false);
   const debounceRef = useRef(null);
+  const searchInputRef = useRef(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   const addFiles = useCallback((fileList) => {
     const incoming = Array.from(fileList).filter((f) => f.type.startsWith("image/"));
@@ -148,6 +160,11 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           font-size: 15px;
         }
         .hero-search-pill input::placeholder { color: var(--muted); }
+        .kbd-hint {
+          font-family: var(--font-mono); font-size: 11px; color: var(--muted);
+          background: var(--ink-3); border: 1px solid var(--ink-3); border-radius: 6px;
+          padding: 3px 7px; flex-shrink: 0;
+        }
         .hero-search-hint { font-size: 12.5px; color: var(--muted); margin-top: 35px; text-align: center; }
         .history-link {
           margin-top: 10px;
@@ -346,6 +363,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           <div className="hero-search-pill">
             <Search size={18} color="var(--muted)" />
             <input
+              ref={searchInputRef}
               type="text"
               placeholder="Search any app…"
               value={query}
@@ -355,6 +373,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
             />
             {searching && <Loader2 size={16} className="spin" color="var(--muted)" />}
             {selectedApp && !searching && <Check size={17} color="var(--teal)" />}
+            {!query && !searching && <kbd className="kbd-hint">⌘K</kbd>}
           </div>
 
           {showDropdown && suggestions.length > 0 && (
