@@ -294,6 +294,45 @@ const ICON_MAP = {
   trust: BadgeCheck,
 };
 
+// Her kategori bir "mercek"e (UI / UX / Erişilebilirlik / Ürün) bağlanır — 6 ayrı
+// rapor yerine tek raporda gruplu özet. Bilinçli bir sınırlama: klavye navigasyonu,
+// ekran okuyucu uyumluluğu, animasyon performansı gibi gerçek cihaz/kod gerektiren
+// kriterler burada YOK — ekran görüntüsünden dürüstçe değerlendirilemezler.
+const LENS_MAP = {
+  cta: "UI",
+  contrast: "UI",
+  typography: "UI",
+  consistency: "UI",
+  onboarding: "UX",
+  navigation: "UX",
+  empty_states: "UX",
+  loading: "UX",
+  copy: "UX",
+  accessibility: "Erişilebilirlik",
+  permissions: "Ürün",
+  conversion: "Ürün",
+  trust: "Ürün",
+};
+
+const LENS_ORDER = ["UI", "UX", "Erişilebilirlik", "Ürün"];
+
+// Hızlı Kazanımlar (Impact × Effort) için efor tahmini — kaba ama tutarlı bir sezgisel.
+const EFFORT_MAP = {
+  cta: "low",
+  contrast: "low",
+  typography: "low",
+  copy: "low",
+  accessibility: "low",
+  permissions: "low",
+  consistency: "medium",
+  navigation: "medium",
+  loading: "medium",
+  empty_states: "medium",
+  trust: "medium",
+  onboarding: "high",
+  conversion: "high",
+};
+
 function HistorySparkline({ points, width = 560, height = 90 }) {
   if (points.length < 2) return null;
   const max = 100;
@@ -414,6 +453,28 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
   const warnCount = findings.filter((f) => f.status === "warn").length;
   const goodCount = findings.filter((f) => f.status === "good").length;
 
+  const lensSummary = LENS_ORDER.map((lens) => {
+    const items = findings.filter((f) => LENS_MAP[f.key] === lens);
+    return {
+      lens,
+      bad: items.filter((f) => f.status === "bad").length,
+      warn: items.filter((f) => f.status === "warn").length,
+      good: items.filter((f) => f.status === "good").length,
+      total: items.length,
+    };
+  }).filter((l) => l.total > 0);
+
+  const IMPACT_RANK = { bad: 2, warn: 1, good: 0 };
+  const EFFORT_RANK = { low: 0, medium: 1, high: 2 };
+  const quickWins = findings
+    .filter((f) => f.status !== "good" && (EFFORT_MAP[f.key] || "medium") !== "high")
+    .sort((a, b) => {
+      const impactDiff = IMPACT_RANK[b.status] - IMPACT_RANK[a.status];
+      if (impactDiff !== 0) return impactDiff;
+      return EFFORT_RANK[EFFORT_MAP[a.key] || "medium"] - EFFORT_RANK[EFFORT_MAP[b.key] || "medium"];
+    })
+    .slice(0, 5);
+
   return (
     <div className="kma-root" ref={reportRef}>
       <style>{`
@@ -482,6 +543,23 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .summary-list { display: flex; flex-direction: column; gap: 8px; justify-content: center; height: 100%; }
         .summary-row { display: flex; align-items: center; gap: 10px; font-size: 13.5px; }
         .summary-count { font-family: var(--font-mono); font-weight: 700; width: 20px; }
+
+        .lens-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+        .lens-name { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+        .lens-bar { display: flex; height: 6px; border-radius: 3px; overflow: hidden; background: var(--ink-3); margin-bottom: 8px; }
+        .lens-seg { height: 100%; }
+        .lens-count { display: flex; gap: 10px; flex-wrap: wrap; font-family: var(--font-mono); font-size: 11px; }
+
+        .qw-list { display: flex; flex-direction: column; gap: 10px; }
+        .qw-row { background: var(--ink); border-radius: 8px; padding: 12px 14px; }
+        .qw-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+        .qw-title { font-size: 13.5px; font-weight: 600; }
+        .qw-tags { display: flex; gap: 6px; }
+        .qw-tag { font-family: var(--font-mono); font-size: 10px; padding: 3px 8px; border-radius: 999px; background: var(--ink-3); }
+        .qw-impact-bad { color: var(--kick); }
+        .qw-impact-warn { color: var(--yellow); }
+        .qw-effort { color: var(--teal); }
+        .qw-suggestion { font-size: 12.5px; color: var(--muted); margin: 0; line-height: 1.5; }
 
         .finding-list { display: flex; flex-direction: column; gap: 10px; }
         .finding-row {
@@ -658,6 +736,29 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         <HistoryPanel history={history} />
 
+        {lensSummary.length > 0 && (
+          <div className="panel">
+            <div className="panel-title">ANALİZ MERCEKLERİ</div>
+            <div className="lens-grid">
+              {lensSummary.map((l) => (
+                <div className="lens-item" key={l.lens}>
+                  <div className="lens-name">{l.lens}</div>
+                  <div className="lens-bar">
+                    {l.bad > 0 && <div className="lens-seg" style={{ flex: l.bad, background: "var(--kick)" }} />}
+                    {l.warn > 0 && <div className="lens-seg" style={{ flex: l.warn, background: "var(--yellow)" }} />}
+                    {l.good > 0 && <div className="lens-seg" style={{ flex: l.good, background: "var(--teal)" }} />}
+                  </div>
+                  <div className="lens-count">
+                    {l.bad > 0 && <span style={{ color: "var(--kick)" }}>{l.bad} kritik</span>}
+                    {l.warn > 0 && <span style={{ color: "var(--yellow)" }}>{l.warn} dikkat</span>}
+                    {l.good > 0 && <span style={{ color: "var(--teal)" }}>{l.good} sorunsuz</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div>
           <div className="panel-title" style={{ marginBottom: 14 }}>BULGULAR</div>
           <div className="finding-list">
@@ -666,6 +767,30 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
             ))}
           </div>
         </div>
+
+        {quickWins.length > 0 && (
+          <div className="panel">
+            <div className="panel-title">⭐ HIZLI KAZANIMLAR · Yüksek etki, düşük efor</div>
+            <div className="qw-list">
+              {quickWins.map((f) => (
+                <div className="qw-row" key={f.key}>
+                  <div className="qw-top">
+                    <span className="qw-title">{f.title}</span>
+                    <span className="qw-tags">
+                      <span className={`qw-tag qw-impact-${f.status}`}>
+                        Etki: {f.status === "bad" ? "Yüksek" : "Orta"}
+                      </span>
+                      <span className="qw-tag qw-effort">
+                        Efor: {EFFORT_MAP[f.key] === "low" ? "Düşük" : "Orta"}
+                      </span>
+                    </span>
+                  </div>
+                  <p className="qw-suggestion">{f.suggestion}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {reviewSummary && (
         <div className="panel">
