@@ -122,16 +122,16 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           position: absolute;
           border-radius: 50%;
           filter: blur(100px);
-          opacity: 0.35;
+          opacity: 0.55;
           animation-name: blob-move;
           animation-timing-function: ease-in-out;
           animation-iteration-count: infinite;
           pointer-events: none;
           z-index: 0;
         }
-        .blob-1 { width: 65vw; height: 65vw; max-width: 780px; max-height: 780px; background: #4F46E5; top: 60px; left: -22%; animation-duration: 18s; }
-        .blob-2 { width: 60vw; height: 60vw; max-width: 720px; max-height: 720px; background: #8B5CF6; top: 110px; right: -20%; animation-duration: 21s; animation-delay: -4s; }
-        .blob-3 { width: 48vw; height: 48vw; max-width: 560px; max-height: 560px; background: #3B82F6; top: 220px; left: 30%; animation-duration: 15s; animation-delay: -8s; }
+        .blob-1 { width: 65vw; height: 65vw; max-width: 780px; max-height: 780px; background: #FBCFE8; top: 20px; left: -18%; animation-duration: 18s; }
+        .blob-2 { width: 60vw; height: 60vw; max-width: 720px; max-height: 720px; background: #BBF7D0; top: -60px; right: -14%; animation-duration: 21s; animation-delay: -4s; }
+        .blob-3 { width: 55vw; height: 55vw; max-width: 660px; max-height: 660px; background: #C7D2FE; top: 260px; left: 28%; animation-duration: 15s; animation-delay: -8s; }
         @keyframes blob-move {
           0%, 100% { transform: translate(0, 0) scale(1); }
           33% { transform: translate(30px, 24px) scale(1.1); }
@@ -145,16 +145,15 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
 
         .hero-title {
           font-family: var(--font-display);
+          font-size: 86px;
+          font-weight: 500;
           letter-spacing: -0.025em;
           line-height: 1.08;
           color: var(--chalk);
           margin: 0;
         }
-        .hero-title-light { font-size: 68px; font-weight: 300; }
-        .hero-title-medium { font-size: 78px; font-weight: 500; }
         @media (max-width: 720px) {
-          .hero-title-light { font-size: 32px; }
-          .hero-title-medium { font-size: 40px; }
+          .hero-title { font-size: 42px; }
         }
 
         .hero-search-wrap {
@@ -389,9 +388,9 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         <div className="blob blob-3" />
         <div className="upload-hero">
           <h1 className="hero-title">
-            <span className="hero-title-light">Ready to</span>
+            Ready to
             <br />
-            <span className="hero-title-medium">Kick Your Apps</span>
+            Kick Your Apps
           </h1>
         </div>
       </div>
