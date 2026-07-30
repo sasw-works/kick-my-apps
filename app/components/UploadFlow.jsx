@@ -115,21 +115,45 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           flex-direction: column;
           align-items: center;
         }
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-        .upload-hero { text-align: center; margin-top: 100px; margin-bottom: 28px; max-width: 720px; }
+        .hero-bg-wrap { position: relative; width: 100%; display: flex; justify-content: center; overflow: hidden; }
+        .blob {
+          position: absolute;
+          border-radius: 50%;
+          filter: blur(70px);
+          opacity: 0.3;
+          animation-name: blob-move;
+          animation-timing-function: ease-in-out;
+          animation-iteration-count: infinite;
+          pointer-events: none;
+        }
+        .blob-1 { width: 340px; height: 340px; background: var(--kick); top: -130px; left: 8%; animation-duration: 16s; }
+        .blob-2 { width: 300px; height: 300px; background: var(--teal); top: -90px; right: 10%; animation-duration: 19s; animation-delay: -4s; }
+        .blob-3 { width: 260px; height: 260px; background: var(--yellow); top: 30px; left: 42%; animation-duration: 13s; animation-delay: -8s; }
+        @keyframes blob-move {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          33% { transform: translate(30px, 24px) scale(1.1); }
+          66% { transform: translate(-24px, 30px) scale(0.94); }
+        }
+        @media (max-width: 720px) {
+          .blob { display: none; }
+        }
+
+        .upload-hero { text-align: center; margin-top: 100px; margin-bottom: 53px; max-width: 720px; position: relative; z-index: 1; }
 
         .hero-title {
           font-family: var(--font-display);
-          font-size: 88px;
-          font-weight: 800;
           letter-spacing: -0.025em;
           line-height: 1.08;
           color: var(--chalk);
           margin: 0;
         }
+        .hero-title-light { font-size: 78px; font-weight: 300; }
+        .hero-title-medium { font-size: 88px; font-weight: 500; }
         @media (max-width: 720px) {
-          .hero-title { font-size: 48px; }
+          .hero-title-light { font-size: 40px; }
+          .hero-title-medium { font-size: 48px; }
         }
 
         .hero-search-wrap {
@@ -294,7 +318,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           border-radius: 10px;
           overflow: hidden;
           z-index: 20;
-          box-shadow: 0 4px 6px rgba(26,31,54,0.05), 0 16px 32px rgba(26,31,54,0.12);
+          box-shadow: none;
         }
         .suggestion-row {
           width: 100%;
@@ -358,12 +382,17 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         @keyframes kma-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
       `}</style>
 
-      <div className="upload-hero">
-        <h1 className="hero-title">
-          Ready to
-          <br />
-          Kick Your Apps
-        </h1>
+      <div className="hero-bg-wrap">
+        <div className="blob blob-1" />
+        <div className="blob blob-2" />
+        <div className="blob blob-3" />
+        <div className="upload-hero">
+          <h1 className="hero-title">
+            <span className="hero-title-light">Ready to</span>
+            <br />
+            <span className="hero-title-medium">Kick Your Apps</span>
+          </h1>
+        </div>
       </div>
 
       <div className="hero-search-wrap">

@@ -9,7 +9,7 @@
   --kick: #F5433A;
   --yellow: #F5A623;
   --teal: #0EA5A0;
-  --shadow: 0 1px 2px rgba(26,31,54,0.04), 0 8px 24px rgba(26,31,54,0.06);
+  --shadow: none;
   --background: var(--ink);
   --foreground: var(--chalk);
 }
@@ -23,7 +23,7 @@ html.dark {
   --kick: #FF5A42;
   --yellow: #FFC93C;
   --teal: #2DD4BF;
-  --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.45);
+  --shadow: none;
 }
 
 @theme inline {
