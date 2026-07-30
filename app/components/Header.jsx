@@ -36,7 +36,7 @@ export default function Header() {
           background: var(--ink-2);
           border: 1px solid var(--ink-3);
           border-radius: 999px;
-          padding: 15px 12px 15px 18px;
+          padding: 15px 17px 15px 18px;
           font-family: 'Inter', sans-serif;
         }
         .kma-header-logo {
