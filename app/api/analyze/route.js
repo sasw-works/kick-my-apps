@@ -31,20 +31,31 @@ Kategori rehberi (ekran görüntüsü verildiyse hepsini değerlendirmeye çalı
 - typography: başlık/gövde/etiket hiyerarşisinin netliği
 - accessibility: dokunma alanı boyutları, okunabilirlik
 - permissions: istenen izinlerin sayısı ve zamanlaması (varsa)
-- conversion: ödeme/kayıt gibi kritik akışlarda sürtünme noktaları
+- conversion (ürün/iş bakışı — Product Owner gözüyle): ödeme/kayıt akışındaki sürtünme noktaları,
+  değer önerisinin ilk ekranlarda net olup olmadığı, eksik/zayıf yerleştirilmiş CTA'lar, üst satışa
+  (upsell/premium) dair bir fırsat görülüp görülmediği, önemli bir özelliğin gözden kaçacak kadar
+  gizli/görünmez konumlandırılmış olması
 - navigation: alt/üst navigasyonun netliği, kullanıcının kaybolma riski
 - empty_states: boş/hata durumlarının kullanıcıya yol gösterip göstermediği
-- consistency: ekranlar arası görsel tutarlılık (boşluk, ikon stili, renk kullanımı)
+- consistency (tasarım sistemi sağlığı): ekranlar arası boşluk/spacing skalasının tutarlılığı, aynı işlevi
+  gören butonların farklı stillerde olup olmadığı, ikon setinin tek bir tarzda olup olmadığı, renk
+  paletinin sınırlı ve tekrar eden bir sistem mi yoksa rastgele mi kullanıldığı, kart/bileşen
+  tasarımlarının birbirini tekrar edip etmediği
 - loading: yükleme/bekleme anlarında geri bildirim olup olmadığı
 - copy: buton ve yönlendirme metinlerinin netliği/tutarlılığı
-- trust: güven sinyalleri (değerlendirme, güvenlik rozeti, sosyal kanıt) varlığı
+- trust (ürün/iş bakışı): güven sinyalleri (değerlendirme, güvenlik rozeti, sosyal kanıt) varlığı ve
+  bunların kullanıcı motivasyonunu artıracak şekilde yerleştirilip yerleştirilmediği
 
 Kurallar:
 - Ekran görüntüsü verilmediyse görsel kategoriler hakkında tahmin YAPMA, findings listesine ekleme.
 - Yorum verisi verilmediyse reviewSummary alanını null yap.
 - En az 5, en fazla 11 finding döndür — verilen görsel sayısına göre gerçekçi ol, uydurma detay ekleme.
 - Skorları abartma; gerçekten gördüğün sorunlara göre dürüst bir değerlendirme yap.
-- Aynı ekran görüntüsünden birden fazla farklı kategori bulgusu çıkarabilirsin.`;
+- Aynı ekran görüntüsünden birden fazla farklı kategori bulgusu çıkarabilirsin.
+- conversion/trust/permissions bulgularında iş etkisine değin (ör. "bu sürtünme kullanıcıyı kayıt
+  akışının ortasında kaybettirebilir") ama asla uydurma yüzde/rakam verme — sadece gözleme dayan.
+- consistency bulgularında en az iki farklı ekranı karşılaştırarak somut bir tutarsızlık örneği ver
+  (ör. "1. ekrandaki buton köşe yarıçapı 4. ekrandakinden farklı").`;
 
 async function callGeminiModel(model, parts) {
   const res = await fetch(

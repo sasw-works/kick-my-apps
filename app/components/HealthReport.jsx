@@ -360,6 +360,12 @@ const LENS_MAP = {
 
 const LENS_ORDER = ["UI", "UX", "Erişilebilirlik", "Ürün"];
 const LENS_ICON = { UI: Palette, UX: Compass, Erişilebilirlik: Accessibility, Ürün: TrendingDown };
+const LENS_SUBTITLE = {
+  UI: "Tasarım sistemi & görsel tutarlılık",
+  UX: "Akış ve kullanılabilirlik",
+  Erişilebilirlik: "WCAG mantığıyla erişilebilirlik",
+  Ürün: "Ürün sahibi (Product Owner) bakışı",
+};
 
 // Hızlı Kazanımlar (Impact × Effort) için efor tahmini — kaba ama tutarlı bir sezgisel.
 const EFFORT_MAP = {
@@ -613,6 +619,10 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           font-family: var(--font-mono); font-size: 10.5px; color: var(--muted);
           background: var(--ink-3); padding: 1px 7px; border-radius: 999px; margin-left: 2px;
         }
+        .lens-group-subtitle {
+          font-family: var(--font-mono); font-size: 10.5px; font-weight: 400; color: var(--muted);
+          margin-left: auto;
+        }
         .finding-row {
           background: var(--ink-2);
           border: 1px solid var(--ink-3);
@@ -821,6 +831,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
                   <LensIcon size={14} strokeWidth={2.2} color="var(--muted)" />
                   {lens}
                   <span className="lens-group-count">{items.length}</span>
+                  <span className="lens-group-subtitle">{LENS_SUBTITLE[lens]}</span>
                 </div>
                 <div className="finding-list">
                   {items.map((f) => (
