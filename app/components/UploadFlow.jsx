@@ -1,22 +1,7 @@
 "use client";
 
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import { UploadCloud, Search, Check, Loader2, X, Sparkles, FileText, Star, MessageSquare, Palette, MousePointerClick, Accessibility, Compass, Layers, Type, ShieldAlert, TrendingDown, Inbox, LayoutGrid, AlignLeft, BadgeCheck } from "lucide-react";
-
-const FLOAT_ICONS = [
-  { Icon: Star, color: "var(--yellow)", top: "8px", left: "6%", size: 44, duration: 4.2, delay: 0, opacity: 1 },
-  { Icon: MessageSquare, color: "var(--teal)", top: "70px", left: "1%", size: 36, duration: 5.4, delay: 0.5, opacity: 0.85 },
-  { Icon: Palette, color: "var(--kick)", top: "0px", right: "8%", size: 48, duration: 3.8, delay: 1.1, opacity: 1 },
-  { Icon: MousePointerClick, color: "var(--kick)", top: "88px", right: "2%", size: 34, duration: 5.8, delay: 0.2, opacity: 0.8 },
-  { Icon: Accessibility, color: "var(--teal)", top: "150px", left: "16%", size: 40, duration: 4.6, delay: 0.8, opacity: 0.9 },
-  { Icon: Compass, color: "var(--yellow)", top: "142px", right: "18%", size: 42, duration: 5.0, delay: 1.4, opacity: 0.9 },
-  { Icon: Layers, color: "var(--muted)", top: "40px", left: "24%", size: 30, duration: 6.2, delay: 0.3, opacity: 0.65 },
-  { Icon: Type, color: "var(--muted)", top: "36px", right: "26%", size: 28, duration: 6.6, delay: 0.9, opacity: 0.6 },
-  { Icon: ShieldAlert, color: "var(--kick)", top: "185px", left: "3%", size: 32, duration: 5.2, delay: 1.7, opacity: 0.75 },
-  { Icon: TrendingDown, color: "var(--teal)", top: "195px", right: "5%", size: 34, duration: 4.8, delay: 0.6, opacity: 0.8 },
-  { Icon: LayoutGrid, color: "var(--yellow)", top: "-10px", left: "35%", size: 26, duration: 7.0, delay: 1.2, opacity: 0.55 },
-  { Icon: BadgeCheck, color: "var(--teal)", top: "-6px", right: "37%", size: 26, duration: 6.8, delay: 0.4, opacity: 0.55 },
-];
+import { UploadCloud, Search, Check, Loader2, X, Sparkles, FileText } from "lucide-react";
 
 export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewHistory }) {
   const [files, setFiles] = useState([]);
@@ -134,31 +119,17 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
 
         .upload-hero { text-align: center; margin-top: 100px; margin-bottom: 28px; max-width: 720px; }
 
-        .hero-decoration-zone { position: relative; width: 100%; display: flex; justify-content: center; }
-        .float-icon {
-          position: absolute;
-          border-radius: 14px;
-          background: var(--ink-2); border: 1px solid var(--ink-3); box-shadow: var(--shadow);
-          display: flex; align-items: center; justify-content: center;
-          animation-name: float-bob;
-          animation-timing-function: ease-in-out;
-          animation-iteration-count: infinite;
-        }
-        @keyframes float-bob {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-14px); }
-        }
-        @media (max-width: 900px) {
-          .float-icon { display: none; }
-        }
         .hero-title {
           font-family: var(--font-display);
-          font-size: 44px;
+          font-size: 88px;
           font-weight: 800;
           letter-spacing: -0.025em;
           line-height: 1.08;
           color: var(--chalk);
           margin: 0;
+        }
+        @media (max-width: 720px) {
+          .hero-title { font-size: 48px; }
         }
 
         .hero-search-wrap {
@@ -387,32 +358,12 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         @keyframes kma-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
       `}</style>
 
-      <div className="hero-decoration-zone">
-        {FLOAT_ICONS.map((f, i) => {
-          const Icon = f.Icon;
-          return (
-            <div
-              key={i}
-              className="float-icon"
-              style={{
-                top: f.top,
-                left: f.left,
-                right: f.right,
-                width: f.size,
-                height: f.size,
-                animationDuration: `${f.duration}s`,
-                animationDelay: `${f.delay}s`,
-                opacity: f.opacity,
-              }}
-            >
-              <Icon size={f.size * 0.4} color={f.color} />
-            </div>
-          );
-        })}
-
-        <div className="upload-hero">
-          <h1 className="hero-title">Find what's hurting your app.</h1>
-        </div>
+      <div className="upload-hero">
+        <h1 className="hero-title">
+          Ready to
+          <br />
+          Kick Your Apps
+        </h1>
       </div>
 
       <div className="hero-search-wrap">
