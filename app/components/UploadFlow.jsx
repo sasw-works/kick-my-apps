@@ -136,7 +136,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
 
         .hero-search-wrap {
           position: relative;
-          z-index: 2;
+          z-index: 5;
           width: 100%;
           max-width: 640px;
           display: flex;

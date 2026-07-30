@@ -426,21 +426,20 @@ const EFFORT_MAP = {
 
 function HistoryBarChart({ points, width = 560, height = 120 }) {
   const shown = points.slice(-12); // en fazla son 12 tarama
-  const barW = width / shown.length;
-  const gap = Math.min(10, barW * 0.3);
+  const slot = width / shown.length;
+  const barW = Math.min(8, slot * 0.35);
 
   return (
     <svg width={width} height={height + 26} viewBox={`0 0 ${width} ${height + 26}`}>
       {shown.map((p, i) => {
         const h = Math.max(4, (p.health_score / 100) * height);
-        const x = i * barW + gap / 2;
-        const w = barW - gap;
+        const x = i * slot + slot / 2 - barW / 2;
         const color = p.health_score >= 75 ? "var(--teal)" : p.health_score >= 50 ? "var(--yellow)" : "var(--kick)";
         const dateLabel = new Date(p.created_at).toLocaleDateString("tr-TR", { day: "2-digit", month: "2-digit" });
         return (
           <g key={i}>
-            <rect x={x} y={height - h} width={w} height={h} rx={w / 2} fill={color} opacity={i === shown.length - 1 ? 1 : 0.55} />
-            <text x={x + w / 2} y={height + 18} textAnchor="middle" style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, fill: "var(--muted)" }}>
+            <rect x={x} y={height - h} width={barW} height={h} rx={barW / 2.5} fill={color} opacity={i === shown.length - 1 ? 1 : 0.6} />
+            <text x={x + barW / 2} y={height + 18} textAnchor="middle" style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, fill: "var(--muted)" }}>
               {dateLabel}
             </text>
           </g>
