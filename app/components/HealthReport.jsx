@@ -215,6 +215,40 @@ function HealthDial({ score = 58, size = 220, delta = null }) {
 // UI pieces
 // ---------------------------------------------------------------------------
 
+function AnnotatedScreenshot({ url, index, findings }) {
+  const relevant = findings.filter((f) => f.screenshotIndex === index && f.boundingBox);
+  return (
+    <div className="shot-frame">
+      <div className="shot-index">Ekran #{index}</div>
+      <div className="shot-img-wrap">
+        <img src={url} alt={`Ekran görüntüsü ${index}`} />
+        {relevant.map((f, i) => {
+          const meta = STATUS_META[f.status];
+          const bb = f.boundingBox;
+          return (
+            <div
+              key={i}
+              className="shot-highlight"
+              style={{
+                left: `${bb.x}%`,
+                top: `${bb.y}%`,
+                width: `${bb.width}%`,
+                height: `${bb.height}%`,
+                borderColor: meta.color,
+              }}
+              title={f.title}
+            >
+              <span className="shot-highlight-label" style={{ background: meta.color }}>
+                {f.title}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 function FindingRow({ f }) {
   const meta = STATUS_META[f.status];
   const StatusIcon = meta.Icon;
@@ -453,7 +487,7 @@ function HistoryPanel({ history }) {
 // Main
 // ---------------------------------------------------------------------------
 
-export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", onReset, history = [], onViewHistory, scanId, storeUrl }) {
+export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", onReset, history = [], onViewHistory, scanId, storeUrl, screenshots = [] }) {
   const usingRealData = Boolean(data);
   const reportRef = useRef(null);
   const [exporting, setExporting] = useState(false);
@@ -597,6 +631,20 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .summary-list { display: flex; flex-direction: column; gap: 8px; justify-content: center; height: 100%; }
         .summary-row { display: flex; align-items: center; gap: 10px; font-size: 13.5px; }
         .summary-count { font-family: var(--font-mono); font-weight: 700; width: 20px; }
+
+        .shot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+        .shot-frame { background: var(--ink); border: 1px solid var(--ink-3); border-radius: 10px; padding: 10px; }
+        .shot-index { font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); margin-bottom: 8px; }
+        .shot-img-wrap { position: relative; border-radius: 6px; overflow: hidden; }
+        .shot-img-wrap img { width: 100%; display: block; }
+        .shot-highlight {
+          position: absolute; border: 2px solid; border-radius: 4px;
+        }
+        .shot-highlight-label {
+          position: absolute; top: -20px; left: -2px; white-space: nowrap;
+          font-size: 9.5px; font-weight: 600; color: #fff; padding: 2px 6px; border-radius: 4px;
+          font-family: var(--font-mono);
+        }
 
         .lens-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
         .lens-name { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
@@ -830,6 +878,17 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         </div>
 
         <HistoryPanel history={history} />
+
+        {screenshots.length > 0 && (
+          <div className="panel">
+            <div className="panel-title">EKRAN GÖRÜNTÜLERİ (İŞARETLİ)</div>
+            <div className="shot-grid">
+              {screenshots.map((url, i) => (
+                <AnnotatedScreenshot key={i} url={url} index={i + 1} findings={findings} />
+              ))}
+            </div>
+          </div>
+        )}
 
         {lensSummary.length > 0 && (
           <div className="panel">

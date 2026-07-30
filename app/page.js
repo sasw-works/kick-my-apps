@@ -14,6 +14,7 @@ export default function Home() {
   const [history, setHistory] = useState([]);
   const [scanId, setScanId] = useState(null);
   const [scanStoreUrl, setScanStoreUrl] = useState("");
+  const [screenshotUrls, setScreenshotUrls] = useState([]);
 
   const handleAnalyze = async (files, storeUrl, appName) => {
     setAnalyzing(true);
@@ -34,6 +35,7 @@ export default function Home() {
       setReportData(data);
       setAppLabel(appName);
       setScanStoreUrl(storeUrl || "");
+      setScreenshotUrls(files.map((f) => URL.createObjectURL(f)));
 
       const badCount = (data.findings || []).filter((f) => f.status === "bad").length;
       const warnCount = (data.findings || []).filter((f) => f.status === "warn").length;
@@ -82,6 +84,8 @@ export default function Home() {
     setHistory([]);
     setScanId(null);
     setScanStoreUrl("");
+    screenshotUrls.forEach((url) => URL.revokeObjectURL(url));
+    setScreenshotUrls([]);
   };
 
   return (
@@ -100,6 +104,7 @@ export default function Home() {
             history={history}
             scanId={scanId}
             storeUrl={scanStoreUrl}
+            screenshots={screenshotUrls}
           />
         )}
       </div>

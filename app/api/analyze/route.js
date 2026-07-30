@@ -16,6 +16,7 @@ kullanıcı yorumlarını ve/veya mağaza listeleme metnini DERİNLEMESİNE anal
       "finding": "<gözlemi 1-2 cümlede somut şekilde açıkla, hangi ekranda ne gördüğünü belirt>",
       "suggestion": "<somut, uygulanabilir bir öneri>",
       "screenshotIndex": <bu bulgunun dayandığı ekran görüntüsünün sırası, 1'den başlar; ekran görüntüsüne dayanmıyorsa null>,
+      "boundingBox": { "x": <sol kenardan % olarak, 0-100>, "y": <üst kenardan % olarak, 0-100>, "width": <genişlik %, 0-100>, "height": <yükseklik %, 0-100> } veya null (sadece screenshotIndex doluysa ve sorunun ekrandaki yerini makul bir güvenle tahmin edebiliyorsan doldur),
       "codeSnippet": { "language": "<css|swift|kotlin>", "code": "<kısa, örnek/başlangıç niteliğinde kod>" } veya null
     }
   ],
@@ -70,6 +71,7 @@ Kurallar:
   parçasıyla örneklenebilecek bulgular için doldur (onboarding akışı gibi kod-dışı konularda null bırak).
   Kod her zaman GENEL/ÖRNEK bir başlangıç noktasıdır, kullanıcının gerçek koduna erişimin yok — bunu
   varsayma, sadece "böyle bir yaklaşım dene" niteliğinde kısa bir örnek ver.
+- boundingBox tahminin YAKLAŞIK olmalı; emin değilsen null bırak, uydurma koordinat verme.
 - approvalRisks: SADECE ekran görüntülerinde gerçekten gördüğün somut, görsel kanıta dayalı riskleri
   listele (ör. placeholder/lorem ipsum metin, boş/kırık görünen ekran, yarım kalmış özellik, yanıltıcı
   abartılı iddialar). Yorumlarda çökme/hata şikayeti yoğunsa bunu da bir risk olarak ekleyebilirsin.
