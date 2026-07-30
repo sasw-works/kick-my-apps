@@ -128,8 +128,10 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           color: var(--chalk);
           margin: 0;
         }
+        .hero-title-small { font-size: 36px; display: inline-block; }
         @media (max-width: 720px) {
           .hero-title { font-size: 42px; }
+          .hero-title-small { font-size: 22px; }
         }
 
         .hero-search-wrap {
@@ -363,7 +365,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
 
       <div className="upload-hero">
         <h1 className="hero-title">
-          Ready to px
+          <span className="hero-title-small">Ready to</span>
           <br />
           kick your apps
         </h1>
