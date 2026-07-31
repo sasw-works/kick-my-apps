@@ -3,7 +3,7 @@ import Link from "next/link";
 import ThemeToggle from "./ThemeToggle";
 import LogoMark from "./LogoMark";
 
-const NAV_ITEMS = ["Özellikler", "Kaynaklar", "Kullanım Alanları", "Fiyatlandırma", "Blog"];
+const NAV_ITEMS = ["Özellikler", "Kullanım Alanları", "Fiyatlandırma", "Blog"];
 
 export default function Header() {
   return (
@@ -11,11 +11,9 @@ export default function Header() {
       <style>{`
         .kma-header-wrap {
           position: sticky;
-          top: 25px;
+          top: 0;
           z-index: 50;
-          display: flex;
-          justify-content: center;
-          padding: 16px 20px 60px;
+          padding: 24px 40px 60px;
           margin-bottom: -60px;
           pointer-events: none;
           background: linear-gradient(to bottom, var(--ink) 35%, transparent 100%);
@@ -24,47 +22,34 @@ export default function Header() {
           -webkit-mask-image: linear-gradient(to bottom, black 0%, black 40%, transparent 100%);
           mask-image: linear-gradient(to bottom, black 0%, black 40%, transparent 100%);
         }
-        .kma-header-pill { pointer-events: auto; }
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-        .kma-header-pill {
-          width: 100%;
-          max-width: 1100px;
+        .kma-header-inner {
+          pointer-events: auto;
+          max-width: 1400px;
+          margin: 0 auto;
           display: flex;
           align-items: center;
           gap: 8px;
-          background: var(--ink-2);
-          border: 1px solid var(--ink-3);
-          border-radius: 999px;
-          padding: 15px 17px 15px 18px;
           font-family: 'Inter', sans-serif;
         }
         .kma-header-logo {
           display: flex;
           align-items: center;
-          gap: 8px;
-          font-weight: 700;
-          font-size: 15px;
-          color: var(--chalk);
-          letter-spacing: -0.01em;
-          white-space: nowrap;
-          text-decoration: none;
-          cursor: pointer;
-        }
-        .kma-header-mark {
-          display: flex;
-          align-items: center;
           color: var(--chalk);
           flex-shrink: 0;
+          text-decoration: none;
+          cursor: pointer;
         }
         .kma-header-spacer { flex: 1; }
         .kma-header-nav {
           display: flex;
           align-items: center;
-          gap: 22px;
+          gap: 34px;
+          margin-right: 34px;
         }
         .kma-header-navitem {
-          font-size: 14px;
+          font-size: 15px;
           font-weight: 500;
           color: var(--chalk);
           cursor: default;
@@ -74,41 +59,29 @@ export default function Header() {
         .kma-header-right {
           display: flex;
           align-items: center;
-          gap: 18px;
-          white-space: nowrap;
-          margin-left: 22px;
-        }
-        .kma-header-history {
-          font-size: 13.5px;
-          font-weight: 500;
-          color: var(--chalk);
-          text-decoration: none;
+          gap: 20px;
           white-space: nowrap;
         }
-        .kma-header-history:hover { text-decoration: underline; }
         .kma-header-signin {
           background: var(--chalk);
           color: var(--ink);
-          font-size: 13.5px;
+          font-size: 14.5px;
           font-weight: 600;
-          padding: 9px 18px;
+          padding: 11px 22px;
           border-radius: 999px;
           border: none;
           cursor: default;
           white-space: nowrap;
         }
 
-        @media (max-width: 780px) {
+        @media (max-width: 900px) {
           .kma-header-nav { display: none; }
         }
       `}</style>
 
-      <div className="kma-header-pill">
+      <div className="kma-header-inner">
         <Link href="/" className="kma-header-logo">
-          <div className="kma-header-mark">
-            <LogoMark size={30} />
-          </div>
-          Kick My Apps
+          <LogoMark size={26} />
         </Link>
 
         <div className="kma-header-spacer" />
@@ -122,14 +95,8 @@ export default function Header() {
         </nav>
 
         <div className="kma-header-right">
-          <Link href="/dashboard" className="kma-header-history">
-            Uygulamalarım
-          </Link>
-          <Link href="/history" className="kma-header-history">
-            Geçmiş Analizlerim
-          </Link>
           <ThemeToggle />
-          <button className="kma-header-signin">Giriş Yap</button>
+          <button className="kma-header-signin">Sign in</button>
         </div>
       </div>
     </div>

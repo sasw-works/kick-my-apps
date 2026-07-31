@@ -1,22 +1,29 @@
 import React from "react";
+import Link from "next/link";
 import LogoMark from "./LogoMark";
 
 const COLUMNS = [
   {
     title: "ÜRÜN",
-    links: ["Ekran Analizi", "Duygu Analizi", "Sağlık Skoru", "Karşılaştırma", "Geçmiş"],
+    links: [
+      { label: "Ekran Analizi" },
+      { label: "Duygu Analizi" },
+      { label: "Uygulamalarım", href: "/dashboard" },
+      { label: "Karşılaştırma" },
+      { label: "Geçmiş Analizlerim", href: "/history" },
+    ],
   },
   {
     title: "KAYNAKLAR",
-    links: ["App Store", "Play Store (yakında)"],
+    links: [{ label: "App Store" }, { label: "Play Store (yakında)" }],
   },
   {
     title: "KULLANIM ALANLARI",
-    links: ["Ürün Yöneticileri", "Bağımsız Geliştiriciler", "Küçük Ekipler"],
+    links: [{ label: "Ürün Yöneticileri" }, { label: "Bağımsız Geliştiriciler" }, { label: "Küçük Ekipler" }],
   },
   {
     title: "ŞİRKET",
-    links: ["Fiyatlandırma", "Blog", "Hakkımızda", "İletişim"],
+    links: [{ label: "Fiyatlandırma" }, { label: "Blog" }, { label: "Hakkımızda" }, { label: "İletişim" }],
   },
 ];
 
@@ -78,7 +85,9 @@ export default function Footer() {
           margin-bottom: 11px;
           cursor: default;
           user-select: none;
+          text-decoration: none;
         }
+        .kma-footer-link-real:hover { color: var(--brand); cursor: pointer; }
         .kma-footer-bottom {
           display: flex;
           align-items: center;
@@ -105,7 +114,6 @@ export default function Footer() {
               <div className="kma-footer-mark">
                 <LogoMark size={26} />
               </div>
-              Kick My Apps
             </div>
             <p className="kma-footer-desc">
               Herkese açık App Store ve Play Store yorumlarını, net ve önceliklendirilmiş bir
@@ -116,11 +124,17 @@ export default function Footer() {
           {COLUMNS.map((col) => (
             <div key={col.title}>
               <div className="kma-footer-coltitle">{col.title}</div>
-              {col.links.map((link) => (
-                <span className="kma-footer-link" key={link}>
-                  {link}
-                </span>
-              ))}
+              {col.links.map((link) =>
+                link.href ? (
+                  <Link href={link.href} className="kma-footer-link kma-footer-link-real" key={link.label}>
+                    {link.label}
+                  </Link>
+                ) : (
+                  <span className="kma-footer-link" key={link.label}>
+                    {link.label}
+                  </span>
+                )
+              )}
             </div>
           ))}
         </div>
