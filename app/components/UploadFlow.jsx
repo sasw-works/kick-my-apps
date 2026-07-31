@@ -134,7 +134,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
 
         .hero-bg-wrap {
           position: absolute;
-          top: 0;
+          top: -100px;
           left: 50%;
           width: 100vw;
           margin-left: -50vw;
