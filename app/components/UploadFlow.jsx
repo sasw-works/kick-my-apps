@@ -143,9 +143,9 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           pointer-events: none;
           z-index: 0;
         }
-        .blob-1 { width: 55vw; height: 55vw; max-width: 620px; max-height: 620px; background: #C9E86A; top: -40px; left: 5%; animation-duration: 17s; }
-        .blob-2 { width: 65vw; height: 65vw; max-width: 720px; max-height: 720px; background: #6FC6F5; top: 60px; right: -12%; animation-duration: 20s; animation-delay: -5s; }
-        .blob-3 { width: 45vw; height: 45vw; max-width: 500px; max-height: 500px; background: #7EE6C4; top: 380px; right: 18%; animation-duration: 14s; animation-delay: -9s; }
+        .blob-1 { width: 62vw; height: 62vw; max-width: 680px; max-height: 680px; background: #C9E86A; top: -60px; left: 22%; animation-duration: 17s; }
+        .blob-2 { width: 62vw; height: 62vw; max-width: 680px; max-height: 680px; background: #6FC6F5; top: -30px; right: 18%; animation-duration: 20s; animation-delay: -5s; }
+        .blob-3 { width: 46vw; height: 46vw; max-width: 500px; max-height: 500px; background: #7EE6C4; top: 60px; left: 27%; animation-duration: 14s; animation-delay: -9s; }
         @keyframes blob-move {
           0%, 100% { transform: translate(0, 0) scale(1); }
           33% { transform: translate(26px, 20px) scale(1.08); }
@@ -185,8 +185,8 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         .hero-label {
           display: inline-flex; align-items: center; gap: 6px;
           background: var(--ink-2); border: 1px solid var(--ink-3); color: var(--brand);
-          font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 999px;
-          margin-bottom: 18px;
+          font-size: 14px; font-weight: 700; padding: 8px 18px; border-radius: 999px;
+          margin-bottom: 22px;
         }
         @media (max-width: 720px) {
           .hero-title { font-size: 42px; }
