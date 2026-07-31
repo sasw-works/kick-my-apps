@@ -195,15 +195,28 @@ export default function MarketingSections() {
           margin-left: -50vw; margin-right: -50vw; padding: 0 40px; box-sizing: border-box;
         }
         .mkt-carousel {
-          display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory;
+          display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory;
           padding-bottom: 8px; margin-bottom: 22px; scrollbar-width: none;
         }
         .mkt-carousel::-webkit-scrollbar { display: none; }
         .mkt-carousel-card {
           position: relative; overflow: hidden;
-          flex: 0 0 340px; scroll-snap-align: start;
+          flex: 0 0 calc((100% - 40px) / 5); max-width: 400px; height: 365px;
+          scroll-snap-align: start;
           background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 16px;
-          min-height: 230px; box-shadow: var(--shadow);
+          box-shadow: var(--shadow);
+        }
+        @media (max-width: 1400px) {
+          .mkt-carousel-card { flex-basis: calc((100% - 30px) / 4); }
+        }
+        @media (max-width: 1100px) {
+          .mkt-carousel-card { flex-basis: calc((100% - 20px) / 3); }
+        }
+        @media (max-width: 780px) {
+          .mkt-carousel-card { flex-basis: calc((100% - 10px) / 2); height: 300px; }
+        }
+        @media (max-width: 520px) {
+          .mkt-carousel-card { flex-basis: 85%; height: 280px; }
         }
         .mkt-carousel-fill {
           position: absolute; left: 0; right: 0; bottom: 0; height: 0;
@@ -387,8 +400,8 @@ export default function MarketingSections() {
                   <div className="mkt-carousel-icon" style={{ background: f.color }}>
                     <Icon size={18} color="#FFFFFF" />
                   </div>
-                  <div className="mkt-carousel-headline">{f.desc}</div>
-                  <div className="mkt-carousel-footer">{f.title}</div>
+                  <div className="mkt-carousel-headline">{f.title}</div>
+                  <div className="mkt-carousel-footer">{f.desc}</div>
                 </div>
               </div>
             );
