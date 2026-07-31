@@ -19,6 +19,8 @@ export default function Header() {
           background: linear-gradient(to bottom, var(--ink) 0%, var(--ink) 55%, transparent 100%);
           -webkit-backdrop-filter: blur(8px);
           backdrop-filter: blur(8px);
+          -webkit-mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 100%);
+          mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 100%);
         }
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
