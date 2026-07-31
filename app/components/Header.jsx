@@ -13,19 +13,11 @@ export default function Header() {
           position: sticky;
           top: 0;
           z-index: 50;
-          padding: 24px 40px 60px;
-          margin-bottom: -60px;
-          pointer-events: none;
-          background: linear-gradient(to bottom, var(--ink) 35%, transparent 100%);
-          -webkit-backdrop-filter: blur(10px);
-          backdrop-filter: blur(10px);
-          -webkit-mask-image: linear-gradient(to bottom, black 0%, black 40%, transparent 100%);
-          mask-image: linear-gradient(to bottom, black 0%, black 40%, transparent 100%);
+          padding: 24px 40px 0;
         }
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
         .kma-header-inner {
-          pointer-events: auto;
           max-width: 1400px;
           margin: 0 auto;
           display: flex;
@@ -81,7 +73,7 @@ export default function Header() {
 
       <div className="kma-header-inner">
         <Link href="/" className="kma-header-logo">
-          <LogoMark size={26} />
+          <LogoMark size={108} />
         </Link>
 
         <div className="kma-header-spacer" />
