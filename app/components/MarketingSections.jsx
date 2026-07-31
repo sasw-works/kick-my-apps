@@ -212,7 +212,11 @@ function FaqItem({ q, a }) {
           {open ? <X size={16} color="#FFFFFF" /> : <Plus size={16} color="var(--muted)" />}
         </span>
       </button>
-      {open && <div className="faq-a">{a}</div>}
+      <div className={`faq-a-wrap ${open ? "faq-a-wrap-open" : ""}`}>
+        <div className="faq-a-inner">
+          <div className="faq-a">{a}</div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -423,10 +427,22 @@ export default function MarketingSections() {
         .faq-toggle {
           width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
           display: flex; align-items: center; justify-content: center;
-          background: var(--ink-3); transition: background 0.2s ease;
+          background: var(--ink-3); transition: background 0.2s ease, transform 0.3s ease;
         }
-        .faq-toggle-open { background: var(--brand); }
-        .faq-a { font-size: 14.5px; color: var(--muted); line-height: 1.7; padding: 0 4px 26px; max-width: 560px; }
+        .faq-toggle-open { background: var(--brand); transform: rotate(180deg); }
+        .faq-a-wrap {
+          display: grid;
+          grid-template-rows: 0fr;
+          transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .faq-a-wrap-open { grid-template-rows: 1fr; }
+        .faq-a-inner { overflow: hidden; }
+        .faq-a {
+          font-size: 14.5px; color: var(--muted); line-height: 1.7; padding: 0 4px 26px; max-width: 560px;
+          opacity: 0; transform: translateY(-6px);
+          transition: opacity 0.3s ease 0.05s, transform 0.3s ease 0.05s;
+        }
+        .faq-a-wrap-open .faq-a { opacity: 1; transform: translateY(0); }
         .faq-support-btn {
           display: block; margin: 0 auto; background: var(--brand); color: #FFFFFF;
           font-weight: 600; font-size: 14.5px; padding: 13px 28px; border-radius: 999px; border: none; cursor: default;
