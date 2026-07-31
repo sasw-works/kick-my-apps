@@ -154,7 +154,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           66% { transform: translate(-20px, 26px) scale(0.95); }
         }
 
-        .upload-hero { text-align: center; margin-top: 100px; margin-bottom: 53px; max-width: 720px; position: relative; z-index: 1; }
+        .upload-hero { text-align: center; margin-top: 100px; margin-bottom: 0; max-width: 720px; position: relative; z-index: 1; }
 
         .hero-title {
           font-family: var(--font-display);
@@ -173,14 +173,22 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           font-size: 20px;
           color: #1A2B3B;
           line-height: 1.5;
-          margin: 24px 0 0;
+          margin-top: 24px;
+          margin-bottom: 53px;
+          margin-left: auto;
+          margin-right: auto;
+          width: 100%;
+          max-width: 1170px;
+          text-align: center;
+          position: relative;
+          z-index: 1;
         }
 
         .hero-search-wrap {
           position: relative;
           z-index: 5;
           width: 100%;
-          max-width: 640px;
+          max-width: 1170px;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -233,7 +241,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           position: relative;
           z-index: 2;
           width: 100%;
-          max-width: 640px;
+          max-width: 1170px;
           display: flex;
           flex-direction: column;
           gap: 20px;
@@ -444,12 +452,12 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           <br />
           hurting your app
         </h1>
-        <p className="hero-subtitle">
-          Enter your app and - or upload screenshots to uncover UI issues, usability problems, and
-          opportunities for improvement with AI so you can make smarter decisions and build a
-          better product
-        </p>
       </div>
+      <p className="hero-subtitle">
+        Enter your app and - or upload screenshots to uncover UI issues, usability problems, and
+        opportunities for improvement with AI so you can make smarter decisions and build a
+        better product
+      </p>
 
       <div className="hero-search-wrap">
         <div className="hero-search-anchor">
