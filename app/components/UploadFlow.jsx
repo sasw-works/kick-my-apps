@@ -158,11 +158,11 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
 
         .hero-title {
           font-family: var(--font-display);
-          font-size: 86px;
-          font-weight: 500;
+          font-size: 90px;
+          font-weight: 700;
           letter-spacing: -0.025em;
           line-height: 1.08;
-          color: var(--chalk);
+          color: #1A2B3B;
           margin: 0;
         }
         @media (max-width: 720px) {
