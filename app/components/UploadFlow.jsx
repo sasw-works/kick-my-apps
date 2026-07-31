@@ -356,7 +356,8 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           transition: opacity 0.15s ease;
         }
         .analyze-btn:disabled {
-          opacity: 0.4;
+          background: var(--ink-3);
+          color: var(--muted);
           cursor: not-allowed;
         }
         .spin { animation: kma-spin 0.9s linear infinite; }

@@ -598,12 +598,13 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           border: 1px solid var(--ink-3);
           border-radius: 12px;
           padding: 20px 22px;
-          display: grid;
-          grid-template-columns: 1fr 1fr auto auto auto auto;
-          gap: 16px;
+          display: flex;
           align-items: center;
+          gap: 12px;
+          flex-wrap: wrap;
           box-shadow: var(--shadow);
         }
+        .upload-slot-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
         .upload-slot {
           display: inline-flex; align-items: center; gap: 8px; width: fit-content;
           background: transparent; border: 1px solid var(--ink-3); border-radius: 999px;
@@ -823,14 +824,17 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
       <div className="kma-main">
         <div className="upload-panel no-print">
-          <div className="upload-slot">
-            <UploadCloud size={18} color="var(--yellow)" />
-            <span>Analiz {usingRealData ? "tamamlandı" : "örnek veriyle gösteriliyor"}</span>
+          <div className="upload-slot-group">
+            <div className="upload-slot">
+              <UploadCloud size={18} color="var(--yellow)" />
+              <span>Analiz {usingRealData ? "tamamlandı" : "örnek veriyle gösteriliyor"}</span>
+            </div>
+            <div className="upload-slot">
+              <Link2 size={18} color="var(--yellow)" />
+              <span>{reviewSummary ? `${reviewSummary.totalReviews} yorum incelendi` : "Yorum verisi yok"}</span>
+            </div>
           </div>
-          <div className="upload-slot">
-            <Link2 size={18} color="var(--yellow)" />
-            <span>{reviewSummary ? `${reviewSummary.totalReviews} yorum incelendi` : "Yorum verisi yok"}</span>
-          </div>
+          <div style={{ flex: 1 }} />
           <button className="analyze-btn" onClick={handleExportPdf} disabled={exporting} style={{ opacity: exporting ? 0.6 : 1 }}>
             <Download size={16} strokeWidth={2.3} />
             {exporting ? "Hazırlanıyor…" : "PDF İndir"}
