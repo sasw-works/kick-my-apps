@@ -74,6 +74,114 @@ const FAQ = [
   },
 ];
 
+function useOnScreen(ref) {
+  const [visible, setVisible] = React.useState(false);
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [ref]);
+  return visible;
+}
+
+function Reveal({ children, delay = 0 }) {
+  const ref = React.useRef(null);
+  const visible = useOnScreen(ref);
+  return (
+    <div ref={ref} className={`mkt-reveal ${visible ? "mkt-reveal-visible" : ""}`} style={{ transitionDelay: `${delay}ms` }}>
+      {children}
+    </div>
+  );
+}
+
+function zoneColorAt(pct) {
+  const stops = [
+    { p: 0, h: 6, s: 84, l: 58 },
+    { p: 50, h: 37, s: 88, l: 55 },
+    { p: 100, h: 175, s: 80, l: 34 },
+  ];
+  let a = stops[0];
+  let b = stops[1];
+  for (let i = 0; i < stops.length - 1; i++) {
+    if (pct >= stops[i].p && pct <= stops[i + 1].p) {
+      a = stops[i];
+      b = stops[i + 1];
+      break;
+    }
+  }
+  const t = b.p === a.p ? 0 : (pct - a.p) / (b.p - a.p);
+  const h = a.h + (b.h - a.h) * t;
+  const s = a.s + (b.s - a.s) * t;
+  const l = a.l + (b.l - a.l) * t;
+  return `hsl(${h}, ${s}%, ${l}%)`;
+}
+
+function HeroDial({ targetScore = 82, size = 180 }) {
+  const ref = React.useRef(null);
+  const visible = useOnScreen(ref);
+  const [score, setScore] = React.useState(0);
+
+  React.useEffect(() => {
+    if (!visible) return;
+    let raf;
+    const duration = 1300;
+    const start = performance.now();
+    const tick = (now) => {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      setScore(Math.round(eased * targetScore));
+      if (t < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [visible, targetScore]);
+
+  const cx = size / 2;
+  const cy = size / 2;
+  const outerR = size / 2 - 8;
+  const innerR = outerR - 14;
+  const tickCount = 48;
+  const gapDeg = 3.4;
+  const rad = (deg) => (deg * Math.PI) / 180;
+  const filledTicks = Math.round((score / 100) * tickCount);
+
+  const ticks = Array.from({ length: tickCount }, (_, i) => {
+    const angle = (360 / tickCount) * i - 90;
+    const a1 = rad(angle + gapDeg / 2);
+    const x1 = cx + innerR * Math.cos(a1);
+    const y1 = cy + innerR * Math.sin(a1);
+    const x2 = cx + outerR * Math.cos(a1);
+    const y2 = cy + outerR * Math.sin(a1);
+    const isFilled = i < filledTicks;
+    const color = isFilled ? zoneColorAt((i / tickCount) * 100) : "var(--ink-3)";
+    return (
+      <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={color} strokeWidth={4} strokeLinecap="round" opacity={isFilled ? 1 : 0.5} />
+    );
+  });
+
+  return (
+    <svg ref={ref} width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+      {ticks}
+      <text x={cx} y={cy - 4} textAnchor="middle" dominantBaseline="middle" style={{ fontFamily: "var(--font-display)", fontSize: size * 0.24, fontWeight: 500, fill: "var(--chalk)" }}>
+        {score}
+      </text>
+      <text x={cx} y={cy + size * 0.15} textAnchor="middle" style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.13em", fill: "var(--muted)" }}>
+        APP HEALTH SCORE
+      </text>
+    </svg>
+  );
+}
+
 function FaqItem({ q, a }) {
   const [open, setOpen] = React.useState(false);
   return (
@@ -96,8 +204,23 @@ export default function MarketingSections() {
     <div className="mkt-root">
       <style>{`
         .mkt-root { width: 100%; max-width: 1000px; margin: 90px auto 0; font-family: 'Inter', sans-serif; }
+        .mkt-reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+        .mkt-reveal-visible { opacity: 1; transform: translateY(0); }
         .mkt-section-title { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; color: var(--chalk); text-align: center; margin-bottom: 10px; }
         .mkt-section-sub { font-size: 14px; color: var(--muted); text-align: center; max-width: 480px; margin: 0 auto 40px; }
+
+        .mkt-bento {
+          display: grid; grid-template-columns: 1.3fr 1fr 1fr; grid-template-rows: auto auto;
+          grid-template-areas: "big mid1 mid1" "big mid2 mid3";
+          gap: 16px; margin-bottom: 90px;
+        }
+        .mkt-bento-big { grid-area: big; display: flex; flex-direction: column; }
+        .mkt-bento-mid1 { grid-area: mid1; }
+        .mkt-bento-mid2 { grid-area: mid2; }
+        .mkt-bento-mid3 { grid-area: mid3; }
+        @media (max-width: 780px) {
+          .mkt-bento { grid-template-columns: 1fr; grid-template-areas: "big" "mid1" "mid2" "mid3"; }
+        }
 
         .mkt-browser-frame {
           border: 1px solid var(--ink-3); border-radius: 14px; overflow: hidden;
@@ -264,6 +387,7 @@ export default function MarketingSections() {
       `}</style>
 
       {/* Rapor önizlemesi */}
+      <Reveal>
       <div>
         <div className="mkt-section-title">Gerçek raporu keşfet</div>
         <div className="mkt-section-sub">Ekran görüntülerin ve yorumların, tek ve net bir sağlık raporuna dönüşür.</div>
@@ -277,11 +401,8 @@ export default function MarketingSections() {
             <div className="mkt-browser-url">kickmyapps.com/report</div>
           </div>
           <div className="mkt-preview-card">
-            <div className="mkt-preview-header">
-              <div className="mkt-preview-score">
-                <div className="mkt-preview-score-num">82</div>
-                <div style={{ fontSize: 12, color: "var(--muted)" }}>APP HEALTH SCORE</div>
-              </div>
+            <div className="mkt-preview-header" style={{ justifyContent: "center", marginBottom: 8 }}>
+              <HeroDial targetScore={82} size={170} />
             </div>
             <div className="mkt-preview-findings">
               <div className="mkt-preview-row"><CheckCircle2 size={15} color="var(--teal)" /><span>Font hiyerarşisi net ve tutarlı</span></div>
@@ -291,8 +412,10 @@ export default function MarketingSections() {
           </div>
         </div>
       </div>
+      </Reveal>
 
       {/* Her mağaza tek yerde + Her zaman taze */}
+      <Reveal>
       <div>
         <div className="mkt-section-title">Yorumların sana anlattığı her şey</div>
         <div className="mkt-section-sub">Ekran görüntüsü analizi ve gerçek kullanıcı yorumları, aynı raporda buluşuyor.</div>
@@ -324,19 +447,27 @@ export default function MarketingSections() {
           </div>
         </div>
       </div>
+      </Reveal>
 
-      {/* 13 kategori + Hızlı Kazanımlar */}
+      {/* Derinlemesine + Hiçbir şeyi kaçırma — birleşik bento grid */}
+      <Reveal>
       <div>
-        <div className="mkt-section-title">Derinlemesine, ama dağınık değil</div>
-        <div className="mkt-section-sub">13 kategori altında toplanan bulgular, tek bakışta önceliklendirilir.</div>
-        <div className="mkt-grid-2">
-          <div className="mkt-feature-card">
+        <div className="mkt-section-title">Derinlemesine, hiçbir şeyi kaçırmadan</div>
+        <div className="mkt-section-sub">13 kategori, önceliklendirme, haftalık özet ve rakip karşılaştırması — hepsi bir arada.</div>
+        <div className="mkt-bento">
+          <div className="mkt-feature-card mkt-bento-big">
             <div className="mkt-feature-icon" style={{ background: "var(--yellow)" }}><LayoutGrid size={18} color="#1A1F36" /></div>
             <div className="mkt-feature-title">13 kategori, 4 mercek</div>
             <div className="mkt-feature-desc">Onboarding'den erişilebilirliğe, her bulgu UI / UX / Erişilebilirlik / Ürün merceklerinden birine bağlanır.</div>
-            <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UI</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>2 kritik · 1 dikkat</span></div>
+            <div className="mkt-priority-list" style={{ marginTop: "auto" }}>
+              <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600, width: 90 }}>UI</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>2 kritik · 1 dikkat</span></div>
+              <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600, width: 90 }}>UX</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>1 dikkat</span></div>
+              <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600, width: 90 }}>Erişilebilirlik</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>Sorunsuz</span></div>
+              <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600, width: 90 }}>Ürün</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>1 kritik</span></div>
+            </div>
           </div>
-          <div className="mkt-feature-card">
+
+          <div className="mkt-feature-card mkt-bento-mid1">
             <div className="mkt-feature-icon" style={{ background: "var(--brand)" }}><Sparkles size={18} color="#FFFFFF" /></div>
             <div className="mkt-feature-title">Etkiye göre önceliklendirilmiş</div>
             <div className="mkt-feature-desc">Hangisini önce düzeltmen gerektiğini, yüksek etki + düşük efor eşleştirmesiyle söylüyoruz.</div>
@@ -350,43 +481,37 @@ export default function MarketingSections() {
               ))}
             </div>
           </div>
-        </div>
-      </div>
 
-      {/* Haftalık özet + Compare */}
-      <div>
-        <div className="mkt-section-title">Hiçbir şeyi kaçırma</div>
-        <div className="mkt-section-sub">Haftalık özetler ve rakip karşılaştırmasıyla, sürekli takipte kal.</div>
-        <div className="mkt-showcase">
-          <div className="mkt-feature-card">
+          <div className="mkt-feature-card mkt-bento-mid2">
             <div className="mkt-feature-icon" style={{ background: "var(--teal)" }}><Mail size={18} color="#FFFFFF" /></div>
             <div className="mkt-feature-title">Haftalık yorum özeti</div>
-            <div className="mkt-feature-desc">Takip ettiğin bir uygulamanın yeni yorumlarının özetini her hafta e-postana alırsın.</div>
+            <div className="mkt-feature-desc">Yeni yorumların özetini her hafta e-postana alırsın.</div>
             <div className="mkt-showcase-visual">
-              <Mail size={22} color="var(--muted)" className="mkt-bounce" />
-              <span style={{ fontSize: 12, color: "var(--muted)" }}>Her Pazartesi, otomatik</span>
+              <Mail size={20} color="var(--muted)" className="mkt-bounce" />
+              <span style={{ fontSize: 11.5, color: "var(--muted)" }}>Her Pazartesi</span>
             </div>
           </div>
-          <div className="mkt-feature-card">
+
+          <div className="mkt-feature-card mkt-bento-mid3">
             <div className="mkt-feature-icon" style={{ background: "var(--yellow)" }}><GitCompare size={18} color="#1A1F36" /></div>
             <div className="mkt-feature-title">Rakiple karşılaştır</div>
-            <div className="mkt-feature-desc">Kendi uygulamanı bir rakiple yan yana koy — skorlar ve bulgular tek ekranda.</div>
-            <div className="mkt-showcase-visual" style={{ flexDirection: "row", gap: 24 }}>
+            <div className="mkt-feature-desc">Skorlar ve bulgular tek ekranda.</div>
+            <div className="mkt-showcase-visual" style={{ flexDirection: "row", gap: 16 }}>
               <div style={{ textAlign: "center" }}>
-                <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--teal)" }}>78</div>
-                <div style={{ fontSize: 10, color: "var(--muted)" }}>Sen</div>
+                <div style={{ fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 700, color: "var(--teal)" }}>78</div>
               </div>
-              <GitCompare size={16} color="var(--muted)" className="mkt-pulse-scale" />
+              <GitCompare size={14} color="var(--muted)" className="mkt-pulse-scale" />
               <div style={{ textAlign: "center" }}>
-                <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--yellow)" }}>61</div>
-                <div style={{ fontSize: 10, color: "var(--muted)" }}>Rakip</div>
+                <div style={{ fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 700, color: "var(--yellow)" }}>61</div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      </Reveal>
 
       {/* Tüm özellikler */}
+      <Reveal>
       <div className="mkt-fullbleed">
         <div className="mkt-section-title">Artık gerçekten çok şey yapıyor</div>
         <div className="mkt-section-sub">Kick My Apps'te şu an aktif olan tüm özellikler, tek bakışta.</div>
@@ -419,8 +544,10 @@ export default function MarketingSections() {
           </div>
         </div>
       </div>
+      </Reveal>
 
       {/* FAQ */}
+      <Reveal>
       <div>
         <div className="mkt-section-title">Sorular? Cevaplar.</div>
         <div className="mkt-section-sub">&nbsp;</div>
@@ -430,6 +557,7 @@ export default function MarketingSections() {
           ))}
         </div>
       </div>
+      </Reveal>
     </div>
   );
 }
