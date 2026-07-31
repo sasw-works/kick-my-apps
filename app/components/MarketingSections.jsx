@@ -89,8 +89,29 @@ function FaqItem({ q, a }) {
 
 export default function MarketingSections() {
   const carouselRef = useRef(null);
+  const dragState = useRef({ isDown: false, startX: 0, scrollStart: 0, moved: false });
+
   const scrollCarousel = (dir) => {
     carouselRef.current?.scrollBy({ left: dir * 380, behavior: "smooth" });
+  };
+
+  const onDragStart = (e) => {
+    const el = carouselRef.current;
+    if (!el) return;
+    dragState.current = { isDown: true, startX: e.pageX, scrollStart: el.scrollLeft, moved: false };
+    el.classList.add("mkt-carousel-dragging");
+  };
+  const onDragMove = (e) => {
+    const el = carouselRef.current;
+    if (!el || !dragState.current.isDown) return;
+    const dx = e.pageX - dragState.current.startX;
+    if (Math.abs(dx) > 4) dragState.current.moved = true;
+    el.scrollLeft = dragState.current.scrollStart - dx;
+  };
+  const endDrag = () => {
+    const el = carouselRef.current;
+    dragState.current.isDown = false;
+    el?.classList.remove("mkt-carousel-dragging");
   };
   return (
     <div className="mkt-root">
@@ -197,8 +218,11 @@ export default function MarketingSections() {
         .mkt-carousel {
           display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory;
           padding-bottom: 8px; margin-bottom: 22px; scrollbar-width: none;
+          cursor: grab;
         }
         .mkt-carousel::-webkit-scrollbar { display: none; }
+        .mkt-carousel-dragging { cursor: grabbing; scroll-snap-type: none; user-select: none; }
+        .mkt-carousel-dragging * { pointer-events: none; }
         .mkt-carousel-card {
           position: relative; overflow: hidden;
           flex: 0 0 calc((100% - 40px) / 5); max-width: 400px; height: 365px;
@@ -390,7 +414,14 @@ export default function MarketingSections() {
       <div className="mkt-fullbleed">
         <div className="mkt-section-title">Artık gerçekten çok şey yapıyor</div>
         <div className="mkt-section-sub">Kick My Apps'te şu an aktif olan tüm özellikler, tek bakışta.</div>
-        <div className="mkt-carousel" ref={carouselRef}>
+        <div
+          className="mkt-carousel"
+          ref={carouselRef}
+          onMouseDown={onDragStart}
+          onMouseMove={onDragMove}
+          onMouseUp={endDrag}
+          onMouseLeave={endDrag}
+        >
           {ALL_FEATURES.map((f) => {
             const Icon = f.icon;
             return (
