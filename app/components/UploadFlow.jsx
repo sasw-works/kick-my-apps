@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import Link from "next/link";
 import { UploadCloud, Search, Check, Loader2, X, Sparkles } from "lucide-react";
 
 export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewHistory }) {
@@ -181,11 +180,6 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         .or-divider { display: flex; align-items: center; gap: 14px; width: 100%; max-width: 340px; margin: 35px auto 0; cursor: default; }
         .or-divider-line { flex: 1; height: 1px; background: var(--ink-3); }
         .or-divider-text { font-size: 11.5px; font-weight: 600; letter-spacing: 0.08em; color: var(--muted); }
-        .hero-sample-link {
-          display: inline-block; margin-top: 14px; font-size: 12.5px; color: var(--muted);
-          text-decoration: none; border-bottom: 1px dashed var(--ink-3);
-        }
-        .hero-sample-link:hover { color: var(--brand); border-color: var(--brand); }
         .analyze-trust { text-align: center; font-size: 11.5px; color: var(--muted); margin-top: 10px; }
         .history-link {
           margin-top: 10px;
@@ -402,9 +396,6 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
       <div className="upload-hero">
         <div className="hero-label">AI-powered app reviews</div>
         <h1 className="hero-title">kick your apps</h1>
-        <Link href="/report" className="hero-sample-link">
-          Örnek rapor gör →
-        </Link>
       </div>
 
       <div className="hero-search-wrap">
