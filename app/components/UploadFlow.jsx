@@ -149,21 +149,19 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
 
         .floating-avatar {
           position: absolute;
-          border-radius: 50%;
-          overflow: hidden;
-          background: var(--ink-3);
-          border: 3px solid var(--ink-2);
+          width: 200px;
+          pointer-events: none;
           z-index: 2;
           animation: float-bob 5s ease-in-out infinite;
         }
-        .floating-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .floating-avatar img { width: 100%; height: auto; display: block; }
         @keyframes float-bob {
           0%, 100% { transform: translateY(0); }
           50% { transform: translateY(-10px); }
         }
-        .avatar-1 { width: 76px; height: 76px; top: 30px; right: 8%; animation-delay: 0s; }
-        .avatar-2 { width: 66px; height: 66px; top: 250px; left: 3%; animation-delay: 0.7s; }
-        .avatar-3 { width: 70px; height: 70px; top: 470px; right: 12%; animation-delay: 1.4s; }
+        .avatar-1 { width: 190px; top: -10px; right: 2%; animation-delay: 0s; }
+        .avatar-2 { width: 170px; top: 190px; left: -2%; animation-delay: 0.7s; }
+        .avatar-3 { width: 180px; top: 400px; right: 6%; animation-delay: 1.4s; }
         @media (max-width: 900px) {
           .floating-avatar { display: none; }
         }
@@ -450,13 +448,13 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         <div className="blob blob-3" />
 
         <div className="floating-avatar avatar-1">
-          <img src="/avatar-1.jpg" alt="" onError={(e) => (e.target.style.display = "none")} />
+          <img src="/avatar-1.png" alt="" onError={(e) => (e.target.style.display = "none")} />
         </div>
         <div className="floating-avatar avatar-2">
-          <img src="/avatar-2.jpg" alt="" onError={(e) => (e.target.style.display = "none")} />
+          <img src="/avatar-2.png" alt="" onError={(e) => (e.target.style.display = "none")} />
         </div>
         <div className="floating-avatar avatar-3">
-          <img src="/avatar-3.jpg" alt="" onError={(e) => (e.target.style.display = "none")} />
+          <img src="/avatar-3.png" alt="" onError={(e) => (e.target.style.display = "none")} />
         </div>
 
       <div className="upload-hero">
