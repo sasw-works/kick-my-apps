@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import { UploadCloud, Search, Check, Loader2, X, Sparkles, FileText } from "lucide-react";
+import { UploadCloud, Search, Check, Loader2, X, Sparkles } from "lucide-react";
 
 export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewHistory }) {
   const [files, setFiles] = useState([]);
@@ -201,25 +201,24 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
 
         .dropzone {
           display: flex;
-          flex-direction: column;
           align-items: center;
-          justify-content: center;
           width: 100%;
           border: 2px dashed var(--ink-3);
-          border-radius: 14px;
-          padding: 32px 20px;
-          text-align: center;
+          border-radius: 999px;
+          padding: 14px 14px 14px 28px;
           cursor: pointer;
           transition: border-color 0.15s ease, background 0.15s ease;
           box-sizing: border-box;
         }
+        .dropzone-row { display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 16px; }
+        .dropzone-text { text-align: left; }
         .dropzone-active { border-color: var(--brand); background: var(--ink-2); }
         .dropzone:hover { border-color: var(--muted); }
-        .dropzone-label { font-size: 14.5px; color: var(--chalk); margin-top: 14px; font-weight: 600; }
+        .dropzone-label { font-size: 14.5px; color: var(--chalk); font-weight: 600; }
         .dropzone-hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
         .dropzone-btn {
           display: inline-block;
-          margin-top: 16px;
+          flex-shrink: 0;
           background: var(--ink-2);
           border: 1px solid var(--ink-3);
           color: var(--chalk);
@@ -438,10 +437,11 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           )}
         </div>
 
-        <div className="hero-search-hint">
-          {selectedApp
-            ? "App Store'dan eşleşti — yorumlar da analize dahil edilecek."
-            : "Listeden seçmezsen sadece ekran görüntüsü analizi yapılır."}
+        <div
+          className="hero-search-hint"
+          title={selectedApp ? "App Store'dan eşleşti — yorumlar da analize dahil edilecek." : "Listeden seçmezsen sadece ekran görüntüsü analizi yapılır."}
+        >
+          ve / veya
         </div>
       </div>
 
@@ -464,10 +464,13 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
               style={{ display: "none" }}
               onChange={(e) => addFiles(e.target.files)}
             />
-            <FileText size={30} color="var(--muted)" strokeWidth={1.4} style={{ margin: "0 auto" }} />
-            <div className="dropzone-label">Ekran görüntülerini sürükle bırak</div>
-            <div className="dropzone-hint">En fazla 12 görsel · PNG, JPG</div>
-            <span className="dropzone-btn">Dosya Seç</span>
+            <div className="dropzone-row">
+              <div className="dropzone-text">
+                <div className="dropzone-label">Ekran görüntülerini sürükle bırak</div>
+                <div className="dropzone-hint">En fazla 12 görsel · PNG, JPG</div>
+              </div>
+              <span className="dropzone-btn">Dosya Seç</span>
+            </div>
           </label>
 
           {files.length > 0 && (
