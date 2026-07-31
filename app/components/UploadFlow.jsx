@@ -1,7 +1,21 @@
 "use client";
 
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import { UploadCloud, Search, Check, Loader2, X, ArrowRight } from "lucide-react";
+import { Search, Check, Loader2, X, ArrowRight } from "lucide-react";
+
+function UploadIcon({ size = 20, color = "#222B45" }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M0.705078 15.7092V18.7051H18.7051V15.7051M14.2051 5.20508L9.70508 0.705078L5.20508 5.20508M9.70093 13.7051V0.705078"
+        stroke={color}
+        strokeWidth="1.41"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewHistory }) {
   const [files, setFiles] = useState([]);
@@ -191,17 +205,20 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           max-width: 1170px;
           display: flex;
           align-items: center;
+          justify-content: center;
           gap: 10px;
           margin-bottom: 20px;
         }
         .hero-search-anchor { position: relative; }
         .hero-search-pill {
-          width: 100%;
+          width: 620px;
+          height: 92px;
+          box-sizing: border-box;
           display: flex;
           align-items: center;
           gap: 12px;
           background: var(--ink-2);
-          border: 1px solid var(--ink-3);
+          border: none;
           border-radius: 999px;
           padding: 16px 22px;
           transition: border-color 0.15s ease;
@@ -244,13 +261,17 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         }
 
         .upload-pill {
+          width: 270px;
+          height: 92px;
+          box-sizing: border-box;
           display: flex;
           align-items: center;
+          justify-content: center;
           gap: 10px;
           flex-shrink: 0;
           white-space: nowrap;
           background: var(--ink-2);
-          border: 2px dashed var(--ink-3);
+          border: none;
           border-radius: 999px;
           padding: 16px 24px;
           cursor: pointer;
@@ -258,17 +279,17 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         }
         .upload-pill span { font-size: 15px; color: var(--chalk); }
         .upload-pill:hover { border-color: var(--muted); }
-        .dropzone-active { border-color: var(--brand); background: var(--ink-2); }
+        .dropzone-active { background: var(--ink-3); }
 
         .submit-circle {
-          width: 56px;
-          height: 56px;
+          width: 92px;
+          height: 92px;
           border-radius: 50%;
           flex-shrink: 0;
           display: flex;
           align-items: center;
           justify-content: center;
-          background: var(--chalk);
+          background: #1A2B3B;
           color: var(--ink);
           border: none;
           cursor: pointer;
@@ -283,7 +304,9 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
 
         @media (max-width: 780px) {
           .hero-input-row { flex-wrap: wrap; }
-          .upload-pill { flex: 1; justify-content: center; }
+          .hero-search-pill { width: 100%; height: 72px; }
+          .upload-pill { flex: 1; width: auto; height: 72px; justify-content: center; }
+          .submit-circle { width: 72px; height: 72px; }
         }
 
         .thumb-row {
@@ -447,7 +470,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
       </p>
 
       <div className="hero-input-row">
-        <div className="hero-search-anchor" style={{ flex: 1 }}>
+        <div className="hero-search-anchor">
           <div className="hero-search-pill">
             <Search size={18} color="var(--muted)" />
             <input
@@ -505,8 +528,8 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
             style={{ display: "none" }}
             onChange={(e) => addFiles(e.target.files)}
           />
-          <UploadCloud size={18} color="var(--muted)" />
-          <span>{files.length > 0 ? `${files.length} görsel seçildi` : "Ekran Yükle"}</span>
+          <UploadIcon size={20} color="var(--muted)" />
+          <span>{files.length > 0 ? `${files.length} screenshots selected` : "Upload screens"}</span>
         </label>
 
         <button className="submit-circle" disabled={!canAnalyze} onClick={handleAnalyze} aria-label="Analiz Et">
