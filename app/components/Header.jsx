@@ -13,7 +13,8 @@ export default function Header() {
           position: sticky;
           top: 0;
           z-index: 50;
-          padding: 24px 40px 0;
+          padding: 24px 40px;
+          background: var(--ink);
         }
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
