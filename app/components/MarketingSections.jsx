@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import {
   Store,
   RefreshCw,
@@ -7,8 +7,6 @@ import {
   Mail,
   GitCompare,
   ChevronDown,
-  ChevronLeft,
-  ChevronRight,
   CheckCircle2,
   AlertTriangle,
   XCircle,
@@ -88,10 +86,6 @@ function FaqItem({ q, a }) {
 }
 
 export default function MarketingSections() {
-  const carouselRef = useRef(null);
-  const scrollCarousel = (dir) => {
-    carouselRef.current?.scrollBy({ left: dir * 380, behavior: "smooth" });
-  };
   return (
     <div className="mkt-root">
       <style>{`
@@ -155,35 +149,15 @@ export default function MarketingSections() {
           display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; min-height: 120px;
         }
 
-        .mkt-carousel {
-          display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory;
-          padding-bottom: 8px; margin-bottom: 22px; scrollbar-width: none;
+        .mkt-all-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 90px; }
+        .mkt-all-card {
+          background: var(--ink-2); border: 1px solid var(--ink-3);
+          border-radius: 14px; padding: 20px; box-shadow: var(--shadow);
+          transition: transform 0.2s ease, border-color 0.2s ease;
         }
-        .mkt-carousel::-webkit-scrollbar { display: none; }
-        .mkt-carousel-card {
-          flex: 0 0 340px; scroll-snap-align: start;
-          background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 16px;
-          padding: 24px; display: flex; flex-direction: column; min-height: 220px;
-          box-shadow: var(--shadow); transition: transform 0.2s ease, border-color 0.2s ease;
-        }
-        .mkt-carousel-card:hover { transform: translateY(-3px); border-color: var(--brand); }
-        .mkt-carousel-icon {
-          width: 36px; height: 36px; border-radius: 10px; margin-bottom: 26px;
-          display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-        }
-        .mkt-carousel-headline { font-size: 19px; font-weight: 500; line-height: 1.35; color: var(--chalk); flex: 1; }
-        .mkt-carousel-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 20px; }
-        .mkt-carousel-footer span { font-size: 12.5px; color: var(--muted); }
-
-        .mkt-carousel-nav-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 90px; }
-        .mkt-carousel-tagline { font-size: 20px; color: var(--chalk); }
-        .mkt-carousel-arrows { display: flex; gap: 8px; }
-        .mkt-carousel-arrow {
-          width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--ink-3);
-          background: var(--ink-2); color: var(--chalk); display: flex; align-items: center; justify-content: center;
-          cursor: pointer; transition: border-color 0.15s ease;
-        }
-        .mkt-carousel-arrow:hover { border-color: var(--brand); }
+        .mkt-all-card:hover { transform: translateY(-3px); border-color: var(--brand); }
+        .mkt-all-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+        .mkt-all-desc { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
 
         .faq-list { max-width: 640px; margin: 0 auto 90px; display: flex; flex-direction: column; gap: 10px; }
         .faq-item { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 12px; padding: 4px 20px; transition: border-color 0.2s ease; }
@@ -197,6 +171,7 @@ export default function MarketingSections() {
 
         @media (max-width: 780px) {
           .mkt-grid-2, .mkt-showcase { grid-template-columns: 1fr; }
+          .mkt-all-grid { grid-template-columns: 1fr 1fr; }
         }
       `}</style>
 
@@ -324,32 +299,19 @@ export default function MarketingSections() {
       <div>
         <div className="mkt-section-title">Artık gerçekten çok şey yapıyor</div>
         <div className="mkt-section-sub">Kick My Apps'te şu an aktif olan tüm özellikler, tek bakışta.</div>
-        <div className="mkt-carousel" ref={carouselRef}>
+        <div className="mkt-all-grid">
           {ALL_FEATURES.map((f) => {
             const Icon = f.icon;
             return (
-              <div className="mkt-carousel-card" key={f.title}>
-                <div className="mkt-carousel-icon" style={{ background: f.color }}>
-                  <Icon size={18} color="#FFFFFF" />
+              <div className="mkt-all-card" key={f.title}>
+                <div style={{ width: 34, height: 34, borderRadius: 9, marginBottom: 12, display: "flex", alignItems: "center", justifyContent: "center", background: f.color }}>
+                  <Icon size={17} color="#FFFFFF" />
                 </div>
-                <div className="mkt-carousel-headline">{f.desc}</div>
-                <div className="mkt-carousel-footer">
-                  <span>{f.title}</span>
-                </div>
+                <div className="mkt-all-title">{f.title}</div>
+                <div className="mkt-all-desc">{f.desc}</div>
               </div>
             );
           })}
-        </div>
-        <div className="mkt-carousel-nav-row">
-          <span className="mkt-carousel-tagline">Her kategoride derinlemesine.</span>
-          <div className="mkt-carousel-arrows">
-            <button className="mkt-carousel-arrow" onClick={() => scrollCarousel(-1)} aria-label="Önceki">
-              <ChevronLeft size={16} />
-            </button>
-            <button className="mkt-carousel-arrow" onClick={() => scrollCarousel(1)} aria-label="Sonraki">
-              <ChevronRight size={16} />
-            </button>
-          </div>
         </div>
       </div>
 
