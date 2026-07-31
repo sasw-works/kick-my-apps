@@ -143,9 +143,9 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           pointer-events: none;
           z-index: 0;
         }
-        .blob-1 { width: 62vw; height: 62vw; max-width: 680px; max-height: 680px; background: #C9E86A; top: -60px; left: 22%; animation-duration: 17s; }
-        .blob-2 { width: 62vw; height: 62vw; max-width: 680px; max-height: 680px; background: #6FC6F5; top: -30px; right: 18%; animation-duration: 20s; animation-delay: -5s; }
-        .blob-3 { width: 46vw; height: 46vw; max-width: 500px; max-height: 500px; background: #7EE6C4; top: 60px; left: 27%; animation-duration: 14s; animation-delay: -9s; }
+        .blob-1 { width: 68vw; height: 68vw; max-width: 760px; max-height: 760px; background: #C9E86A; top: -60px; left: 24%; animation-duration: 17s; }
+        .blob-2 { width: 68vw; height: 68vw; max-width: 760px; max-height: 760px; background: #6FC6F5; top: 120px; right: 12%; animation-duration: 20s; animation-delay: -5s; }
+        .blob-3 { width: 50vw; height: 50vw; max-width: 540px; max-height: 540px; background: #7EE6C4; top: 60px; left: 28%; animation-duration: 14s; animation-delay: -9s; }
         @keyframes blob-move {
           0%, 100% { transform: translate(0, 0) scale(1); }
           33% { transform: translate(26px, 20px) scale(1.08); }
@@ -164,9 +164,9 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           0%, 100% { transform: translateY(0); }
           50% { transform: translateY(-10px); }
         }
-        .avatar-1 { width: 190px; top: -10px; right: 2%; animation-delay: 0s; }
-        .avatar-2 { width: 170px; top: 190px; left: -2%; animation-delay: 0.7s; }
-        .avatar-3 { width: 180px; top: 400px; right: 6%; animation-delay: 1.4s; }
+        .avatar-1 { width: 190px; top: -10px; right: calc(2% + 250px); animation-delay: 0s; }
+        .avatar-2 { width: 170px; top: 190px; left: calc(-2% + 250px); animation-delay: 0.7s; }
+        .avatar-3 { width: 180px; top: 400px; right: calc(6% + 250px); animation-delay: 1.4s; }
         @media (max-width: 900px) {
           .floating-avatar { display: none; }
         }

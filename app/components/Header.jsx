@@ -86,6 +86,17 @@ export default function Header() {
           white-space: nowrap;
         }
         .kma-header-history:hover { text-decoration: underline; }
+        .kma-header-signin {
+          background: var(--chalk);
+          color: var(--ink);
+          font-size: 13.5px;
+          font-weight: 600;
+          padding: 9px 18px;
+          border-radius: 999px;
+          border: none;
+          cursor: default;
+          white-space: nowrap;
+        }
 
         @media (max-width: 780px) {
           .kma-header-nav { display: none; }
@@ -118,6 +129,7 @@ export default function Header() {
             Geçmiş Analizlerim
           </Link>
           <ThemeToggle />
+          <button className="kma-header-signin">Giriş Yap</button>
         </div>
       </div>
     </div>
