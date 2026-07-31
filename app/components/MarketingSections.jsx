@@ -392,13 +392,15 @@ export default function MarketingSections() {
         }
         .mkt-carousel-headline {
           font-size: 19px; font-weight: 500; line-height: 1.35; color: var(--chalk);
-          flex: 1; transition: color 0.3s ease;
+          margin-bottom: 6px; transition: color 0.3s ease;
         }
-        .mkt-carousel-card:hover .mkt-carousel-headline { color: #1A1F36; }
+        .mkt-carousel-card:hover .mkt-carousel-headline { color: #FFFFFF; }
         .mkt-carousel-footer {
-          font-size: 12.5px; color: var(--muted); margin-top: 20px; transition: color 0.3s ease;
+          font-size: 12.5px; color: var(--muted); transition: color 0.3s ease;
+          display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+          overflow: hidden; line-height: 1.45; min-height: 2.9em;
         }
-        .mkt-carousel-card:hover .mkt-carousel-footer { color: #1A1F36; opacity: 0.7; }
+        .mkt-carousel-card:hover .mkt-carousel-footer { color: #FFFFFF; opacity: 0.85; }
 
         .mkt-carousel-nav-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 90px; }
         .mkt-carousel-tagline { font-size: 20px; color: var(--chalk); }
@@ -575,12 +577,13 @@ export default function MarketingSections() {
           {ALL_FEATURES.map((f) => {
             const Icon = f.icon;
             return (
-              <div className="mkt-carousel-card" key={f.title} style={{ "--fill-color": f.fill }}>
+              <div className="mkt-carousel-card" key={f.title} style={{ "--fill-color": "#1A2B3B" }}>
                 <div className="mkt-carousel-fill" />
                 <div className="mkt-carousel-content">
                   <div className="mkt-carousel-icon" style={{ background: f.color }}>
                     <Icon size={18} color="#FFFFFF" />
                   </div>
+                  <div style={{ flex: 1 }} />
                   <div className="mkt-carousel-headline">{f.title}</div>
                   <div className="mkt-carousel-footer">{f.desc}</div>
                 </div>
