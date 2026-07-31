@@ -122,6 +122,14 @@ export default function MarketingSections() {
         .mkt-root { width: 100%; max-width: 1000px; margin: 90px auto 0; font-family: 'Inter', sans-serif; }
         .mkt-section-title { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; color: var(--chalk); text-align: center; margin-bottom: 10px; }
         .mkt-section-sub { font-size: 14px; color: var(--muted); text-align: center; max-width: 480px; margin: 0 auto 40px; }
+        .mkt-title-card {
+          background: var(--ink);
+          border-radius: 20px;
+          padding: 24px 32px;
+          margin: 0 auto 40px;
+          width: fit-content;
+          max-width: 90%;
+        }
 
         .mkt-browser-frame {
           border: 1px solid var(--ink-3); border-radius: 14px; overflow: hidden;
@@ -302,8 +310,10 @@ export default function MarketingSections() {
 
       {/* Rapor önizlemesi */}
       <div>
-        <div className="mkt-section-title">Gerçek raporu keşfet</div>
-        <div className="mkt-section-sub">Ekran görüntülerin ve yorumların, tek ve net bir sağlık raporuna dönüşür.</div>
+        <div className="mkt-title-card">
+          <div className="mkt-section-title" style={{ marginBottom: 8 }}>Gerçek raporu keşfet</div>
+          <div className="mkt-section-sub" style={{ marginBottom: 0 }}>Ekran görüntülerin ve yorumların, tek ve net bir sağlık raporuna dönüşür.</div>
+        </div>
         <div className="mkt-browser-frame">
           <div className="mkt-browser-topbar">
             <div className="mkt-browser-dots">
