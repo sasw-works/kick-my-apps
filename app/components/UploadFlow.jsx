@@ -105,6 +105,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           --font-body: 'Inter', sans-serif;
           --font-mono: 'Inter', sans-serif;
 
+          position: relative;
           background: var(--ink);
           color: var(--chalk);
           font-family: var(--font-body);
@@ -118,14 +119,18 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
         .hero-bg-wrap {
-          position: relative;
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
+          position: absolute;
+          top: 0;
+          left: 50%;
+          width: 100vw;
+          margin-left: -50vw;
+          height: 900px;
+          max-height: 100vh;
           overflow: hidden;
-          -webkit-mask-image: radial-gradient(ellipse 75% 80% at center, black 40%, transparent 95%);
-          mask-image: radial-gradient(ellipse 75% 80% at center, black 40%, transparent 95%);
+          pointer-events: none;
+          z-index: 0;
+          -webkit-mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 100%);
+          mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 100%);
         }
         .blob {
           position: absolute;
@@ -456,6 +461,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         <div className="floating-avatar avatar-3">
           <img src="/avatar-3.png" alt="" onError={(e) => (e.target.style.display = "none")} />
         </div>
+      </div>
 
       <div className="upload-hero">
         <div className="hero-label">AI-powered app reviews</div>
@@ -594,7 +600,6 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
             <div className="skeleton-bar" style={{ width: "92%", marginTop: 10 }} />
           </div>
         )}
-      </div>
       </div>
     </div>
   );
