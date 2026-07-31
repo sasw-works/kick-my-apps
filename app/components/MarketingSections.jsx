@@ -6,9 +6,10 @@ import {
   Sparkles,
   Mail,
   GitCompare,
-  ChevronDown,
   ChevronLeft,
   ChevronRight,
+  Plus,
+  X,
   CheckCircle2,
   AlertTriangle,
   XCircle,
@@ -77,10 +78,12 @@ const FAQ = [
 function FaqItem({ q, a }) {
   const [open, setOpen] = React.useState(false);
   return (
-    <div className="faq-item">
+    <div className="faq-row">
       <button className="faq-q" onClick={() => setOpen(!open)}>
-        {q}
-        <ChevronDown size={16} style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 0.15s ease" }} />
+        <span>{q}</span>
+        <span className={`faq-toggle ${open ? "faq-toggle-open" : ""}`}>
+          {open ? <X size={16} color="#FFFFFF" /> : <Plus size={16} color="var(--muted)" />}
+        </span>
       </button>
       {open && <div className="faq-a">{a}</div>}
     </div>
@@ -272,15 +275,25 @@ export default function MarketingSections() {
         }
         .mkt-carousel-arrow:hover { border-color: var(--brand); }
 
-        .faq-list { max-width: 640px; margin: 0 auto 90px; display: flex; flex-direction: column; gap: 10px; }
-        .faq-item { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 12px; padding: 4px 20px; transition: border-color 0.2s ease; }
-        .faq-item:hover { border-color: var(--brand); }
+        .faq-eyebrow { font-size: 13.5px; color: var(--muted); text-align: center; margin-bottom: 8px; }
+        .faq-list { max-width: 720px; margin: 0 auto 40px; border-top: 1px solid var(--ink-3); }
+        .faq-row { border-bottom: 1px solid var(--ink-3); }
         .faq-q {
-          width: 100%; display: flex; align-items: center; justify-content: space-between;
-          background: none; border: none; cursor: pointer; padding: 16px 0;
-          font-size: 14px; font-weight: 600; color: var(--chalk); text-align: left;
+          width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 20px;
+          background: none; border: none; cursor: pointer; padding: 26px 4px;
+          font-size: 19px; color: var(--chalk); text-align: left;
         }
-        .faq-a { font-size: 13.5px; color: var(--muted); line-height: 1.6; padding-bottom: 16px; }
+        .faq-toggle {
+          width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+          display: flex; align-items: center; justify-content: center;
+          background: var(--ink-3); transition: background 0.2s ease;
+        }
+        .faq-toggle-open { background: var(--brand); }
+        .faq-a { font-size: 14.5px; color: var(--muted); line-height: 1.7; padding: 0 4px 26px; max-width: 560px; }
+        .faq-support-btn {
+          display: block; margin: 0 auto; background: var(--brand); color: #FFFFFF;
+          font-weight: 600; font-size: 14.5px; padding: 13px 28px; border-radius: 999px; border: none; cursor: default;
+        }
 
         @media (max-width: 780px) {
           .mkt-grid-2, .mkt-showcase { grid-template-columns: 1fr; }
@@ -453,13 +466,15 @@ export default function MarketingSections() {
 
       {/* FAQ */}
       <div>
-        <div className="mkt-section-title">Sorular? Cevaplar.</div>
+        <div className="faq-eyebrow">Sorularını yanıtlamaktan mutluluk duyarız</div>
+        <div className="mkt-section-title" style={{ fontSize: 34 }}>Sık sorulan sorular</div>
         <div className="mkt-section-sub">&nbsp;</div>
         <div className="faq-list">
           {FAQ.map((f) => (
             <FaqItem key={f.q} q={f.q} a={f.a} />
           ))}
         </div>
+        <button className="faq-support-btn">Destek Sayfası</button>
       </div>
     </div>
   );
