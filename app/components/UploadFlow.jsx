@@ -150,7 +150,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           position: absolute;
           border-radius: 50%;
           filter: blur(90px);
-          opacity: 0.45;
+          opacity: 0.75;
           pointer-events: none;
         }
         .blob-1 { width: 102vw; height: 102vw; max-width: 1140px; max-height: 1140px; background: #C9E86A; top: -60px; left: 24%; }
