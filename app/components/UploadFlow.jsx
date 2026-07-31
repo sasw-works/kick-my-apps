@@ -182,15 +182,8 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           color: var(--chalk);
           margin: 0;
         }
-        .hero-label {
-          display: inline-flex; align-items: center; gap: 6px;
-          background: var(--ink-2); border: 1px solid var(--ink-3); color: var(--brand);
-          font-size: 14px; font-weight: 700; padding: 8px 18px; border-radius: 999px;
-          margin-bottom: 22px;
-        }
         @media (max-width: 720px) {
           .hero-title { font-size: 42px; }
-          .hero-label { font-size: 11.5px; padding: 5px 12px; }
         }
 
         .hero-search-wrap {
@@ -464,8 +457,11 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
       </div>
 
       <div className="upload-hero">
-        <div className="hero-label">AI-powered app reviews</div>
-        <h1 className="hero-title">kick your apps</h1>
+        <h1 className="hero-title">
+          Find what's
+          <br />
+          hurting your app.
+        </h1>
       </div>
 
       <div className="hero-search-wrap">
