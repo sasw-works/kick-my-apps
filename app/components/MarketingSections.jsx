@@ -93,9 +93,22 @@ export default function MarketingSections() {
         .mkt-section-title { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; color: var(--chalk); text-align: center; margin-bottom: 10px; }
         .mkt-section-sub { font-size: 14px; color: var(--muted); text-align: center; max-width: 480px; margin: 0 auto 40px; }
 
+        .mkt-browser-frame {
+          border: 1px solid var(--ink-3); border-radius: 14px; overflow: hidden;
+          box-shadow: var(--shadow); margin-bottom: 90px;
+        }
+        .mkt-browser-topbar {
+          display: flex; align-items: center; gap: 14px;
+          background: var(--ink-2); border-bottom: 1px solid var(--ink-3); padding: 12px 16px;
+        }
+        .mkt-browser-dots { display: flex; gap: 7px; }
+        .mkt-browser-dots span { width: 11px; height: 11px; border-radius: 50%; display: block; }
+        .mkt-browser-url {
+          font-family: var(--font-mono); font-size: 11.5px; color: var(--muted);
+          background: var(--ink); border-radius: 999px; padding: 5px 14px; flex: 1; max-width: 260px;
+        }
         .mkt-preview-card {
-          background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 20px;
-          box-shadow: var(--shadow); padding: 28px; margin-bottom: 90px;
+          background: var(--ink-2); padding: 28px;
         }
         .mkt-preview-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
         .mkt-preview-score { display: flex; align-items: center; gap: 14px; }
@@ -108,7 +121,9 @@ export default function MarketingSections() {
         .mkt-feature-card {
           background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 16px;
           box-shadow: var(--shadow); padding: 26px;
+          transition: transform 0.2s ease, border-color 0.2s ease;
         }
+        .mkt-feature-card:hover { transform: translateY(-3px); border-color: var(--brand); }
         .mkt-feature-icon {
           width: 38px; height: 38px; border-radius: 10px;
           display: flex; align-items: center; justify-content: center; margin-bottom: 16px;
@@ -138,12 +153,15 @@ export default function MarketingSections() {
         .mkt-all-card {
           background: var(--ink-2); border: 1px solid var(--ink-3);
           border-radius: 14px; padding: 20px; box-shadow: var(--shadow);
+          transition: transform 0.2s ease, border-color 0.2s ease;
         }
+        .mkt-all-card:hover { transform: translateY(-3px); border-color: var(--brand); }
         .mkt-all-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
         .mkt-all-desc { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
 
         .faq-list { max-width: 640px; margin: 0 auto 90px; display: flex; flex-direction: column; gap: 10px; }
-        .faq-item { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 12px; padding: 4px 20px; }
+        .faq-item { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 12px; padding: 4px 20px; transition: border-color 0.2s ease; }
+        .faq-item:hover { border-color: var(--brand); }
         .faq-q {
           width: 100%; display: flex; align-items: center; justify-content: space-between;
           background: none; border: none; cursor: pointer; padding: 16px 0;
@@ -161,17 +179,27 @@ export default function MarketingSections() {
       <div>
         <div className="mkt-section-title">Gerçek raporu keşfet</div>
         <div className="mkt-section-sub">Ekran görüntülerin ve yorumların, tek ve net bir sağlık raporuna dönüşür.</div>
-        <div className="mkt-preview-card">
-          <div className="mkt-preview-header">
-            <div className="mkt-preview-score">
-              <div className="mkt-preview-score-num">82</div>
-              <div style={{ fontSize: 12, color: "var(--muted)" }}>APP HEALTH SCORE</div>
+        <div className="mkt-browser-frame">
+          <div className="mkt-browser-topbar">
+            <div className="mkt-browser-dots">
+              <span style={{ background: "#FF5F57" }} />
+              <span style={{ background: "#FFBD2E" }} />
+              <span style={{ background: "#28C840" }} />
             </div>
+            <div className="mkt-browser-url">kickmyapps.com/report</div>
           </div>
-          <div className="mkt-preview-findings">
-            <div className="mkt-preview-row"><CheckCircle2 size={15} color="var(--teal)" /><span>Font hiyerarşisi net ve tutarlı</span></div>
-            <div className="mkt-preview-row"><AlertTriangle size={15} color="var(--yellow)" /><span>Onboarding 7 ekran — biraz uzun</span></div>
-            <div className="mkt-preview-row"><XCircle size={15} color="var(--kick)" /><span>CTA butonu düşük kontrastta</span></div>
+          <div className="mkt-preview-card">
+            <div className="mkt-preview-header">
+              <div className="mkt-preview-score">
+                <div className="mkt-preview-score-num">82</div>
+                <div style={{ fontSize: 12, color: "var(--muted)" }}>APP HEALTH SCORE</div>
+              </div>
+            </div>
+            <div className="mkt-preview-findings">
+              <div className="mkt-preview-row"><CheckCircle2 size={15} color="var(--teal)" /><span>Font hiyerarşisi net ve tutarlı</span></div>
+              <div className="mkt-preview-row"><AlertTriangle size={15} color="var(--yellow)" /><span>Onboarding 7 ekran — biraz uzun</span></div>
+              <div className="mkt-preview-row"><XCircle size={15} color="var(--kick)" /><span>CTA butonu düşük kontrastta</span></div>
+            </div>
           </div>
         </div>
       </div>

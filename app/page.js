@@ -90,23 +90,32 @@ export default function Home() {
 
   return (
     <main className="min-h-screen px-4 pb-4 md:px-8 md:pb-8" style={{ background: "var(--ink)" }}>
+      <style>{`
+        @keyframes page-fade-in {
+          from { opacity: 0; transform: translateY(6px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .page-fade { animation: page-fade-in 0.35s ease; }
+      `}</style>
       <div className="max-w-6xl mx-auto">
-        {stage === "upload" ? (
-          <>
-            <UploadFlow onAnalyze={handleAnalyze} analyzing={analyzing} errorMessage={errorMessage} />
-            <MarketingSections />
-          </>
-        ) : (
-          <HealthReport
-            data={reportData}
-            appLabel={appLabel}
-            onReset={handleReset}
-            history={history}
-            scanId={scanId}
-            storeUrl={scanStoreUrl}
-            screenshots={screenshotUrls}
-          />
-        )}
+        <div key={stage} className="page-fade">
+          {stage === "upload" ? (
+            <>
+              <UploadFlow onAnalyze={handleAnalyze} analyzing={analyzing} errorMessage={errorMessage} />
+              <MarketingSections />
+            </>
+          ) : (
+            <HealthReport
+              data={reportData}
+              appLabel={appLabel}
+              onReset={handleReset}
+              history={history}
+              scanId={scanId}
+              storeUrl={scanStoreUrl}
+              screenshots={screenshotUrls}
+            />
+          )}
+        </div>
       </div>
     </main>
   );

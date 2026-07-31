@@ -68,7 +68,9 @@ export default function HistoryList({ onBack, onCompare, preselectId, appNameFil
           display: flex; align-items: center; gap: 8px;
           background: var(--brand); color: var(--ink); font-weight: 700; font-size: 13.5px;
           padding: 10px 18px; border-radius: 8px; border: none; cursor: pointer;
+          transition: transform 0.15s ease;
         }
+        .compare-btn:not(:disabled):hover { transform: translateY(-2px); }
         .compare-btn:disabled { opacity: 0.35; cursor: not-allowed; }
 
         .scan-list { display: flex; flex-direction: column; gap: 8px; }
