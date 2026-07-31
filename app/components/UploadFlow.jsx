@@ -316,10 +316,15 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           display: flex;
           align-items: center;
           justify-content: center;
-          overflow: hidden;
           box-shadow: var(--shadow);
         }
-        .thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .thumb-img-wrap {
+          width: 100%;
+          height: 100%;
+          border-radius: 8px;
+          overflow: hidden;
+        }
+        .thumb-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .thumb-remove {
           position: absolute;
           top: -6px;
@@ -533,7 +538,9 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         <div className="thumb-row" style={{ marginTop: 14 }}>
           {files.map((f, i) => (
             <div className="thumb" key={i}>
-              <img src={URL.createObjectURL(f)} alt={f.name} />
+              <div className="thumb-img-wrap">
+                <img src={URL.createObjectURL(f)} alt={f.name} />
+              </div>
               <button
                 className="thumb-remove"
                 onClick={(e) => {
