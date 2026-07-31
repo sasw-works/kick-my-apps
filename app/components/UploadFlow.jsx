@@ -142,7 +142,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           max-height: 100vh;
           overflow: hidden;
           pointer-events: none;
-          z-index: -1;
+          z-index: 0;
           -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 55%, transparent 100%);
           mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 55%, transparent 100%);
         }
