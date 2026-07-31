@@ -142,7 +142,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           max-height: 100vh;
           overflow: hidden;
           pointer-events: none;
-          z-index: 0;
+          z-index: -1;
           -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 55%, transparent 100%);
           mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 55%, transparent 100%);
         }
@@ -152,7 +152,6 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           filter: blur(90px);
           opacity: 0.45;
           pointer-events: none;
-          z-index: 0;
         }
         .blob-1 { width: 102vw; height: 102vw; max-width: 1140px; max-height: 1140px; background: #C9E86A; top: -60px; left: 24%; }
         .blob-2 { width: 102vw; height: 102vw; max-width: 1140px; max-height: 1140px; background: #6FC6F5; top: 120px; right: 12%; }
