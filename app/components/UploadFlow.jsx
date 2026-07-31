@@ -117,6 +117,57 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         }
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
+        .hero-bg-wrap {
+          position: relative;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          overflow: hidden;
+          -webkit-mask-image: radial-gradient(ellipse 75% 80% at center, black 40%, transparent 95%);
+          mask-image: radial-gradient(ellipse 75% 80% at center, black 40%, transparent 95%);
+        }
+        .blob {
+          position: absolute;
+          border-radius: 50%;
+          filter: blur(90px);
+          opacity: 0.45;
+          animation-name: blob-move;
+          animation-timing-function: ease-in-out;
+          animation-iteration-count: infinite;
+          pointer-events: none;
+          z-index: 0;
+        }
+        .blob-1 { width: 55vw; height: 55vw; max-width: 620px; max-height: 620px; background: #C9E86A; top: -40px; left: 5%; animation-duration: 17s; }
+        .blob-2 { width: 65vw; height: 65vw; max-width: 720px; max-height: 720px; background: #6FC6F5; top: 60px; right: -12%; animation-duration: 20s; animation-delay: -5s; }
+        .blob-3 { width: 45vw; height: 45vw; max-width: 500px; max-height: 500px; background: #7EE6C4; top: 380px; right: 18%; animation-duration: 14s; animation-delay: -9s; }
+        @keyframes blob-move {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          33% { transform: translate(26px, 20px) scale(1.08); }
+          66% { transform: translate(-20px, 26px) scale(0.95); }
+        }
+
+        .floating-avatar {
+          position: absolute;
+          border-radius: 50%;
+          overflow: hidden;
+          background: var(--ink-3);
+          border: 3px solid var(--ink-2);
+          z-index: 2;
+          animation: float-bob 5s ease-in-out infinite;
+        }
+        .floating-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        @keyframes float-bob {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+        .avatar-1 { width: 76px; height: 76px; top: 30px; right: 8%; animation-delay: 0s; }
+        .avatar-2 { width: 66px; height: 66px; top: 250px; left: 3%; animation-delay: 0.7s; }
+        .avatar-3 { width: 70px; height: 70px; top: 470px; right: 12%; animation-delay: 1.4s; }
+        @media (max-width: 900px) {
+          .floating-avatar { display: none; }
+        }
+
         .upload-hero { text-align: center; margin-top: 100px; margin-bottom: 53px; max-width: 720px; position: relative; z-index: 1; }
 
         .hero-title {
@@ -393,6 +444,21 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         }
       `}</style>
 
+      <div className="hero-bg-wrap">
+        <div className="blob blob-1" />
+        <div className="blob blob-2" />
+        <div className="blob blob-3" />
+
+        <div className="floating-avatar avatar-1">
+          <img src="/avatar-1.jpg" alt="" onError={(e) => (e.target.style.display = "none")} />
+        </div>
+        <div className="floating-avatar avatar-2">
+          <img src="/avatar-2.jpg" alt="" onError={(e) => (e.target.style.display = "none")} />
+        </div>
+        <div className="floating-avatar avatar-3">
+          <img src="/avatar-3.jpg" alt="" onError={(e) => (e.target.style.display = "none")} />
+        </div>
+
       <div className="upload-hero">
         <div className="hero-label">AI-powered app reviews</div>
         <h1 className="hero-title">kick your apps</h1>
@@ -530,6 +596,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
             <div className="skeleton-bar" style={{ width: "92%", marginTop: 10 }} />
           </div>
         )}
+      </div>
       </div>
     </div>
   );
