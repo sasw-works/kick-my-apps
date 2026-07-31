@@ -279,6 +279,13 @@ export default function MarketingSections() {
         .mkt-preview-card {
           background: var(--ink-2); padding: 28px;
         }
+        .mkt-preview-body { display: flex; gap: 28px; align-items: flex-start; }
+        .mkt-preview-chart { width: 260px; flex-shrink: 0; border-radius: 12px; }
+        .mkt-preview-right { flex: 1; min-width: 0; }
+        @media (max-width: 700px) {
+          .mkt-preview-body { flex-direction: column; }
+          .mkt-preview-chart { width: 100%; }
+        }
         .mkt-preview-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
         .mkt-preview-score { display: flex; align-items: center; gap: 14px; }
         .mkt-preview-score-num { font-family: var(--font-display); font-size: 40px; font-weight: 700; color: var(--teal); }
@@ -469,16 +476,21 @@ export default function MarketingSections() {
             <div className="mkt-browser-url">kickmyapps.com/report</div>
           </div>
           <div className="mkt-preview-card">
-            <div className="mkt-preview-header">
-              <div className="mkt-preview-score">
-                <div className="mkt-preview-score-num">82</div>
-                <div style={{ fontSize: 12, color: "var(--muted)" }}>APP HEALTH SCORE</div>
+            <div className="mkt-preview-body">
+              <img src="/chart.svg" alt="" className="mkt-preview-chart" />
+              <div className="mkt-preview-right">
+                <div className="mkt-preview-header">
+                  <div className="mkt-preview-score">
+                    <div className="mkt-preview-score-num">82</div>
+                    <div style={{ fontSize: 12, color: "var(--muted)" }}>APP HEALTH SCORE</div>
+                  </div>
+                </div>
+                <div className="mkt-preview-findings">
+                  <div className="mkt-preview-row"><CheckCircle2 size={15} color="var(--teal)" /><span>Font hiyerarşisi net ve tutarlı</span></div>
+                  <div className="mkt-preview-row"><AlertTriangle size={15} color="var(--yellow)" /><span>Onboarding 7 ekran — biraz uzun</span></div>
+                  <div className="mkt-preview-row"><XCircle size={15} color="var(--kick)" /><span>CTA butonu düşük kontrastta</span></div>
+                </div>
               </div>
-            </div>
-            <div className="mkt-preview-findings">
-              <div className="mkt-preview-row"><CheckCircle2 size={15} color="var(--teal)" /><span>Font hiyerarşisi net ve tutarlı</span></div>
-              <div className="mkt-preview-row"><AlertTriangle size={15} color="var(--yellow)" /><span>Onboarding 7 ekran — biraz uzun</span></div>
-              <div className="mkt-preview-row"><XCircle size={15} color="var(--kick)" /><span>CTA butonu düşük kontrastta</span></div>
             </div>
           </div>
         </div>
