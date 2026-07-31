@@ -128,10 +128,15 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           color: var(--chalk);
           margin: 0;
         }
-        .hero-title-small { font-size: 36px; display: inline-block; color: rgba(0, 14, 255, .5); }
+        .hero-label {
+          display: inline-flex; align-items: center; gap: 6px;
+          background: var(--ink-2); border: 1px solid var(--ink-3); color: var(--brand);
+          font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 999px;
+          margin-bottom: 18px;
+        }
         @media (max-width: 720px) {
           .hero-title { font-size: 42px; }
-          .hero-title-small { font-size: 22px; }
+          .hero-label { font-size: 11.5px; padding: 5px 12px; }
         }
 
         .hero-search-wrap {
@@ -387,11 +392,8 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
       `}</style>
 
       <div className="upload-hero">
-        <h1 className="hero-title">
-          <span className="hero-title-small">Ready to</span>
-          <br />
-          kick your apps
-        </h1>
+        <div className="hero-label">AI-powered app reviews</div>
+        <h1 className="hero-title">kick your apps</h1>
       </div>
 
       <div className="hero-search-wrap">
