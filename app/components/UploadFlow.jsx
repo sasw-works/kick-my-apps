@@ -168,6 +168,13 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         @media (max-width: 720px) {
           .hero-title { font-size: 42px; }
         }
+        .hero-subtitle {
+          font-family: 'Inter', sans-serif;
+          font-size: 20px;
+          color: #1A2B3B;
+          line-height: 1.5;
+          margin: 24px 0 0;
+        }
 
         .hero-search-wrap {
           position: relative;
@@ -437,6 +444,11 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           <br />
           hurting your app
         </h1>
+        <p className="hero-subtitle">
+          Enter your app and - or upload screenshots to uncover UI issues, usability problems, and
+          opportunities for improvement with AI so you can make smarter decisions and build a
+          better product
+        </p>
       </div>
 
       <div className="hero-search-wrap">
