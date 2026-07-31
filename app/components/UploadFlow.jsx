@@ -222,7 +222,6 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           background: var(--ink-3); border: 1px solid var(--ink-3); border-radius: 6px;
           padding: 3px 7px; flex-shrink: 0;
         }
-        .analyze-trust { text-align: center; font-size: 11.5px; color: var(--muted); margin-top: 10px; }
         .history-link {
           margin-top: 10px;
           background: transparent;
@@ -436,7 +435,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
 
       <div className="upload-hero">
         <h1 className="hero-title">
-          <span style={{ whiteSpace: "nowrap" }}>Find what is really</span>
+          <span style={{ whiteSpace: "nowrap" }}>Find what really</span>
           <br />
           hurts your app
         </h1>
@@ -535,7 +534,6 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
       )}
 
       <div className="upload-card">
-        <div className="analyze-trust">Kredi kartı gerekmiyor · Genellikle ~20-30 saniye sürer</div>
         {errorMessage && (
           <div style={{ color: "var(--kick)", fontSize: 13, textAlign: "center" }}>{errorMessage}</div>
         )}
