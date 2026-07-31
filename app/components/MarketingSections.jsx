@@ -213,8 +213,8 @@ export default function MarketingSections() {
     <div className="mkt-root">
       <style>{`
         .mkt-root { width: 100%; max-width: 1000px; margin: 90px auto 0; font-family: 'Inter', sans-serif; }
-        .mkt-section-title { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; color: var(--chalk); text-align: center; margin-bottom: 10px; }
-        .mkt-section-sub { font-size: 14px; color: var(--muted); text-align: center; max-width: 480px; margin: 0 auto 40px; }
+        .mkt-section-title { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; color: var(--chalk); text-align: center; margin-bottom: 10px; }
+        .mkt-section-sub { font-size: 16px; color: var(--muted); text-align: center; max-width: 480px; margin: 0 auto 40px; }
         .mkt-title-card {
           background: var(--ink);
           border-radius: 20px;
@@ -570,7 +570,7 @@ export default function MarketingSections() {
       {/* FAQ */}
       <div>
         <div className="faq-eyebrow">Sorularını yanıtlamaktan mutluluk duyarız</div>
-        <div className="mkt-section-title" style={{ fontSize: 34 }}>Sık sorulan sorular</div>
+        <div className="mkt-section-title" style={{ fontSize: 36 }}>Sık sorulan sorular</div>
         <div className="mkt-section-sub">&nbsp;</div>
         <div className="faq-list">
           {FAQ.map((f) => (
