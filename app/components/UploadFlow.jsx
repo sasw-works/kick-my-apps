@@ -220,7 +220,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           background: var(--ink-2);
           border: none;
           border-radius: 999px;
-          padding: 16px 26px;
+          padding: 16px 28px;
           transition: border-color 0.15s ease;
         }
         .hero-search-pill:focus-within { border-color: var(--brand); }
@@ -267,7 +267,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 10px;
+          gap: 15px;
           flex-shrink: 0;
           white-space: nowrap;
           background: var(--ink-2);
@@ -528,7 +528,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
             style={{ display: "none" }}
             onChange={(e) => addFiles(e.target.files)}
           />
-          <UploadIcon size={17} color="var(--muted)" />
+          <UploadIcon size={14} color="var(--muted)" />
           <span>{files.length > 0 ? `${files.length} screenshots selected` : "Upload screens"}</span>
         </label>
 
