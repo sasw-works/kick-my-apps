@@ -458,7 +458,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
 
       <div className="upload-hero">
         <h1 className="hero-title">
-          <span style={{ whiteSpace: "nowrap" }}>Find what really</span>
+          <span style={{ whiteSpace: "nowrap" }}>Uncover what really</span>
           <br />
           hurts your app
         </h1>
