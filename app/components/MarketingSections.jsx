@@ -290,8 +290,8 @@ export default function MarketingSections() {
         }
         .mkt-feature-card:hover { transform: translateY(-3px); border-color: var(--brand); }
         .mkt-feature-icon {
-          width: 38px; height: 38px; border-radius: 10px;
-          display: flex; align-items: center; justify-content: center; margin-bottom: 16px;
+          width: 76px; height: 76px; border-radius: 10px;
+          display: flex; align-items: center; justify-content: center; margin-bottom: 41px;
         }
         .mkt-feature-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
         .mkt-feature-desc { font-size: 13.5px; color: var(--muted); line-height: 1.6; margin-bottom: 18px; }
@@ -472,7 +472,7 @@ export default function MarketingSections() {
         <div className="mkt-section-sub">Ekran görüntüsü analizi ve gerçek kullanıcı yorumları, aynı raporda buluşuyor.</div>
         <div className="mkt-grid-2">
           <div className="mkt-feature-card">
-            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon01 size={38} /></div>
+            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon01 size={76} /></div>
             <div className="mkt-feature-title">Gerçek App Store verisi</div>
             <div className="mkt-feature-desc">Uydurma değil — herkese açık App Store yorumlarını doğrudan analiz ediyoruz.</div>
             <div className="mkt-priority-row" style={{ justifyContent: "center", gap: 8 }}>
@@ -481,7 +481,7 @@ export default function MarketingSections() {
             </div>
           </div>
           <div className="mkt-feature-card">
-            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon02 size={38} /></div>
+            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon02 size={76} /></div>
             <div className="mkt-feature-title">Her zaman taze</div>
             <div className="mkt-feature-desc">Önbellek yok — her analizde yorumlar gerçek zamanlı çekilir.</div>
             <div className="mkt-ticker">
@@ -505,13 +505,13 @@ export default function MarketingSections() {
         <div className="mkt-section-sub">13 kategori altında toplanan bulgular, tek bakışta önceliklendirilir.</div>
         <div className="mkt-grid-2">
           <div className="mkt-feature-card">
-            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon03 size={38} /></div>
+            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon03 size={76} /></div>
             <div className="mkt-feature-title">13 kategori, 4 mercek</div>
             <div className="mkt-feature-desc">Onboarding'den erişilebilirliğe, her bulgu UI / UX / Erişilebilirlik / Ürün merceklerinden birine bağlanır.</div>
             <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UI</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>2 kritik · 1 dikkat</span></div>
           </div>
           <div className="mkt-feature-card">
-            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon04 size={38} /></div>
+            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon04 size={76} /></div>
             <div className="mkt-feature-title">Etkiye göre önceliklendirilmiş</div>
             <div className="mkt-feature-desc">Hangisini önce düzeltmen gerektiğini, yüksek etki + düşük efor eşleştirmesiyle söylüyoruz.</div>
             <div className="mkt-priority-list">
@@ -533,7 +533,7 @@ export default function MarketingSections() {
         <div className="mkt-section-sub">Haftalık özetler ve rakip karşılaştırmasıyla, sürekli takipte kal.</div>
         <div className="mkt-showcase">
           <div className="mkt-feature-card">
-            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon05 size={38} /></div>
+            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon05 size={76} /></div>
             <div className="mkt-feature-title">Haftalık yorum özeti</div>
             <div className="mkt-feature-desc">Takip ettiğin bir uygulamanın yeni yorumlarının özetini her hafta e-postana alırsın.</div>
             <div className="mkt-showcase-visual">
@@ -542,7 +542,7 @@ export default function MarketingSections() {
             </div>
           </div>
           <div className="mkt-feature-card">
-            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon06 size={38} /></div>
+            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon06 size={76} /></div>
             <div className="mkt-feature-title">Rakiple karşılaştır</div>
             <div className="mkt-feature-desc">Kendi uygulamanı bir rakiple yan yana koy — skorlar ve bulgular tek ekranda.</div>
             <div className="mkt-showcase-visual" style={{ flexDirection: "row", gap: 24 }}>
