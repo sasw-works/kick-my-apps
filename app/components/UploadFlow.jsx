@@ -166,9 +166,9 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           0%, 100% { transform: translateY(0); }
           50% { transform: translateY(-10px); }
         }
-        .avatar-1 { width: 190px; top: -10px; right: calc(2% + 250px); animation-delay: 0s; }
-        .avatar-2 { width: 170px; top: 190px; left: calc(-2% + 250px); animation-delay: 0.7s; }
-        .avatar-3 { width: 180px; top: 400px; right: calc(6% + 250px); animation-delay: 1.4s; }
+        .avatar-1 { width: 190px; top: 90px; right: calc(2% + 250px); animation-delay: 0s; }
+        .avatar-2 { width: 170px; top: 500px; right: calc(6% + 250px); animation-delay: 0.7s; }
+        .avatar-3 { width: 180px; top: 190px; left: calc(-2% + 250px); animation-delay: 1.4s; }
         @media (max-width: 900px) {
           .floating-avatar { display: none; }
         }
