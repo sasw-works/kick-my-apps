@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   Store,
   RefreshCw,
@@ -7,6 +7,8 @@ import {
   Mail,
   GitCompare,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   CheckCircle2,
   AlertTriangle,
   XCircle,
@@ -35,18 +37,18 @@ const PRIORITY_ITEMS = [
 
 // Ürünün gerçekten sahip olduğu tüm özellikler — Stripe tarzı renkli ikon kutularıyla.
 const ALL_FEATURES = [
-  { icon: ImageIcon, title: "Ekran Görüntüsü Analizi", desc: "13 kategori, 4 mercek altında derinlemesine UI/UX incelemesi.", color: "var(--brand)" },
-  { icon: Store, title: "Gerçek App Store Yorumları", desc: "Önbellek yok — her analizde canlı veri çekilir.", color: "var(--teal)" },
-  { icon: Search, title: "ASO / Mağaza İncelemesi", desc: "Başlık, açıklama ve mağaza listelemeni değerlendirir.", color: "var(--yellow)" },
-  { icon: ShieldQuestion, title: "Güncelleme Riski Kontrolü", desc: "Bir sonraki incelemede sorun çıkarabilecek sinyalleri yakalar.", color: "var(--brand)" },
-  { icon: Sparkles, title: "Hızlı Kazanımlar", desc: "Yüksek etki, düşük efor gerektiren düzeltmeleri öne çıkarır.", color: "var(--teal)" },
-  { icon: Code2, title: "Kod Seviyesinde Öneri", desc: "Bazı bulgular için örnek CSS/Swift/Kotlin kod parçacığı.", color: "var(--yellow)" },
-  { icon: ImageIcon, title: "Görsel İşaretleme", desc: "Bulgular, yüklediğin ekran görüntüsü üzerinde işaretlenir.", color: "var(--brand)" },
-  { icon: History, title: "Geçmiş & Trend", desc: "Her tarama kaydedilir, skorun zaman içindeki değişimini gör.", color: "var(--teal)" },
-  { icon: GitCompare, title: "Detaylı Karşılaştırma", desc: "İki taramayı (rakip dahil) kategori kategori kıyasla.", color: "var(--yellow)" },
-  { icon: LayoutDashboard, title: "Uygulamalarım Paneli", desc: "Takip ettiğin tüm uygulamalar tek ekranda.", color: "var(--brand)" },
-  { icon: Mail, title: "Haftalık E-posta Özeti", desc: "Yeni yorumların özetini her hafta otomatik al.", color: "var(--teal)" },
-  { icon: Download, title: "PDF Dışa Aktarma", desc: "Raporu tek tıkla indirip paylaşabilirsin.", color: "var(--yellow)" },
+  { icon: ImageIcon, title: "Ekran Görüntüsü Analizi", desc: "13 kategori, 4 mercek altında derinlemesine UI/UX incelemesi.", color: "var(--brand)", fill: "#8A7CFF" },
+  { icon: Store, title: "Gerçek App Store Yorumları", desc: "Önbellek yok — her analizde canlı veri çekilir.", color: "var(--teal)", fill: "#79D9CC" },
+  { icon: Search, title: "ASO / Mağaza İncelemesi", desc: "Başlık, açıklama ve mağaza listelemeni değerlendirir.", color: "var(--yellow)", fill: "#F3C468" },
+  { icon: ShieldQuestion, title: "Güncelleme Riski Kontrolü", desc: "Bir sonraki incelemede sorun çıkarabilecek sinyalleri yakalar.", color: "var(--brand)", fill: "#8A7CFF" },
+  { icon: Sparkles, title: "Hızlı Kazanımlar", desc: "Yüksek etki, düşük efor gerektiren düzeltmeleri öne çıkarır.", color: "var(--teal)", fill: "#79D9CC" },
+  { icon: Code2, title: "Kod Seviyesinde Öneri", desc: "Bazı bulgular için örnek CSS/Swift/Kotlin kod parçacığı.", color: "var(--yellow)", fill: "#F3C468" },
+  { icon: ImageIcon, title: "Görsel İşaretleme", desc: "Bulgular, yüklediğin ekran görüntüsü üzerinde işaretlenir.", color: "var(--brand)", fill: "#8A7CFF" },
+  { icon: History, title: "Geçmiş & Trend", desc: "Her tarama kaydedilir, skorun zaman içindeki değişimini gör.", color: "var(--teal)", fill: "#79D9CC" },
+  { icon: GitCompare, title: "Detaylı Karşılaştırma", desc: "İki taramayı (rakip dahil) kategori kategori kıyasla.", color: "var(--yellow)", fill: "#F3C468" },
+  { icon: LayoutDashboard, title: "Uygulamalarım Paneli", desc: "Takip ettiğin tüm uygulamalar tek ekranda.", color: "var(--brand)", fill: "#8A7CFF" },
+  { icon: Mail, title: "Haftalık E-posta Özeti", desc: "Yeni yorumların özetini her hafta otomatik al.", color: "var(--teal)", fill: "#79D9CC" },
+  { icon: Download, title: "PDF Dışa Aktarma", desc: "Raporu tek tıkla indirip paylaşabilirsin.", color: "var(--yellow)", fill: "#F3C468" },
 ];
 
 const FAQ = [
@@ -86,6 +88,10 @@ function FaqItem({ q, a }) {
 }
 
 export default function MarketingSections() {
+  const carouselRef = useRef(null);
+  const scrollCarousel = (dir) => {
+    carouselRef.current?.scrollBy({ left: dir * 380, behavior: "smooth" });
+  };
   return (
     <div className="mkt-root">
       <style>{`
@@ -184,15 +190,50 @@ export default function MarketingSections() {
           display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; min-height: 120px;
         }
 
-        .mkt-all-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 90px; }
-        .mkt-all-card {
-          background: var(--ink-2); border: 1px solid var(--ink-3);
-          border-radius: 14px; padding: 20px; box-shadow: var(--shadow);
-          transition: transform 0.2s ease, border-color 0.2s ease;
+        .mkt-fullbleed {
+          width: 100vw; position: relative; left: 50%; right: 50%;
+          margin-left: -50vw; margin-right: -50vw; padding: 0 40px; box-sizing: border-box;
         }
-        .mkt-all-card:hover { transform: translateY(-3px); border-color: var(--brand); }
-        .mkt-all-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
-        .mkt-all-desc { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+        .mkt-carousel {
+          display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory;
+          padding-bottom: 8px; margin-bottom: 22px; scrollbar-width: none;
+        }
+        .mkt-carousel::-webkit-scrollbar { display: none; }
+        .mkt-carousel-card {
+          position: relative; overflow: hidden;
+          flex: 0 0 340px; scroll-snap-align: start;
+          background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 16px;
+          min-height: 230px; box-shadow: var(--shadow);
+        }
+        .mkt-carousel-fill {
+          position: absolute; left: 0; right: 0; bottom: 0; height: 0;
+          background: var(--fill-color); transition: height 0.4s ease; z-index: 0;
+        }
+        .mkt-carousel-card:hover .mkt-carousel-fill { height: 100%; }
+        .mkt-carousel-content { position: relative; z-index: 1; display: flex; flex-direction: column; height: 100%; padding: 24px; }
+        .mkt-carousel-icon {
+          width: 36px; height: 36px; border-radius: 10px; margin-bottom: 26px;
+          display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .mkt-carousel-headline {
+          font-size: 19px; font-weight: 500; line-height: 1.35; color: var(--chalk);
+          flex: 1; transition: color 0.3s ease;
+        }
+        .mkt-carousel-card:hover .mkt-carousel-headline { color: #1A1F36; }
+        .mkt-carousel-footer {
+          font-size: 12.5px; color: var(--muted); margin-top: 20px; transition: color 0.3s ease;
+        }
+        .mkt-carousel-card:hover .mkt-carousel-footer { color: #1A1F36; opacity: 0.7; }
+
+        .mkt-carousel-nav-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 90px; }
+        .mkt-carousel-tagline { font-size: 20px; color: var(--chalk); }
+        .mkt-carousel-arrows { display: flex; gap: 8px; }
+        .mkt-carousel-arrow {
+          width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--ink-3);
+          background: var(--ink-2); color: var(--chalk); display: flex; align-items: center; justify-content: center;
+          cursor: pointer; transition: border-color 0.15s ease;
+        }
+        .mkt-carousel-arrow:hover { border-color: var(--brand); }
 
         .faq-list { max-width: 640px; margin: 0 auto 90px; display: flex; flex-direction: column; gap: 10px; }
         .faq-item { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 12px; padding: 4px 20px; transition: border-color 0.2s ease; }
@@ -206,7 +247,6 @@ export default function MarketingSections() {
 
         @media (max-width: 780px) {
           .mkt-grid-2, .mkt-showcase { grid-template-columns: 1fr; }
-          .mkt-all-grid { grid-template-columns: 1fr 1fr; }
         }
       `}</style>
 
@@ -334,22 +374,36 @@ export default function MarketingSections() {
       </div>
 
       {/* Tüm özellikler */}
-      <div>
+      <div className="mkt-fullbleed">
         <div className="mkt-section-title">Artık gerçekten çok şey yapıyor</div>
         <div className="mkt-section-sub">Kick My Apps'te şu an aktif olan tüm özellikler, tek bakışta.</div>
-        <div className="mkt-all-grid">
+        <div className="mkt-carousel" ref={carouselRef}>
           {ALL_FEATURES.map((f) => {
             const Icon = f.icon;
             return (
-              <div className="mkt-all-card" key={f.title}>
-                <div style={{ width: 34, height: 34, borderRadius: 9, marginBottom: 12, display: "flex", alignItems: "center", justifyContent: "center", background: f.color }}>
-                  <Icon size={17} color="#FFFFFF" />
+              <div className="mkt-carousel-card" key={f.title} style={{ "--fill-color": f.fill }}>
+                <div className="mkt-carousel-fill" />
+                <div className="mkt-carousel-content">
+                  <div className="mkt-carousel-icon" style={{ background: f.color }}>
+                    <Icon size={18} color="#FFFFFF" />
+                  </div>
+                  <div className="mkt-carousel-headline">{f.desc}</div>
+                  <div className="mkt-carousel-footer">{f.title}</div>
                 </div>
-                <div className="mkt-all-title">{f.title}</div>
-                <div className="mkt-all-desc">{f.desc}</div>
               </div>
             );
           })}
+        </div>
+        <div className="mkt-carousel-nav-row">
+          <span className="mkt-carousel-tagline">Her kategoride derinlemesine.</span>
+          <div className="mkt-carousel-arrows">
+            <button className="mkt-carousel-arrow" onClick={() => scrollCarousel(-1)} aria-label="Önceki">
+              <ChevronLeft size={16} />
+            </button>
+            <button className="mkt-carousel-arrow" onClick={() => scrollCarousel(1)} aria-label="Sonraki">
+              <ChevronRight size={16} />
+            </button>
+          </div>
         </div>
       </div>
 
