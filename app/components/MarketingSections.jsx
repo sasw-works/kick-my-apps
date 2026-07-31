@@ -75,6 +75,99 @@ const FAQ = [
   },
 ];
 
+function StoreRibbonIcon({ size = 36 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M34.61 11.28C34.3252 10.8117 33.8975 10.4471 33.39 10.24L8.53999 0.200004C8.14817 0.0402949 7.72299 -0.0202062 7.30218 0.0238719C6.88137 0.0679501 6.47795 0.215244 6.12773 0.452678C5.77752 0.690111 5.49134 1.01034 5.29461 1.38493C5.09788 1.75953 4.99668 2.1769 4.99999 2.6V15C4.99999 16.05 5.63999 17 6.60999 17.4L13.05 20L34.61 28.72C34.87 28.32 35.01 27.84 35 27.36V12.64C35 12.16 34.87 11.68 34.61 11.27V11.28Z" fill="url(#paint0_linear_1_96)" />
+      <path d="M34.63 11.28L13.06 20L6.60999 22.6C6.13272 22.7936 5.72434 23.1257 5.43741 23.5534C5.15048 23.9811 4.99813 24.485 4.99999 25V37.42C5.00076 37.8414 5.10474 38.2562 5.30283 38.6281C5.50092 39 5.78709 39.3178 6.13633 39.5535C6.48558 39.7893 6.88726 39.936 7.30627 39.9807C7.72528 40.0254 8.14886 39.9668 8.53999 39.81L33.4 29.76C33.9 29.55 34.33 29.19 34.61 28.72C34.87 28.31 35.01 27.84 35 27.36V12.64C35 12.16 34.88 11.69 34.63 11.28Z" fill="#9966FF" />
+      <path d="M34.62 11.28L34.72 11.45C34.9 11.82 35 12.22 35 12.64V12.61V27.36C35 27.84 34.87 28.31 34.61 28.72L13.06 20L34.62 11.28Z" fill="url(#paint1_linear_1_96)" />
+      <defs>
+        <linearGradient id="paint0_linear_1_96" x1="20" y1="4.13" x2="20" y2="21.13" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#11EFE3" />
+          <stop offset="1" stopColor="#21CFE0" />
+        </linearGradient>
+        <linearGradient id="paint1_linear_1_96" x1="35" y1="11.28" x2="35" y2="28.72" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#0048E5" />
+          <stop offset="1" stopColor="#9B66FF" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+}
+
+function NotebookIcon({ size = 36 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g clipPath="url(#clip0_1_106)">
+        <path d="M36.98 14.05L30.67 15.41L9.33 20L1.98 21.58C1.41738 21.7034 0.914018 22.0159 0.55375 22.4653C0.193481 22.9147 -0.00195139 23.474 -7.97581e-07 24.05V37.47C-7.97581e-07 38.87 1.12 40 2.5 40H37.5C38.88 40 40 38.87 40 37.47V16.53C40 15.76 39.66 15.04 39.07 14.56C38.7814 14.3253 38.4438 14.1584 38.082 14.0719C37.7202 13.9853 37.3436 13.9813 36.98 14.06V14.05Z" fill="#9B66FF" />
+        <path d="M28.59 1.47283e-05H11.58C11.2464 -0.00527969 10.9151 0.0551894 10.6049 0.177968C10.2947 0.300747 10.0117 0.483431 9.77214 0.715586C9.53256 0.94774 9.34106 1.22482 9.20857 1.53099C9.07608 1.83717 9.00521 2.16645 9 2.50001V27.5C9 28.88 10.15 30 11.58 30H28.42C28.7536 30.0053 29.0849 29.9448 29.3951 29.8221C29.7053 29.6993 29.9883 29.5166 30.2279 29.2844C30.4674 29.0523 30.6589 28.7752 30.7914 28.469C30.9239 28.1629 30.9948 27.8336 31 27.5V2.50001C31.0004 1.85228 30.7494 1.22966 30.2999 0.763322C29.8503 0.296984 29.2373 0.0233332 28.59 1.47283e-05Z" fill="url(#paint0_linear_1_106)" />
+        <path d="M31 15.34V27.5C31 28.88 29.85 30 28.42 30H11.58C11.2464 30.0053 10.9151 29.9448 10.6049 29.822C10.2947 29.6993 10.0117 29.5166 9.77214 29.2844C9.53256 29.0523 9.34106 28.7752 9.20857 28.469C9.07608 28.1628 9.00521 27.8336 9 27.5V20.07L9.33 20L30.67 15.41L31 15.34Z" fill="url(#paint1_linear_1_106)" />
+      </g>
+      <defs>
+        <linearGradient id="paint0_linear_1_106" x1="20" y1="1.97001" x2="20" y2="17.6" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#11EFE3" />
+          <stop offset="0.33" stopColor="#15E8E2" />
+          <stop offset="0.74" stopColor="#1FD3E0" />
+          <stop offset="1" stopColor="#21CFE0" />
+        </linearGradient>
+        <linearGradient id="paint1_linear_1_106" x1="31" y1="22.67" x2="5.34" y2="22.67" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#0048E5" />
+          <stop offset="0.64" stopColor="#625AF5" />
+          <stop offset="1" stopColor="#8A62FC" />
+        </linearGradient>
+        <clipPath id="clip0_1_106">
+          <rect width="40" height="40" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+  );
+}
+
+function PieCardIcon({ size = 36 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g clipPath="url(#clip0_1_98)">
+        <path d="M26 2.46C26 1.1 24.9 0 23.53 0H2.46999C1.81664 -5.35452e-06 1.1899 0.258853 0.726967 0.719907C0.264038 1.18096 0.0026396 1.80665 -5.56895e-06 2.46V32.54C-0.0011603 32.9515 0.100909 33.3566 0.296859 33.7184C0.492809 34.0802 0.776379 34.3871 1.12161 34.611C1.46685 34.8348 1.86272 34.9685 2.27299 34.9998C2.68325 35.0311 3.09482 34.9589 3.46999 34.79L13.67 30.26L24.53 25.43C25.43 25.03 26 24.16 26 23.18V2.46Z" fill="url(#paint0_linear_1_98)" />
+        <path d="M26.5 39C30.0804 39 33.5142 37.5777 36.0459 35.0459C38.5777 32.5142 40 29.0804 40 25.5C40 21.9196 38.5777 18.4858 36.0459 15.9541C33.5142 13.4223 30.0804 12 26.5 12C22.9196 12 19.4858 13.4223 16.9541 15.9541C14.4223 18.4858 13 21.9196 13 25.5C13 29.0804 14.4223 32.5142 16.9541 35.0459C19.4858 37.5777 22.9196 39 26.5 39Z" fill="#00D924" />
+        <path d="M26 12V23.18C26 24.16 25.43 25.04 24.53 25.43L13.83 30.19C13.0864 28.1871 12.8288 26.0362 13.0783 23.9143C13.3279 21.7924 14.0775 19.76 15.2656 17.9843C16.4536 16.2086 18.0462 14.7402 19.9123 13.6998C21.7785 12.6595 23.8649 12.0769 26 12Z" fill="url(#paint1_linear_1_98)" />
+      </g>
+      <defs>
+        <linearGradient id="paint0_linear_1_98" x1="13" y1="6.35" x2="13" y2="35.03" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#FFD748" />
+          <stop offset="1" stopColor="#FFC148" />
+        </linearGradient>
+        <linearGradient id="paint1_linear_1_98" x1="19.5" y1="12.01" x2="19.5" y2="30.19" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#00A600" />
+          <stop offset="1" stopColor="#00D924" />
+        </linearGradient>
+        <clipPath id="clip0_1_98">
+          <rect width="40" height="40" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+  );
+}
+
+function BagIcon({ size = 36 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M13.9 5.93C14.1045 5.11166 14.5708 4.38254 15.2279 3.85363C15.885 3.32471 16.6969 3.02496 17.54 3H37.53C39.19 3 40.25 4.31 39.91 5.93L33.71 35.04C33.5757 35.5841 33.2679 36.0697 32.833 36.4234C32.3982 36.777 31.8601 36.9794 31.3 37H7.32001L13.9 5.93Z" fill="url(#paint0_linear_1_103)" />
+      <path d="M0.100001 21.93C-0.239999 20.31 0.820001 19 2.48 19H22.47C23.3097 19.0292 24.117 19.3309 24.7701 19.8595C25.4231 20.3881 25.8864 21.1149 26.09 21.93L28.88 35.04C29.0143 35.5841 29.3221 36.0697 29.757 36.4234C30.1918 36.777 30.7299 36.9794 31.29 37H5.31C4.21 37 3.12 36.12 2.89 35.04L0.100001 21.94V21.93Z" fill="#9A66FF" />
+      <path d="M31.3 37C30.19 37 29.1 36.12 28.88 35.04L26.09 21.94C25.8883 21.123 25.4258 20.394 24.7726 19.8635C24.1193 19.333 23.311 19.0298 22.47 19H11.14L7.33 37H31.29H31.3Z" fill="url(#paint1_linear_1_103)" />
+      <defs>
+        <linearGradient id="paint0_linear_1_103" x1="23.65" y1="2.99" x2="23.65" y2="37" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#FF5091" />
+          <stop offset="1" stopColor="#E03071" />
+        </linearGradient>
+        <linearGradient id="paint1_linear_1_103" x1="19.31" y1="19" x2="19.31" y2="37" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#6E00F5" />
+          <stop offset="1" stopColor="#9860FE" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+}
+
 function FaqItem({ q, a }) {
   const [open, setOpen] = React.useState(false);
   return (
@@ -345,7 +438,7 @@ export default function MarketingSections() {
         <div className="mkt-section-sub">Ekran görüntüsü analizi ve gerçek kullanıcı yorumları, aynı raporda buluşuyor.</div>
         <div className="mkt-grid-2">
           <div className="mkt-feature-card">
-            <div className="mkt-feature-icon" style={{ background: "var(--brand)" }}><Store size={18} color="#FFFFFF" /></div>
+            <div className="mkt-feature-icon" style={{ background: "transparent" }}><StoreRibbonIcon size={36} /></div>
             <div className="mkt-feature-title">Gerçek App Store verisi</div>
             <div className="mkt-feature-desc">Uydurma değil — herkese açık App Store yorumlarını doğrudan analiz ediyoruz.</div>
             <div className="mkt-priority-row" style={{ justifyContent: "center", gap: 8 }}>
@@ -354,7 +447,7 @@ export default function MarketingSections() {
             </div>
           </div>
           <div className="mkt-feature-card">
-            <div className="mkt-feature-icon" style={{ background: "var(--teal)" }}><RefreshCw size={18} color="#FFFFFF" className="mkt-spin-slow" /></div>
+            <div className="mkt-feature-icon" style={{ background: "transparent" }}><img src="/icon-refresh.png" alt="" className="mkt-spin-slow" style={{ width: 36, height: 36 }} /></div>
             <div className="mkt-feature-title">Her zaman taze</div>
             <div className="mkt-feature-desc">Önbellek yok — her analizde yorumlar gerçek zamanlı çekilir.</div>
             <div className="mkt-ticker">
@@ -384,7 +477,7 @@ export default function MarketingSections() {
             <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UI</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>2 kritik · 1 dikkat</span></div>
           </div>
           <div className="mkt-feature-card">
-            <div className="mkt-feature-icon" style={{ background: "var(--brand)" }}><Sparkles size={18} color="#FFFFFF" /></div>
+            <div className="mkt-feature-icon" style={{ background: "transparent" }}><NotebookIcon size={36} /></div>
             <div className="mkt-feature-title">Etkiye göre önceliklendirilmiş</div>
             <div className="mkt-feature-desc">Hangisini önce düzeltmen gerektiğini, yüksek etki + düşük efor eşleştirmesiyle söylüyoruz.</div>
             <div className="mkt-priority-list">
@@ -406,7 +499,7 @@ export default function MarketingSections() {
         <div className="mkt-section-sub">Haftalık özetler ve rakip karşılaştırmasıyla, sürekli takipte kal.</div>
         <div className="mkt-showcase">
           <div className="mkt-feature-card">
-            <div className="mkt-feature-icon" style={{ background: "var(--teal)" }}><Mail size={18} color="#FFFFFF" /></div>
+            <div className="mkt-feature-icon" style={{ background: "transparent" }}><PieCardIcon size={36} /></div>
             <div className="mkt-feature-title">Haftalık yorum özeti</div>
             <div className="mkt-feature-desc">Takip ettiğin bir uygulamanın yeni yorumlarının özetini her hafta e-postana alırsın.</div>
             <div className="mkt-showcase-visual">
@@ -415,7 +508,7 @@ export default function MarketingSections() {
             </div>
           </div>
           <div className="mkt-feature-card">
-            <div className="mkt-feature-icon" style={{ background: "var(--yellow)" }}><GitCompare size={18} color="#1A1F36" /></div>
+            <div className="mkt-feature-icon" style={{ background: "transparent" }}><BagIcon size={36} /></div>
             <div className="mkt-feature-title">Rakiple karşılaştır</div>
             <div className="mkt-feature-desc">Kendi uygulamanı bir rakiple yan yana koy — skorlar ve bulgular tek ekranda.</div>
             <div className="mkt-showcase-visual" style={{ flexDirection: "row", gap: 24 }}>
