@@ -129,8 +129,8 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           overflow: hidden;
           pointer-events: none;
           z-index: 0;
-          -webkit-mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 100%);
-          mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 100%);
+          -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 55%, transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 55%, transparent 100%);
         }
         .blob {
           position: absolute;

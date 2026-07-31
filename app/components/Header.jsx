@@ -73,7 +73,7 @@ export default function Header() {
 
       <div className="kma-header-inner">
         <Link href="/" className="kma-header-logo">
-          <LogoMark size={108} />
+          <LogoMark size={86} />
         </Link>
 
         <div className="kma-header-spacer" />
