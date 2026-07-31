@@ -151,23 +151,14 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           border-radius: 50%;
           filter: blur(90px);
           opacity: 0.45;
-          animation-name: blob-move;
-          animation-timing-function: ease-in-out;
-          animation-iteration-count: infinite;
           pointer-events: none;
           z-index: 0;
         }
-        .blob-1 { width: 102vw; height: 102vw; max-width: 1140px; max-height: 1140px; background: #C9E86A; top: -60px; left: 24%; animation-duration: 16s; }
-        .blob-2 { width: 102vw; height: 102vw; max-width: 1140px; max-height: 1140px; background: #6FC6F5; top: 120px; right: 12%; animation-duration: 19s; animation-delay: -5s; }
-        .blob-3 { width: 75vw; height: 75vw; max-width: 810px; max-height: 810px; background: #7EE6C4; top: 60px; left: 28%; animation-duration: 14s; animation-delay: -9s; }
-        .blob-4 { width: 55vw; height: 55vw; max-width: 600px; max-height: 600px; background: #FDE788; top: -20px; left: 6%; animation-duration: 15s; animation-delay: -3s; }
-        .blob-5 { width: 60vw; height: 60vw; max-width: 640px; max-height: 640px; background: #B9A6F5; top: 220px; right: -4%; animation-duration: 18s; animation-delay: -7s; }
-        @keyframes blob-move {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          25% { transform: translate(60px, 45px) scale(1.12); }
-          50% { transform: translate(-40px, 70px) scale(0.9); }
-          75% { transform: translate(50px, -35px) scale(1.08); }
-        }
+        .blob-1 { width: 102vw; height: 102vw; max-width: 1140px; max-height: 1140px; background: #C9E86A; top: -60px; left: 24%; }
+        .blob-2 { width: 102vw; height: 102vw; max-width: 1140px; max-height: 1140px; background: #6FC6F5; top: 120px; right: 12%; }
+        .blob-3 { width: 75vw; height: 75vw; max-width: 810px; max-height: 810px; background: #7EE6C4; top: 60px; left: 28%; }
+        .blob-4 { width: 55vw; height: 55vw; max-width: 600px; max-height: 600px; background: #FDE788; top: -20px; left: 6%; }
+        .blob-5 { width: 60vw; height: 60vw; max-width: 640px; max-height: 640px; background: #B9A6F5; top: 220px; right: -4%; }
 
         .upload-hero { text-align: center; margin-top: 125px; margin-bottom: 0; max-width: 1170px; position: relative; z-index: 1; }
 
