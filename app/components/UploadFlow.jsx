@@ -154,7 +154,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           66% { transform: translate(-20px, 26px) scale(0.95); }
         }
 
-        .upload-hero { text-align: center; margin-top: 100px; margin-bottom: 0; max-width: 720px; position: relative; z-index: 1; }
+        .upload-hero { text-align: center; margin-top: 100px; margin-bottom: 0; max-width: 1170px; position: relative; z-index: 1; }
 
         .hero-title {
           font-family: var(--font-display);
@@ -448,7 +448,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
 
       <div className="upload-hero">
         <h1 className="hero-title">
-          Find what is really
+          <span style={{ whiteSpace: "nowrap" }}>Find what is really</span>
           <br />
           hurting your app
         </h1>
