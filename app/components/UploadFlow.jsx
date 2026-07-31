@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import { UploadCloud, Search, Check, Loader2, X, Sparkles } from "lucide-react";
+import { UploadCloud, Search, Check, Loader2, X, ArrowRight } from "lucide-react";
 
 export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewHistory }) {
   const [files, setFiles] = useState([]);
@@ -184,17 +184,17 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           z-index: 1;
         }
 
-        .hero-search-wrap {
+        .hero-input-row {
           position: relative;
           z-index: 5;
           width: 100%;
           max-width: 1170px;
           display: flex;
-          flex-direction: column;
           align-items: center;
-          margin-bottom: 36px;
+          gap: 10px;
+          margin-bottom: 20px;
         }
-        .hero-search-anchor { position: relative; width: 100%; }
+        .hero-search-anchor { position: relative; }
         .hero-search-pill {
           width: 100%;
           display: flex;
@@ -222,9 +222,6 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           background: var(--ink-3); border: 1px solid var(--ink-3); border-radius: 6px;
           padding: 3px 7px; flex-shrink: 0;
         }
-        .or-divider { display: flex; align-items: center; gap: 14px; width: 100%; max-width: 340px; margin: 35px auto 0; cursor: default; }
-        .or-divider-line { flex: 1; height: 1px; background: var(--ink-3); }
-        .or-divider-text { font-size: 11.5px; font-weight: 600; letter-spacing: 0.08em; color: var(--muted); }
         .analyze-trust { text-align: center; font-size: 11.5px; color: var(--muted); margin-top: 10px; }
         .history-link {
           margin-top: 10px;
@@ -244,37 +241,50 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           max-width: 1170px;
           display: flex;
           flex-direction: column;
-          gap: 20px;
+          gap: 12px;
         }
 
-        .dropzone {
+        .upload-pill {
           display: flex;
           align-items: center;
-          width: 100%;
+          gap: 10px;
+          flex-shrink: 0;
+          white-space: nowrap;
+          background: var(--ink-2);
           border: 2px dashed var(--ink-3);
           border-radius: 999px;
-          padding: 14px 14px 14px 28px;
+          padding: 16px 24px;
           cursor: pointer;
           transition: border-color 0.15s ease, background 0.15s ease;
-          box-sizing: border-box;
         }
-        .dropzone-row { display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 16px; }
-        .dropzone-text { text-align: left; }
+        .upload-pill span { font-size: 15px; color: var(--chalk); }
+        .upload-pill:hover { border-color: var(--muted); }
         .dropzone-active { border-color: var(--brand); background: var(--ink-2); }
-        .dropzone:hover { border-color: var(--muted); }
-        .dropzone-label { font-size: 14.5px; color: var(--chalk); font-weight: 600; }
-        .dropzone-hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
-        .dropzone-btn {
-          display: inline-block;
+
+        .submit-circle {
+          width: 56px;
+          height: 56px;
+          border-radius: 50%;
           flex-shrink: 0;
-          background: var(--ink-2);
-          border: 1px solid var(--ink-3);
-          color: var(--chalk);
-          font-size: 13px;
-          font-weight: 500;
-          padding: 8px 18px;
-          border-radius: 999px;
-          box-shadow: var(--shadow);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: var(--chalk);
+          color: var(--ink);
+          border: none;
+          cursor: pointer;
+          transition: transform 0.15s ease, background 0.15s ease;
+        }
+        .submit-circle:not(:disabled):hover { transform: translateY(-2px); }
+        .submit-circle:disabled {
+          background: var(--ink-3);
+          color: var(--muted);
+          cursor: not-allowed;
+        }
+
+        @media (max-width: 780px) {
+          .hero-input-row { flex-wrap: wrap; }
+          .upload-pill { flex: 1; justify-content: center; }
         }
 
         .thumb-row {
@@ -392,28 +402,6 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           text-overflow: ellipsis;
         }
 
-        .analyze-btn {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          background: var(--brand);
-          color: var(--ink);
-          font-weight: 700;
-          font-size: 14.5px;
-          padding: 14px 20px;
-          border-radius: 16px;
-          border: none;
-          cursor: pointer;
-          transition: opacity 0.15s ease, transform 0.15s ease;
-        }
-        .analyze-btn:not(:disabled):hover { transform: translateY(-2px); }
-        .analyze-btn:not(:disabled):active { transform: translateY(0); }
-        .analyze-btn:disabled {
-          background: var(--ink-3);
-          color: var(--muted);
-          cursor: not-allowed;
-        }
         .spin { animation: kma-spin 0.9s linear infinite; }
         @keyframes kma-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
@@ -459,8 +447,8 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         better product
       </p>
 
-      <div className="hero-search-wrap">
-        <div className="hero-search-anchor">
+      <div className="hero-input-row">
+        <div className="hero-search-anchor" style={{ flex: 1 }}>
           <div className="hero-search-pill">
             <Search size={18} color="var(--muted)" />
             <input
@@ -501,77 +489,52 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           )}
         </div>
 
-        <div
-          className="or-divider"
-          title={selectedApp ? "App Store'dan eşleşti — yorumlar da analize dahil edilecek." : "İkisi de opsiyonel — istersen sadece birini, istersen ikisini birlikte kullan."}
+        <label
+          className={`upload-pill ${dragActive ? "dropzone-active" : ""}`}
+          onDragOver={(e) => {
+            e.preventDefault();
+            setDragActive(true);
+          }}
+          onDragLeave={() => setDragActive(false)}
+          onDrop={onDrop}
         >
-          <span className="or-divider-line" />
-          <span className="or-divider-text">VEYA</span>
-          <span className="or-divider-line" />
-        </div>
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            className="hidden"
+            style={{ display: "none" }}
+            onChange={(e) => addFiles(e.target.files)}
+          />
+          <UploadCloud size={18} color="var(--muted)" />
+          <span>{files.length > 0 ? `${files.length} görsel seçildi` : "Ekran Yükle"}</span>
+        </label>
+
+        <button className="submit-circle" disabled={!canAnalyze} onClick={handleAnalyze} aria-label="Analiz Et">
+          {analyzing ? <Loader2 size={20} className="spin" color="var(--ink)" /> : <ArrowRight size={20} />}
+        </button>
       </div>
 
-      <div className="upload-card">
-        <div>
-          <label
-            className={`dropzone ${dragActive ? "dropzone-active" : ""}`}
-            onDragOver={(e) => {
-              e.preventDefault();
-              setDragActive(true);
-            }}
-            onDragLeave={() => setDragActive(false)}
-            onDrop={onDrop}
-          >
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              className="hidden"
-              style={{ display: "none" }}
-              onChange={(e) => addFiles(e.target.files)}
-            />
-            <div className="dropzone-row">
-              <div className="dropzone-text">
-                <div className="dropzone-label">Ekran görüntülerini sürükle bırak</div>
-                <div className="dropzone-hint">En fazla 12 görsel · PNG, JPG</div>
-              </div>
-              <span className="dropzone-btn">Dosya Seç</span>
+      {files.length > 0 && (
+        <div className="thumb-row" style={{ marginTop: 14 }}>
+          {files.map((f, i) => (
+            <div className="thumb" key={i}>
+              <img src={URL.createObjectURL(f)} alt={f.name} />
+              <button
+                className="thumb-remove"
+                onClick={(e) => {
+                  e.preventDefault();
+                  removeFile(i);
+                }}
+              >
+                <X size={11} color="var(--ink)" strokeWidth={3} />
+              </button>
             </div>
-          </label>
-
-          {files.length > 0 && (
-            <div className="thumb-row" style={{ marginTop: 14 }}>
-              {files.map((f, i) => (
-                <div className="thumb" key={i}>
-                  <img src={URL.createObjectURL(f)} alt={f.name} />
-                  <button
-                    className="thumb-remove"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      removeFile(i);
-                    }}
-                  >
-                    <X size={11} color="var(--ink)" strokeWidth={3} />
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
+          ))}
         </div>
+      )}
 
-        <button className="analyze-btn" disabled={!canAnalyze} onClick={handleAnalyze}>
-          {analyzing ? (
-            <>
-              <Loader2 size={17} className="spin" />
-              Analiz ediliyor…
-            </>
-          ) : (
-            <>
-              <Sparkles size={17} strokeWidth={2.3} />
-              Analiz Et
-            </>
-          )}
-        </button>
+      <div className="upload-card">
         <div className="analyze-trust">Kredi kartı gerekmiyor · Genellikle ~20-30 saniye sürer</div>
         {errorMessage && (
           <div style={{ color: "var(--kick)", fontSize: 13, textAlign: "center" }}>{errorMessage}</div>
