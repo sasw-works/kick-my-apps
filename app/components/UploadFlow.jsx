@@ -212,7 +212,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         .hero-search-anchor { position: relative; }
         .hero-search-pill {
           width: 620px;
-          height: 92px;
+          height: 75px;
           box-sizing: border-box;
           display: flex;
           align-items: center;
@@ -262,7 +262,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
 
         .upload-pill {
           width: 270px;
-          height: 92px;
+          height: 75px;
           box-sizing: border-box;
           display: flex;
           align-items: center;
@@ -282,8 +282,8 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         .dropzone-active { background: var(--ink-3); }
 
         .submit-circle {
-          width: 92px;
-          height: 92px;
+          width: 75px;
+          height: 75px;
           border-radius: 50%;
           flex-shrink: 0;
           display: flex;
