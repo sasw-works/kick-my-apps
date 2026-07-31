@@ -154,25 +154,6 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           66% { transform: translate(-20px, 26px) scale(0.95); }
         }
 
-        .floating-avatar {
-          position: absolute;
-          width: 200px;
-          pointer-events: none;
-          z-index: 2;
-          animation: float-bob 5s ease-in-out infinite;
-        }
-        .floating-avatar img { width: 100%; height: auto; display: block; }
-        @keyframes float-bob {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
-        }
-        .avatar-1 { width: 190px; top: 90px; right: calc(2% + 250px); animation-delay: 0s; }
-        .avatar-2 { width: 170px; top: 500px; right: calc(6% + 250px); animation-delay: 0.7s; }
-        .avatar-3 { width: 180px; top: 190px; left: calc(-2% + 250px); animation-delay: 1.4s; }
-        @media (max-width: 900px) {
-          .floating-avatar { display: none; }
-        }
-
         .upload-hero { text-align: center; margin-top: 100px; margin-bottom: 53px; max-width: 720px; position: relative; z-index: 1; }
 
         .hero-title {
@@ -448,23 +429,13 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         <div className="blob blob-3" />
         <div className="blob blob-4" />
         <div className="blob blob-5" />
-
-        <div className="floating-avatar avatar-1">
-          <img src="/avatar-1.png" alt="" onError={(e) => (e.target.style.display = "none")} />
-        </div>
-        <div className="floating-avatar avatar-2">
-          <img src="/avatar-2.png" alt="" onError={(e) => (e.target.style.display = "none")} />
-        </div>
-        <div className="floating-avatar avatar-3">
-          <img src="/avatar-3.png" alt="" onError={(e) => (e.target.style.display = "none")} />
-        </div>
       </div>
 
       <div className="upload-hero">
         <h1 className="hero-title">
-          Find what's
+          Find what is really
           <br />
-          hurting your app.
+          hurting your app
         </h1>
       </div>
 
