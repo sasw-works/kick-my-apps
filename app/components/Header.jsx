@@ -63,7 +63,7 @@ export default function Header() {
           white-space: nowrap;
         }
         .kma-header-signin {
-          background: var(--chalk);
+          background: #1A2B3B;
           color: var(--ink);
           font-size: 14.5px;
           font-weight: 600;

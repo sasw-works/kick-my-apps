@@ -168,7 +168,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           66% { transform: translate(-20px, 26px) scale(0.95); }
         }
 
-        .upload-hero { text-align: center; margin-top: 100px; margin-bottom: 0; max-width: 1170px; position: relative; z-index: 1; }
+        .upload-hero { text-align: center; margin-top: 125px; margin-bottom: 0; max-width: 1170px; position: relative; z-index: 1; }
 
         .hero-title {
           font-family: var(--font-display);
@@ -220,7 +220,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           background: var(--ink-2);
           border: none;
           border-radius: 999px;
-          padding: 16px 22px;
+          padding: 16px 26px;
           transition: border-color 0.15s ease;
         }
         .hero-search-pill:focus-within { border-color: var(--brand); }
@@ -528,7 +528,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
             style={{ display: "none" }}
             onChange={(e) => addFiles(e.target.files)}
           />
-          <UploadIcon size={20} color="var(--muted)" />
+          <UploadIcon size={17} color="var(--muted)" />
           <span>{files.length > 0 ? `${files.length} screenshots selected` : "Upload screens"}</span>
         </label>
 

@@ -26,8 +26,8 @@ export default function ThemeToggle() {
     <button className="theme-toggle-btn" onClick={toggle} aria-label="Temayı değiştir">
       <style>{`
         .theme-toggle-btn {
-          width: 43.75px;
-          height: 43.75px;
+          width: 45px;
+          height: 45px;
           border-radius: 50%;
           display: flex;
           align-items: center;
