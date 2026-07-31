@@ -36,18 +36,18 @@ const PRIORITY_ITEMS = [
 
 // Ürünün gerçekten sahip olduğu tüm özellikler — Stripe tarzı renkli ikon kutularıyla.
 const ALL_FEATURES = [
-  { icon: ImageIcon, title: "Ekran Görüntüsü Analizi", desc: "13 kategori, 4 mercek altında derinlemesine UI/UX incelemesi.", color: "var(--brand)", fill: "#8A7CFF" },
-  { icon: Store, title: "Gerçek App Store Yorumları", desc: "Önbellek yok — her analizde canlı veri çekilir.", color: "var(--teal)", fill: "#79D9CC" },
-  { icon: Search, title: "ASO / Mağaza İncelemesi", desc: "Başlık, açıklama ve mağaza listelemeni değerlendirir.", color: "var(--yellow)", fill: "#F3C468" },
-  { icon: ShieldQuestion, title: "Güncelleme Riski Kontrolü", desc: "Bir sonraki incelemede sorun çıkarabilecek sinyalleri yakalar.", color: "var(--brand)", fill: "#8A7CFF" },
-  { icon: Sparkles, title: "Hızlı Kazanımlar", desc: "Yüksek etki, düşük efor gerektiren düzeltmeleri öne çıkarır.", color: "var(--teal)", fill: "#79D9CC" },
-  { icon: Code2, title: "Kod Seviyesinde Öneri", desc: "Bazı bulgular için örnek CSS/Swift/Kotlin kod parçacığı.", color: "var(--yellow)", fill: "#F3C468" },
-  { icon: ImageIcon, title: "Görsel İşaretleme", desc: "Bulgular, yüklediğin ekran görüntüsü üzerinde işaretlenir.", color: "var(--brand)", fill: "#8A7CFF" },
-  { icon: History, title: "Geçmiş & Trend", desc: "Her tarama kaydedilir, skorun zaman içindeki değişimini gör.", color: "var(--teal)", fill: "#79D9CC" },
-  { icon: GitCompare, title: "Detaylı Karşılaştırma", desc: "İki taramayı (rakip dahil) kategori kategori kıyasla.", color: "var(--yellow)", fill: "#F3C468" },
-  { icon: LayoutDashboard, title: "Uygulamalarım Paneli", desc: "Takip ettiğin tüm uygulamalar tek ekranda.", color: "var(--brand)", fill: "#8A7CFF" },
-  { icon: Mail, title: "Haftalık E-posta Özeti", desc: "Yeni yorumların özetini her hafta otomatik al.", color: "var(--teal)", fill: "#79D9CC" },
-  { icon: Download, title: "PDF Dışa Aktarma", desc: "Raporu tek tıkla indirip paylaşabilirsin.", color: "var(--yellow)", fill: "#F3C468" },
+  { icon: ImageIcon, title: "Ekran Görüntüsü Analizi", desc: "13 kategori ve 4 mercek (UI, UX, Erişilebilirlik, Ürün) altında, yüklediğin her ekran görüntüsünü tek tek inceleyip somut bulgular çıkarır.", color: "var(--brand)", fill: "#8A7CFF" },
+  { icon: Store, title: "Gerçek App Store Yorumları", desc: "Uydurma istatistik yok — her analizde herkese açık App Store yorumlarını doğrudan ve gerçek zamanlı olarak çekip değerlendiririz.", color: "var(--teal)", fill: "#79D9CC" },
+  { icon: Search, title: "ASO / Mağaza İncelemesi", desc: "Mağaza sayfandaki başlık, açıklama ve anahtar kelime kullanımını inceleyip aramalarda daha görünür olman için somut öneriler sunar.", color: "var(--yellow)", fill: "#F3C468" },
+  { icon: ShieldQuestion, title: "Güncelleme Riski Kontrolü", desc: "Uygulaman zaten yayında olsa da, bir sonraki güncelleme incelemesinde sorun çıkarabilecek görsel sinyalleri önceden yakalar.", color: "var(--brand)", fill: "#8A7CFF" },
+  { icon: Sparkles, title: "Hızlı Kazanımlar", desc: "Hangi düzeltmeyi önce yapman gerektiğini, yüksek etki ve düşük efor dengesine göre otomatik olarak sıralayıp önceliklendirir.", color: "var(--teal)", fill: "#79D9CC" },
+  { icon: Code2, title: "Kod Seviyesinde Öneri", desc: "Kontrast, boşluk ve dokunma alanı gibi bazı bulgular için örnek CSS, Swift veya Kotlin kod parçacıkları önerir, işini kolaylaştırır.", color: "var(--yellow)", fill: "#F3C468" },
+  { icon: ImageIcon, title: "Görsel İşaretleme", desc: "Her bulgu, hangi ekranda nerede olduğunu gösterecek şekilde yüklediğin ekran görüntüsü üzerinde renkli kutucuklarla işaretlenir.", color: "var(--brand)", fill: "#8A7CFF" },
+  { icon: History, title: "Geçmiş & Trend", desc: "Yaptığın her tarama otomatik olarak kaydedilir, böylece sağlık skorunun zaman içinde nasıl değiştiğini kolayca takip edebilirsin.", color: "var(--teal)", fill: "#79D9CC" },
+  { icon: GitCompare, title: "Detaylı Karşılaştırma", desc: "İki farklı taramayı (kendi uygulaman ya da bir rakip) kategori kategori, bulgu bulgu karşılaştırıp hangisinin önde olduğunu gösterir.", color: "var(--yellow)", fill: "#F3C468" },
+  { icon: LayoutDashboard, title: "Uygulamalarım Paneli", desc: "Takip ettiğin tüm uygulamaları, en son skorları ve tarama geçmişleriyle birlikte tek bir panelden kolayca görüntüleyebilirsin.", color: "var(--brand)", fill: "#8A7CFF" },
+  { icon: Mail, title: "Haftalık E-posta Özeti", desc: "Takip ettiğin bir uygulamanın yeni App Store yorumlarının özetini, her hafta otomatik olarak e-posta kutuna gönderir.", color: "var(--teal)", fill: "#79D9CC" },
+  { icon: Download, title: "PDF Dışa Aktarma", desc: "Hazırlanan raporun tamamını tek bir tıkla PDF olarak indirip, ekibinle ya da müşterinle kolayca paylaşabilirsin.", color: "var(--yellow)", fill: "#F3C468" },
 ];
 
 const FAQ = [
@@ -397,8 +397,8 @@ export default function MarketingSections() {
         .mkt-carousel-card:hover .mkt-carousel-headline { color: #FFFFFF; }
         .mkt-carousel-footer {
           font-size: 12.5px; color: var(--muted); transition: color 0.3s ease;
-          display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-          overflow: hidden; line-height: 1.45; min-height: 2.9em;
+          display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+          overflow: hidden; line-height: 1.45; min-height: 4.35em;
         }
         .mkt-carousel-card:hover .mkt-carousel-footer { color: #FFFFFF; opacity: 0.85; }
 
