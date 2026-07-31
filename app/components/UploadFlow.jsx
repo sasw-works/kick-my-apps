@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useCallback, useEffect, useRef } from "react";
+import Link from "next/link";
 import { UploadCloud, Search, Check, Loader2, X, Sparkles } from "lucide-react";
 
 export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewHistory }) {
@@ -177,7 +178,15 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           background: var(--ink-3); border: 1px solid var(--ink-3); border-radius: 6px;
           padding: 3px 7px; flex-shrink: 0;
         }
-        .hero-search-hint { font-size: 12.5px; color: var(--muted); margin-top: 35px; text-align: center; }
+        .or-divider { display: flex; align-items: center; gap: 14px; width: 100%; max-width: 340px; margin: 35px auto 0; cursor: default; }
+        .or-divider-line { flex: 1; height: 1px; background: var(--ink-3); }
+        .or-divider-text { font-size: 11.5px; font-weight: 600; letter-spacing: 0.08em; color: var(--muted); }
+        .hero-sample-link {
+          display: inline-block; margin-top: 14px; font-size: 12.5px; color: var(--muted);
+          text-decoration: none; border-bottom: 1px dashed var(--ink-3);
+        }
+        .hero-sample-link:hover { color: var(--brand); border-color: var(--brand); }
+        .analyze-trust { text-align: center; font-size: 11.5px; color: var(--muted); margin-top: 10px; }
         .history-link {
           margin-top: 10px;
           background: transparent;
@@ -393,6 +402,9 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
       <div className="upload-hero">
         <div className="hero-label">AI-powered app reviews</div>
         <h1 className="hero-title">kick your apps</h1>
+        <Link href="/report" className="hero-sample-link">
+          Örnek rapor gör →
+        </Link>
       </div>
 
       <div className="hero-search-wrap">
@@ -438,10 +450,12 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         </div>
 
         <div
-          className="hero-search-hint"
-          title={selectedApp ? "App Store'dan eşleşti — yorumlar da analize dahil edilecek." : "Listeden seçmezsen sadece ekran görüntüsü analizi yapılır."}
+          className="or-divider"
+          title={selectedApp ? "App Store'dan eşleşti — yorumlar da analize dahil edilecek." : "İkisi de opsiyonel — istersen sadece birini, istersen ikisini birlikte kullan."}
         >
-          ve / veya
+          <span className="or-divider-line" />
+          <span className="or-divider-text">VEYA</span>
+          <span className="or-divider-line" />
         </div>
       </div>
 
@@ -506,6 +520,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
             </>
           )}
         </button>
+        <div className="analyze-trust">Kredi kartı gerekmiyor · Genellikle ~20-30 saniye sürer</div>
         {errorMessage && (
           <div style={{ color: "var(--kick)", fontSize: 13, textAlign: "center" }}>{errorMessage}</div>
         )}
