@@ -13,12 +13,17 @@ export default function Header() {
           position: sticky;
           top: 0;
           z-index: 50;
-          padding: 24px 40px;
-          background: var(--ink);
+          padding: 24px 40px 50px;
+          margin-bottom: -50px;
+          pointer-events: none;
+          background: linear-gradient(to bottom, var(--ink) 0%, var(--ink) 55%, transparent 100%);
+          -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
         }
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
         .kma-header-inner {
+          pointer-events: auto;
           max-width: 1400px;
           margin: 0 auto;
           display: flex;
