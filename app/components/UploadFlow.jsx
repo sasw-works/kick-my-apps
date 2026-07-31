@@ -138,13 +138,13 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           left: 50%;
           width: 100vw;
           margin-left: -50vw;
-          height: 900px;
+          height: 620px;
           max-height: 100vh;
           overflow: hidden;
           pointer-events: none;
           z-index: 0;
-          -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 55%, transparent 100%);
-          mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 55%, transparent 100%);
+          -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 45%, transparent 90%);
+          mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 45%, transparent 90%);
         }
         .blob {
           position: absolute;
