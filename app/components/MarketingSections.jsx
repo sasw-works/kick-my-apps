@@ -131,7 +131,42 @@ export default function MarketingSections() {
         .mkt-feature-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
         .mkt-feature-desc { font-size: 13.5px; color: var(--muted); line-height: 1.6; margin-bottom: 18px; }
 
-        .mkt-ticker { display: flex; flex-direction: column; gap: 8px; max-height: 168px; overflow: hidden; }
+        .mkt-ticker { max-height: 168px; overflow: hidden; -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent); mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent); }
+        .mkt-ticker-track { display: flex; flex-direction: column; gap: 8px; animation: ticker-scroll 14s linear infinite; }
+        @keyframes ticker-scroll {
+          0% { transform: translateY(0); }
+          100% { transform: translateY(-50%); }
+        }
+
+        .mkt-live-dot {
+          width: 7px; height: 7px; border-radius: 50%; background: var(--teal); flex-shrink: 0;
+          animation: live-pulse 1.6s ease-in-out infinite;
+        }
+        @keyframes live-pulse {
+          0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(14,165,160,0.4); }
+          50% { opacity: 0.5; box-shadow: 0 0 0 4px rgba(14,165,160,0); }
+        }
+
+        .mkt-spin-slow { animation: spin-slow 3s linear infinite; }
+        @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .mkt-tag-pulse { animation: tag-pulse 1.8s ease-in-out infinite; }
+        @keyframes tag-pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.55; }
+        }
+
+        .mkt-bounce { animation: mkt-bounce 2s ease-in-out infinite; }
+        @keyframes mkt-bounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-4px); }
+        }
+
+        .mkt-pulse-scale { animation: pulse-scale 1.8s ease-in-out infinite; }
+        @keyframes pulse-scale {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.25); }
+        }
         .mkt-review-card { background: var(--ink); border-radius: 8px; padding: 10px 12px; }
         .mkt-review-stars { color: var(--yellow); font-size: 11px; margin-bottom: 3px; }
         .mkt-review-title { font-size: 12.5px; font-weight: 600; color: var(--chalk); }
@@ -213,22 +248,25 @@ export default function MarketingSections() {
             <div className="mkt-feature-icon" style={{ background: "var(--brand)" }}><Store size={18} color="#FFFFFF" /></div>
             <div className="mkt-feature-title">Gerçek App Store verisi</div>
             <div className="mkt-feature-desc">Uydurma değil — herkese açık App Store yorumlarını doğrudan analiz ediyoruz.</div>
-            <div className="mkt-priority-row" style={{ justifyContent: "center" }}>
+            <div className="mkt-priority-row" style={{ justifyContent: "center", gap: 8 }}>
+              <span className="mkt-live-dot" />
               <span style={{ fontSize: 12.5, color: "var(--muted)" }}>★★★★☆ · 1.240 yorum analiz edildi</span>
             </div>
           </div>
           <div className="mkt-feature-card">
-            <div className="mkt-feature-icon" style={{ background: "var(--teal)" }}><RefreshCw size={18} color="#FFFFFF" /></div>
+            <div className="mkt-feature-icon" style={{ background: "var(--teal)" }}><RefreshCw size={18} color="#FFFFFF" className="mkt-spin-slow" /></div>
             <div className="mkt-feature-title">Her zaman taze</div>
             <div className="mkt-feature-desc">Önbellek yok — her analizde yorumlar gerçek zamanlı çekilir.</div>
             <div className="mkt-ticker">
-              {SAMPLE_REVIEWS.map((r, i) => (
-                <div className="mkt-review-card" key={i}>
-                  <div className="mkt-review-stars">{"★".repeat(r.stars)}{"☆".repeat(5 - r.stars)}</div>
-                  <div className="mkt-review-title">{r.title}</div>
-                  <div className="mkt-review-body">{r.body} — {r.who}</div>
-                </div>
-              ))}
+              <div className="mkt-ticker-track">
+                {[...SAMPLE_REVIEWS, ...SAMPLE_REVIEWS].map((r, i) => (
+                  <div className="mkt-review-card" key={i}>
+                    <div className="mkt-review-stars">{"★".repeat(r.stars)}{"☆".repeat(5 - r.stars)}</div>
+                    <div className="mkt-review-title">{r.title}</div>
+                    <div className="mkt-review-body">{r.body} — {r.who}</div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -252,7 +290,7 @@ export default function MarketingSections() {
             <div className="mkt-priority-list">
               {PRIORITY_ITEMS.slice(0, 2).map((p) => (
                 <div className="mkt-priority-row" key={p.tag}>
-                  <span className="mkt-priority-tag" style={{ color: p.color, background: "var(--ink-3)" }}>{p.tag}</span>
+                  <span className={`mkt-priority-tag ${p.color === "var(--kick)" ? "mkt-tag-pulse" : ""}`} style={{ color: p.color, background: "var(--ink-3)" }}>{p.tag}</span>
                   <span className="mkt-priority-title">{p.title}</span>
                   <span className="mkt-priority-meta">{p.meta}</span>
                 </div>
@@ -272,7 +310,7 @@ export default function MarketingSections() {
             <div className="mkt-feature-title">Haftalık yorum özeti</div>
             <div className="mkt-feature-desc">Takip ettiğin bir uygulamanın yeni yorumlarının özetini her hafta e-postana alırsın.</div>
             <div className="mkt-showcase-visual">
-              <Mail size={22} color="var(--muted)" />
+              <Mail size={22} color="var(--muted)" className="mkt-bounce" />
               <span style={{ fontSize: 12, color: "var(--muted)" }}>Her Pazartesi, otomatik</span>
             </div>
           </div>
@@ -285,7 +323,7 @@ export default function MarketingSections() {
                 <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--teal)" }}>78</div>
                 <div style={{ fontSize: 10, color: "var(--muted)" }}>Sen</div>
               </div>
-              <GitCompare size={16} color="var(--muted)" />
+              <GitCompare size={16} color="var(--muted)" className="mkt-pulse-scale" />
               <div style={{ textAlign: "center" }}>
                 <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--yellow)" }}>61</div>
                 <div style={{ fontSize: 10, color: "var(--muted)" }}>Rakip</div>
