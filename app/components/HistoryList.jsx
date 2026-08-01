@@ -105,6 +105,21 @@ export default function HistoryList({ onBack, onCompare, preselectId, appNameFil
         .hint { font-size: 12px; color: var(--muted); margin-bottom: 14px; }
         .spin { animation: hist-spin 0.9s linear infinite; }
         @keyframes hist-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .sticky-compare-bar {
+          position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+          background: var(--ink-2); border-top: 1px solid var(--ink-3);
+          padding: 16px 24px;
+        }
+        .sticky-compare-inner {
+          max-width: 720px; margin: 0 auto;
+          display: flex; align-items: center; justify-content: space-between; gap: 16px;
+        }
+        .sticky-compare-hint { font-size: 13px; color: var(--muted); }
+        @media (max-width: 560px) {
+          .sticky-compare-inner { flex-direction: column; align-items: stretch; gap: 10px; }
+          .sticky-compare-hint { text-align: center; }
+        }
       `}</style>
 
       <div className="history-header">
@@ -132,7 +147,7 @@ export default function HistoryList({ onBack, onCompare, preselectId, appNameFil
         <div className="empty-state">Henüz hiç analiz yapılmamış.</div>
       ) : (
         <>
-          <div className="scan-list">
+          <div className="scan-list" style={{ paddingBottom: 90 }}>
             {scans.map((s) => {
               const isSelected = selected.includes(s.id);
               return (
@@ -167,15 +182,21 @@ export default function HistoryList({ onBack, onCompare, preselectId, appNameFil
             })}
           </div>
 
-          <button
-            className="compare-btn"
-            style={{ marginTop: 20 }}
-            disabled={selected.length !== 2}
-            onClick={() => onCompare(selected)}
-          >
-            <GitCompare size={16} />
-            Karşılaştır {selected.length === 2 ? "" : `(${selected.length}/2 seçildi)`}
-          </button>
+          <div className="sticky-compare-bar">
+            <div className="sticky-compare-inner">
+              <span className="sticky-compare-hint">
+                {selected.length === 2 ? "2 tarama seçildi" : `${selected.length}/2 tarama seçildi`}
+              </span>
+              <button
+                className="compare-btn"
+                disabled={selected.length !== 2}
+                onClick={() => onCompare(selected)}
+              >
+                <GitCompare size={16} />
+                Karşılaştır
+              </button>
+            </div>
+          </div>
         </>
       )}
     </div>
