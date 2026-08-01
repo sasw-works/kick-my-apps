@@ -350,6 +350,7 @@ export default function MarketingSections() {
 
         .mkt-priority-list { display: flex; flex-direction: column; gap: 8px; }
         .mkt-priority-row { display: flex; align-items: center; gap: 10px; background: var(--ink); border-radius: 8px; padding: 8px 12px; }
+        .mkt-priority-row + .mkt-priority-row { margin-top: 8px; }
         .mkt-priority-tag { font-family: var(--font-mono); font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; }
         .mkt-priority-title { font-size: 12.5px; font-weight: 600; color: var(--chalk); flex: 1; }
         .mkt-priority-meta { font-size: 10.5px; color: var(--muted); font-family: var(--font-mono); }
