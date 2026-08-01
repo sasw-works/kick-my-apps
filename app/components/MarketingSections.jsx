@@ -582,7 +582,7 @@ export default function MarketingSections() {
           <div className="mkt-feature-card">
             <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon04 size={66} /></div>
             <div className="mkt-feature-title">Prioritized by impact</div>
-            <div className="mkt-feature-desc">We tell you what to fix first by matching high impact with low effort.</div>
+            <div className="mkt-feature-desc">We tell you what to fix first by matching high impact with low implementation effort, so nothing important slips through.</div>
             <div className="mkt-priority-list">
               {PRIORITY_ITEMS.slice(0, 2).map((p) => (
                 <div className="mkt-priority-row" key={p.tag}>
