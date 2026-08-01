@@ -202,6 +202,21 @@ function Icon06({ size = 36 }) {
   );
 }
 
+function Squiggle({ color = "#000", style }) {
+  return (
+    <svg width="90" height="70" viewBox="0 0 90 70" fill="none" className="mkt-halo-doodle" style={style}>
+      <path
+        d="M4 40C10 15 22 8 30 20C38 32 26 40 20 32C14 24 26 10 45 6C64 2 78 14 82 28"
+        stroke={color}
+        strokeWidth="4"
+        strokeLinecap="round"
+        fill="none"
+        opacity="0.55"
+      />
+    </svg>
+  );
+}
+
 function FaqItem({ q, a }) {
   const [open, setOpen] = React.useState(false);
   return (
@@ -300,6 +315,16 @@ export default function MarketingSections() {
           transition: transform 0.2s ease, border-color 0.2s ease;
         }
         .mkt-feature-card:hover { transform: translateY(-3px); border-color: var(--brand); }
+
+        .mkt-halo {
+          position: relative; border-radius: 24px; padding: 22px; overflow: hidden;
+        }
+        .mkt-halo-pink { background: linear-gradient(135deg, #F3D9D3, #ECC3B9); }
+        .mkt-halo-mint { background: linear-gradient(135deg, #D2F0E1, #B9E6D2); }
+        .mkt-halo-doodle { position: absolute; z-index: 0; }
+        .mkt-feature-card-floating {
+          position: relative; z-index: 1; border: none;
+        }
         .mkt-feature-icon {
           width: 66px; height: 66px; border-radius: 10px;
           display: flex; align-items: center; justify-content: center; margin-bottom: 41px;
@@ -502,28 +527,34 @@ export default function MarketingSections() {
         <div className="mkt-section-title">Yorumların sana anlattığı her şey</div>
         <div className="mkt-section-sub">Ekran görüntüsü analizi ve gerçek kullanıcı yorumları, aynı raporda buluşuyor.</div>
         <div className="mkt-grid-2">
-          <div className="mkt-feature-card">
-            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon01 size={66} /></div>
-            <div className="mkt-feature-title">Gerçek App Store verisi</div>
-            <div className="mkt-feature-desc">Uydurma değil — herkese açık App Store yorumlarını doğrudan analiz ediyoruz.</div>
-            <div className="mkt-priority-row" style={{ justifyContent: "center", gap: 8 }}>
-              <span className="mkt-live-dot" />
-              <span style={{ fontSize: 12.5, color: "var(--muted)" }}>★★★★☆ · 1.240 yorum analiz edildi</span>
+          <div className="mkt-halo mkt-halo-pink">
+            <Squiggle color="#B5453D" style={{ top: 14, right: 14 }} />
+            <div className="mkt-feature-card mkt-feature-card-floating">
+              <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon01 size={66} /></div>
+              <div className="mkt-feature-title">Gerçek App Store verisi</div>
+              <div className="mkt-feature-desc">Uydurma değil — herkese açık App Store yorumlarını doğrudan analiz ediyoruz.</div>
+              <div className="mkt-priority-row" style={{ justifyContent: "center", gap: 8 }}>
+                <span className="mkt-live-dot" />
+                <span style={{ fontSize: 12.5, color: "var(--muted)" }}>★★★★☆ · 1.240 yorum analiz edildi</span>
+              </div>
             </div>
           </div>
-          <div className="mkt-feature-card">
-            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon02 size={66} /></div>
-            <div className="mkt-feature-title">Her zaman taze</div>
-            <div className="mkt-feature-desc">Önbellek yok — her analizde yorumlar gerçek zamanlı çekilir.</div>
-            <div className="mkt-ticker">
-              <div className="mkt-ticker-track">
-                {[...SAMPLE_REVIEWS, ...SAMPLE_REVIEWS].map((r, i) => (
-                  <div className="mkt-review-card" key={i}>
-                    <div className="mkt-review-stars">{"★".repeat(r.stars)}{"☆".repeat(5 - r.stars)}</div>
-                    <div className="mkt-review-title">{r.title}</div>
-                    <div className="mkt-review-body">{r.body} — {r.who}</div>
-                  </div>
-                ))}
+          <div className="mkt-halo mkt-halo-mint">
+            <Squiggle color="#1F7A5C" style={{ bottom: 10, left: 14, transform: "scaleX(-1)" }} />
+            <div className="mkt-feature-card mkt-feature-card-floating">
+              <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon02 size={66} /></div>
+              <div className="mkt-feature-title">Her zaman taze</div>
+              <div className="mkt-feature-desc">Önbellek yok — her analizde yorumlar gerçek zamanlı çekilir.</div>
+              <div className="mkt-ticker">
+                <div className="mkt-ticker-track">
+                  {[...SAMPLE_REVIEWS, ...SAMPLE_REVIEWS].map((r, i) => (
+                    <div className="mkt-review-card" key={i}>
+                      <div className="mkt-review-stars">{"★".repeat(r.stars)}{"☆".repeat(5 - r.stars)}</div>
+                      <div className="mkt-review-title">{r.title}</div>
+                      <div className="mkt-review-body">{r.body} — {r.who}</div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
