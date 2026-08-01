@@ -525,7 +525,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
             onChange={(e) => addFiles(e.target.files)}
           />
           <UploadIcon size={14} color="var(--muted)" />
-          <span>{files.length > 0 ? `${files.length} screenshots selected` : "Upload screens"}</span>
+          <span>{files.length > 0 ? `${files.length} screenshots selected` : "Upload UI screens"}</span>
         </label>
 
         <button className="submit-circle" disabled={!canAnalyze} onClick={handleAnalyze} aria-label="Analiz Et">
