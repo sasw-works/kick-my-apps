@@ -407,7 +407,7 @@ export default function MarketingSections() {
         }
         .mkt-carousel-card:hover .mkt-carousel-headline { color: #FFFFFF; }
         .mkt-carousel-footer {
-          font-size: 16px; color: var(--muted); transition: color 0.3s ease;
+          font-size: 12.5px; color: var(--muted); transition: color 0.3s ease;
           display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
           overflow: hidden; line-height: 1.45; min-height: 4.35em;
         }
