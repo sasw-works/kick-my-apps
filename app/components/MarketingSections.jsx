@@ -539,6 +539,7 @@ export default function MarketingSections() {
             <div className="mkt-feature-title">13 kategori, 4 mercek</div>
             <div className="mkt-feature-desc">Onboarding'den erişilebilirliğe, her bulgu UI / UX / Erişilebilirlik / Ürün merceklerinden birine bağlanır.</div>
             <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UI</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>2 kritik · 1 dikkat</span></div>
+            <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UX</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>1 dikkat</span></div>
           </div>
           <div className="mkt-feature-card">
             <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon04 size={66} /></div>
