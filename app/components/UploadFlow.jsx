@@ -159,7 +159,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         .blob-4 { width: 55vw; height: 55vw; max-width: 600px; max-height: 600px; background: #FDE788; top: -20px; left: 6%; }
         .blob-5 { width: 60vw; height: 60vw; max-width: 640px; max-height: 640px; background: #B9A6F5; top: 220px; right: -4%; }
 
-        .upload-hero { text-align: center; margin-top: 125px; margin-bottom: 0; max-width: 1170px; position: relative; z-index: 1; }
+        .upload-hero { text-align: center; margin-top: 150px; margin-bottom: 0; max-width: 1170px; position: relative; z-index: 1; }
 
         .hero-title {
           font-family: var(--font-display);
