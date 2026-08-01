@@ -396,7 +396,7 @@ export default function MarketingSections() {
           background: var(--fill-color); transition: height 0.4s ease; z-index: 0;
         }
         .mkt-carousel-card:hover .mkt-carousel-fill { height: 100%; }
-        .mkt-carousel-content { position: relative; z-index: 1; display: flex; flex-direction: column; height: 100%; padding: 24px; }
+        .mkt-carousel-content { position: relative; z-index: 1; display: flex; flex-direction: column; height: 100%; padding: 34px; }
         .mkt-carousel-icon {
           width: 36px; height: 36px; border-radius: 10px; margin-bottom: 26px;
           display: flex; align-items: center; justify-content: center; flex-shrink: 0;
@@ -407,7 +407,7 @@ export default function MarketingSections() {
         }
         .mkt-carousel-card:hover .mkt-carousel-headline { color: #FFFFFF; }
         .mkt-carousel-footer {
-          font-size: 12.5px; color: var(--muted); transition: color 0.3s ease;
+          font-size: 16px; color: var(--muted); transition: color 0.3s ease;
           display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
           overflow: hidden; line-height: 1.45; min-height: 4.35em;
         }
