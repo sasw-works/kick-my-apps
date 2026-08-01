@@ -251,8 +251,8 @@ export default function MarketingSections() {
     <div className="mkt-root">
       <style>{`
         .mkt-root { width: 100%; max-width: 1000px; margin: 90px auto 0; font-family: 'Inter', sans-serif; }
-        .mkt-section-title { font-size: 34px; font-weight: 800; letter-spacing: -0.02em; color: var(--chalk); text-align: center; margin-bottom: 10px; }
-        .mkt-section-sub { font-size: 18px; color: var(--muted); text-align: center; max-width: 480px; margin: 0 auto 40px; }
+        .mkt-section-title { font-size: 34px; font-weight: 500; letter-spacing: -0.02em; color: var(--chalk); text-align: center; margin-bottom: 10px; }
+        .mkt-section-sub { font-size: 15px; font-family: var(--font-body); color: var(--muted); text-align: center; max-width: 480px; margin: 0 auto 40px; }
         .mkt-title-card {
           background: var(--ink);
           border-radius: 20px;
@@ -290,7 +290,7 @@ export default function MarketingSections() {
         .mkt-preview-score { display: flex; align-items: center; gap: 14px; }
         .mkt-preview-score-num { font-family: var(--font-display); font-size: 40px; font-weight: 700; color: var(--teal); }
         .mkt-preview-findings { display: flex; flex-direction: column; gap: 8px; }
-        .mkt-preview-row { display: flex; align-items: center; gap: 10px; background: var(--ink); border-radius: 8px; padding: 10px 14px; font-size: 13px; }
+        .mkt-preview-row { display: flex; align-items: center; gap: 10px; background: var(--ink); border-radius: 8px; padding: 10px 14px; font-size: 15px; font-family: var(--font-body); }
         .mkt-preview-row span { flex: 1; color: var(--chalk); }
 
         .mkt-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 90px; }
@@ -314,8 +314,8 @@ export default function MarketingSections() {
           width: 66px; height: 66px; border-radius: 10px;
           display: flex; align-items: center; justify-content: center; margin-bottom: 41px;
         }
-        .mkt-feature-title { font-size: 19px; font-weight: 700; margin-bottom: 6px; }
-        .mkt-feature-desc { font-size: 15px; color: var(--muted); line-height: 1.6; margin-bottom: 18px; }
+        .mkt-feature-title { font-size: 19px; font-weight: 500; margin-bottom: 6px; }
+        .mkt-feature-desc { font-size: 15px; font-family: var(--font-body); color: var(--muted); line-height: 1.6; margin-bottom: 18px; }
 
         .mkt-ticker { max-height: 168px; overflow: hidden; -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent); mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent); }
         .mkt-ticker-track { display: flex; flex-direction: column; gap: 8px; animation: ticker-scroll 14s linear infinite; }
@@ -419,19 +419,19 @@ export default function MarketingSections() {
           display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
         .mkt-carousel-headline {
-          font-size: 20px; font-weight: 500; line-height: 1.35; color: var(--chalk);
+          font-size: 19px; font-weight: 500; line-height: 1.35; color: var(--chalk);
           margin-bottom: 6px; transition: color 0.3s ease;
         }
         .mkt-carousel-card:hover .mkt-carousel-headline { color: #FFFFFF; }
         .mkt-carousel-footer {
-          font-size: 14px; color: var(--muted); transition: color 0.3s ease;
+          font-size: 15px; font-family: var(--font-body); color: var(--muted); transition: color 0.3s ease;
           display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
-          overflow: hidden; line-height: 1.45; min-height: 4.35em;
+          overflow: hidden; line-height: 1.45; min-height: 4.65em;
         }
         .mkt-carousel-card:hover .mkt-carousel-footer { color: #FFFFFF; opacity: 0.85; }
 
         .mkt-carousel-nav-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 90px; }
-        .mkt-carousel-tagline { font-size: 16px; color: var(--chalk); }
+        .mkt-carousel-tagline { font-size: 15px; font-family: var(--font-body); color: var(--chalk); }
         .mkt-carousel-arrows { display: flex; gap: 8px; }
         .mkt-carousel-arrow {
           width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--ink-3);
@@ -440,13 +440,13 @@ export default function MarketingSections() {
         }
         .mkt-carousel-arrow:hover { border-color: var(--brand); }
 
-        .faq-eyebrow { font-size: 14px; color: var(--muted); text-align: center; margin-bottom: 8px; }
+        .faq-eyebrow { font-size: 15px; font-family: var(--font-body); color: var(--muted); text-align: center; margin-bottom: 8px; }
         .faq-list { max-width: 720px; margin: 0 auto 40px; border-top: 1px solid var(--ink-3); }
         .faq-row { border-bottom: 1px solid var(--ink-3); }
         .faq-q {
           width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 20px;
           background: none; border: none; cursor: pointer; padding: 26px 4px;
-          font-size: 18px; color: var(--chalk); text-align: left;
+          font-size: 19px; font-weight: 500; color: var(--chalk); text-align: left;
         }
         .faq-toggle {
           width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
@@ -462,7 +462,7 @@ export default function MarketingSections() {
         .faq-a-wrap-open { grid-template-rows: 1fr; }
         .faq-a-inner { overflow: hidden; }
         .faq-a {
-          font-size: 16px; color: var(--muted); line-height: 1.7; padding: 0 4px 26px; max-width: 560px;
+          font-size: 15px; font-family: var(--font-body); color: var(--muted); line-height: 1.7; padding: 0 4px 26px; max-width: 560px;
           opacity: 0; transform: translateY(-6px);
           transition: opacity 0.3s ease 0.05s, transform 0.3s ease 0.05s;
         }
