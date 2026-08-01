@@ -331,6 +331,12 @@ export default function MarketingSections() {
           0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(14,165,160,0.4); }
           50% { opacity: 0.5; box-shadow: 0 0 0 4px rgba(14,165,160,0); }
         }
+        .mkt-rating-dist { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+        .mkt-rating-dist-row { display: flex; align-items: center; gap: 8px; }
+        .mkt-rating-dist-label { font-size: 11px; color: var(--muted); width: 20px; flex-shrink: 0; font-family: var(--font-mono); }
+        .mkt-rating-dist-bar { flex: 1; height: 6px; border-radius: 3px; background: var(--ink-3); overflow: hidden; }
+        .mkt-rating-dist-fill { height: 100%; background: var(--yellow); border-radius: 3px; }
+        .mkt-rating-dist-pct { font-size: 10.5px; color: var(--muted); width: 32px; text-align: right; font-family: var(--font-mono); }
 
         .mkt-spin-slow { animation: spin-slow 3s linear infinite; }
         @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -519,6 +525,23 @@ export default function MarketingSections() {
               <div className="mkt-priority-row" style={{ justifyContent: "center", gap: 8 }}>
                 <span className="mkt-live-dot" />
                 <span style={{ fontSize: 12.5, color: "var(--muted)" }}>★★★★☆ · 1.240 yorum analiz edildi</span>
+              </div>
+              <div className="mkt-rating-dist">
+                {[
+                  { star: 5, pct: 62 },
+                  { star: 4, pct: 21 },
+                  { star: 3, pct: 9 },
+                  { star: 2, pct: 5 },
+                  { star: 1, pct: 3 },
+                ].map((r) => (
+                  <div className="mkt-rating-dist-row" key={r.star}>
+                    <span className="mkt-rating-dist-label">{r.star}★</span>
+                    <div className="mkt-rating-dist-bar">
+                      <div className="mkt-rating-dist-fill" style={{ width: `${r.pct}%` }} />
+                    </div>
+                    <span className="mkt-rating-dist-pct">%{r.pct}</span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
