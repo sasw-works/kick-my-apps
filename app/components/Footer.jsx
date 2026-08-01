@@ -112,7 +112,7 @@ export default function Footer() {
           <div>
             <div className="kma-footer-brand">
               <div className="kma-footer-mark">
-                <LogoMark size={41} />
+                <LogoMark size={66} />
               </div>
             </div>
             <p className="kma-footer-desc">
