@@ -6,7 +6,7 @@ import Footer from "./components/Footer";
 export const metadata = {
   metadataBase: new URL("https://kick-my-apps.vercel.app"),
   title: "Kick My Apps",
-  description: "AI destekli mobil uygulama sağlık raporu",
+  description: "AI-powered mobile app health report",
 };
 
 export default function RootLayout({ children }) {

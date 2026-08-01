@@ -3,7 +3,7 @@ import Link from "next/link";
 import ThemeToggle from "./ThemeToggle";
 import LogoMark from "./LogoMark";
 
-const NAV_ITEMS = ["Özellikler", "Kullanım Alanları", "Fiyatlandırma", "Blog"];
+const NAV_ITEMS = ["Features", "Use Cases", "Pricing", "Blog"];
 
 export default function Header() {
   return (

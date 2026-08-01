@@ -4,30 +4,30 @@ import LogoMark from "./LogoMark";
 
 const COLUMNS = [
   {
-    title: "ÜRÜN",
+    title: "PRODUCT",
     links: [
-      { label: "Ekran Analizi" },
-      { label: "Duygu Analizi" },
-      { label: "Uygulamalarım", href: "/dashboard" },
-      { label: "Karşılaştırma" },
-      { label: "Geçmiş Analizlerim", href: "/history" },
+      { label: "Screenshot Analysis" },
+      { label: "Sentiment Analysis" },
+      { label: "My Apps", href: "/dashboard" },
+      { label: "Comparison" },
+      { label: "My History", href: "/history" },
     ],
   },
   {
-    title: "KAYNAKLAR",
-    links: [{ label: "App Store" }, { label: "Play Store (yakında)" }],
+    title: "RESOURCES",
+    links: [{ label: "App Store" }, { label: "Play Store (coming soon)" }],
   },
   {
-    title: "KULLANIM ALANLARI",
-    links: [{ label: "Ürün Yöneticileri" }, { label: "Bağımsız Geliştiriciler" }, { label: "Küçük Ekipler" }],
+    title: "USE CASES",
+    links: [{ label: "Product Managers" }, { label: "Indie Developers" }, { label: "Small Teams" }],
   },
   {
-    title: "ŞİRKET",
-    links: [{ label: "Fiyatlandırma" }, { label: "Blog" }, { label: "Hakkımızda" }, { label: "İletişim" }],
+    title: "COMPANY",
+    links: [{ label: "Pricing" }, { label: "Blog" }, { label: "About" }, { label: "Contact" }],
   },
 ];
 
-const LEGAL_LINKS = ["Gizlilik", "Şartlar", "Güvenlik", "Çerezler"];
+const LEGAL_LINKS = ["Privacy", "Terms", "Security", "Cookies"];
 
 export default function Footer() {
   return (
@@ -116,8 +116,8 @@ export default function Footer() {
               </div>
             </div>
             <p className="kma-footer-desc">
-              Herkese açık App Store ve Play Store yorumlarını, net ve önceliklendirilmiş bir
-              geri bildirim raporuna dönüştürür.
+              Turns public App Store and Play Store reviews into a clear, prioritized
+              feedback report.
             </p>
           </div>
 
@@ -140,7 +140,7 @@ export default function Footer() {
         </div>
 
         <div className="kma-footer-bottom">
-          <span>© 2026 Kick My Apps. Tüm hakları saklıdır.</span>
+          <span>© 2026 Kick My Apps. All rights reserved.</span>
           <div className="kma-footer-legal">
             {LEGAL_LINKS.map((l) => (
               <span key={l}>{l}</span>

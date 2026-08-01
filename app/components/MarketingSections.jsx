@@ -21,55 +21,55 @@ import {
 } from "lucide-react";
 
 const SAMPLE_REVIEWS = [
-  { stars: 5, title: "Yeni güncelleme harika!", body: "Her şey çok daha hızlı, arayüz de çok sadeleşmiş.", who: "Ayşe K. · 2 saat önce" },
-  { stars: 2, title: "Ödeme ekranı donuyor", body: "Satın alma tamamlanırken uygulama sürekli kilitleniyor.", who: "Mert D. · 5 saat önce" },
-  { stars: 4, title: "Karanlık tema gelse keşke", body: "Genel olarak çok iyi, tek eksik karanlık tema.", who: "Zeynep A. · 1 gün önce" },
-  { stars: 5, title: "Destek çok hızlı", body: "Yazdım, dakikalar içinde dönüş yaptılar.", who: "Kerem T. · 1 gün önce" },
+  { stars: 5, title: "Love the new update!", body: "Everything's so much faster, the UI is way cleaner too.", who: "Alex K. · 2 hours ago" },
+  { stars: 2, title: "Checkout screen freezes", body: "The app keeps freezing while completing a purchase.", who: "Sam D. · 5 hours ago" },
+  { stars: 4, title: "Wish it had dark mode", body: "Overall great, dark mode is the only thing missing.", who: "Zara A. · 1 day ago" },
+  { stars: 5, title: "Support is super fast", body: "I reached out and got a reply within minutes.", who: "Kai T. · 1 day ago" },
 ];
 
 const PRIORITY_ITEMS = [
-  { tag: "P1", title: "Giriş ekranında hata", meta: "342 bahsedilme · Yükseliyor ↑", color: "var(--kick)" },
-  { tag: "P2", title: "Yavaş ödeme akışı", meta: "218 bahsedilme · Sabit", color: "var(--kick)" },
-  { tag: "P3", title: "Karanlık tema eksik", meta: "156 bahsedilme · Yeni", color: "var(--yellow)" },
-  { tag: "P4", title: "Müşteri desteği", meta: "96 bahsedilme · Yeni", color: "var(--yellow)" },
+  { tag: "P1", title: "Login screen bug", meta: "342 mentions · Rising ↑", color: "var(--kick)" },
+  { tag: "P2", title: "Slow checkout flow", meta: "218 mentions · Steady", color: "var(--kick)" },
+  { tag: "P3", title: "Missing dark mode", meta: "156 mentions · New", color: "var(--yellow)" },
+  { tag: "P4", title: "Customer support", meta: "96 mentions · New", color: "var(--yellow)" },
 ];
 
-// Ürünün gerçekten sahip olduğu tüm özellikler — Stripe tarzı renkli ikon kutularıyla.
+// Every feature the product genuinely has — Stripe-style colorful icon boxes.
 const ALL_FEATURES = [
-  { icon: ImageIcon, title: "Ekran Görüntüsü Analizi", desc: "13 kategori ve 4 mercek (UI, UX, Erişilebilirlik, Ürün) altında, yüklediğin her ekran görüntüsünü tek tek inceleyip somut bulgular çıkarır.", color: "var(--brand)", fill: "#8A7CFF" },
-  { icon: Store, title: "Gerçek App Store Yorumları", desc: "Uydurma istatistik yok — her analizde herkese açık App Store yorumlarını doğrudan ve gerçek zamanlı olarak çekip değerlendiririz.", color: "var(--teal)", fill: "#79D9CC" },
-  { icon: Search, title: "ASO / Mağaza İncelemesi", desc: "Mağaza sayfandaki başlık, açıklama ve anahtar kelime kullanımını inceleyip aramalarda daha görünür olman için somut öneriler sunar.", color: "var(--yellow)", fill: "#F3C468" },
-  { icon: ShieldQuestion, title: "Güncelleme Riski Kontrolü", desc: "Uygulaman zaten yayında olsa da, bir sonraki güncelleme incelemesinde sorun çıkarabilecek görsel sinyalleri önceden yakalar.", color: "var(--brand)", fill: "#8A7CFF" },
-  { icon: Sparkles, title: "Hızlı Kazanımlar", desc: "Hangi düzeltmeyi önce yapman gerektiğini, yüksek etki ve düşük efor dengesine göre otomatik olarak sıralayıp önceliklendirir.", color: "var(--teal)", fill: "#79D9CC" },
-  { icon: Code2, title: "Kod Seviyesinde Öneri", desc: "Kontrast, boşluk ve dokunma alanı gibi bazı bulgular için örnek CSS, Swift veya Kotlin kod parçacıkları önerir, işini kolaylaştırır.", color: "var(--yellow)", fill: "#F3C468" },
-  { icon: ImageIcon, title: "Görsel İşaretleme", desc: "Her bulgu, hangi ekranda nerede olduğunu gösterecek şekilde yüklediğin ekran görüntüsü üzerinde renkli kutucuklarla işaretlenir.", color: "var(--brand)", fill: "#8A7CFF" },
-  { icon: History, title: "Geçmiş & Trend", desc: "Yaptığın her tarama otomatik olarak kaydedilir, böylece sağlık skorunun zaman içinde nasıl değiştiğini kolayca takip edebilirsin.", color: "var(--teal)", fill: "#79D9CC" },
-  { icon: GitCompare, title: "Detaylı Karşılaştırma", desc: "İki farklı taramayı (kendi uygulaman ya da bir rakip) kategori kategori, bulgu bulgu karşılaştırıp hangisinin önde olduğunu gösterir.", color: "var(--yellow)", fill: "#F3C468" },
-  { icon: LayoutDashboard, title: "Uygulamalarım Paneli", desc: "Takip ettiğin tüm uygulamaları, en son skorları ve tarama geçmişleriyle birlikte tek bir panelden kolayca görüntüleyebilirsin.", color: "var(--brand)", fill: "#8A7CFF" },
-  { icon: Mail, title: "Haftalık E-posta Özeti", desc: "Takip ettiğin bir uygulamanın yeni App Store yorumlarının özetini, her hafta otomatik olarak e-posta kutuna gönderir.", color: "var(--teal)", fill: "#79D9CC" },
-  { icon: Download, title: "PDF Dışa Aktarma", desc: "Hazırlanan raporun tamamını tek bir tıkla PDF olarak indirip, ekibinle ya da müşterinle kolayca paylaşabilirsin.", color: "var(--yellow)", fill: "#F3C468" },
+  { icon: ImageIcon, title: "Screenshot Analysis", desc: "Reviews every screenshot you upload across 13 categories and 4 lenses (UI, UX, Accessibility, Product), surfacing concrete findings.", color: "var(--brand)", fill: "#8A7CFF" },
+  { icon: Store, title: "Real App Store Reviews", desc: "No made-up stats — every analysis pulls and evaluates real, public App Store reviews directly and in real time.", color: "var(--teal)", fill: "#79D9CC" },
+  { icon: Search, title: "ASO / Store Listing Review", desc: "Reviews your store page's title, description, and keyword usage, then gives concrete tips to help you rank higher in search.", color: "var(--yellow)", fill: "#F3C468" },
+  { icon: ShieldQuestion, title: "Update Risk Check", desc: "Even though your app is already live, it flags visual signals that could cause trouble in your next update review.", color: "var(--brand)", fill: "#8A7CFF" },
+  { icon: Sparkles, title: "Quick Wins", desc: "Automatically ranks and prioritizes which fix to tackle first based on high impact and low effort.", color: "var(--teal)", fill: "#79D9CC" },
+  { icon: Code2, title: "Code-Level Suggestions", desc: "For findings like contrast, spacing, and tap targets, it suggests sample CSS, Swift, or Kotlin snippets to speed up your fix.", color: "var(--yellow)", fill: "#F3C468" },
+  { icon: ImageIcon, title: "Visual Annotation", desc: "Every finding is marked with a colored box directly on your uploaded screenshot, showing exactly where it is.", color: "var(--brand)", fill: "#8A7CFF" },
+  { icon: History, title: "History & Trend", desc: "Every scan you run is saved automatically, so you can easily track how your health score changes over time.", color: "var(--teal)", fill: "#79D9CC" },
+  { icon: GitCompare, title: "Detailed Comparison", desc: "Compares two scans (your own app or a competitor) category by category, finding by finding, and shows who's ahead.", color: "var(--yellow)", fill: "#F3C468" },
+  { icon: LayoutDashboard, title: "My Apps Dashboard", desc: "See every app you track, along with its latest score and scan history, all from one dashboard.", color: "var(--brand)", fill: "#8A7CFF" },
+  { icon: Mail, title: "Weekly Email Digest", desc: "Sends a summary of a tracked app's new App Store reviews straight to your inbox, automatically, every week.", color: "var(--teal)", fill: "#79D9CC" },
+  { icon: Download, title: "PDF Export", desc: "Download the full report as a PDF in one click and share it easily with your team or client.", color: "var(--yellow)", fill: "#F3C468" },
 ];
 
 const FAQ = [
   {
-    q: "Hangi verileri topluyorsunuz?",
-    a: "Sadece herkese açık App Store yorumlarını ve senin yüklediğin ekran görüntülerini analiz ediyoruz. Hiçbir özel/gizli kullanıcı verisine erişmiyoruz.",
+    q: "What data do you collect?",
+    a: "We only analyze public App Store reviews and the screenshots you upload. We never access any private or hidden user data.",
   },
   {
-    q: "Yorumlar ne kadar taze?",
-    a: "Her analizde App Store'dan gerçek zamanlı olarak çekiyoruz — önbellek kullanmıyoruz, her seferinde en güncel yorumları görürsün.",
+    q: "How fresh are the reviews?",
+    a: "We pull them from the App Store in real time on every analysis — no caching, so you always see the latest reviews.",
   },
   {
-    q: "Rakip uygulamalarla karşılaştırma yapabilir miyim?",
-    a: "Evet — herhangi iki taramayı (kendi uygulaman ve bir rakibi dahil) yan yana karşılaştırabilirsin.",
+    q: "Can I compare against competitor apps?",
+    a: "Yes — you can compare any two scans side by side, including your own app against a competitor.",
   },
   {
-    q: "Bulgular nasıl önceliklendiriliyor?",
-    a: "Her bulgu kritik/dikkat/sorunsuz olarak etiketleniyor ve 'Hızlı Kazanımlar' paneli, yüksek etkili + düşük efor gerektiren maddeleri otomatik öne çıkarıyor.",
+    q: "How are findings prioritized?",
+    a: "Every finding is tagged critical/warning/good, and the 'Quick Wins' panel automatically highlights the high-impact, low-effort items.",
   },
   {
-    q: "Haftalık özet nasıl çalışır?",
-    a: "Bir uygulamayı takip etmeye başladığında, her hafta o uygulamanın yeni App Store yorumlarının özetini e-posta ile alırsın.",
+    q: "How does the weekly digest work?",
+    a: "Once you start tracking an app, you'll get an email every week summarizing its new App Store reviews.",
   },
 ];
 
@@ -477,11 +477,11 @@ export default function MarketingSections() {
         }
       `}</style>
 
-      {/* Rapor önizlemesi */}
+      {/* Report preview */}
       <div>
         <div className="mkt-title-card">
-          <div className="mkt-section-title" style={{ marginBottom: 8 }}>Gerçek raporu keşfet</div>
-          <div className="mkt-section-sub" style={{ marginBottom: 0 }}>Ekran görüntülerin ve yorumların, tek ve net bir sağlık raporuna dönüşür.</div>
+          <div className="mkt-section-title" style={{ marginBottom: 8 }}>See the real report</div>
+          <div className="mkt-section-sub" style={{ marginBottom: 0 }}>Your screenshots and reviews turn into one clear health report.</div>
         </div>
         <div className="mkt-browser-frame">
           <div className="mkt-browser-topbar">
@@ -503,9 +503,9 @@ export default function MarketingSections() {
                   </div>
                 </div>
                 <div className="mkt-preview-findings">
-                  <div className="mkt-preview-row"><CheckCircle2 size={15} color="var(--teal)" /><span>Font hiyerarşisi net ve tutarlı</span></div>
-                  <div className="mkt-preview-row"><AlertTriangle size={15} color="var(--yellow)" /><span>Onboarding 7 ekran — biraz uzun</span></div>
-                  <div className="mkt-preview-row"><XCircle size={15} color="var(--kick)" /><span>CTA butonu düşük kontrastta</span></div>
+                  <div className="mkt-preview-row"><CheckCircle2 size={15} color="var(--teal)" /><span>Font hierarchy is clear and consistent</span></div>
+                  <div className="mkt-preview-row"><AlertTriangle size={15} color="var(--yellow)" /><span>Onboarding is 7 screens — a bit long</span></div>
+                  <div className="mkt-preview-row"><XCircle size={15} color="var(--kick)" /><span>CTA button has low contrast</span></div>
                 </div>
               </div>
             </div>
@@ -513,19 +513,19 @@ export default function MarketingSections() {
         </div>
       </div>
 
-      {/* Her mağaza tek yerde + Her zaman taze */}
+      {/* App Store data + Always fresh */}
       <div>
-        <div className="mkt-section-title">Yorumların sana anlattığı her şey</div>
-        <div className="mkt-section-sub">Ekran görüntüsü analizi ve gerçek kullanıcı yorumları, aynı raporda buluşuyor.</div>
+        <div className="mkt-section-title">Everything your reviews are telling you</div>
+        <div className="mkt-section-sub">Screenshot analysis and real user reviews meet in the same report.</div>
         <div className="mkt-grid-2">
           <div className="mkt-halo mkt-halo-pink">
             <div className="mkt-feature-card mkt-feature-card-floating">
               <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon01 size={66} /></div>
-              <div className="mkt-feature-title">Gerçek App Store verisi</div>
-              <div className="mkt-feature-desc">Uydurma değil — herkese açık App Store yorumlarını doğrudan analiz ediyoruz.</div>
+              <div className="mkt-feature-title">Real App Store data</div>
+              <div className="mkt-feature-desc">Not guesswork — we analyze real, publicly available App Store reviews directly and honestly.</div>
               <div className="mkt-priority-row" style={{ justifyContent: "center", gap: 8 }}>
                 <span className="mkt-live-dot" />
-                <span style={{ fontSize: 12.5, color: "var(--muted)" }}>★★★★☆ · 1.240 yorum analiz edildi</span>
+                <span style={{ fontSize: 12.5, color: "var(--muted)" }}>★★★★☆ · 1,240 reviews analyzed</span>
               </div>
               <div className="mkt-rating-dist">
                 {[
@@ -540,7 +540,7 @@ export default function MarketingSections() {
                     <div className="mkt-rating-dist-bar">
                       <div className="mkt-rating-dist-fill" style={{ width: `${r.pct}%` }} />
                     </div>
-                    <span className="mkt-rating-dist-pct">%{r.pct}</span>
+                    <span className="mkt-rating-dist-pct">{r.pct}%</span>
                   </div>
                 ))}
               </div>
@@ -549,8 +549,8 @@ export default function MarketingSections() {
           <div className="mkt-halo mkt-halo-mint">
             <div className="mkt-feature-card mkt-feature-card-floating">
               <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon02 size={66} /></div>
-              <div className="mkt-feature-title">Her zaman taze</div>
-              <div className="mkt-feature-desc">Önbellek yok — her analizde yorumlar gerçek zamanlı çekilir.</div>
+              <div className="mkt-feature-title">Always fresh</div>
+              <div className="mkt-feature-desc">No caching, ever — every single analysis pulls the freshest reviews straight from the source.</div>
               <div className="mkt-ticker">
                 <div className="mkt-ticker-track">
                   {[...SAMPLE_REVIEWS, ...SAMPLE_REVIEWS].map((r, i) => (
@@ -567,22 +567,22 @@ export default function MarketingSections() {
         </div>
       </div>
 
-      {/* 13 kategori + Hızlı Kazanımlar */}
+      {/* 13 categories + Quick Wins */}
       <div>
-        <div className="mkt-section-title">Derinlemesine, ama dağınık değil</div>
-        <div className="mkt-section-sub">13 kategori altında toplanan bulgular, tek bakışta önceliklendirilir.</div>
+        <div className="mkt-section-title">Deep, but never messy</div>
+        <div className="mkt-section-sub">Findings across 13 categories, prioritized at a glance.</div>
         <div className="mkt-grid-2">
           <div className="mkt-feature-card">
             <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon03 size={66} /></div>
-            <div className="mkt-feature-title">13 kategori, 4 mercek</div>
-            <div className="mkt-feature-desc">Onboarding'den erişilebilirliğe, her bulgu UI / UX / Erişilebilirlik / Ürün merceklerinden birine bağlanır.</div>
-            <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UI</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>2 kritik · 1 dikkat</span></div>
-            <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UX</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>1 dikkat</span></div>
+            <div className="mkt-feature-title">13 categories, 4 lenses</div>
+            <div className="mkt-feature-desc">From onboarding to accessibility, every finding maps to one of the UI / UX / Accessibility / Product lenses.</div>
+            <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UI</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>2 critical · 1 warning</span></div>
+            <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UX</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>1 warning</span></div>
           </div>
           <div className="mkt-feature-card">
             <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon04 size={66} /></div>
-            <div className="mkt-feature-title">Etkiye göre önceliklendirilmiş</div>
-            <div className="mkt-feature-desc">Hangisini önce düzeltmen gerektiğini, yüksek etki + düşük efor eşleştirmesiyle söylüyoruz.</div>
+            <div className="mkt-feature-title">Prioritized by impact</div>
+            <div className="mkt-feature-desc">We tell you what to fix first by matching high impact with low effort.</div>
             <div className="mkt-priority-list">
               {PRIORITY_ITEMS.slice(0, 2).map((p) => (
                 <div className="mkt-priority-row" key={p.tag}>
@@ -596,43 +596,43 @@ export default function MarketingSections() {
         </div>
       </div>
 
-      {/* Haftalık özet + Compare */}
+      {/* Weekly digest + Compare */}
       <div>
-        <div className="mkt-section-title">Hiçbir şeyi kaçırma</div>
-        <div className="mkt-section-sub">Haftalık özetler ve rakip karşılaştırmasıyla, sürekli takipte kal.</div>
+        <div className="mkt-section-title">Never miss a thing</div>
+        <div className="mkt-section-sub">Stay on top of it with weekly digests and competitor comparisons.</div>
         <div className="mkt-showcase">
           <div className="mkt-feature-card">
             <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon05 size={66} /></div>
-            <div className="mkt-feature-title">Haftalık yorum özeti</div>
-            <div className="mkt-feature-desc">Takip ettiğin bir uygulamanın yeni yorumlarının özetini her hafta e-postana alırsın.</div>
+            <div className="mkt-feature-title">Weekly review digest</div>
+            <div className="mkt-feature-desc">Get a summary of a tracked app's new reviews delivered to your inbox every week.</div>
             <div className="mkt-showcase-visual">
               <Mail size={22} color="var(--muted)" className="mkt-bounce" />
-              <span style={{ fontSize: 12, color: "var(--muted)" }}>Her Pazartesi, otomatik</span>
+              <span style={{ fontSize: 12, color: "var(--muted)" }}>Every Monday, automatic</span>
             </div>
           </div>
           <div className="mkt-feature-card">
             <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon06 size={66} /></div>
-            <div className="mkt-feature-title">Rakiple karşılaştır</div>
-            <div className="mkt-feature-desc">Kendi uygulamanı bir rakiple yan yana koy — skorlar ve bulgular tek ekranda.</div>
+            <div className="mkt-feature-title">Compare with a competitor</div>
+            <div className="mkt-feature-desc">Put your app side by side with a competitor — scores and findings, one screen.</div>
             <div className="mkt-showcase-visual" style={{ flexDirection: "row", gap: 24 }}>
               <div style={{ textAlign: "center" }}>
                 <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--teal)" }}>78</div>
-                <div style={{ fontSize: 10, color: "var(--muted)" }}>Sen</div>
+                <div style={{ fontSize: 10, color: "var(--muted)" }}>You</div>
               </div>
               <GitCompare size={16} color="var(--muted)" className="mkt-pulse-scale" />
               <div style={{ textAlign: "center" }}>
                 <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--yellow)" }}>61</div>
-                <div style={{ fontSize: 10, color: "var(--muted)" }}>Rakip</div>
+                <div style={{ fontSize: 10, color: "var(--muted)" }}>Competitor</div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Tüm özellikler */}
+      {/* All features */}
       <div className="mkt-fullbleed">
-        <div className="mkt-section-title">Artık gerçekten çok şey yapıyor</div>
-        <div className="mkt-section-sub">Kick My Apps'te şu an aktif olan tüm özellikler, tek bakışta.</div>
+        <div className="mkt-section-title">It really does a lot now</div>
+        <div className="mkt-section-sub">Every feature currently live in Kick My Apps, at a glance.</div>
         <div
           className="mkt-carousel"
           ref={carouselRef}
@@ -659,12 +659,12 @@ export default function MarketingSections() {
           })}
         </div>
         <div className="mkt-carousel-nav-row">
-          <span className="mkt-carousel-tagline">Her kategoride derinlemesine.</span>
+          <span className="mkt-carousel-tagline">Deep in every category.</span>
           <div className="mkt-carousel-arrows">
-            <button className="mkt-carousel-arrow" onClick={() => scrollCarousel(-1)} aria-label="Önceki">
+            <button className="mkt-carousel-arrow" onClick={() => scrollCarousel(-1)} aria-label="Previous">
               <ChevronLeft size={16} />
             </button>
-            <button className="mkt-carousel-arrow" onClick={() => scrollCarousel(1)} aria-label="Sonraki">
+            <button className="mkt-carousel-arrow" onClick={() => scrollCarousel(1)} aria-label="Next">
               <ChevronRight size={16} />
             </button>
           </div>
@@ -673,15 +673,15 @@ export default function MarketingSections() {
 
       {/* FAQ */}
       <div>
-        <div className="faq-eyebrow">Sorularını yanıtlamaktan mutluluk duyarız</div>
-        <div className="mkt-section-title" style={{ fontSize: 36 }}>Sık sorulan sorular</div>
+        <div className="faq-eyebrow">We're happy to answer your questions</div>
+        <div className="mkt-section-title" style={{ fontSize: 36 }}>Frequently asked questions</div>
         <div className="mkt-section-sub">&nbsp;</div>
         <div className="faq-list">
           {FAQ.map((f) => (
             <FaqItem key={f.q} q={f.q} a={f.a} />
           ))}
         </div>
-        <button className="faq-support-btn">Destek Sayfası</button>
+        <button className="faq-support-btn">Support Page</button>
       </div>
     </div>
   );

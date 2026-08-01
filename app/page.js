@@ -29,7 +29,7 @@ export default function Home() {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || "Analiz başarısız oldu.");
+        throw new Error(data.error || "Analysis failed.");
       }
 
       setReportData(data);
@@ -71,7 +71,7 @@ export default function Home() {
 
       setStage("report");
     } catch (err) {
-      setErrorMessage(err.message || "Bir şeyler ters gitti, tekrar dener misin?");
+      setErrorMessage(err.message || "Something went wrong, want to try again?");
     } finally {
       setAnalyzing(false);
     }

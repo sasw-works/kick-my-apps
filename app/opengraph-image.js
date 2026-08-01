@@ -38,7 +38,7 @@ export default async function OpengraphImage() {
           Find what's hurting your app.
         </div>
         <div style={{ fontSize: 26, color: "#697386", marginTop: 28 }}>
-          AI destekli mobil uygulama sağlık raporu
+          AI-powered mobile app health report
         </div>
       </div>
     ),
