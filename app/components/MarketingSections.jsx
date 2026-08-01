@@ -202,21 +202,6 @@ function Icon06({ size = 36 }) {
   );
 }
 
-function Squiggle({ color = "#000", style }) {
-  return (
-    <svg width="90" height="70" viewBox="0 0 90 70" fill="none" className="mkt-halo-doodle" style={style}>
-      <path
-        d="M4 40C10 15 22 8 30 20C38 32 26 40 20 32C14 24 26 10 45 6C64 2 78 14 82 28"
-        stroke={color}
-        strokeWidth="4"
-        strokeLinecap="round"
-        fill="none"
-        opacity="0.55"
-      />
-    </svg>
-  );
-}
-
 function FaqItem({ q, a }) {
   const [open, setOpen] = React.useState(false);
   return (
@@ -317,11 +302,10 @@ export default function MarketingSections() {
         .mkt-feature-card:hover { transform: translateY(-3px); border-color: var(--brand); }
 
         .mkt-halo {
-          position: relative; border-radius: 24px; padding: 42px; overflow: hidden;
+          position: relative; border-radius: 24px; padding: 22px; overflow: hidden;
         }
         .mkt-halo-pink { background: linear-gradient(135deg, #F3D9D3, #ECC3B9); }
         .mkt-halo-mint { background: linear-gradient(135deg, #D2F0E1, #B9E6D2); }
-        .mkt-halo-doodle { position: absolute; z-index: 0; }
         .mkt-feature-card-floating {
           position: relative; z-index: 1; border: none;
         }
@@ -528,7 +512,6 @@ export default function MarketingSections() {
         <div className="mkt-section-sub">Ekran görüntüsü analizi ve gerçek kullanıcı yorumları, aynı raporda buluşuyor.</div>
         <div className="mkt-grid-2">
           <div className="mkt-halo mkt-halo-pink">
-            <Squiggle color="#B5453D" style={{ top: 6, right: -8 }} />
             <div className="mkt-feature-card mkt-feature-card-floating">
               <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon01 size={66} /></div>
               <div className="mkt-feature-title">Gerçek App Store verisi</div>
@@ -540,7 +523,6 @@ export default function MarketingSections() {
             </div>
           </div>
           <div className="mkt-halo mkt-halo-mint">
-            <Squiggle color="#1F7A5C" style={{ bottom: -6, left: -8, transform: "scaleX(-1)" }} />
             <div className="mkt-feature-card mkt-feature-card-floating">
               <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon02 size={66} /></div>
               <div className="mkt-feature-title">Her zaman taze</div>
