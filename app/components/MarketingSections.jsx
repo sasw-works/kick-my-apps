@@ -40,14 +40,14 @@ const ALL_FEATURES = [
   { icon: Store, title: "Real App Store Reviews", desc: "No made-up stats — every analysis pulls and evaluates real, public App Store reviews directly and in real time.", color: "var(--teal)", fill: "#79D9CC" },
   { icon: Search, title: "ASO / Store Listing Review", desc: "Reviews your store page's title, description, and keyword usage, then gives concrete tips to help you rank higher in search.", color: "var(--yellow)", fill: "#F3C468" },
   { icon: ShieldQuestion, title: "Update Risk Check", desc: "Even though your app is already live, it flags visual signals that could cause trouble in your next update review.", color: "var(--brand)", fill: "#8A7CFF" },
-  { icon: Sparkles, title: "Quick Wins", desc: "Automatically ranks and prioritizes which fix to tackle first based on high impact and low effort.", color: "var(--teal)", fill: "#79D9CC" },
+  { icon: Sparkles, title: "Quick Wins", desc: "Automatically ranks and prioritizes which fix to tackle first, based on high impact paired with low implementation effort, so you never have to guess.", color: "var(--teal)", fill: "#79D9CC" },
   { icon: Code2, title: "Code-Level Suggestions", desc: "For findings like contrast, spacing, and tap targets, it suggests sample CSS, Swift, or Kotlin snippets to speed up your fix.", color: "var(--yellow)", fill: "#F3C468" },
-  { icon: ImageIcon, title: "Visual Annotation", desc: "Every finding is marked with a colored box directly on your uploaded screenshot, showing exactly where it is.", color: "var(--brand)", fill: "#8A7CFF" },
+  { icon: ImageIcon, title: "Visual Annotation", desc: "Every finding is marked with a colored box directly on your uploaded screenshot, showing exactly where the issue is located.", color: "var(--brand)", fill: "#8A7CFF" },
   { icon: History, title: "History & Trend", desc: "Every scan you run is saved automatically, so you can easily track how your health score changes over time.", color: "var(--teal)", fill: "#79D9CC" },
   { icon: GitCompare, title: "Detailed Comparison", desc: "Compares two scans (your own app or a competitor) category by category, finding by finding, and shows who's ahead.", color: "var(--yellow)", fill: "#F3C468" },
-  { icon: LayoutDashboard, title: "My Apps Dashboard", desc: "See every app you track, along with its latest score and scan history, all from one dashboard.", color: "var(--brand)", fill: "#8A7CFF" },
+  { icon: LayoutDashboard, title: "My Apps Dashboard", desc: "See every app you track, complete with its latest health score, full scan history, and trend, all from one simple dashboard view.", color: "var(--brand)", fill: "#8A7CFF" },
   { icon: Mail, title: "Weekly Email Digest", desc: "Sends a summary of a tracked app's new App Store reviews straight to your inbox, automatically, every week.", color: "var(--teal)", fill: "#79D9CC" },
-  { icon: Download, title: "PDF Export", desc: "Download the full report as a PDF in one click and share it easily with your team or client.", color: "var(--yellow)", fill: "#F3C468" },
+  { icon: Download, title: "PDF Export", desc: "Download the complete report as a polished PDF in a single click, then share it easily with your team, client, or stakeholders.", color: "var(--yellow)", fill: "#F3C468" },
 ];
 
 const FAQ = [
