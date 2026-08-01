@@ -280,7 +280,7 @@ export default function MarketingSections() {
           background: var(--ink-2); padding: 28px;
         }
         .mkt-preview-body { display: flex; gap: 28px; align-items: flex-start; }
-        .mkt-preview-chart { width: 260px; flex-shrink: 0; border-radius: 12px; }
+        .mkt-preview-chart { width: 260px; flex-shrink: 0; border-radius: 12px; margin-right: 25px; }
         .mkt-preview-right { flex: 1; min-width: 0; }
         @media (max-width: 700px) {
           .mkt-preview-body { flex-direction: column; }
@@ -481,7 +481,7 @@ export default function MarketingSections() {
               <div className="mkt-preview-right">
                 <div className="mkt-preview-header">
                   <div className="mkt-preview-score">
-                    <div className="mkt-preview-score-num">82</div>
+                    <div className="mkt-preview-score-num">84</div>
                     <div style={{ fontSize: 12, color: "var(--muted)" }}>APP HEALTH SCORE</div>
                   </div>
                 </div>
