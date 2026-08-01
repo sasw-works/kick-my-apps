@@ -317,7 +317,7 @@ export default function MarketingSections() {
         .mkt-feature-card:hover { transform: translateY(-3px); border-color: var(--brand); }
 
         .mkt-halo {
-          position: relative; border-radius: 24px; padding: 22px; overflow: hidden;
+          position: relative; border-radius: 24px; padding: 42px; overflow: hidden;
         }
         .mkt-halo-pink { background: linear-gradient(135deg, #F3D9D3, #ECC3B9); }
         .mkt-halo-mint { background: linear-gradient(135deg, #D2F0E1, #B9E6D2); }
@@ -528,7 +528,7 @@ export default function MarketingSections() {
         <div className="mkt-section-sub">Ekran görüntüsü analizi ve gerçek kullanıcı yorumları, aynı raporda buluşuyor.</div>
         <div className="mkt-grid-2">
           <div className="mkt-halo mkt-halo-pink">
-            <Squiggle color="#B5453D" style={{ top: 14, right: 14 }} />
+            <Squiggle color="#B5453D" style={{ top: 6, right: -8 }} />
             <div className="mkt-feature-card mkt-feature-card-floating">
               <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon01 size={66} /></div>
               <div className="mkt-feature-title">Gerçek App Store verisi</div>
@@ -540,7 +540,7 @@ export default function MarketingSections() {
             </div>
           </div>
           <div className="mkt-halo mkt-halo-mint">
-            <Squiggle color="#1F7A5C" style={{ bottom: 10, left: 14, transform: "scaleX(-1)" }} />
+            <Squiggle color="#1F7A5C" style={{ bottom: -6, left: -8, transform: "scaleX(-1)" }} />
             <div className="mkt-feature-card mkt-feature-card-floating">
               <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon02 size={66} /></div>
               <div className="mkt-feature-title">Her zaman taze</div>
