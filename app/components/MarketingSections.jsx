@@ -393,6 +393,8 @@ export default function MarketingSections() {
         .mkt-grid-dark-row:last-child { border-bottom: 1px solid rgba(255,255,255,0.12); }
         .mkt-grid-dark-row-title { position: relative; border-top: none; }
         .mkt-grid-dark-topline { position: absolute; top: 0; left: 0; width: 1300px; height: 1px; background: rgba(255,255,255,0.12); }
+        .mkt-grid-dark-row-2 { position: relative; border-top: none; }
+        .mkt-grid-dark-topline-left { position: absolute; top: 0; left: 325px; right: 0; height: 1px; background: rgba(255,255,255,0.12); }
         .mkt-grid-dark-title {
           flex: 0 0 650px;
           padding: 56px 40px 40px 0; display: flex; flex-direction: column; justify-content: center;
@@ -698,7 +700,8 @@ export default function MarketingSections() {
             </div>
           ))}
         </div>
-        <div className="mkt-grid-dark-row">
+        <div className="mkt-grid-dark-row mkt-grid-dark-row-2">
+          <div className="mkt-grid-dark-topline-left" />
           <div className="mkt-grid-dark-spacer mkt-grid-dark-spacer-md" />
           {ALL_FEATURES.slice(3, 7).map((f) => (
             <div className="mkt-grid-dark-cell" key={f.title} style={{ "--cell-fill": f.color }}>
