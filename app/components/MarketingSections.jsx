@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import LogoMark from "./LogoMark";
 import {
   Store,
   Sparkles,
@@ -529,6 +530,23 @@ export default function MarketingSections() {
           font-weight: 600; font-size: 15px; padding: 13px 28px; border-radius: 999px; border: none; cursor: default;
         }
 
+        .mkt-closing-cta {
+          background: #000000; padding: 100px 40px; margin-top: 90px;
+          display: flex; flex-direction: column; align-items: center; text-align: center;
+        }
+        .mkt-closing-logo { margin-bottom: 40px; }
+        .mkt-closing-heading {
+          font-family: var(--font-display); font-size: 44px; font-weight: 800; color: #FFFFFF;
+          letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 32px;
+        }
+        .mkt-closing-btn {
+          background: #FFFFFF; color: #000000; font-weight: 600; font-size: 15px;
+          padding: 14px 32px; border-radius: 999px; border: none; cursor: default;
+        }
+        @media (max-width: 600px) {
+          .mkt-closing-heading { font-size: 30px; }
+        }
+
         @media (max-width: 780px) {
           .mkt-grid-2, .mkt-showcase { grid-template-columns: 1fr; }
         }
@@ -742,6 +760,13 @@ export default function MarketingSections() {
           ))}
         </div>
         <button className="faq-support-btn">Support Page</button>
+      </div>
+
+      {/* Closing CTA */}
+      <div className="mkt-fullbleed mkt-closing-cta">
+        <div className="mkt-closing-logo"><LogoMark size={70} color="#FFFFFF" /></div>
+        <div className="mkt-closing-heading">Uncover what really<br />hurts your app</div>
+        <button className="mkt-closing-btn">Get started</button>
       </div>
     </div>
   );
