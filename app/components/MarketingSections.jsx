@@ -382,15 +382,18 @@ export default function MarketingSections() {
           margin-left: -50vw; margin-right: -50vw; padding: 0 40px; box-sizing: border-box;
         }
         .mkt-grid-dark-wrap {
-          background: #0B0F1A; padding: 0 40px; margin-bottom: 90px; margin-top: 90px;
+          background: #0B0F1A; padding: 90px 40px;
         }
-        .mkt-grid-dark {
+        .mkt-grid-dark-inner {
           max-width: 1400px; margin: 0 auto;
-          display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 260px;
         }
+        .mkt-grid-dark-row {
+          display: flex; flex-wrap: wrap; border-top: 1px solid rgba(255,255,255,0.12);
+        }
+        .mkt-grid-dark-row:last-child { border-bottom: 1px solid rgba(255,255,255,0.12); }
         .mkt-grid-dark-title {
-          grid-column: span 2; grid-row: span 2;
-          padding: 56px 40px 0 0; display: flex; flex-direction: column; justify-content: flex-start;
+          flex: 1 1 320px; min-width: 260px;
+          padding: 56px 40px 40px 0; display: flex; flex-direction: column; justify-content: center;
         }
         .mkt-grid-dark-heading {
           font-family: var(--font-display); font-size: 44px; font-weight: 800; color: #FFFFFF;
@@ -398,10 +401,10 @@ export default function MarketingSections() {
         }
         .mkt-grid-dark-sub { font-size: 15px; font-family: var(--font-body); color: rgba(255,255,255,0.55); line-height: 1.6; max-width: 340px; }
         .mkt-grid-dark-cell {
-          position: relative; overflow: hidden;
-          border: 1px solid rgba(255,255,255,0.12);
-          margin: -0.5px;
+          position: relative; overflow: hidden; flex: 1 1 220px; min-width: 220px; height: 260px;
+          border-left: 1px solid rgba(255,255,255,0.12);
         }
+        .mkt-grid-dark-row-title .mkt-grid-dark-cell:first-of-type { border-left: 1px solid rgba(255,255,255,0.12); }
         .mkt-grid-dark-fill {
           position: absolute; inset: 0; background: var(--cell-fill);
           opacity: 0; transition: opacity 0.35s ease; z-index: 0;
@@ -419,8 +422,8 @@ export default function MarketingSections() {
         .mkt-grid-dark-cell:hover .mkt-grid-dark-desc { color: rgba(0,0,0,0.65); }
         .mkt-grid-dark-cell:hover .mkt-grid-dark-headline { color: #1A2B3B; }
         @media (max-width: 900px) {
-          .mkt-grid-dark { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 220px; }
-          .mkt-grid-dark-title { grid-column: span 2; grid-row: span 1; padding: 40px 20px 20px; }
+          .mkt-grid-dark-cell { flex: 1 1 50%; min-width: 50%; height: 220px; }
+          .mkt-grid-dark-title { flex: 1 1 100%; padding: 40px 20px 20px; }
           .mkt-grid-dark-heading { font-size: 32px; }
         }
         .mkt-carousel {
@@ -673,12 +676,13 @@ export default function MarketingSections() {
 
       {/* All features — dark grid */}
       <div className="mkt-fullbleed mkt-grid-dark-wrap">
-        <div className="mkt-grid-dark">
+        <div className="mkt-grid-dark-inner">
+        <div className="mkt-grid-dark-row mkt-grid-dark-row-title">
           <div className="mkt-grid-dark-title">
             <div className="mkt-grid-dark-heading">It really does a lot now</div>
             <div className="mkt-grid-dark-sub">Explore every feature currently available in Kick My Apps and discover how each one helps you analyze, improve, and grow your app.</div>
           </div>
-          {ALL_FEATURES.map((f) => (
+          {ALL_FEATURES.slice(0, 3).map((f) => (
             <div className="mkt-grid-dark-cell" key={f.title} style={{ "--cell-fill": f.color }}>
               <div className="mkt-grid-dark-fill" />
               <div className="mkt-grid-dark-content">
@@ -687,6 +691,29 @@ export default function MarketingSections() {
               </div>
             </div>
           ))}
+        </div>
+        <div className="mkt-grid-dark-row">
+          {ALL_FEATURES.slice(3, 7).map((f) => (
+            <div className="mkt-grid-dark-cell" key={f.title} style={{ "--cell-fill": f.color }}>
+              <div className="mkt-grid-dark-fill" />
+              <div className="mkt-grid-dark-content">
+                <div className="mkt-grid-dark-headline">{f.title}</div>
+                <div className="mkt-grid-dark-desc">{f.desc}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="mkt-grid-dark-row">
+          {ALL_FEATURES.slice(7, 12).map((f) => (
+            <div className="mkt-grid-dark-cell" key={f.title} style={{ "--cell-fill": f.color }}>
+              <div className="mkt-grid-dark-fill" />
+              <div className="mkt-grid-dark-content">
+                <div className="mkt-grid-dark-headline">{f.title}</div>
+                <div className="mkt-grid-dark-desc">{f.desc}</div>
+              </div>
+            </div>
+          ))}
+        </div>
         </div>
       </div>
 
