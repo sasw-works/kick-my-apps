@@ -434,7 +434,7 @@ export default function MarketingSections() {
           cursor: pointer; transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
         }
         .mkt-carousel-arrow:hover { border-color: var(--brand); }
-        .mkt-carousel-arrow-active { background: var(--brand); border-color: var(--brand); color: #FFFFFF; }
+        .mkt-carousel-arrow-active { background: #C7EE7E; border-color: #C7EE7E; color: #1A2B3B; }
         .mkt-carousel-arrow-active:hover { opacity: 0.9; }
 
         .faq-eyebrow { font-size: 15px; font-family: var(--font-body); color: var(--muted); text-align: center; margin-bottom: 8px; }
@@ -653,7 +653,7 @@ export default function MarketingSections() {
             {ALL_FEATURES.map((f) => {
               const Icon = f.icon;
               return (
-                <div className="mkt-carousel-card" key={f.title} style={{ "--fill-color": "#1A2B3B", background: f.fill }}>
+                <div className="mkt-carousel-card" key={f.title} style={{ "--fill-color": "#1A2B3B", background: "#C7EE7E" }}>
                   <div className="mkt-carousel-fill" />
                   <div className="mkt-carousel-content">
                     <div className="mkt-carousel-icon" style={{ background: f.color }}>
