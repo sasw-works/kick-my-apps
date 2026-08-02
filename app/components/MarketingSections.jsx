@@ -382,7 +382,7 @@ export default function MarketingSections() {
           margin-left: -50vw; margin-right: -50vw; padding: 0 40px; box-sizing: border-box;
         }
         .mkt-grid-dark-wrap {
-          background: #0B0F1A; padding: 90px 40px;
+          background: #0B0F1A; padding: 0 40px;
         }
         .mkt-grid-dark-inner {
           max-width: 1750px; margin-left: auto; margin-right: 0; overflow-x: auto;
