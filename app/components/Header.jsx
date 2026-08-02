@@ -62,8 +62,8 @@ export default function Header() {
           white-space: nowrap;
         }
         .kma-header-signin {
-          background: #1A2B3B;
-          color: var(--ink);
+          background: rgb(255, 0, 122);
+          color: #FFFFFF;
           font-size: 14.5px;
           font-weight: 600;
           padding: 11px 22px;

@@ -506,7 +506,7 @@ export default function MarketingSections() {
           font-size: 19px; font-weight: 500; color: var(--chalk); text-align: left;
         }
         .faq-toggle {
-          width: 53px; height: 53px; border-radius: 50%; flex-shrink: 0;
+          width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
           display: flex; align-items: center; justify-content: center;
           background: var(--ink-3); transition: background 0.2s ease, transform 0.3s ease;
         }
