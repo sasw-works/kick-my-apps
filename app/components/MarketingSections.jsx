@@ -209,7 +209,7 @@ function FaqItem({ q, a }) {
       <button className="faq-q" onClick={() => setOpen(!open)}>
         <span>{q}</span>
         <span className={`faq-toggle ${open ? "faq-toggle-open" : ""}`}>
-          {open ? <X size={16} color="#FFFFFF" /> : <Plus size={16} color="var(--muted)" />}
+          {open ? <X size={22} color="#FFFFFF" /> : <Plus size={22} color="var(--muted)" />}
         </span>
       </button>
       <div className={`faq-a-wrap ${open ? "faq-a-wrap-open" : ""}`}>
@@ -506,7 +506,7 @@ export default function MarketingSections() {
           font-size: 19px; font-weight: 500; color: var(--chalk); text-align: left;
         }
         .faq-toggle {
-          width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+          width: 53px; height: 53px; border-radius: 50%; flex-shrink: 0;
           display: flex; align-items: center; justify-content: center;
           background: var(--ink-3); transition: background 0.2s ease, transform 0.3s ease;
         }
