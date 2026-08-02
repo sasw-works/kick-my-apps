@@ -537,7 +537,7 @@ export default function MarketingSections() {
         }
         .mkt-closing-logo { margin-bottom: 40px; }
         .mkt-closing-heading {
-          font-family: var(--font-display); font-size: 44px; font-weight: 800; color: #FFFFFF;
+          font-family: var(--font-display); font-size: 44px; font-weight: 500; color: #FFFFFF;
           letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 32px;
         }
         .mkt-closing-btn {
@@ -766,7 +766,7 @@ export default function MarketingSections() {
       {/* Closing CTA */}
       <div className="mkt-fullbleed mkt-closing-cta">
         <div className="mkt-closing-logo"><FooterLogo size={140} /></div>
-        <div className="mkt-closing-heading">Ready to see what's<br />hurting your app?</div>
+        <div className="mkt-closing-heading">Ready to see<br />what's hurting your app?</div>
         <button
           className="mkt-closing-btn"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
