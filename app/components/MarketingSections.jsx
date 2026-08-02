@@ -382,15 +382,17 @@ export default function MarketingSections() {
           margin-left: -50vw; margin-right: -50vw; padding: 0 40px; box-sizing: border-box;
         }
         .mkt-grid-dark-wrap {
-          background: #0B0F1A var(--dark-bg-desktop, none) center / cover no-repeat;
-          padding: 0 0 0 40px;
+          background: #0B0F1A; padding: 0 0 0 40px;
+          position: relative; overflow: hidden;
         }
-        @media (max-width: 1000px) {
-          .mkt-grid-dark-wrap { background-image: var(--dark-bg-mobile, none); }
+        .mkt-grid-dark-video {
+          position: absolute; inset: 0; width: 100%; height: 100%;
+          object-fit: cover; z-index: 0;
         }
         .mkt-grid-dark-inner {
           max-width: 1500px; margin-left: auto; margin-right: 0; overflow-x: auto;
           border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF;
+          position: relative; z-index: 1;
         }
         .mkt-grid-dark-row {
           display: flex;
@@ -685,7 +687,10 @@ export default function MarketingSections() {
       </div>
 
       {/* All features — dark grid */}
-      <div className="mkt-fullbleed mkt-grid-dark-wrap" style={{ "--dark-bg-desktop": "url(/dark-grid-bg.png)" }}>
+      <div className="mkt-fullbleed mkt-grid-dark-wrap">
+        <video className="mkt-grid-dark-video" autoPlay loop muted playsInline>
+          <source src="/dark-grid-bg.mp4" type="video/mp4" />
+        </video>
         <div className="mkt-grid-dark-inner">
         <div className="mkt-grid-dark-row">
           <div className="mkt-grid-dark-title" />
