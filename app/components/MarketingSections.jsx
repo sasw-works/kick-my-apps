@@ -400,6 +400,9 @@ export default function MarketingSections() {
           letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 20px;
         }
         .mkt-grid-dark-sub { font-size: 15px; font-family: var(--font-body); color: rgba(255,255,255,0.55); line-height: 1.6; max-width: 340px; }
+        .mkt-grid-dark-spacer { flex: 0 0 auto; }
+        .mkt-grid-dark-spacer-md { flex-basis: 320px; }
+        .mkt-grid-dark-spacer-sm { flex-basis: 160px; }
         .mkt-grid-dark-cell {
           position: relative; overflow: hidden; flex: 1 1 220px; min-width: 220px; height: 260px;
           border-left: 1px solid rgba(255,255,255,0.12);
@@ -425,6 +428,7 @@ export default function MarketingSections() {
           .mkt-grid-dark-cell { flex: 1 1 50%; min-width: 50%; height: 220px; }
           .mkt-grid-dark-title { flex: 1 1 100%; padding: 40px 20px 20px; }
           .mkt-grid-dark-heading { font-size: 32px; }
+          .mkt-grid-dark-spacer { display: none; }
         }
         .mkt-carousel {
           display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory;
@@ -693,6 +697,7 @@ export default function MarketingSections() {
           ))}
         </div>
         <div className="mkt-grid-dark-row">
+          <div className="mkt-grid-dark-spacer mkt-grid-dark-spacer-md" />
           {ALL_FEATURES.slice(3, 7).map((f) => (
             <div className="mkt-grid-dark-cell" key={f.title} style={{ "--cell-fill": f.color }}>
               <div className="mkt-grid-dark-fill" />
@@ -704,6 +709,7 @@ export default function MarketingSections() {
           ))}
         </div>
         <div className="mkt-grid-dark-row">
+          <div className="mkt-grid-dark-spacer mkt-grid-dark-spacer-sm" />
           {ALL_FEATURES.slice(7, 12).map((f) => (
             <div className="mkt-grid-dark-cell" key={f.title} style={{ "--cell-fill": f.color }}>
               <div className="mkt-grid-dark-fill" />
