@@ -334,7 +334,7 @@ export default function MarketingSections() {
         }
         .mkt-feature-icon {
           width: 66px; height: 66px; border-radius: 10px;
-          display: flex; align-items: center; justify-content: center; margin-bottom: 41px;
+          display: flex; align-items: center; justify-content: center; margin-bottom: 31px;
         }
         .mkt-feature-title { font-size: 19px; font-weight: 500; margin-bottom: 6px; }
         .mkt-feature-desc { font-size: 15px; font-family: var(--font-body); color: var(--muted); line-height: 1.6; margin-bottom: 18px; }
