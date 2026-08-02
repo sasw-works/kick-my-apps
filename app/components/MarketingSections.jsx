@@ -510,7 +510,7 @@ export default function MarketingSections() {
           display: flex; align-items: center; justify-content: center;
           background: var(--ink-3); transition: background 0.2s ease, transform 0.3s ease;
         }
-        .faq-toggle-open { background: var(--brand); transform: rotate(180deg); }
+        .faq-toggle-open { background: rgb(255, 0, 122); transform: rotate(180deg); }
         .faq-a-wrap {
           display: grid;
           grid-template-rows: 0fr;
@@ -525,7 +525,7 @@ export default function MarketingSections() {
         }
         .faq-a-wrap-open .faq-a { opacity: 1; transform: translateY(0); }
         .faq-support-btn {
-          display: block; margin: 0 auto; background: var(--brand); color: #FFFFFF;
+          display: block; margin: 0 auto; background: rgb(255, 0, 122); color: #FFFFFF;
           font-weight: 600; font-size: 15px; padding: 13px 28px; border-radius: 999px; border: none; cursor: default;
         }
 
