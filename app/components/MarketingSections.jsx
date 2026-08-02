@@ -405,8 +405,9 @@ export default function MarketingSections() {
         .mkt-grid-dark-spacer-sm { flex-basis: 0px; }
         .mkt-grid-dark-cell {
           position: relative; overflow: hidden; flex: 0 0 335px; width: 335px; height: 275px;
-          border: 1px solid rgba(255,255,255,0.12); margin-left: -1px;
+          border: 1px solid rgba(255,255,255,0.12);
         }
+        .mkt-grid-dark-cell + .mkt-grid-dark-cell { margin-left: -1px; }
         .mkt-grid-dark-fill {
           position: absolute; inset: 0; background: var(--cell-fill);
           opacity: 0; transition: opacity 0.35s ease; z-index: 0;
