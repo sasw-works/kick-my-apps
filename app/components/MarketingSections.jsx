@@ -617,7 +617,7 @@ export default function MarketingSections() {
           <div className="mkt-halo mkt-halo-pink">
             <div className="mkt-feature-card mkt-feature-card-floating">
               <div className="mkt-feature-title">Real App Store data</div>
-              <div className="mkt-feature-desc">Not guesswork — we analyze real, publicly available App Store reviews directly and honestly.</div>
+              <div className="mkt-feature-desc" style={{ marginBottom: 43 }}>Not guesswork — we analyze real, publicly available App Store reviews directly and honestly.</div>
               <div className="mkt-priority-row" style={{ justifyContent: "center", gap: 8 }}>
                 <span className="mkt-live-dot" />
                 <span style={{ fontSize: 12.5, color: "var(--muted)" }}>★★★★☆ · 1,240 reviews analyzed</span>
@@ -644,7 +644,7 @@ export default function MarketingSections() {
           <div className="mkt-halo mkt-halo-mint">
             <div className="mkt-feature-card mkt-feature-card-floating">
               <div className="mkt-feature-title">Always fresh</div>
-              <div className="mkt-feature-desc">No caching, ever — every single analysis pulls the freshest reviews straight from the source.</div>
+              <div className="mkt-feature-desc" style={{ marginBottom: 43 }}>No caching, ever — every single analysis pulls the freshest reviews straight from the source.</div>
               <div className="mkt-ticker">
                 <div className="mkt-ticker-track">
                   {[...SAMPLE_REVIEWS, ...SAMPLE_REVIEWS].map((r, i) => (
