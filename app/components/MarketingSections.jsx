@@ -388,15 +388,11 @@ export default function MarketingSections() {
           max-width: 1675px; margin-left: auto; margin-right: 0; overflow-x: auto;
         }
         .mkt-grid-dark-row {
-          display: flex; border-top: 1px solid rgba(255,255,255,0.12);
+          display: flex; margin-top: -1px;
         }
-        .mkt-grid-dark-row:last-child { border-bottom: 1px solid rgba(255,255,255,0.12); }
-        .mkt-grid-dark-row-title { position: relative; border-top: none; }
-        .mkt-grid-dark-topline { position: absolute; top: 0; left: 0; width: 1340px; height: 1px; background: rgba(255,255,255,0.12); }
-        .mkt-grid-dark-row-2 { position: relative; border-top: none; }
-        .mkt-grid-dark-topline-left { position: absolute; top: 0; left: 335px; right: 0; height: 1px; background: rgba(255,255,255,0.12); }
+        .mkt-grid-dark-row:first-child { margin-top: 0; }
         .mkt-grid-dark-title {
-          flex: 0 0 670px;
+          flex: 0 0 670px; border: 1px solid rgba(255,255,255,0.12);
           padding: 56px 40px 40px 0; display: flex; flex-direction: column; justify-content: center;
         }
         .mkt-grid-dark-heading {
@@ -409,7 +405,7 @@ export default function MarketingSections() {
         .mkt-grid-dark-spacer-sm { flex-basis: 0px; }
         .mkt-grid-dark-cell {
           position: relative; overflow: hidden; flex: 0 0 335px; width: 335px; height: 275px;
-          border-left: 1px solid rgba(255,255,255,0.12);
+          border: 1px solid rgba(255,255,255,0.12); margin-left: -1px;
         }
         .mkt-grid-dark-fill {
           position: absolute; inset: 0; background: var(--cell-fill);
@@ -684,8 +680,7 @@ export default function MarketingSections() {
       {/* All features — dark grid */}
       <div className="mkt-fullbleed mkt-grid-dark-wrap">
         <div className="mkt-grid-dark-inner">
-        <div className="mkt-grid-dark-row mkt-grid-dark-row-title">
-          <div className="mkt-grid-dark-topline" />
+        <div className="mkt-grid-dark-row">
           <div className="mkt-grid-dark-title">
             <div className="mkt-grid-dark-heading">It really does a lot now</div>
             <div className="mkt-grid-dark-sub">Explore every feature currently available in Kick My Apps and discover how each one helps you analyze, improve, and grow your app.</div>
@@ -700,8 +695,7 @@ export default function MarketingSections() {
             </div>
           ))}
         </div>
-        <div className="mkt-grid-dark-row mkt-grid-dark-row-2">
-          <div className="mkt-grid-dark-topline-left" />
+        <div className="mkt-grid-dark-row">
           <div className="mkt-grid-dark-spacer mkt-grid-dark-spacer-md" />
           {ALL_FEATURES.slice(3, 7).map((f) => (
             <div className="mkt-grid-dark-cell" key={f.title} style={{ "--cell-fill": "var(--teal)" }}>
