@@ -736,7 +736,7 @@ export default function MarketingSections() {
 
       {/* FAQ */}
       <div>
-        <div className="faq-eyebrow">We're happy to answer your questions</div>
+        <div className="faq-eyebrow" style={{ marginTop: 150 }}>We're happy to answer your questions</div>
         <div className="mkt-section-title">Frequently asked questions</div>
         <div className="mkt-section-sub">&nbsp;</div>
         <div className="faq-list">
