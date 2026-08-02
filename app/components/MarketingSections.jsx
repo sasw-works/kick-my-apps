@@ -685,7 +685,7 @@ export default function MarketingSections() {
       </div>
 
       {/* All features — dark grid */}
-      <div className="mkt-fullbleed mkt-grid-dark-wrap">
+      <div className="mkt-fullbleed mkt-grid-dark-wrap" style={{ "--dark-bg-desktop": "url(/dark-grid-bg.png)" }}>
         <div className="mkt-grid-dark-inner">
         <div className="mkt-grid-dark-row">
           <div className="mkt-grid-dark-title" />
