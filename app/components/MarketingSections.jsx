@@ -385,18 +385,18 @@ export default function MarketingSections() {
           background: #0B0F1A; padding: 0 40px;
         }
         .mkt-grid-dark-inner {
-          max-width: 1650px; margin-left: auto; margin-right: 0; overflow-x: auto;
+          max-width: 1675px; margin-left: auto; margin-right: 0; overflow-x: auto;
         }
         .mkt-grid-dark-row {
           display: flex; border-top: 1px solid rgba(255,255,255,0.12);
         }
         .mkt-grid-dark-row:last-child { border-bottom: 1px solid rgba(255,255,255,0.12); }
         .mkt-grid-dark-row-title { position: relative; border-top: none; }
-        .mkt-grid-dark-topline { position: absolute; top: 0; left: 0; width: 1320px; height: 1px; background: rgba(255,255,255,0.12); }
+        .mkt-grid-dark-topline { position: absolute; top: 0; left: 0; width: 1340px; height: 1px; background: rgba(255,255,255,0.12); }
         .mkt-grid-dark-row-2 { position: relative; border-top: none; }
-        .mkt-grid-dark-topline-left { position: absolute; top: 0; left: 330px; right: 0; height: 1px; background: rgba(255,255,255,0.12); }
+        .mkt-grid-dark-topline-left { position: absolute; top: 0; left: 335px; right: 0; height: 1px; background: rgba(255,255,255,0.12); }
         .mkt-grid-dark-title {
-          flex: 0 0 660px;
+          flex: 0 0 670px;
           padding: 56px 40px 40px 0; display: flex; flex-direction: column; justify-content: center;
         }
         .mkt-grid-dark-heading {
@@ -405,10 +405,10 @@ export default function MarketingSections() {
         }
         .mkt-grid-dark-sub { font-size: 15px; font-family: var(--font-body); color: rgba(255,255,255,0.55); line-height: 1.6; max-width: 340px; }
         .mkt-grid-dark-spacer { flex: 0 0 auto; }
-        .mkt-grid-dark-spacer-md { flex-basis: 330px; }
+        .mkt-grid-dark-spacer-md { flex-basis: 335px; }
         .mkt-grid-dark-spacer-sm { flex-basis: 0px; }
         .mkt-grid-dark-cell {
-          position: relative; overflow: hidden; flex: 0 0 330px; width: 330px; height: 275px;
+          position: relative; overflow: hidden; flex: 0 0 335px; width: 335px; height: 275px;
           border-left: 1px solid rgba(255,255,255,0.12);
         }
         .mkt-grid-dark-fill {
