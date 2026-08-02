@@ -616,7 +616,6 @@ export default function MarketingSections() {
         <div className="mkt-grid-2">
           <div className="mkt-halo mkt-halo-pink">
             <div className="mkt-feature-card mkt-feature-card-floating">
-              <div className="mkt-feature-icon" style={{ background: "transparent" }}><AppStoreDataIcon size={66} /></div>
               <div className="mkt-feature-title">Real App Store data</div>
               <div className="mkt-feature-desc">Not guesswork — we analyze real, publicly available App Store reviews directly and honestly.</div>
               <div className="mkt-priority-row" style={{ justifyContent: "center", gap: 8 }}>
@@ -644,7 +643,6 @@ export default function MarketingSections() {
           </div>
           <div className="mkt-halo mkt-halo-mint">
             <div className="mkt-feature-card mkt-feature-card-floating">
-              <div className="mkt-feature-icon" style={{ background: "transparent" }}><FreshIcon size={66} /></div>
               <div className="mkt-feature-title">Always fresh</div>
               <div className="mkt-feature-desc">No caching, ever — every single analysis pulls the freshest reviews straight from the source.</div>
               <div className="mkt-ticker">
