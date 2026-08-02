@@ -36,18 +36,18 @@ const PRIORITY_ITEMS = [
 
 // Every feature the product genuinely has — Stripe-style colorful icon boxes.
 const ALL_FEATURES = [
-  { icon: ImageIcon, title: "Screenshot Analysis", desc: "Reviews every screenshot across 13 categories and 4 lenses.", color: "var(--brand)", fill: "#8A7CFF" },
-  { icon: Store, title: "Real App Store Reviews", desc: "Pulls and analyzes real, public App Store reviews in real time.", color: "var(--teal)", fill: "#79D9CC" },
-  { icon: Search, title: "ASO / Store Listing Review", desc: "Reviews your title, description, and keywords to boost visibility.", color: "var(--yellow)", fill: "#F3C468" },
-  { icon: ShieldQuestion, title: "Update Risk Check", desc: "Flags visual signals that could cause trouble in your next review.", color: "var(--brand)", fill: "#8A7CFF" },
-  { icon: Sparkles, title: "Quick Wins", desc: "Ranks fixes by high impact and low effort, so you know what's first.", color: "var(--teal)", fill: "#79D9CC" },
-  { icon: Code2, title: "Code-Level Suggestions", desc: "Suggests sample CSS, Swift, or Kotlin snippets for quick fixes.", color: "var(--yellow)", fill: "#F3C468" },
-  { icon: ImageIcon, title: "Visual Annotation", desc: "Marks each finding directly on your screenshot, showing exactly where.", color: "var(--brand)", fill: "#8A7CFF" },
-  { icon: History, title: "History & Trend", desc: "Saves every scan so you can track your health score over time.", color: "var(--teal)", fill: "#79D9CC" },
-  { icon: GitCompare, title: "Detailed Comparison", desc: "Compares two scans finding by finding to see who's ahead.", color: "var(--yellow)", fill: "#F3C468" },
-  { icon: LayoutDashboard, title: "My Apps Dashboard", desc: "See every tracked app, its score, and history in one place.", color: "var(--brand)", fill: "#8A7CFF" },
-  { icon: Mail, title: "Weekly Email Digest", desc: "Sends new App Store reviews to your inbox every week.", color: "var(--teal)", fill: "#79D9CC" },
-  { icon: Download, title: "PDF Export", desc: "Download your full report as a PDF and share it instantly.", color: "var(--yellow)", fill: "#F3C468" },
+  { icon: ImageIcon, title: "Screenshot Analysis", desc: "Reviews every screenshot across 13 categories and 4 lenses.", color: "var(--brand)", fill: "#8A7CFF", bgImage: null },
+  { icon: Store, title: "Real App Store Reviews", desc: "Pulls and analyzes real, public App Store reviews in real time.", color: "var(--teal)", fill: "#79D9CC", bgImage: null },
+  { icon: Search, title: "ASO / Store Listing Review", desc: "Reviews your title, description, and keywords to boost visibility.", color: "var(--yellow)", fill: "#F3C468", bgImage: null },
+  { icon: ShieldQuestion, title: "Update Risk Check", desc: "Flags visual signals that could cause trouble in your next review.", color: "var(--brand)", fill: "#8A7CFF", bgImage: null },
+  { icon: Sparkles, title: "Quick Wins", desc: "Ranks fixes by high impact and low effort, so you know what's first.", color: "var(--teal)", fill: "#79D9CC", bgImage: null },
+  { icon: Code2, title: "Code-Level Suggestions", desc: "Suggests sample CSS, Swift, or Kotlin snippets for quick fixes.", color: "var(--yellow)", fill: "#F3C468", bgImage: null },
+  { icon: ImageIcon, title: "Visual Annotation", desc: "Marks each finding directly on your screenshot, showing exactly where.", color: "var(--brand)", fill: "#8A7CFF", bgImage: null },
+  { icon: History, title: "History & Trend", desc: "Saves every scan so you can track your health score over time.", color: "var(--teal)", fill: "#79D9CC", bgImage: null },
+  { icon: GitCompare, title: "Detailed Comparison", desc: "Compares two scans finding by finding to see who's ahead.", color: "var(--yellow)", fill: "#F3C468", bgImage: null },
+  { icon: LayoutDashboard, title: "My Apps Dashboard", desc: "See every tracked app, its score, and history in one place.", color: "var(--brand)", fill: "#8A7CFF", bgImage: null },
+  { icon: Mail, title: "Weekly Email Digest", desc: "Sends new App Store reviews to your inbox every week.", color: "var(--teal)", fill: "#79D9CC", bgImage: null },
+  { icon: Download, title: "PDF Export", desc: "Download your full report as a PDF and share it instantly.", color: "var(--yellow)", fill: "#F3C468", bgImage: null },
 ];
 
 const FAQ = [
@@ -410,6 +410,7 @@ export default function MarketingSections() {
         .mkt-grid-dark-row:not(:first-child) .mkt-grid-dark-cell { border-top: 1px solid #282C35; }
         .mkt-grid-dark-fill {
           position: absolute; inset: 0; background: var(--cell-fill);
+          background-size: cover; background-position: center;
           opacity: 0; transition: opacity 0.35s ease; z-index: 0;
         }
         .mkt-grid-dark-cell:hover .mkt-grid-dark-fill { opacity: 1; }
@@ -698,7 +699,7 @@ export default function MarketingSections() {
           </div>
           {ALL_FEATURES.slice(0, 3).map((f) => (
             <div className="mkt-grid-dark-cell" key={f.title} style={{ "--cell-fill": "var(--teal)" }}>
-              <div className="mkt-grid-dark-fill" />
+              <div className="mkt-grid-dark-fill" style={f.bgImage ? { backgroundImage: `url(${f.bgImage})` } : undefined} />
               <div className="mkt-grid-dark-content">
                 <div className="mkt-grid-dark-headline">{f.title}</div>
                 <div className="mkt-grid-dark-desc">{f.desc}</div>
@@ -710,7 +711,7 @@ export default function MarketingSections() {
           <div className="mkt-grid-dark-spacer mkt-grid-dark-spacer-md" />
           {ALL_FEATURES.slice(3, 7).map((f) => (
             <div className="mkt-grid-dark-cell" key={f.title} style={{ "--cell-fill": "var(--teal)" }}>
-              <div className="mkt-grid-dark-fill" />
+              <div className="mkt-grid-dark-fill" style={f.bgImage ? { backgroundImage: `url(${f.bgImage})` } : undefined} />
               <div className="mkt-grid-dark-content">
                 <div className="mkt-grid-dark-headline">{f.title}</div>
                 <div className="mkt-grid-dark-desc">{f.desc}</div>
@@ -722,7 +723,7 @@ export default function MarketingSections() {
           <div className="mkt-grid-dark-spacer mkt-grid-dark-spacer-sm" />
           {ALL_FEATURES.slice(7, 12).map((f) => (
             <div className="mkt-grid-dark-cell" key={f.title} style={{ "--cell-fill": "var(--teal)" }}>
-              <div className="mkt-grid-dark-fill" />
+              <div className="mkt-grid-dark-fill" style={f.bgImage ? { backgroundImage: `url(${f.bgImage})` } : undefined} />
               <div className="mkt-grid-dark-content">
                 <div className="mkt-grid-dark-headline">{f.title}</div>
                 <div className="mkt-grid-dark-desc">{f.desc}</div>
