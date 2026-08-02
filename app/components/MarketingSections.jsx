@@ -386,11 +386,11 @@ export default function MarketingSections() {
         }
         .mkt-grid-dark-inner {
           max-width: 1675px; margin-left: auto; margin-right: 0; overflow-x: auto;
+          border-top: 1px solid #282C35; border-bottom: 1px solid #282C35;
         }
         .mkt-grid-dark-row {
-          display: flex; margin-top: -1px;
+          display: flex;
         }
-        .mkt-grid-dark-row:first-child { margin-top: 0; }
         .mkt-grid-dark-title {
           flex: 0 0 670px; box-sizing: border-box;
           padding: 56px 40px 40px 0; display: flex; flex-direction: column; justify-content: center;
@@ -405,8 +405,9 @@ export default function MarketingSections() {
         .mkt-grid-dark-spacer-sm { flex-basis: 0px; }
         .mkt-grid-dark-cell {
           position: relative; overflow: hidden; flex: 0 0 335px; width: 335px; height: 275px;
-          border: 1px solid #282C35; box-sizing: border-box;
+          border-left: 1px solid #282C35; box-sizing: border-box;
         }
+        .mkt-grid-dark-row:not(:first-child) .mkt-grid-dark-cell { border-top: 1px solid #282C35; }
         .mkt-grid-dark-fill {
           position: absolute; inset: 0; background: var(--cell-fill);
           opacity: 0; transition: opacity 0.35s ease; z-index: 0;
