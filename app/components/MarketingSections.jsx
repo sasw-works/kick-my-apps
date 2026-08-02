@@ -338,7 +338,7 @@ export default function MarketingSections() {
         .mkt-rating-dist-row { display: flex; align-items: center; gap: 8px; }
         .mkt-rating-dist-label { font-size: 11px; color: var(--muted); width: 20px; flex-shrink: 0; font-family: var(--font-mono); }
         .mkt-rating-dist-bar { flex: 1; height: 6px; border-radius: 3px; background: var(--ink-3); overflow: hidden; }
-        .mkt-rating-dist-fill { height: 100%; background: var(--yellow); border-radius: 3px; }
+        .mkt-rating-dist-fill { height: 100%; background: rgb(255, 0, 122); border-radius: 3px; }
         .mkt-rating-dist-pct { font-size: 10.5px; color: var(--muted); width: 32px; text-align: right; font-family: var(--font-mono); }
 
         .mkt-spin-slow { animation: spin-slow 3s linear infinite; }
@@ -362,7 +362,7 @@ export default function MarketingSections() {
           50% { transform: scale(1.25); }
         }
         .mkt-review-card { background: var(--ink); border-radius: 8px; padding: 10px 12px; }
-        .mkt-review-stars { color: var(--yellow); font-size: 11px; margin-bottom: 3px; }
+        .mkt-review-stars { color: rgb(255, 0, 122); font-size: 11px; margin-bottom: 3px; }
         .mkt-review-title { font-size: 12.5px; font-weight: 600; color: var(--chalk); }
         .mkt-review-body { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
 
