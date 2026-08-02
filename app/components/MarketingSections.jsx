@@ -385,7 +385,7 @@ export default function MarketingSections() {
           background: #0B0F1A; padding: 90px 40px;
         }
         .mkt-grid-dark-inner {
-          max-width: 1750px; margin: 0 auto; overflow-x: auto;
+          max-width: 1750px; margin-left: auto; margin-right: 0; overflow-x: auto;
         }
         .mkt-grid-dark-row {
           display: flex; border-top: 1px solid rgba(255,255,255,0.12);
