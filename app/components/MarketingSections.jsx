@@ -541,8 +541,8 @@ export default function MarketingSections() {
           letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 32px;
         }
         .mkt-closing-btn {
-          background: #FFFFFF; color: #000000; font-weight: 600; font-size: 15px;
-          padding: 14px 32px; border-radius: 999px; border: none; cursor: default;
+          background: rgb(255, 0, 122); color: #FFFFFF; font-weight: 600; font-size: 15px;
+          padding: 14px 32px; border-radius: 999px; border: none; cursor: pointer;
         }
         @media (max-width: 600px) {
           .mkt-closing-heading { font-size: 30px; }
@@ -767,7 +767,12 @@ export default function MarketingSections() {
       <div className="mkt-fullbleed mkt-closing-cta">
         <div className="mkt-closing-logo"><FooterLogo size={140} /></div>
         <div className="mkt-closing-heading">Ready to see what's<br />hurting your app?</div>
-        <button className="mkt-closing-btn">Get started</button>
+        <button
+          className="mkt-closing-btn"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        >
+          Get started
+        </button>
       </div>
     </div>
   );
