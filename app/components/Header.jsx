@@ -15,7 +15,7 @@ export default function Header() {
           padding: 24px 40px 110px;
           margin-bottom: -110px;
           pointer-events: none;
-          background: linear-gradient(to bottom, color-mix(in srgb, var(--ink) 50%, transparent) 0%, color-mix(in srgb, var(--ink) 35%, transparent) 30%, color-mix(in srgb, var(--ink) 15%, transparent) 55%, transparent 100%);
+          background: transparent;
           -webkit-backdrop-filter: blur(8px);
           backdrop-filter: blur(8px);
           -webkit-mask-image: linear-gradient(to bottom, black 0%, black 20%, transparent 100%);
