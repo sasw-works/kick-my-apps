@@ -307,7 +307,7 @@ export default function MarketingSections() {
           position: relative; border-radius: 24px; padding: 22px; overflow: hidden;
           display: flex; height: 100%; box-sizing: border-box;
         }
-        .mkt-halo-pink { background: linear-gradient(135deg, #F3D9D3, #ECC3B9); }
+        .mkt-halo-pink { background: linear-gradient(90deg, #31c1d2, #73e49d); }
         .mkt-halo-mint { background: linear-gradient(135deg, #D2F0E1, #B9E6D2); }
         .mkt-feature-card-floating {
           position: relative; z-index: 1; border: none; width: 100%;
