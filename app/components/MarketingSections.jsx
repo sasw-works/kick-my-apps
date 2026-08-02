@@ -390,6 +390,7 @@ export default function MarketingSections() {
         .mkt-grid-dark-row {
           display: flex; border-top: 1px solid rgba(255,255,255,0.12);
         }
+        .mkt-grid-dark-row-title { border-top: none; }
         .mkt-grid-dark-row:last-child { border-bottom: 1px solid rgba(255,255,255,0.12); }
         .mkt-grid-dark-title {
           flex: 0 0 700px;
