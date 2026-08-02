@@ -1,6 +1,5 @@
 import React from "react";
 import Link from "next/link";
-import ThemeToggle from "./ThemeToggle";
 import LogoMark from "./LogoMark";
 
 const NAV_ITEMS = ["Features", "Use Cases", "Pricing", "Blog"];
@@ -95,7 +94,6 @@ export default function Header() {
         </nav>
 
         <div className="kma-header-right">
-          <ThemeToggle />
           <button className="kma-header-signin">Sign in</button>
         </div>
       </div>
