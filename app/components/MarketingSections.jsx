@@ -691,7 +691,7 @@ export default function MarketingSections() {
             <div className="mkt-grid-dark-sub">Explore every feature currently available in Kick My Apps and discover how each one helps you analyze, improve, and grow your app.</div>
           </div>
           {ALL_FEATURES.slice(0, 3).map((f) => (
-            <div className="mkt-grid-dark-cell" key={f.title} style={{ "--cell-fill": f.color }}>
+            <div className="mkt-grid-dark-cell" key={f.title} style={{ "--cell-fill": "var(--teal)" }}>
               <div className="mkt-grid-dark-fill" />
               <div className="mkt-grid-dark-content">
                 <div className="mkt-grid-dark-headline">{f.title}</div>
@@ -704,7 +704,7 @@ export default function MarketingSections() {
           <div className="mkt-grid-dark-topline-left" />
           <div className="mkt-grid-dark-spacer mkt-grid-dark-spacer-md" />
           {ALL_FEATURES.slice(3, 7).map((f) => (
-            <div className="mkt-grid-dark-cell" key={f.title} style={{ "--cell-fill": f.color }}>
+            <div className="mkt-grid-dark-cell" key={f.title} style={{ "--cell-fill": "var(--teal)" }}>
               <div className="mkt-grid-dark-fill" />
               <div className="mkt-grid-dark-content">
                 <div className="mkt-grid-dark-headline">{f.title}</div>
@@ -716,7 +716,7 @@ export default function MarketingSections() {
         <div className="mkt-grid-dark-row">
           <div className="mkt-grid-dark-spacer mkt-grid-dark-spacer-sm" />
           {ALL_FEATURES.slice(7, 12).map((f) => (
-            <div className="mkt-grid-dark-cell" key={f.title} style={{ "--cell-fill": f.color }}>
+            <div className="mkt-grid-dark-cell" key={f.title} style={{ "--cell-fill": "var(--teal)" }}>
               <div className="mkt-grid-dark-fill" />
               <div className="mkt-grid-dark-content">
                 <div className="mkt-grid-dark-headline">{f.title}</div>
