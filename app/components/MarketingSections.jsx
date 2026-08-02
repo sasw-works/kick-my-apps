@@ -386,12 +386,13 @@ export default function MarketingSections() {
         }
         .mkt-grid-dark-inner {
           max-width: 1750px; margin: 0 auto; overflow-x: auto;
-          border-top: 1px solid rgba(255,255,255,0.12); border-bottom: 1px solid rgba(255,255,255,0.12);
         }
         .mkt-grid-dark-row {
-          display: flex;
+          display: flex; border-top: 1px solid rgba(255,255,255,0.12);
         }
-        .mkt-grid-dark-row-title { border-top: none; }
+        .mkt-grid-dark-row:last-child { border-bottom: 1px solid rgba(255,255,255,0.12); }
+        .mkt-grid-dark-row-title { position: relative; border-top: none; }
+        .mkt-grid-dark-topline { position: absolute; top: 0; left: 0; width: 1400px; height: 1px; background: rgba(255,255,255,0.12); }
         .mkt-grid-dark-title {
           flex: 0 0 700px;
           padding: 56px 40px 40px 0; display: flex; flex-direction: column; justify-content: center;
@@ -682,6 +683,7 @@ export default function MarketingSections() {
       <div className="mkt-fullbleed mkt-grid-dark-wrap">
         <div className="mkt-grid-dark-inner">
         <div className="mkt-grid-dark-row mkt-grid-dark-row-title">
+          <div className="mkt-grid-dark-topline" />
           <div className="mkt-grid-dark-title">
             <div className="mkt-grid-dark-heading">It really does a lot now</div>
             <div className="mkt-grid-dark-sub">Explore every feature currently available in Kick My Apps and discover how each one helps you analyze, improve, and grow your app.</div>
