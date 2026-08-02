@@ -392,7 +392,7 @@ export default function MarketingSections() {
         }
         .mkt-grid-dark-row:first-child { margin-top: 0; }
         .mkt-grid-dark-title {
-          flex: 0 0 670px; border: 1px solid rgba(255,255,255,0.12);
+          flex: 0 0 670px;
           padding: 56px 40px 40px 0; display: flex; flex-direction: column; justify-content: center;
         }
         .mkt-grid-dark-heading {
