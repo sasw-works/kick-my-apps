@@ -89,7 +89,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen px-4 pb-4 md:px-8 md:pb-8" style={{ background: "var(--ink)" }}>
+    <main className="min-h-screen px-4 md:px-8" style={{ background: "var(--ink)" }}>
       <style>{`
         @keyframes page-fade-in {
           from { opacity: 0; transform: translateY(6px); }
