@@ -395,11 +395,6 @@ export default function MarketingSections() {
           flex: 0 0 670px; box-sizing: border-box;
           padding: 56px 40px 40px 0; display: flex; flex-direction: column; justify-content: center;
         }
-        .mkt-grid-dark-heading {
-          font-family: var(--font-display); font-size: 44px; font-weight: 800; color: #FFFFFF;
-          letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 20px;
-        }
-        .mkt-grid-dark-sub { font-size: 15px; font-family: var(--font-body); color: rgba(255,255,255,0.55); line-height: 1.6; max-width: 340px; }
         .mkt-grid-dark-spacer { flex: 0 0 auto; }
         .mkt-grid-dark-spacer-md { flex-basis: 335px; }
         .mkt-grid-dark-spacer-sm { flex-basis: 0px; }
@@ -431,11 +426,7 @@ export default function MarketingSections() {
             border: none;
           }
           .mkt-grid-dark-row { display: contents; }
-          .mkt-grid-dark-title {
-            grid-column: 1 / -1; flex: none; box-sizing: border-box;
-            padding: 40px 20px 20px; border: none;
-          }
-          .mkt-grid-dark-heading { font-size: 32px; }
+          .mkt-grid-dark-title { display: none; }
           .mkt-grid-dark-spacer { display: none; }
           .mkt-grid-dark-cell {
             flex: none; width: auto; height: 220px; border: 1px solid #282C35;
@@ -693,10 +684,7 @@ export default function MarketingSections() {
       <div className="mkt-fullbleed mkt-grid-dark-wrap">
         <div className="mkt-grid-dark-inner">
         <div className="mkt-grid-dark-row">
-          <div className="mkt-grid-dark-title">
-            <div className="mkt-grid-dark-heading">It really does a lot now</div>
-            <div className="mkt-grid-dark-sub">Explore every feature currently available in Kick My Apps and discover how each one helps you analyze, improve, and grow your app.</div>
-          </div>
+          <div className="mkt-grid-dark-title" />
           {ALL_FEATURES.slice(0, 3).map((f) => (
             <div className="mkt-grid-dark-cell" key={f.title} style={{ "--cell-fill": "var(--teal)" }}>
               <div className="mkt-grid-dark-fill" style={f.bgImage ? { backgroundImage: `url(${f.bgImage})` } : undefined} />
