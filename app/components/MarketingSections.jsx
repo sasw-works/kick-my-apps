@@ -385,14 +385,14 @@ export default function MarketingSections() {
           background: #0B0F1A; padding: 90px 40px;
         }
         .mkt-grid-dark-inner {
-          max-width: 1400px; margin: 0 auto;
+          max-width: 1750px; margin: 0 auto; overflow-x: auto;
         }
         .mkt-grid-dark-row {
-          display: flex; flex-wrap: wrap; border-top: 1px solid rgba(255,255,255,0.12);
+          display: flex; border-top: 1px solid rgba(255,255,255,0.12);
         }
         .mkt-grid-dark-row:last-child { border-bottom: 1px solid rgba(255,255,255,0.12); }
         .mkt-grid-dark-title {
-          flex: 1 1 320px; min-width: 260px;
+          flex: 0 0 700px;
           padding: 56px 40px 40px 0; display: flex; flex-direction: column; justify-content: center;
         }
         .mkt-grid-dark-heading {
@@ -401,13 +401,12 @@ export default function MarketingSections() {
         }
         .mkt-grid-dark-sub { font-size: 15px; font-family: var(--font-body); color: rgba(255,255,255,0.55); line-height: 1.6; max-width: 340px; }
         .mkt-grid-dark-spacer { flex: 0 0 auto; }
-        .mkt-grid-dark-spacer-md { flex-basis: 320px; }
-        .mkt-grid-dark-spacer-sm { flex-basis: 160px; }
+        .mkt-grid-dark-spacer-md { flex-basis: 350px; }
+        .mkt-grid-dark-spacer-sm { flex-basis: 0px; }
         .mkt-grid-dark-cell {
-          position: relative; overflow: hidden; flex: 1 1 220px; min-width: 220px; height: 260px;
+          position: relative; overflow: hidden; flex: 0 0 350px; width: 350px; height: 350px;
           border-left: 1px solid rgba(255,255,255,0.12);
         }
-        .mkt-grid-dark-row-title .mkt-grid-dark-cell:first-of-type { border-left: 1px solid rgba(255,255,255,0.12); }
         .mkt-grid-dark-fill {
           position: absolute; inset: 0; background: var(--cell-fill);
           opacity: 0; transition: opacity 0.35s ease; z-index: 0;
@@ -424,8 +423,8 @@ export default function MarketingSections() {
         }
         .mkt-grid-dark-cell:hover .mkt-grid-dark-desc { color: rgba(0,0,0,0.65); }
         .mkt-grid-dark-cell:hover .mkt-grid-dark-headline { color: #1A2B3B; }
-        @media (max-width: 900px) {
-          .mkt-grid-dark-cell { flex: 1 1 50%; min-width: 50%; height: 220px; }
+        @media (max-width: 1300px) {
+          .mkt-grid-dark-row { flex-wrap: wrap; overflow-x: auto; }
           .mkt-grid-dark-title { flex: 1 1 100%; padding: 40px 20px 20px; }
           .mkt-grid-dark-heading { font-size: 32px; }
           .mkt-grid-dark-spacer { display: none; }
