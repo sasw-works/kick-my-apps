@@ -382,7 +382,11 @@ export default function MarketingSections() {
           margin-left: -50vw; margin-right: -50vw; padding: 0 40px; box-sizing: border-box;
         }
         .mkt-grid-dark-wrap {
-          background: #0B0F1A; padding: 0 0 0 40px;
+          background: #0B0F1A var(--dark-bg-desktop, none) center / cover no-repeat;
+          padding: 0 0 0 40px;
+        }
+        @media (max-width: 1000px) {
+          .mkt-grid-dark-wrap { background-image: var(--dark-bg-mobile, none); }
         }
         .mkt-grid-dark-inner {
           max-width: 1500px; margin-left: auto; margin-right: 0; overflow-x: auto;
