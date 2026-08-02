@@ -292,6 +292,11 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           color: var(--muted);
           cursor: not-allowed;
         }
+        .submit-circle.submit-circle-analyzing,
+        .submit-circle.submit-circle-analyzing:disabled {
+          background: rgb(255, 0, 122);
+          cursor: default;
+        }
 
         @media (max-width: 780px) {
           .hero-input-row { flex-wrap: wrap; }
@@ -422,26 +427,6 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
 
         .spin { animation: kma-spin 0.9s linear infinite; }
         @keyframes kma-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        .skeleton-card {
-          width: 100%; max-width: 640px; margin-top: 20px;
-          background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 14px; padding: 20px;
-        }
-        .skeleton-row { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; }
-        .skeleton-circle {
-          width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
-          background: linear-gradient(90deg, var(--ink-3) 25%, var(--ink) 50%, var(--ink-3) 75%);
-          background-size: 200% 100%; animation: shimmer 1.4s ease-in-out infinite;
-        }
-        .skeleton-bar {
-          height: 12px; border-radius: 6px;
-          background: linear-gradient(90deg, var(--ink-3) 25%, var(--ink) 50%, var(--ink-3) 75%);
-          background-size: 200% 100%; animation: shimmer 1.4s ease-in-out infinite;
-        }
-        @keyframes shimmer {
-          0% { background-position: 200% 0; }
-          100% { background-position: -200% 0; }
-        }
       `}</style>
 
       <div className="hero-bg-wrap">
@@ -528,8 +513,8 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           <span>{files.length > 0 ? `${files.length} screenshots selected` : "Upload UI screens"}</span>
         </label>
 
-        <button className="submit-circle" disabled={!canAnalyze} onClick={handleAnalyze} aria-label="Analiz Et">
-          {analyzing ? <Loader2 size={20} className="spin" color="var(--ink)" /> : <ArrowRight size={20} />}
+        <button className={`submit-circle ${analyzing ? "submit-circle-analyzing" : ""}`} disabled={!canAnalyze} onClick={handleAnalyze} aria-label="Analiz Et">
+          {analyzing ? <Loader2 size={20} className="spin" color="#FFFFFF" /> : <ArrowRight size={20} />}
         </button>
       </div>
 
@@ -557,21 +542,6 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
       <div className="upload-card">
         {errorMessage && (
           <div style={{ color: "var(--kick)", fontSize: 13, textAlign: "center" }}>{errorMessage}</div>
-        )}
-
-        {analyzing && (
-          <div className="skeleton-card">
-            <div className="skeleton-row">
-              <div className="skeleton-circle" />
-              <div style={{ flex: 1 }}>
-                <div className="skeleton-bar" style={{ width: "40%" }} />
-                <div className="skeleton-bar" style={{ width: "70%", marginTop: 8 }} />
-              </div>
-            </div>
-            <div className="skeleton-bar" style={{ width: "100%", marginTop: 18 }} />
-            <div className="skeleton-bar" style={{ width: "85%", marginTop: 10 }} />
-            <div className="skeleton-bar" style={{ width: "92%", marginTop: 10 }} />
-          </div>
         )}
       </div>
     </div>
