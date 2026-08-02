@@ -765,7 +765,7 @@ export default function MarketingSections() {
       {/* Closing CTA */}
       <div className="mkt-fullbleed mkt-closing-cta">
         <div className="mkt-closing-logo"><LogoMark size={70} color="#FFFFFF" /></div>
-        <div className="mkt-closing-heading">Uncover what really<br />hurts your app</div>
+        <div className="mkt-closing-heading">Ready to see what's<br />hurting your app?</div>
         <button className="mkt-closing-btn">Get started</button>
       </div>
     </div>
