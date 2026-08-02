@@ -324,7 +324,7 @@ export default function MarketingSections() {
         .mkt-feature-card:hover { transform: translateY(-3px); border-color: var(--brand); }
 
         .mkt-halo {
-          position: relative; border-radius: 24px; padding: 7px; overflow: hidden;
+          position: relative; border-radius: 24px; padding: 12px; overflow: hidden;
           display: flex; height: 100%; box-sizing: border-box;
         }
         .mkt-halo-pink { background: linear-gradient(135deg, #31c1d2, #73e49d); }
