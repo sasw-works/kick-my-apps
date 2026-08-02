@@ -424,11 +424,21 @@ export default function MarketingSections() {
         }
         .mkt-grid-dark-cell:hover .mkt-grid-dark-desc { color: rgba(0,0,0,0.65); }
         .mkt-grid-dark-cell:hover .mkt-grid-dark-headline { color: #1A2B3B; }
-        @media (max-width: 1300px) {
-          .mkt-grid-dark-row { flex-wrap: wrap; overflow-x: auto; }
-          .mkt-grid-dark-title { flex: 1 1 100%; padding: 40px 20px 20px; }
+        @media (max-width: 1000px) {
+          .mkt-grid-dark-inner {
+            display: grid; grid-template-columns: repeat(2, 1fr); max-width: 100%;
+            border: none;
+          }
+          .mkt-grid-dark-row { display: contents; }
+          .mkt-grid-dark-title {
+            grid-column: 1 / -1; flex: none; box-sizing: border-box;
+            padding: 40px 20px 20px; border: none;
+          }
           .mkt-grid-dark-heading { font-size: 32px; }
           .mkt-grid-dark-spacer { display: none; }
+          .mkt-grid-dark-cell {
+            flex: none; width: auto; height: 220px; border: 1px solid #282C35;
+          }
         }
         .mkt-carousel {
           display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory;
