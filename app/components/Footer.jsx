@@ -7,9 +7,9 @@ export default function Footer() {
     <footer className="kma-footer">
       <style>{`
         .kma-footer {
-          background: var(--ink);
+          background: #000000;
           font-family: 'Inter', sans-serif;
-          border-top: 1px solid var(--ink-3);
+          border-top: 1px solid rgba(255,255,255,0.12);
           padding: 24px;
         }
         .kma-footer-inner {
@@ -21,7 +21,7 @@ export default function Footer() {
           flex-wrap: wrap;
           gap: 12px;
           font-size: 12.5px;
-          color: var(--muted);
+          color: rgba(255,255,255,0.55);
         }
         .kma-footer-legal { display: flex; gap: 24px; }
         .kma-footer-legal span { cursor: default; user-select: none; }
