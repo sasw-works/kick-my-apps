@@ -381,9 +381,11 @@ export default function MarketingSections() {
           width: 100vw; position: relative; left: 50%; right: 50%;
           margin-left: -50vw; margin-right: -50vw; padding: 0 40px; box-sizing: border-box;
         }
+        .mkt-testimonial-layout { display: flex; gap: 48px; align-items: center; margin-bottom: 90px; }
+        .mkt-testimonial-left { flex: 0 0 300px; }
         .mkt-carousel {
-          display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory;
-          padding-bottom: 8px; margin-bottom: 22px; scrollbar-width: none;
+          display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory;
+          padding-bottom: 8px; margin-bottom: 0; scrollbar-width: none; flex: 1; min-width: 0;
           cursor: grab;
         }
         .mkt-carousel::-webkit-scrollbar { display: none; }
@@ -391,54 +393,46 @@ export default function MarketingSections() {
         .mkt-carousel-dragging * { pointer-events: none; }
         .mkt-carousel-card {
           position: relative; overflow: hidden;
-          flex: 0 0 calc((100% - 40px) / 5); max-width: 400px; height: 365px;
+          flex: 0 0 320px; height: 340px;
           scroll-snap-align: start;
-          background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 16px;
-          box-shadow: var(--shadow);
-        }
-        @media (max-width: 1400px) {
-          .mkt-carousel-card { flex-basis: calc((100% - 30px) / 4); }
-        }
-        @media (max-width: 1100px) {
-          .mkt-carousel-card { flex-basis: calc((100% - 20px) / 3); }
+          border-radius: 20px; border: none;
         }
         @media (max-width: 780px) {
-          .mkt-carousel-card { flex-basis: calc((100% - 10px) / 2); height: 300px; }
-        }
-        @media (max-width: 520px) {
-          .mkt-carousel-card { flex-basis: 85%; height: 280px; }
+          .mkt-carousel-card { flex-basis: 78%; height: 300px; }
+          .mkt-testimonial-layout { flex-direction: column; align-items: flex-start; }
+          .mkt-testimonial-left { flex: none; }
         }
         .mkt-carousel-fill {
           position: absolute; left: 0; right: 0; bottom: 0; height: 0;
           background: var(--fill-color); transition: height 0.4s ease; z-index: 0;
         }
         .mkt-carousel-card:hover .mkt-carousel-fill { height: 100%; }
-        .mkt-carousel-content { position: relative; z-index: 1; display: flex; flex-direction: column; height: 100%; padding: 34px; }
+        .mkt-carousel-content { position: relative; z-index: 1; display: flex; flex-direction: column; height: 100%; padding: 32px; }
         .mkt-carousel-icon {
-          width: 36px; height: 36px; border-radius: 10px; margin-bottom: 26px;
+          width: 52px; height: 52px; border-radius: 50%; margin-bottom: 26px;
           display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
         .mkt-carousel-headline {
-          font-size: 19px; font-weight: 500; line-height: 1.35; color: var(--chalk);
+          font-size: 19px; font-weight: 500; line-height: 1.35; color: #1A2B3B;
           margin-bottom: 6px; transition: color 0.3s ease;
         }
         .mkt-carousel-card:hover .mkt-carousel-headline { color: #FFFFFF; }
         .mkt-carousel-footer {
-          font-size: 15px; font-family: var(--font-body); color: var(--muted); transition: color 0.3s ease;
+          font-size: 15px; font-family: var(--font-body); color: rgba(26,43,59,0.65); transition: color 0.3s ease;
           display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
           overflow: hidden; line-height: 1.45; min-height: 4.65em;
         }
         .mkt-carousel-card:hover .mkt-carousel-footer { color: #FFFFFF; opacity: 0.85; }
 
-        .mkt-carousel-nav-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 90px; }
-        .mkt-carousel-tagline { font-size: 15px; font-family: var(--font-body); color: var(--chalk); }
-        .mkt-carousel-arrows { display: flex; gap: 8px; }
+        .mkt-carousel-arrows { display: flex; gap: 10px; }
         .mkt-carousel-arrow {
-          width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--ink-3);
+          width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--ink-3);
           background: var(--ink-2); color: var(--chalk); display: flex; align-items: center; justify-content: center;
-          cursor: pointer; transition: border-color 0.15s ease;
+          cursor: pointer; transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
         }
         .mkt-carousel-arrow:hover { border-color: var(--brand); }
+        .mkt-carousel-arrow-active { background: var(--brand); border-color: var(--brand); color: #FFFFFF; }
+        .mkt-carousel-arrow-active:hover { opacity: 0.9; }
 
         .faq-eyebrow { font-size: 15px; font-family: var(--font-body); color: var(--muted); text-align: center; margin-bottom: 8px; }
         .faq-list { max-width: 720px; margin: 0 auto 40px; border-top: 1px solid var(--ink-3); }
@@ -631,42 +625,44 @@ export default function MarketingSections() {
 
       {/* All features */}
       <div className="mkt-fullbleed">
-        <div className="mkt-section-title">It really does a lot now</div>
-        <div className="mkt-section-sub">Every feature currently live in Kick My Apps, at a glance.</div>
-        <div
-          className="mkt-carousel"
-          ref={carouselRef}
-          onMouseDown={onDragStart}
-          onMouseMove={onDragMove}
-          onMouseUp={endDrag}
-          onMouseLeave={endDrag}
-        >
-          {ALL_FEATURES.map((f) => {
-            const Icon = f.icon;
-            return (
-              <div className="mkt-carousel-card" key={f.title} style={{ "--fill-color": "#1A2B3B" }}>
-                <div className="mkt-carousel-fill" />
-                <div className="mkt-carousel-content">
-                  <div className="mkt-carousel-icon" style={{ background: f.color }}>
-                    <Icon size={18} color="#FFFFFF" />
+        <div className="mkt-testimonial-layout">
+          <div className="mkt-testimonial-left">
+            <div className="mkt-section-title" style={{ textAlign: "left", marginBottom: 14 }}>It really does a lot now</div>
+            <div className="mkt-section-sub" style={{ textAlign: "left", margin: "0 0 28px" }}>Every feature currently live in Kick My Apps, at a glance.</div>
+            <div className="mkt-carousel-arrows">
+              <button className="mkt-carousel-arrow" onClick={() => scrollCarousel(-1)} aria-label="Previous">
+                <ChevronLeft size={16} />
+              </button>
+              <button className="mkt-carousel-arrow mkt-carousel-arrow-active" onClick={() => scrollCarousel(1)} aria-label="Next">
+                <ChevronRight size={16} />
+              </button>
+            </div>
+          </div>
+
+          <div
+            className="mkt-carousel"
+            ref={carouselRef}
+            onMouseDown={onDragStart}
+            onMouseMove={onDragMove}
+            onMouseUp={endDrag}
+            onMouseLeave={endDrag}
+          >
+            {ALL_FEATURES.map((f) => {
+              const Icon = f.icon;
+              return (
+                <div className="mkt-carousel-card" key={f.title} style={{ "--fill-color": "#1A2B3B", background: f.fill }}>
+                  <div className="mkt-carousel-fill" />
+                  <div className="mkt-carousel-content">
+                    <div className="mkt-carousel-icon" style={{ background: f.color }}>
+                      <Icon size={18} color="#FFFFFF" />
+                    </div>
+                    <div style={{ flex: 1 }} />
+                    <div className="mkt-carousel-headline">{f.title}</div>
+                    <div className="mkt-carousel-footer">{f.desc}</div>
                   </div>
-                  <div style={{ flex: 1 }} />
-                  <div className="mkt-carousel-headline">{f.title}</div>
-                  <div className="mkt-carousel-footer">{f.desc}</div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-        <div className="mkt-carousel-nav-row">
-          <span className="mkt-carousel-tagline">Deep in every category.</span>
-          <div className="mkt-carousel-arrows">
-            <button className="mkt-carousel-arrow" onClick={() => scrollCarousel(-1)} aria-label="Previous">
-              <ChevronLeft size={16} />
-            </button>
-            <button className="mkt-carousel-arrow" onClick={() => scrollCarousel(1)} aria-label="Next">
-              <ChevronRight size={16} />
-            </button>
+              );
+            })}
           </div>
         </div>
       </div>
