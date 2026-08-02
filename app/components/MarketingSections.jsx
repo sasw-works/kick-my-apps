@@ -379,7 +379,10 @@ export default function MarketingSections() {
 
         .mkt-fullbleed {
           width: 100vw; position: relative; left: 50%; right: 50%;
-          margin-left: -50vw; margin-right: -50vw; padding: 0 40px; box-sizing: border-box;
+          margin-left: -50vw; margin-right: -50vw;
+          padding-left: max(40px, calc((100vw - 1000px) / 2));
+          padding-right: 40px;
+          box-sizing: border-box;
         }
         .mkt-testimonial-layout { display: flex; gap: 48px; align-items: center; margin-bottom: 90px; }
         .mkt-testimonial-left { flex: 0 0 300px; }
