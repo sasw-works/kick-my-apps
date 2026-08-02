@@ -695,7 +695,7 @@ export default function MarketingSections() {
         <div className="mkt-grid-dark-row">
           <div className="mkt-grid-dark-title" />
           {ALL_FEATURES.slice(0, 3).map((f) => (
-            <div className="mkt-grid-dark-cell" key={f.title} style={{ "--cell-fill": "#FFFFFF" }}>
+            <div className="mkt-grid-dark-cell" key={f.title} style={{ "--cell-fill": "#FDFF00" }}>
               <div className="mkt-grid-dark-fill" style={f.bgImage ? { backgroundImage: `url(${f.bgImage})` } : undefined} />
               <div className="mkt-grid-dark-content">
                 <div className="mkt-grid-dark-headline">{f.title}</div>
@@ -707,7 +707,7 @@ export default function MarketingSections() {
         <div className="mkt-grid-dark-row">
           <div className="mkt-grid-dark-spacer mkt-grid-dark-spacer-md" />
           {ALL_FEATURES.slice(3, 7).map((f) => (
-            <div className="mkt-grid-dark-cell" key={f.title} style={{ "--cell-fill": "#FFFFFF" }}>
+            <div className="mkt-grid-dark-cell" key={f.title} style={{ "--cell-fill": "#FDFF00" }}>
               <div className="mkt-grid-dark-fill" style={f.bgImage ? { backgroundImage: `url(${f.bgImage})` } : undefined} />
               <div className="mkt-grid-dark-content">
                 <div className="mkt-grid-dark-headline">{f.title}</div>
@@ -719,7 +719,7 @@ export default function MarketingSections() {
         <div className="mkt-grid-dark-row">
           <div className="mkt-grid-dark-spacer mkt-grid-dark-spacer-sm" />
           {ALL_FEATURES.slice(7, 12).map((f) => (
-            <div className="mkt-grid-dark-cell" key={f.title} style={{ "--cell-fill": "#FFFFFF" }}>
+            <div className="mkt-grid-dark-cell" key={f.title} style={{ "--cell-fill": "#FDFF00" }}>
               <div className="mkt-grid-dark-fill" style={f.bgImage ? { backgroundImage: `url(${f.bgImage})` } : undefined} />
               <div className="mkt-grid-dark-content">
                 <div className="mkt-grid-dark-headline">{f.title}</div>
