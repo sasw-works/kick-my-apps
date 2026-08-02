@@ -61,6 +61,13 @@ export default function Header() {
           gap: 20px;
           white-space: nowrap;
         }
+        .kma-header-history {
+          font-size: 14.5px;
+          font-weight: 500;
+          color: var(--chalk);
+          text-decoration: none;
+          white-space: nowrap;
+        }
         .kma-header-signin {
           background: rgb(255, 0, 122);
           color: #FFFFFF;
@@ -94,6 +101,7 @@ export default function Header() {
         </nav>
 
         <div className="kma-header-right">
+          <Link href="/history" className="kma-header-history">Geçmiş Analizlerim</Link>
           <button className="kma-header-signin">Sign in</button>
         </div>
       </div>
