@@ -381,6 +381,48 @@ export default function MarketingSections() {
           width: 100vw; position: relative; left: 50%; right: 50%;
           margin-left: -50vw; margin-right: -50vw; padding: 0 40px; box-sizing: border-box;
         }
+        .mkt-grid-dark-wrap {
+          background: #0B0F1A; padding: 0 40px; margin-bottom: 90px; margin-top: 90px;
+        }
+        .mkt-grid-dark {
+          max-width: 1400px; margin: 0 auto;
+          display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 260px;
+        }
+        .mkt-grid-dark-title {
+          grid-column: span 2; grid-row: span 2;
+          padding: 56px 40px 0 0; display: flex; flex-direction: column; justify-content: flex-start;
+        }
+        .mkt-grid-dark-heading {
+          font-family: var(--font-display); font-size: 44px; font-weight: 800; color: #FFFFFF;
+          letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 20px;
+        }
+        .mkt-grid-dark-sub { font-size: 15px; font-family: var(--font-body); color: rgba(255,255,255,0.55); line-height: 1.6; max-width: 340px; }
+        .mkt-grid-dark-cell {
+          position: relative; overflow: hidden;
+          border: 1px solid rgba(255,255,255,0.12);
+          margin: -0.5px;
+        }
+        .mkt-grid-dark-fill {
+          position: absolute; inset: 0; background: var(--cell-fill);
+          opacity: 0; transition: opacity 0.35s ease; z-index: 0;
+        }
+        .mkt-grid-dark-cell:hover .mkt-grid-dark-fill { opacity: 1; }
+        .mkt-grid-dark-content { position: relative; z-index: 1; padding: 28px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; }
+        .mkt-grid-dark-headline {
+          font-size: 17px; font-weight: 600; color: #FFFFFF; margin-bottom: 10px; transition: color 0.2s ease;
+        }
+        .mkt-grid-dark-desc {
+          font-size: 14px; font-family: var(--font-body); color: rgba(255,255,255,0.5); line-height: 1.55;
+          display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+          transition: color 0.2s ease;
+        }
+        .mkt-grid-dark-cell:hover .mkt-grid-dark-desc { color: rgba(0,0,0,0.65); }
+        .mkt-grid-dark-cell:hover .mkt-grid-dark-headline { color: #1A2B3B; }
+        @media (max-width: 900px) {
+          .mkt-grid-dark { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 220px; }
+          .mkt-grid-dark-title { grid-column: span 2; grid-row: span 1; padding: 40px 20px 20px; }
+          .mkt-grid-dark-heading { font-size: 32px; }
+        }
         .mkt-carousel {
           display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory;
           padding-bottom: 8px; margin-bottom: 22px; scrollbar-width: none;
@@ -629,45 +671,22 @@ export default function MarketingSections() {
         </div>
       </div>
 
-      {/* All features */}
-      <div className="mkt-fullbleed">
-        <div className="mkt-section-title">It really does a lot now</div>
-        <div className="mkt-section-sub">Every feature currently live in Kick My Apps, at a glance.</div>
-        <div
-          className="mkt-carousel"
-          ref={carouselRef}
-          onMouseDown={onDragStart}
-          onMouseMove={onDragMove}
-          onMouseUp={endDrag}
-          onMouseLeave={endDrag}
-        >
-          {ALL_FEATURES.map((f) => {
-            const Icon = f.icon;
-            return (
-              <div className="mkt-carousel-card" key={f.title} style={{ "--fill-color": "#1A2B3B" }}>
-                <div className="mkt-carousel-fill" />
-                <div className="mkt-carousel-content">
-                  <div className="mkt-carousel-icon" style={{ background: f.color }}>
-                    <Icon size={18} color="#FFFFFF" />
-                  </div>
-                  <div style={{ flex: 1 }} />
-                  <div className="mkt-carousel-headline">{f.title}</div>
-                  <div className="mkt-carousel-footer">{f.desc}</div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        <div className="mkt-carousel-nav-row">
-          <span className="mkt-carousel-tagline">Deep in every category.</span>
-          <div className="mkt-carousel-arrows">
-            <button className="mkt-carousel-arrow" onClick={() => scrollCarousel(-1)} aria-label="Previous">
-              <ChevronLeft size={16} />
-            </button>
-            <button className="mkt-carousel-arrow" onClick={() => scrollCarousel(1)} aria-label="Next">
-              <ChevronRight size={16} />
-            </button>
+      {/* All features — dark grid */}
+      <div className="mkt-fullbleed mkt-grid-dark-wrap">
+        <div className="mkt-grid-dark">
+          <div className="mkt-grid-dark-title">
+            <div className="mkt-grid-dark-heading">It really does a lot now</div>
+            <div className="mkt-grid-dark-sub">Explore every feature currently available in Kick My Apps and discover how each one helps you analyze, improve, and grow your app.</div>
           </div>
+          {ALL_FEATURES.map((f) => (
+            <div className="mkt-grid-dark-cell" key={f.title} style={{ "--cell-fill": f.color }}>
+              <div className="mkt-grid-dark-fill" />
+              <div className="mkt-grid-dark-content">
+                <div className="mkt-grid-dark-headline">{f.title}</div>
+                <div className="mkt-grid-dark-desc">{f.desc}</div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
