@@ -145,9 +145,9 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
     <div className="upload-root">
       <style>{`
         .upload-root {
-          --font-display: 'Inter', sans-serif;
-          --font-body: 'Inter', sans-serif;
-          --font-mono: 'Inter', sans-serif;
+          --font-display: var(--font-inter), sans-serif;
+          --font-body: var(--font-inter), sans-serif;
+          --font-mono: var(--font-inter), sans-serif;
 
           position: relative;
           background: var(--ink);
@@ -204,7 +204,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           .hero-title { font-size: 42px; }
         }
         .hero-subtitle {
-          font-family: 'Inter', sans-serif;
+          font-family: var(--font-inter), sans-serif;
           font-size: 20px;
           color: #1A2B3B;
           line-height: 1.5;

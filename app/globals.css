@@ -36,7 +36,7 @@ html.dark {
 body {
   background: var(--ink);
   color: var(--chalk);
-  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
   transition: background 0.2s ease, color 0.2s ease;
   overflow-x: hidden;
 }

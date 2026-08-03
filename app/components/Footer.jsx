@@ -8,7 +8,7 @@ export default function Footer() {
       <style>{`
         .kma-footer {
           background: #000000;
-          font-family: 'Inter', sans-serif;
+          font-family: var(--font-inter), sans-serif;
           border-top: 1px solid rgba(255,255,255,0.12);
           padding: 24px;
         }

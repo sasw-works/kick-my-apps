@@ -30,7 +30,7 @@ export default function Header() {
           display: flex;
           align-items: center;
           gap: 8px;
-          font-family: 'Inter', sans-serif;
+          font-family: var(--font-inter), sans-serif;
         }
         .kma-header-logo {
           display: flex;

@@ -51,7 +51,7 @@ export default function DashboardPage() {
           .dash-root {
             max-width: 1000px;
             margin: 0 auto;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-inter), sans-serif;
             color: var(--chalk);
           }
           .dash-title { font-size: 24px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 6px; }

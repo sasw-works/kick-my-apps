@@ -270,7 +270,7 @@ export default function MarketingSections() {
   return (
     <div className="mkt-root">
       <style>{`
-        .mkt-root { width: 100%; max-width: 1000px; margin: 90px auto 0; font-family: 'Inter', sans-serif; }
+        .mkt-root { width: 100%; max-width: 1000px; margin: 90px auto 0; font-family: var(--font-inter), sans-serif; }
         .mkt-section-title { font-size: 34px; font-weight: 500; letter-spacing: -0.02em; color: var(--chalk); text-align: center; margin-bottom: 10px; }
         .mkt-section-sub { font-size: 15px; font-family: var(--font-body); color: var(--muted); text-align: center; max-width: 480px; margin: 0 auto 40px; }
         .mkt-title-card {
