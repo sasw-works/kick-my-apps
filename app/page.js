@@ -26,7 +26,18 @@ export default function Home() {
       formData.append("appName", appName);
 
       const res = await fetch("/api/analyze", { method: "POST", body: formData });
-      const data = await res.json();
+
+      const rawText = await res.text();
+      let data;
+      try {
+        data = JSON.parse(rawText);
+      } catch {
+        throw new Error(
+          res.status === 413
+            ? "Yüklenen ekran görüntüleri çok büyük. Lütfen daha az veya daha küçük boyutlu görsellerle tekrar dene."
+            : `Sunucudan beklenmeyen bir yanıt geldi (${res.status}). Lütfen tekrar dene.`
+        );
+      }
 
       if (!res.ok) {
         throw new Error(data.error || "Analysis failed.");
