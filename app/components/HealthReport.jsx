@@ -650,15 +650,16 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .shot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
         .shot-frame { background: var(--ink); border: 1px solid var(--ink-3); border-radius: 10px; padding: 10px; }
         .shot-index { font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); margin-bottom: 8px; }
-        .shot-img-wrap { position: relative; border-radius: 6px; overflow: hidden; }
-        .shot-img-wrap img { width: 100%; display: block; }
+        .shot-img-wrap { position: relative; }
+        .shot-img-wrap img { width: 100%; display: block; border-radius: 6px; }
         .shot-highlight {
           position: absolute; border: 2px solid; border-radius: 4px;
         }
         .shot-highlight-label {
-          position: absolute; top: -20px; left: -2px; white-space: nowrap;
-          font-size: 9.5px; font-weight: 600; color: #fff; padding: 2px 6px; border-radius: 4px;
-          font-family: var(--font-mono);
+          position: absolute; bottom: calc(100% + 4px); left: -2px;
+          white-space: normal; word-break: break-word; max-width: 220px;
+          font-size: 9.5px; font-weight: 600; line-height: 1.35; color: #fff; padding: 3px 6px; border-radius: 4px;
+          font-family: var(--font-mono); z-index: 2;
         }
 
         .lens-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
