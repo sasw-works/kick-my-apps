@@ -494,6 +494,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
   const usingRealData = Boolean(data);
   const reportRef = useRef(null);
   const [exporting, setExporting] = useState(false);
+  const [findingFilter, setFindingFilter] = useState("all");
 
   const handleExportPdf = async () => {
     if (!reportRef.current) return;
@@ -550,6 +551,19 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
   }).filter((l) => l.total > 0);
 
   const IMPACT_RANK = { bad: 2, warn: 1, good: 0 };
+  const priorityActions = findings
+    .filter((f) => f.status !== "good")
+    .sort((a, b) => IMPACT_RANK[b.status] - IMPACT_RANK[a.status])
+    .slice(0, 3);
+
+  const totalFindingsCount = findings.length;
+  const frictionRatio = totalFindingsCount > 0 ? (badCount + warnCount) / totalFindingsCount : 0;
+  const frictionLevel = frictionRatio > 0.5 ? "Yüksek" : frictionRatio > 0.25 ? "Orta" : "Düşük";
+  const frictionColor = frictionLevel === "Yüksek" ? "var(--kick)" : frictionLevel === "Orta" ? "var(--yellow)" : "var(--teal)";
+  const conversionRelatedBad = findings.filter((f) => ["conversion", "trust", "cta"].includes(f.key) && f.status !== "good").length;
+  const conversionLevel = conversionRelatedBad >= 2 ? "Yüksek" : conversionRelatedBad === 1 ? "Orta" : "Düşük";
+  const conversionColor = conversionLevel === "Yüksek" ? "var(--teal)" : conversionLevel === "Orta" ? "var(--yellow)" : "var(--muted)";
+  const potentialScore = Math.min(96, healthScore + badCount * 5 + warnCount * 2);
   const EFFORT_RANK = { low: 0, medium: 1, high: 2 };
   const quickWins = findings
     .filter((f) => f.status !== "good" && (EFFORT_MAP[f.key] || "medium") !== "high")
@@ -624,6 +638,20 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         .panel { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 12px; padding: 18px 20px; box-shadow: var(--shadow); }
         .panel-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--muted); margin-bottom: 12px; }
+        .ai-summary-text { font-size: 13.5px; line-height: 1.65; color: var(--chalk); }
+        .priority-actions-list { display: flex; flex-direction: column; gap: 10px; }
+        .priority-action-row { display: flex; align-items: center; gap: 8px; }
+        .priority-action-num {
+          width: 18px; height: 18px; border-radius: 50%; background: var(--ink-3); color: var(--chalk);
+          font-size: 10.5px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .priority-action-title { font-size: 12.5px; color: var(--chalk); flex: 1; line-height: 1.4; }
+        .priority-action-tag { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px; flex-shrink: 0; white-space: nowrap; }
+        .impact-list { display: flex; flex-direction: column; gap: 12px; }
+        .impact-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+        .impact-label { font-size: 12.5px; color: var(--muted); }
+        .impact-value { font-size: 13px; font-weight: 700; white-space: nowrap; }
+        .impact-disclaimer { font-size: 10.5px; color: var(--muted); margin-top: 14px; line-height: 1.5; }
         .lens-score-row { display: flex; gap: 16px; flex-wrap: wrap; }
         .lens-score-item {
           flex: 1; min-width: 90px; text-align: center; background: var(--ink);
@@ -632,7 +660,13 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .lens-score-num { font-family: var(--font-display); font-size: 32px; font-weight: 700; line-height: 1; }
         .lens-score-label { font-size: 12px; color: var(--muted); margin-top: 6px; }
 
-        .top-grid { display: grid; grid-template-columns: 260px 1fr; gap: 18px; }
+        .top-grid { display: grid; grid-template-columns: 260px repeat(3, 1fr); gap: 18px; }
+        @media (max-width: 1300px) {
+          .top-grid { grid-template-columns: 260px 1fr 1fr; }
+        }
+        @media (max-width: 900px) {
+          .top-grid { grid-template-columns: 1fr; }
+        }
         .dial-panel { display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .dial-caption { font-size: 12px; color: var(--muted); text-align: center; margin-top: 4px; }
 
@@ -680,6 +714,17 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .qw-suggestion { font-size: 12.5px; color: var(--muted); margin: 0; line-height: 1.5; }
 
         .finding-list { display: flex; flex-direction: column; gap: 10px; }
+        .bulgular-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
+        .finding-filter-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+        .finding-filter-tab {
+          display: flex; align-items: center; gap: 6px; background: var(--ink-2); border: 1px solid var(--ink-3);
+          border-radius: 999px; padding: 6px 14px; font-size: 12.5px; color: var(--muted); cursor: pointer;
+          transition: border-color 0.15s ease, background 0.15s ease;
+        }
+        .finding-filter-tab:hover { border-color: var(--brand); }
+        .finding-filter-tab-active { background: var(--ink-3); border-color: var(--chalk); color: var(--chalk); font-weight: 600; }
+        .finding-filter-count { font-family: var(--font-mono); font-size: 11px; opacity: 0.7; }
+        .empty-state { color: var(--muted); font-size: 13px; padding: 24px 0; text-align: center; }
         .lens-group { margin-bottom: 22px; }
         .lens-group:last-child { margin-bottom: 0; }
         .lens-group-header {
@@ -894,6 +939,49 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
               )}
             </div>
           </div>
+          {usingRealData && data.aiSummary && (
+            <div className="panel">
+              <div className="panel-title">AI ÖZETİ</div>
+              <p className="ai-summary-text">{data.aiSummary}</p>
+            </div>
+          )}
+          {priorityActions.length > 0 && (
+            <div className="panel">
+              <div className="panel-title">ÖNCELİKLİ AKSİYONLAR</div>
+              <div className="priority-actions-list">
+                {priorityActions.map((f, i) => {
+                  const meta = STATUS_META[f.status];
+                  return (
+                    <div className="priority-action-row" key={i}>
+                      <span className="priority-action-num">{i + 1}</span>
+                      <span className="priority-action-title">{f.title}</span>
+                      <span className="priority-action-tag" style={{ color: meta.color, background: `color-mix(in srgb, ${meta.color} 15%, transparent)` }}>{meta.label}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+          {totalFindingsCount > 0 && (
+            <div className="panel">
+              <div className="panel-title">TAHMİNİ ETKİ</div>
+              <div className="impact-list">
+                <div className="impact-row">
+                  <span className="impact-label">Sağlık Skoru (tahmini üst sınır)</span>
+                  <span className="impact-value" style={{ color: "var(--teal)" }}>{healthScore} → ~{potentialScore}</span>
+                </div>
+                <div className="impact-row">
+                  <span className="impact-label">Dönüşüm potansiyeli</span>
+                  <span className="impact-value" style={{ color: conversionColor }}>{conversionLevel}</span>
+                </div>
+                <div className="impact-row">
+                  <span className="impact-label">Kullanıcı sürtünmesi</span>
+                  <span className="impact-value" style={{ color: frictionColor }}>{frictionLevel}</span>
+                </div>
+              </div>
+              <div className="impact-disclaimer">Bu rakamlar bulgu sayısına dayalı kaba bir tahmindir, kesin bir vaat değildir.</div>
+            </div>
+          )}
         </div>
 
         {lensScores && (
@@ -930,7 +1018,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         {lensSummary.length > 0 && (
           <div className="panel">
-            <div className="panel-title">ANALİZ MERCEKLERİ</div>
+            <div className="panel-title">ANALİZ VERİLERİ</div>
             <div className="lens-grid">
               {lensSummary.map((l) => (
                 <div className="lens-item" key={l.lens}>
@@ -952,26 +1040,48 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         )}
 
         <div>
-          <div className="panel-title" style={{ marginBottom: 14 }}>BULGULAR</div>
-          {LENS_ORDER.filter((lens) => findings.some((f) => LENS_MAP[f.key] === lens)).map((lens) => {
-            const items = findings.filter((f) => LENS_MAP[f.key] === lens);
-            const LensIcon = LENS_ICON[lens];
-            return (
-              <div key={lens} className="lens-group">
-                <div className="lens-group-header">
-                  <LensIcon size={14} strokeWidth={2.2} color="var(--muted)" />
-                  {lens}
-                  <span className="lens-group-count">{items.length}</span>
-                  <span className="lens-group-subtitle">{LENS_SUBTITLE[lens]}</span>
+          <div className="bulgular-header">
+            <div className="panel-title" style={{ marginBottom: 0 }}>BULGULAR</div>
+            <div className="finding-filter-tabs">
+              <button className={`finding-filter-tab ${findingFilter === "all" ? "finding-filter-tab-active" : ""}`} onClick={() => setFindingFilter("all")}>
+                Tümü <span className="finding-filter-count">{findings.length}</span>
+              </button>
+              <button className={`finding-filter-tab ${findingFilter === "bad" ? "finding-filter-tab-active" : ""}`} onClick={() => setFindingFilter("bad")} style={{ color: findingFilter === "bad" ? "var(--kick)" : undefined }}>
+                Kritik <span className="finding-filter-count">{badCount}</span>
+              </button>
+              <button className={`finding-filter-tab ${findingFilter === "warn" ? "finding-filter-tab-active" : ""}`} onClick={() => setFindingFilter("warn")} style={{ color: findingFilter === "warn" ? "var(--yellow)" : undefined }}>
+                Dikkat <span className="finding-filter-count">{warnCount}</span>
+              </button>
+              <button className={`finding-filter-tab ${findingFilter === "good" ? "finding-filter-tab-active" : ""}`} onClick={() => setFindingFilter("good")} style={{ color: findingFilter === "good" ? "var(--teal)" : undefined }}>
+                Sorunsuz <span className="finding-filter-count">{goodCount}</span>
+              </button>
+            </div>
+          </div>
+          {(() => {
+            const filteredFindings = findingFilter === "all" ? findings : findings.filter((f) => f.status === findingFilter);
+            if (filteredFindings.length === 0) {
+              return <div className="empty-state">Bu filtreye uyan bulgu yok.</div>;
+            }
+            return LENS_ORDER.filter((lens) => filteredFindings.some((f) => LENS_MAP[f.key] === lens)).map((lens) => {
+              const items = filteredFindings.filter((f) => LENS_MAP[f.key] === lens);
+              const LensIcon = LENS_ICON[lens];
+              return (
+                <div key={lens} className="lens-group">
+                  <div className="lens-group-header">
+                    <LensIcon size={14} strokeWidth={2.2} color="var(--muted)" />
+                    {lens}
+                    <span className="lens-group-count">{items.length}</span>
+                    <span className="lens-group-subtitle">{LENS_SUBTITLE[lens]}</span>
+                  </div>
+                  <div className="finding-list">
+                    {items.map((f) => (
+                      <FindingRow key={f.key} f={f} />
+                    ))}
+                  </div>
                 </div>
-                <div className="finding-list">
-                  {items.map((f) => (
-                    <FindingRow key={f.key} f={f} />
-                  ))}
-                </div>
-              </div>
-            );
-          })}
+              );
+            });
+          })()}
         </div>
 
         {quickWins.length > 0 && (

@@ -9,6 +9,7 @@ kullanıcı yorumlarını ve/veya mağaza listeleme metnini DERİNLEMESİNE anal
 
 {
   "healthScore": <0-100 arası tam sayı, genel sağlık skoru>,
+  "aiSummary": "<Uygulamanın genel sağlık durumunu, en büyük 1-2 sorunu ve bunlar düzeltilirse ulaşılabilecek yaklaşık skoru 2-3 cümlede özetleyen, samimi ama profesyonel bir metin. Kesin/iddialı sayısal vaatlerde bulunma, 'yaklaşık', 'muhtemelen' gibi ifadeler kullan.>,
   "findings": [
     {
       "key": "<onboarding|cta|contrast|typography|accessibility|permissions|conversion|navigation|empty_states|consistency|loading|copy|trust içinden biri>",
