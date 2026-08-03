@@ -316,6 +316,10 @@ export default function MarketingSections() {
         .mkt-preview-row span { flex: 1; color: var(--chalk); }
 
         .mkt-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 90px; }
+        .mkt-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 90px; }
+        @media (max-width: 900px) {
+          .mkt-grid-4 { grid-template-columns: 1fr 1fr; }
+        }
         .mkt-feature-card {
           background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 16px;
           box-shadow: var(--shadow); padding: 26px;
@@ -569,7 +573,7 @@ export default function MarketingSections() {
         }
 
         @media (max-width: 780px) {
-          .mkt-grid-2, .mkt-showcase { grid-template-columns: 1fr; }
+          .mkt-grid-2, .mkt-showcase, .mkt-grid-4 { grid-template-columns: 1fr; }
         }
       `}</style>
 
@@ -663,11 +667,11 @@ export default function MarketingSections() {
         </div>
       </div>
 
-      {/* 13 categories + Quick Wins */}
+      {/* 13 categories + Quick Wins + Weekly digest + Compare, merged */}
       <div>
         <div className="mkt-section-title">Deep, but never messy</div>
-        <div className="mkt-section-sub">Findings across 13 categories, prioritized at a glance.</div>
-        <div className="mkt-grid-2">
+        <div className="mkt-section-sub">13 categories of findings, prioritized by impact, and tracked with weekly digests and competitor comparisons.</div>
+        <div className="mkt-grid-4">
           <div className="mkt-feature-card">
             <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon03 size={66} /></div>
             <div className="mkt-feature-title">13 categories, 4 lenses</div>
@@ -689,14 +693,6 @@ export default function MarketingSections() {
               ))}
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Weekly digest + Compare */}
-      <div>
-        <div className="mkt-section-title">Never miss a thing</div>
-        <div className="mkt-section-sub">Stay on top of it with weekly digests and competitor comparisons.</div>
-        <div className="mkt-showcase">
           <div className="mkt-feature-card">
             <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon05 size={66} /></div>
             <div className="mkt-feature-title">Weekly review digest</div>
