@@ -1,4 +1,5 @@
 import { fetchAppStoreReviews, fetchAppStoreListing, computeReviewAnalytics } from "../../lib/reviews";
+import { computeLensScores } from "../../lib/lensScores";
 
 export const runtime = "nodejs";
 
@@ -211,6 +212,7 @@ export async function POST(req) {
     }
 
     const result = await analyzeWithGemini({ images, reviews, listing });
+    result.lensScores = computeLensScores(result.findings);
 
     if (reviews?.length && result.reviewSummary) {
       const avgRating = reviews.reduce((sum, r) => sum + (r.rating || 0), 0) / reviews.length;

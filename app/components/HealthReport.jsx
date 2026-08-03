@@ -2,6 +2,7 @@
 
 import React, { useRef, useState } from "react";
 import Link from "next/link";
+import { computeLensScores } from "../lib/lensScores";
 import {
   UploadCloud,
   Link2,
@@ -531,6 +532,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
   const reviewSummary = usingRealData ? data.reviewSummary : REVIEW_STATS;
   const asoReview = usingRealData ? data.asoReview : null;
   const approvalRisks = usingRealData ? data.approvalRisks || [] : [];
+  const lensScores = usingRealData ? data.lensScores || computeLensScores(findings) : null;
 
   const badCount = findings.filter((f) => f.status === "bad").length;
   const warnCount = findings.filter((f) => f.status === "warn").length;
@@ -622,6 +624,13 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         .panel { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 12px; padding: 18px 20px; box-shadow: var(--shadow); }
         .panel-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--muted); margin-bottom: 12px; }
+        .lens-score-row { display: flex; gap: 16px; flex-wrap: wrap; }
+        .lens-score-item {
+          flex: 1; min-width: 90px; text-align: center; background: var(--ink);
+          border-radius: 12px; padding: 18px 10px;
+        }
+        .lens-score-num { font-family: var(--font-display); font-size: 32px; font-weight: 700; line-height: 1; }
+        .lens-score-label { font-size: 12px; color: var(--muted); margin-top: 6px; }
 
         .top-grid { display: grid; grid-template-columns: 260px 1fr; gap: 18px; }
         .dial-panel { display: flex; flex-direction: column; align-items: center; justify-content: center; }
@@ -885,6 +894,25 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
             </div>
           </div>
         </div>
+
+        {lensScores && (
+          <div className="panel">
+            <div className="panel-title">MERCEK BAZLI SKORLAR</div>
+            <div className="lens-score-row">
+              {LENS_ORDER.map((lens) => {
+                const score = lensScores[lens];
+                const color =
+                  score == null ? "var(--muted)" : score >= 80 ? "var(--teal)" : score >= 50 ? "var(--yellow)" : "var(--kick)";
+                return (
+                  <div className="lens-score-item" key={lens}>
+                    <div className="lens-score-num" style={{ color }}>{score ?? "—"}</div>
+                    <div className="lens-score-label">{lens}</div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         <HistoryPanel history={history} />
 
