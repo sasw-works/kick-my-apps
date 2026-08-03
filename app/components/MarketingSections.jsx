@@ -316,10 +316,7 @@ export default function MarketingSections() {
         .mkt-preview-row span { flex: 1; color: var(--chalk); }
 
         .mkt-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 90px; }
-        .mkt-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 90px; }
-        @media (max-width: 900px) {
-          .mkt-grid-4 { grid-template-columns: 1fr 1fr; }
-        }
+        .mkt-grid-4 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 90px; }
         .mkt-feature-card {
           background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 16px;
           box-shadow: var(--shadow); padding: 26px;
