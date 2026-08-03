@@ -39,10 +39,40 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  const addFiles = useCallback((fileList) => {
-    const incoming = Array.from(fileList).filter((f) => f.type.startsWith("image/"));
-    setFiles((prev) => [...prev, ...incoming].slice(0, 12));
+  const compressImage = useCallback(async (file, maxDim = 1600, quality = 0.82) => {
+    try {
+      const bitmap = await createImageBitmap(file);
+      let { width, height } = bitmap;
+      if (width <= maxDim && height <= maxDim && file.size < 1.2 * 1024 * 1024) {
+        // Zaten yeterince küçük, dokunma.
+        return file;
+      }
+      const scale = Math.min(1, maxDim / Math.max(width, height));
+      width = Math.round(width * scale);
+      height = Math.round(height * scale);
+
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(bitmap, 0, 0, width, height);
+
+      const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", quality));
+      if (!blob) return file;
+      return new File([blob], file.name.replace(/\.[^.]+$/, "") + ".jpg", { type: "image/jpeg" });
+    } catch {
+      return file;
+    }
   }, []);
+
+  const addFiles = useCallback(
+    async (fileList) => {
+      const incoming = Array.from(fileList).filter((f) => f.type.startsWith("image/"));
+      const compressed = await Promise.all(incoming.map((f) => compressImage(f)));
+      setFiles((prev) => [...prev, ...compressed].slice(0, 12));
+    },
+    [compressImage]
+  );
 
   const onDrop = (e) => {
     e.preventDefault();
