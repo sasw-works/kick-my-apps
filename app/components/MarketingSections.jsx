@@ -673,8 +673,10 @@ export default function MarketingSections() {
             <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon03 size={66} /></div>
             <div className="mkt-feature-title">13 categories, 4 lenses</div>
             <div className="mkt-feature-desc" style={{ marginBottom: 43 }}>From onboarding to accessibility, every finding maps to one of the UI / UX / Accessibility / Product lenses.</div>
-            <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UI</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>2 critical · 1 warning</span></div>
-            <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UX</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>1 warning</span></div>
+            <div className="mkt-priority-list">
+              <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UI</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>2 critical · 1 warning</span></div>
+              <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UX</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>1 warning</span></div>
+            </div>
           </div>
           <div className="mkt-feature-card">
             <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon04 size={66} /></div>
