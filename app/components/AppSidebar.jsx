@@ -20,10 +20,11 @@ export default function AppSidebar() {
     <aside className="kma-sidebar">
       <style>{`
         .kma-sidebar {
-          width: 260px; flex-shrink: 0; min-height: 100vh;
+          width: 260px; flex-shrink: 0; height: 100vh;
           background: var(--ink-2); border-right: 1px solid var(--ink-3);
           display: flex; flex-direction: column; padding: 24px 16px;
           font-family: var(--font-inter), sans-serif;
+          position: fixed; top: 0; left: 0; overflow-y: auto; z-index: 40;
         }
         .kma-sidebar-logo { display: flex; align-items: center; gap: 8px; padding: 0 8px; margin-bottom: 28px; }
         .kma-sidebar-section { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: var(--muted); padding: 0 8px; margin-bottom: 10px; }
