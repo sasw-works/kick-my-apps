@@ -134,6 +134,37 @@ const HEALTH_SCORE = 58;
 // ticks beyond the current score fade to gray.
 // ---------------------------------------------------------------------------
 
+function QueriedAppBadge({ name, storeUrl }) {
+  const [iconUrl, setIconUrl] = useState(null);
+
+  React.useEffect(() => {
+    if (!storeUrl) return;
+    let cancelled = false;
+    fetch(`/api/app-icon?storeUrl=${encodeURIComponent(storeUrl)}`)
+      .then((r) => r.json())
+      .then((d) => {
+        if (!cancelled && d.iconUrl) setIconUrl(d.iconUrl);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [storeUrl]);
+
+  const letter = (name || "?").trim().charAt(0).toUpperCase();
+
+  return (
+    <div className="kma-queried-app">
+      {iconUrl ? (
+        <img src={iconUrl} alt="" className="kma-queried-app-icon" />
+      ) : (
+        <div className="kma-queried-app-fallback">{letter}</div>
+      )}
+      <span className="kma-queried-app-name">{name}</span>
+    </div>
+  );
+}
+
 function zoneColorAt(pct) {
   // 3 durak: kırmızı (0%) → sarı (50%) → teal (100%), HSL üzerinde yumuşak geçiş.
   const stops = [
@@ -599,8 +630,13 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           padding: 18px 28px;
           border-bottom: 1px solid var(--ink-3);
         }
-        .kma-logo { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.01em; display: flex; align-items: baseline; gap: 8px; }
-        .kma-logo span.dot { color: var(--brand); }
+        .kma-queried-app { display: flex; align-items: center; gap: 10px; }
+        .kma-queried-app-icon { width: 28px; height: 28px; border-radius: 8px; object-fit: cover; border: 1px solid var(--ink-3); }
+        .kma-queried-app-fallback {
+          width: 28px; height: 28px; border-radius: 8px; background: var(--brand); color: #fff;
+          display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12.5px;
+        }
+        .kma-queried-app-name { font-family: var(--font-display); font-size: 17px; font-weight: 600; color: var(--chalk); }
         .app-picker {
           display: flex; align-items: center; gap: 6px;
           font-family: var(--font-mono); font-size: 13px; color: var(--muted);
@@ -880,7 +916,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
       `}</style>
 
       <div className="kma-header">
-        <div className="kma-logo">KICK MY APPS<span className="dot">.</span></div>
+        <QueriedAppBadge name={appLabel} storeUrl={storeUrl} />
         {onClose ? (
           <button className="kma-close-btn" onClick={onClose} aria-label="Kapat">
             <X size={18} />
