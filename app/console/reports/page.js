@@ -189,14 +189,16 @@ export default function ConsoleReportsPage() {
         .reports-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 24px; }
         .reports-search {
           flex: 1; max-width: 640px; display: flex; align-items: center; gap: 10px;
-          background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 999px; padding: 11px 18px;
+          background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 999px; padding: 0 18px;
+          height: 44px; box-sizing: border-box;
         }
         .reports-search input { flex: 1; border: none; outline: none; background: transparent; font-size: 14px; color: var(--chalk); }
         .reports-tabs { display: flex; gap: 6px; flex-wrap: wrap; flex-shrink: 0; }
         .reports-tab {
           display: flex; align-items: center; gap: 6px; background: var(--ink-2); border: 1px solid var(--ink-3);
-          border-radius: 999px; padding: 6px 14px; font-size: 12.5px; color: var(--muted); cursor: pointer;
+          border-radius: 999px; padding: 0 14px; font-size: 12.5px; color: var(--muted); cursor: pointer;
           transition: border-color 0.15s ease, background 0.15s ease;
+          height: 44px; box-sizing: border-box;
         }
         .reports-tab:hover { border-color: var(--brand); }
         .reports-tab-active { background: var(--ink-3); border-color: var(--chalk); color: var(--chalk); font-weight: 600; }
