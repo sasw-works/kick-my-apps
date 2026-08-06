@@ -52,10 +52,9 @@ export default function AppSidebar() {
       `}</style>
 
       <div className="kma-sidebar-logo">
-        <LogoMark size={30} />
+        <LogoMark size={60} />
       </div>
 
-      <div className="kma-sidebar-section">NAVIGATE</div>
       <nav className="kma-sidebar-nav">
         {NAV_ITEMS.map((item) => {
           const Icon = item.icon;
