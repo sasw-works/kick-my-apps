@@ -22,6 +22,19 @@ function HistoryPageContent() {
       if (!res.ok) throw new Error(data.error || "Karşılaştırma verisi alınamadı.");
       setCompareScans(data.scans || []);
       setStage("compare");
+
+      if (data.scans && data.scans.length === 2) {
+        fetch("/api/history/compare", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            scanIdA: data.scans[0].id,
+            scanIdB: data.scans[1].id,
+            appNameA: data.scans[0].app_name,
+            appNameB: data.scans[1].app_name,
+          }),
+        }).catch(() => {});
+      }
     } catch (err) {
       setCompareError(err.message);
     }

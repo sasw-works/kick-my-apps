@@ -88,14 +88,36 @@ export async function GET(req) {
 
     if (all) {
       // Karşılaştırma ekranı ve Reports sekmesi için: tüm uygulamalardaki taramaların özet listesi.
-      const { rows } = await sql`
+      const { rows: scanRows } = await sql`
         SELECT id, app_name, health_score, bad_count, warn_count, good_count, store_url, created_at,
                (result_json -> 'reviewSummary' ->> 'totalReviews')::int AS review_count
         FROM scans
         ORDER BY created_at DESC
         LIMIT 100;
       `;
-      return Response.json({ scans: rows });
+      let comparisonRows = [];
+      try {
+        await sql`
+          CREATE TABLE IF NOT EXISTS comparisons (
+            id SERIAL PRIMARY KEY,
+            scan_id_a INTEGER NOT NULL,
+            scan_id_b INTEGER NOT NULL,
+            app_name_a TEXT NOT NULL,
+            app_name_b TEXT NOT NULL,
+            created_at TIMESTAMPTZ DEFAULT now()
+          );
+        `;
+        const { rows } = await sql`
+          SELECT id, scan_id_a, scan_id_b, app_name_a, app_name_b, created_at
+          FROM comparisons
+          ORDER BY created_at DESC
+          LIMIT 100;
+        `;
+        comparisonRows = rows;
+      } catch {
+        comparisonRows = [];
+      }
+      return Response.json({ scans: scanRows, comparisons: comparisonRows });
     }
 
     if (!appName) {
