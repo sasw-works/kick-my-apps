@@ -30,7 +30,13 @@ function AppIcon({ name, size = 40, iconUrl, storeUrl }) {
         alt=""
         width={size}
         height={size}
-        style={{ borderRadius: 10, flexShrink: 0, objectFit: "cover" }}
+        style={{
+          borderRadius: 10,
+          flexShrink: 0,
+          objectFit: "cover",
+          border: "1px solid var(--ink-3)",
+          boxSizing: "border-box",
+        }}
       />
     );
   }
