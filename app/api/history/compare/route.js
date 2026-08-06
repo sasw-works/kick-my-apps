@@ -60,9 +60,12 @@ export async function GET(req) {
 
     if (all) {
       const { rows } = await sql`
-        SELECT id, app_name_a, app_name_b, created_at
-        FROM comparisons
-        ORDER BY created_at DESC
+        SELECT c.id, c.app_name_a, c.app_name_b, c.created_at,
+               sa.icon_url AS icon_url_a, sb.icon_url AS icon_url_b
+        FROM comparisons c
+        LEFT JOIN scans sa ON sa.id = c.scan_id_a
+        LEFT JOIN scans sb ON sb.id = c.scan_id_b
+        ORDER BY c.created_at DESC
         LIMIT 100;
       `;
       return Response.json({ comparisons: rows });

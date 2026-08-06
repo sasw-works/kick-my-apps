@@ -51,6 +51,7 @@ export async function fetchAppStoreListing(storeUrl) {
     version: app.version ?? "",
     averageRating: app.averageUserRating ?? null,
     ratingCount: app.userRatingCount ?? null,
+    iconUrl: app.artworkUrl512 || app.artworkUrl100 || app.artworkUrl60 || null,
   };
 }
 

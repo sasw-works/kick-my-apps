@@ -5,7 +5,36 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Search, FileText, GitCompare, Loader2, Eye, Download, Trash2, X } from "lucide-react";
 
-function AppIcon({ name, size = 40 }) {
+function AppIcon({ name, size = 40, iconUrl, storeUrl }) {
+  const [fetchedUrl, setFetchedUrl] = useState(null);
+  const src = iconUrl || fetchedUrl;
+
+  useEffect(() => {
+    if (iconUrl || !storeUrl) return;
+    let cancelled = false;
+    fetch(`/api/app-icon?storeUrl=${encodeURIComponent(storeUrl)}`)
+      .then((r) => r.json())
+      .then((d) => {
+        if (!cancelled && d.iconUrl) setFetchedUrl(d.iconUrl);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [iconUrl, storeUrl]);
+
+  if (src) {
+    return (
+      <img
+        src={src}
+        alt=""
+        width={size}
+        height={size}
+        style={{ borderRadius: 10, flexShrink: 0, objectFit: "cover" }}
+      />
+    );
+  }
+
   const letter = (name || "?").trim().charAt(0).toUpperCase();
   const hue = Array.from(name || "").reduce((acc, c) => acc + c.charCodeAt(0), 0) % 360;
   return (
@@ -67,7 +96,7 @@ export default function ConsoleReportsPage() {
     createdAt: s.created_at,
     href: `/history/${s.id}`,
     deleteUrl: `/api/history?id=${s.id}`,
-    icon: <AppIcon name={s.app_name} />,
+    icon: <AppIcon name={s.app_name} iconUrl={s.icon_url} storeUrl={s.store_url} />,
   }));
 
   const comparisonRows = comparisons.map((c) => ({
@@ -82,9 +111,9 @@ export default function ConsoleReportsPage() {
     deleteUrl: `/api/history/compare?id=${c.id}`,
     icon: (
       <div style={{ display: "flex" }}>
-        <AppIcon name={c.app_name_a} size={40} />
+        <AppIcon name={c.app_name_a} size={40} iconUrl={c.icon_url_a} />
         <div style={{ marginLeft: -12 }}>
-          <AppIcon name={c.app_name_b} size={40} />
+          <AppIcon name={c.app_name_b} size={40} iconUrl={c.icon_url_b} />
         </div>
       </div>
     ),

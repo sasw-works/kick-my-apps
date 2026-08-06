@@ -1,4 +1,5 @@
 import { sql } from "@vercel/postgres";
+import { fetchAppStoreListing } from "../../lib/reviews";
 
 export const runtime = "nodejs";
 
@@ -19,6 +20,7 @@ async function ensureTable() {
   // Daha önce oluşturulmuş tabloda eksik sütunlar varsa ekle (eski kurulumlar için güvenli göç).
   await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS result_json JSONB;`;
   await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS store_url TEXT;`;
+  await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS icon_url TEXT;`;
 }
 
 export async function POST(req) {
@@ -32,9 +34,19 @@ export async function POST(req) {
 
     const normalized = appName.trim();
 
+    let iconUrl = null;
+    if (storeUrl) {
+      try {
+        const listing = await fetchAppStoreListing(storeUrl);
+        iconUrl = listing?.iconUrl || null;
+      } catch {
+        iconUrl = null;
+      }
+    }
+
     const { rows } = await sql`
-      INSERT INTO scans (app_name, health_score, bad_count, warn_count, good_count, result_json, store_url)
-      VALUES (${normalized}, ${healthScore}, ${badCount ?? 0}, ${warnCount ?? 0}, ${goodCount ?? 0}, ${JSON.stringify(resultJson ?? null)}, ${storeUrl || null})
+      INSERT INTO scans (app_name, health_score, bad_count, warn_count, good_count, result_json, store_url, icon_url)
+      VALUES (${normalized}, ${healthScore}, ${badCount ?? 0}, ${warnCount ?? 0}, ${goodCount ?? 0}, ${JSON.stringify(resultJson ?? null)}, ${storeUrl || null}, ${iconUrl})
       RETURNING id;
     `;
 
@@ -105,7 +117,7 @@ export async function GET(req) {
     if (all) {
       // Karşılaştırma ekranı ve Reports sekmesi için: tüm uygulamalardaki taramaların özet listesi.
       const { rows: scanRows } = await sql`
-        SELECT id, app_name, health_score, bad_count, warn_count, good_count, store_url, created_at,
+        SELECT id, app_name, health_score, bad_count, warn_count, good_count, store_url, icon_url, created_at,
                (result_json -> 'reviewSummary' ->> 'totalReviews')::int AS review_count
         FROM scans
         ORDER BY created_at DESC
