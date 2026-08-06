@@ -192,9 +192,15 @@ export default function ConsoleReportsPage() {
           background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 999px; padding: 11px 18px;
         }
         .reports-search input { flex: 1; border: none; outline: none; background: transparent; font-size: 14px; color: var(--chalk); }
-        .reports-tabs { display: flex; gap: 4px; background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 10px; padding: 3px; flex-shrink: 0; }
-        .reports-tab { border: none; background: transparent; padding: 7px 14px; border-radius: 8px; font-size: 13px; color: var(--muted); cursor: pointer; }
-        .reports-tab-active { background: var(--chalk); color: var(--ink-2); font-weight: 600; }
+        .reports-tabs { display: flex; gap: 6px; flex-wrap: wrap; flex-shrink: 0; }
+        .reports-tab {
+          display: flex; align-items: center; gap: 6px; background: var(--ink-2); border: 1px solid var(--ink-3);
+          border-radius: 999px; padding: 6px 14px; font-size: 12.5px; color: var(--muted); cursor: pointer;
+          transition: border-color 0.15s ease, background 0.15s ease;
+        }
+        .reports-tab:hover { border-color: var(--brand); }
+        .reports-tab-active { background: var(--ink-3); border-color: var(--chalk); color: var(--chalk); font-weight: 600; }
+        .reports-tab-count { font-family: var(--font-mono); font-size: 11px; opacity: 0.7; }
         .reports-table { width: 100%; border-collapse: collapse; background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 14px; overflow: hidden; }
         .reports-table th {
           text-align: left; font-size: 11px; letter-spacing: 0.06em; color: var(--muted); font-weight: 600;
@@ -250,16 +256,16 @@ export default function ConsoleReportsPage() {
         </div>
         <div className="reports-tabs">
           {[
-            { key: "all", label: "All" },
-            { key: "comparison", label: "Comparison" },
-            { key: "individual", label: "Individual" },
+            { key: "all", label: "All", count: individualRows.length + comparisonRows.length },
+            { key: "comparison", label: "Comparison", count: comparisonRows.length },
+            { key: "individual", label: "Individual", count: individualRows.length },
           ].map((t) => (
             <button
               key={t.key}
               className={`reports-tab ${filter === t.key ? "reports-tab-active" : ""}`}
               onClick={() => setFilter(t.key)}
             >
-              {t.label}
+              {t.label} <span className="reports-tab-count">{t.count}</span>
             </button>
           ))}
         </div>
