@@ -34,6 +34,22 @@ export async function POST(req) {
   }
 }
 
+export async function DELETE(req) {
+  try {
+    await ensureTable();
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+    if (!id) {
+      return Response.json({ error: "id gerekli." }, { status: 400 });
+    }
+    await sql`DELETE FROM comparisons WHERE id = ${id};`;
+    return Response.json({ ok: true });
+  } catch (err) {
+    console.error(err);
+    return Response.json({ error: "Silinemedi: " + err.message }, { status: 500 });
+  }
+}
+
 export async function GET(req) {
   try {
     await ensureTable();

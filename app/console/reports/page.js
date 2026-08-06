@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Search, FileText, GitCompare, Loader2 } from "lucide-react";
+import { Search, FileText, GitCompare, Loader2, Eye, Download, Trash2, X } from "lucide-react";
 
 function AppIcon({ name, size = 40 }) {
   const letter = (name || "?").trim().charAt(0).toUpperCase();
@@ -29,12 +30,15 @@ function AppIcon({ name, size = 40 }) {
 }
 
 export default function ConsoleReportsPage() {
+  const router = useRouter();
   const [scans, setScans] = useState(null);
   const [comparisons, setComparisons] = useState([]);
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("all"); // all | individual | comparison
+  const [selected, setSelected] = useState(new Set());
+  const [deleting, setDeleting] = useState(false);
 
-  useEffect(() => {
+  const loadAll = () => {
     Promise.all([
       fetch("/api/history?all=true").then((r) => r.json()),
       fetch("/api/history/compare?all=true").then((r) => r.json()),
@@ -47,27 +51,35 @@ export default function ConsoleReportsPage() {
         setScans([]);
         setComparisons([]);
       });
+  };
+
+  useEffect(() => {
+    loadAll();
   }, []);
 
   const individualRows = (scans || []).map((s) => ({
     kind: "individual",
     id: s.id,
+    key: `individual-${s.id}`,
     title: s.app_name,
     subtitle: null,
     reviewCount: s.review_count,
     createdAt: s.created_at,
     href: `/history/${s.id}`,
+    deleteUrl: `/api/history?id=${s.id}`,
     icon: <AppIcon name={s.app_name} />,
   }));
 
   const comparisonRows = comparisons.map((c) => ({
     kind: "comparison",
     id: c.id,
+    key: `comparison-${c.id}`,
     title: `${c.app_name_a} vs ${c.app_name_b}`,
     subtitle: `${c.app_name_a} vs ${c.app_name_b}`,
     reviewCount: null,
     createdAt: c.created_at,
     href: `/history/compare/${c.id}`,
+    deleteUrl: `/api/history/compare?id=${c.id}`,
     icon: (
       <div style={{ display: "flex" }}>
         <AppIcon name={c.app_name_a} size={40} />
@@ -87,14 +99,65 @@ export default function ConsoleReportsPage() {
     .filter((r) => !query || r.title.toLowerCase().includes(query.toLowerCase()))
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
+  const allSelected = rows.length > 0 && rows.every((r) => selected.has(r.key));
+
+  const toggleRow = (key) => {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  };
+
+  const toggleAll = () => {
+    setSelected((prev) => {
+      if (allSelected) return new Set();
+      return new Set(rows.map((r) => r.key));
+    });
+  };
+
+  const clearSelection = () => setSelected(new Set());
+
+  const selectedRows = rows.filter((r) => selected.has(r.key));
+
+  const handleDeleteOne = async (row) => {
+    if (!confirm(`"${row.title}" silinsin mi? Bu işlem geri alınamaz.`)) return;
+    await fetch(row.deleteUrl, { method: "DELETE" });
+    loadAll();
+    setSelected((prev) => {
+      const next = new Set(prev);
+      next.delete(row.key);
+      return next;
+    });
+  };
+
+  const handleDeleteSelected = async () => {
+    if (selectedRows.length === 0) return;
+    if (!confirm(`${selectedRows.length} rapor silinsin mi? Bu işlem geri alınamaz.`)) return;
+    setDeleting(true);
+    await Promise.all(selectedRows.map((r) => fetch(r.deleteUrl, { method: "DELETE" })));
+    setDeleting(false);
+    clearSelection();
+    loadAll();
+  };
+
+  const handleDownloadSelected = () => {
+    // Toplu/anlık PDF üretimi henüz yok; her raporu kendi sayfasında (gerçek "PDF İndir" ile) açıyoruz.
+    selectedRows.forEach((r) => window.open(r.href, "_blank"));
+  };
+
   return (
     <main className="reports-page">
       <style>{`
-        .reports-page { padding: 32px 40px; max-width: 1300px; margin: 0 auto; }
-        .reports-toolbar { display: flex; align-items: center; gap: 12px; background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 14px; padding: 10px 16px; margin-bottom: 24px; }
-        .reports-search { flex: 1; display: flex; align-items: center; gap: 10px; }
+        .reports-page { padding: 32px 40px 120px; max-width: 1300px; margin: 0 auto; }
+        .reports-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 24px; }
+        .reports-search {
+          flex: 1; max-width: 640px; display: flex; align-items: center; gap: 10px;
+          background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 999px; padding: 11px 18px;
+        }
         .reports-search input { flex: 1; border: none; outline: none; background: transparent; font-size: 14px; color: var(--chalk); }
-        .reports-tabs { display: flex; gap: 4px; background: var(--ink); border-radius: 10px; padding: 3px; }
+        .reports-tabs { display: flex; gap: 4px; background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 10px; padding: 3px; flex-shrink: 0; }
         .reports-tab { border: none; background: transparent; padding: 7px 14px; border-radius: 8px; font-size: 13px; color: var(--muted); cursor: pointer; }
         .reports-tab-active { background: var(--chalk); color: var(--ink-2); font-weight: 600; }
         .reports-table { width: 100%; border-collapse: collapse; background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 14px; overflow: hidden; }
@@ -104,6 +167,9 @@ export default function ConsoleReportsPage() {
         }
         .reports-table td { padding: 14px 16px; border-bottom: 1px solid var(--ink-3); font-size: 14px; color: var(--chalk); vertical-align: middle; }
         .reports-table tr:last-child td { border-bottom: none; }
+        .reports-table tr { transition: background 0.1s ease; }
+        .reports-table tbody tr:hover { background: var(--ink); }
+        .reports-row-selected { background: color-mix(in srgb, var(--brand) 6%, transparent) !important; }
         .reports-row-name { display: flex; align-items: center; gap: 12px; }
         .reports-row-title { font-weight: 600; }
         .reports-row-subtitle { font-size: 12px; color: var(--muted); margin-top: 2px; }
@@ -111,7 +177,35 @@ export default function ConsoleReportsPage() {
         .reports-type-individual { background: var(--ink-3); color: var(--muted); }
         .reports-type-comparison { background: color-mix(in srgb, var(--brand) 15%, transparent); color: var(--brand); }
         .reports-empty { text-align: center; padding: 80px 20px; color: var(--muted); }
-        .reports-view-link { font-size: 13px; color: var(--brand); font-weight: 600; text-decoration: none; }
+        .reports-checkbox { width: 16px; height: 16px; cursor: pointer; accent-color: var(--brand); }
+        .reports-row-actions { display: flex; align-items: center; gap: 6px; opacity: 0; transition: opacity 0.12s ease; }
+        .reports-table tbody tr:hover .reports-row-actions { opacity: 1; }
+        .reports-action-btn {
+          width: 30px; height: 30px; border-radius: 8px; border: none; background: var(--ink-3);
+          display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--chalk);
+          transition: background 0.12s ease;
+        }
+        .reports-action-btn:hover { background: color-mix(in srgb, var(--brand) 18%, transparent); color: var(--brand); }
+        .reports-action-btn-danger:hover { background: color-mix(in srgb, var(--kick) 18%, transparent); color: var(--kick); }
+        .reports-selection-bar {
+          position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+          background: #14151A; color: #fff; border-radius: 999px; padding: 12px 12px 12px 20px;
+          display: flex; align-items: center; gap: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 50;
+        }
+        .reports-selection-count {
+          display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600;
+        }
+        .reports-selection-badge {
+          background: var(--teal); color: #fff; width: 22px; height: 22px; border-radius: 50%;
+          display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700;
+        }
+        .reports-selection-divider { width: 1px; height: 20px; background: rgba(255,255,255,0.2); }
+        .reports-selection-actions { display: flex; align-items: center; gap: 4px; }
+        .reports-selection-btn {
+          width: 34px; height: 34px; border-radius: 50%; border: none; background: transparent; color: #fff;
+          display: flex; align-items: center; justify-content: center; cursor: pointer;
+        }
+        .reports-selection-btn:hover { background: rgba(255,255,255,0.12); }
       `}</style>
 
       <div className="reports-toolbar">
@@ -149,6 +243,9 @@ export default function ConsoleReportsPage() {
         <table className="reports-table">
           <thead>
             <tr>
+              <th style={{ width: 40 }}>
+                <input type="checkbox" className="reports-checkbox" checked={allSelected} onChange={toggleAll} />
+              </th>
               <th>Report</th>
               <th>Type</th>
               <th>Reviews</th>
@@ -158,7 +255,15 @@ export default function ConsoleReportsPage() {
           </thead>
           <tbody>
             {rows.map((r) => (
-              <tr key={`${r.kind}-${r.id}`}>
+              <tr key={r.key} className={selected.has(r.key) ? "reports-row-selected" : ""}>
+                <td>
+                  <input
+                    type="checkbox"
+                    className="reports-checkbox"
+                    checked={selected.has(r.key)}
+                    onChange={() => toggleRow(r.key)}
+                  />
+                </td>
                 <td>
                   <div className="reports-row-name">
                     {r.icon}
@@ -184,14 +289,47 @@ export default function ConsoleReportsPage() {
                 <td>{r.reviewCount ?? "—"}</td>
                 <td>{new Date(r.createdAt).toLocaleDateString("tr-TR")}</td>
                 <td>
-                  <Link href={r.href} className="reports-view-link">
-                    Detayı gör
-                  </Link>
+                  <div className="reports-row-actions">
+                    <button className="reports-action-btn" onClick={() => router.push(r.href)} aria-label="Görüntüle">
+                      <Eye size={14} />
+                    </button>
+                    <button className="reports-action-btn" onClick={() => window.open(r.href, "_blank")} aria-label="İndir">
+                      <Download size={14} />
+                    </button>
+                    <button
+                      className="reports-action-btn reports-action-btn-danger"
+                      onClick={() => handleDeleteOne(r)}
+                      aria-label="Sil"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+      )}
+
+      {selected.size > 0 && (
+        <div className="reports-selection-bar">
+          <div className="reports-selection-count">
+            <span className="reports-selection-badge">{selected.size}</span>
+            Selected
+          </div>
+          <div className="reports-selection-divider" />
+          <div className="reports-selection-actions">
+            <button className="reports-selection-btn" onClick={handleDownloadSelected} aria-label="İndir">
+              <Download size={16} />
+            </button>
+            <button className="reports-selection-btn" onClick={handleDeleteSelected} disabled={deleting} aria-label="Sil">
+              <Trash2 size={16} />
+            </button>
+            <button className="reports-selection-btn" onClick={clearSelection} aria-label="Kapat">
+              <X size={16} />
+            </button>
+          </div>
+        </div>
       )}
     </main>
   );
