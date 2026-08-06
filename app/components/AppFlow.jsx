@@ -172,6 +172,7 @@ export default function AppFlow({ showMarketing = true, handoffToConsole = false
           scanId={scanId}
           storeUrl={scanStoreUrl}
           screenshots={screenshotUrls}
+          onClose={() => router.push("/console/reports")}
         />
       )}
     </div>

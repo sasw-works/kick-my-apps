@@ -100,7 +100,7 @@ export default function ConsoleReportsPage() {
     subtitle: null,
     reviewCount: s.review_count,
     createdAt: s.created_at,
-    href: `/history/${s.id}`,
+    href: `/console/reports/${s.id}`,
     deleteUrl: `/api/history?id=${s.id}`,
     icon: <AppIcon name={s.app_name} iconUrl={s.icon_url} storeUrl={s.store_url} />,
   }));
@@ -113,7 +113,7 @@ export default function ConsoleReportsPage() {
     subtitle: `${c.app_name_a} vs ${c.app_name_b}`,
     reviewCount: null,
     createdAt: c.created_at,
-    href: `/history/compare/${c.id}`,
+    href: `/console/compare/${c.id}`,
     deleteUrl: `/api/history/compare?id=${c.id}`,
     icon: (
       <div style={{ display: "flex" }}>

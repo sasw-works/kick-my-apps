@@ -16,6 +16,7 @@ import {
   TrendingDown,
   MessageSquare,
   ChevronDown,
+  X,
   Lock,
   CheckCircle2,
   AlertTriangle,
@@ -490,7 +491,7 @@ function HistoryPanel({ history }) {
 // Main
 // ---------------------------------------------------------------------------
 
-export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", onReset, history = [], onViewHistory, scanId, storeUrl, screenshots = [] }) {
+export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", onReset, history = [], onViewHistory, scanId, storeUrl, screenshots = [], onClose }) {
   const usingRealData = Boolean(data);
   const reportRef = useRef(null);
   const [exporting, setExporting] = useState(false);
@@ -606,6 +607,12 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           background: var(--ink-2); border: 1px solid var(--ink-3);
           padding: 7px 12px; border-radius: 8px;
         }
+        .kma-close-btn {
+          width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--ink-3);
+          background: var(--ink-2); color: var(--chalk); display: flex; align-items: center; justify-content: center;
+          cursor: pointer; transition: background 0.15s ease, border-color 0.15s ease;
+        }
+        .kma-close-btn:hover { background: var(--ink-3); border-color: var(--kick); color: var(--kick); }
 
         .kma-main { padding: 24px 28px 32px; display: flex; flex-direction: column; gap: 32px; }
 
@@ -874,10 +881,16 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
       <div className="kma-header">
         <div className="kma-logo">KICK MY APPS<span className="dot">.</span></div>
-        <div className="app-picker">
-          {appLabel}
-          <ChevronDown size={14} />
-        </div>
+        {onClose ? (
+          <button className="kma-close-btn" onClick={onClose} aria-label="Kapat">
+            <X size={18} />
+          </button>
+        ) : (
+          <div className="app-picker">
+            {appLabel}
+            <ChevronDown size={14} />
+          </div>
+        )}
       </div>
 
       <div className="kma-main">
