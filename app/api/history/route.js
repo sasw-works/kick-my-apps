@@ -87,12 +87,13 @@ export async function GET(req) {
     }
 
     if (all) {
-      // Karşılaştırma ekranı için: tüm uygulamalardaki son taramaların özet listesi.
+      // Karşılaştırma ekranı ve Reports sekmesi için: tüm uygulamalardaki taramaların özet listesi.
       const { rows } = await sql`
-        SELECT id, app_name, health_score, bad_count, warn_count, good_count, created_at
+        SELECT id, app_name, health_score, bad_count, warn_count, good_count, store_url, created_at,
+               (result_json -> 'reviewSummary' ->> 'totalReviews')::int AS review_count
         FROM scans
         ORDER BY created_at DESC
-        LIMIT 50;
+        LIMIT 100;
       `;
       return Response.json({ scans: rows });
     }
