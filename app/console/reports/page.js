@@ -195,10 +195,10 @@ export default function ConsoleReportsPage() {
         .reports-search input { flex: 1; border: none; outline: none; background: transparent; font-size: 14px; color: var(--chalk); }
         .reports-tabs { display: flex; gap: 6px; flex-wrap: wrap; flex-shrink: 0; }
         .reports-tab {
-          display: flex; align-items: center; gap: 6px; background: var(--ink-2); border: 1px solid var(--ink-3);
+          display: flex; align-items: center; justify-content: center; gap: 6px; background: var(--ink-2); border: 1px solid var(--ink-3);
           border-radius: 999px; padding: 0 14px; font-size: 12.5px; color: var(--muted); cursor: pointer;
           transition: border-color 0.15s ease, background 0.15s ease;
-          height: 44px; box-sizing: border-box;
+          height: 44px; box-sizing: border-box; min-width: 150px;
         }
         .reports-tab:hover { border-color: var(--brand); }
         .reports-tab-active { background: var(--ink-3); border-color: var(--chalk); color: var(--chalk); font-weight: 600; }
@@ -258,7 +258,7 @@ export default function ConsoleReportsPage() {
         </div>
         <div className="reports-tabs">
           {[
-            { key: "all", label: "All", count: individualRows.length + comparisonRows.length },
+            { key: "all", label: "All Reports", count: individualRows.length + comparisonRows.length },
             { key: "comparison", label: "Comparison", count: comparisonRows.length },
             { key: "individual", label: "Individual", count: individualRows.length },
           ].map((t) => (
