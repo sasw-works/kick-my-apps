@@ -290,10 +290,10 @@ export default function ConsoleReportsPage() {
                 <input type="checkbox" className="reports-checkbox" checked={allSelected} onChange={toggleAll} />
               </th>
               <th>Report</th>
-              <th style={{ width: 150 }}>Type</th>
-              <th style={{ width: 150 }}>Reviews</th>
-              <th style={{ width: 150 }}>Created</th>
-              <th style={{ width: 150 }}>Actions</th>
+              <th style={{ width: 175 }}>Type</th>
+              <th style={{ width: 175 }}>Reviews</th>
+              <th style={{ width: 175 }}>Created</th>
+              <th style={{ width: 175 }}>Actions</th>
             </tr>
           </thead>
           <tbody>
