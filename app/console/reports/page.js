@@ -285,17 +285,17 @@ export default function ConsoleReportsPage() {
           <div>Henüz bir sorgulama yapmadın.</div>
         </div>
       ) : (
-        <table className="reports-table">
+        <table className="reports-table" lang="en">
           <thead>
             <tr>
               <th style={{ width: 40, paddingLeft: 21 }}>
                 <input type="checkbox" className="reports-checkbox" checked={allSelected} onChange={toggleAll} />
               </th>
               <th>Report</th>
-              <th className="reports-col-center" style={{ width: 175 }}>Inquiry Type</th>
-              <th className="reports-col-center" style={{ width: 175 }}>Reviews</th>
-              <th className="reports-col-center" style={{ width: 175 }}>Created On</th>
-              <th className="reports-col-center" style={{ width: 175 }}>Actions</th>
+              <th lang="en" className="reports-col-center" style={{ width: 175 }}>INQUIRY TYPE</th>
+              <th lang="en" className="reports-col-center" style={{ width: 175 }}>REVIEWS</th>
+              <th lang="en" className="reports-col-center" style={{ width: 175 }}>CREATED ON</th>
+              <th lang="en" className="reports-col-center" style={{ width: 175 }}>ACTIONS</th>
             </tr>
           </thead>
           <tbody>
