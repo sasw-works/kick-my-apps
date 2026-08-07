@@ -1212,7 +1212,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         {screenshots.length > 0 && (
           <div className="panel">
             <div className="panel-title">Ekran Görüntüleri (İşaretli)</div>
-            <div className="panel-subtitle">{dialCaption}</div>
+            <div className="panel-subtitle">Her bulgunun ekran üzerindeki yaklaşık konumu işaretlenmiştir</div>
             <div className="shot-grid">
               {screenshots.map((url, i) => (
                 <AnnotatedScreenshot key={i} url={url} index={i + 1} findings={findings} />
@@ -1224,7 +1224,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         {lensSummary.length > 0 && (
           <div className="panel">
             <div className="panel-title">Analiz Verileri</div>
-            <div className="panel-subtitle">{dialCaption}</div>
+            <div className="panel-subtitle">Mercek başına bulgu dağılımının görsel dökümü</div>
             <div className="panel-divider" />
             <div className="waveform-grid">
               {lensSummary.map((l) => (
@@ -1397,7 +1397,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         {asoReview && (
           <div className="panel">
           <div className="panel-title">App Store Listeleme (ASO)</div>
-          <div className="panel-subtitle">{dialCaption}</div>
+          <div className="panel-subtitle">App Store başlığı, açıklaması ve mağaza görselleri üzerine öneriler</div>
           <div className="aso-meta">
               {asoReview.version && <span>Sürüm {asoReview.version}</span>}
               {asoReview.genre && <span>· {asoReview.genre}</span>}
@@ -1428,7 +1428,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         {approvalRisks.length > 0 && (
           <div className="panel">
             <div className="panel-title">Güncelleme / İnceleme Riski</div>
-            <div className="panel-subtitle">{dialCaption}</div>
+            <div className="panel-subtitle">Bir sonraki mağaza denetiminde sorun çıkarabilecek sinyaller</div>
             <div className="risk-disclaimer">
               Uygulama zaten yayında — bunlar "ilk onay" riski değil, bir sonraki güncellemede veya
               rastgele bir mağaza denetiminde sorun çıkarabilecek sinyaller. Kesin bir garanti değil.
