@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Search, FileText, GitCompare, Loader2, Eye, Download, Trash2, X } from "lucide-react";
+import { Search, FileText, Loader2, Eye, Download, Trash2, X } from "lucide-react";
 
 function AppIcon({ name, size = 40, iconUrl, storeUrl }) {
   const [fetchedUrl, setFetchedUrl] = useState(null);
@@ -321,7 +321,6 @@ export default function ConsoleReportsPage() {
                 <td className="reports-col-center">
                   {r.kind === "comparison" ? (
                     <span className="reports-type-tag reports-type-comparison">
-                      <GitCompare size={11} style={{ marginRight: 4 }} />
                       Comparison
                     </span>
                   ) : (
