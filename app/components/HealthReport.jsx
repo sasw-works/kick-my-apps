@@ -1037,43 +1037,43 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .soon-badge { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; color: var(--muted); border: 1px solid var(--ink-3); padding: 2px 6px; border-radius: 4px; }
       `}</style>
 
-      <div className="kma-toolbar-card no-print">
-        <div className="kma-toolbar-app">
-          <ToolbarAppIcon name={appLabel} storeUrl={storeUrl} />
-          <div>
-            <div className="kma-toolbar-app-name">{appLabel}</div>
-            <div className="kma-toolbar-app-date">{reportDateLabel}</div>
+      <div className="kma-main">
+        <div className="kma-toolbar-card no-print">
+          <div className="kma-toolbar-app">
+            <ToolbarAppIcon name={appLabel} storeUrl={storeUrl} />
+            <div>
+              <div className="kma-toolbar-app-name">{appLabel}</div>
+              <div className="kma-toolbar-app-date">{reportDateLabel}</div>
+            </div>
           </div>
-        </div>
-        <div style={{ flex: 1 }} />
-        <button className="analyze-btn" onClick={handleExportPdf} disabled={exporting} style={{ opacity: exporting ? 0.6 : 1 }}>
-          <Download size={16} strokeWidth={2.3} />
-          {exporting ? "Hazırlanıyor…" : "PDF İndir"}
-        </button>
-        {scanId && (
-          <Link href={`/history?preselect=${scanId}`} className="analyze-btn" style={{ background: "var(--ink-3)", color: "var(--chalk)", textDecoration: "none" }}>
-            <GitCompare size={16} strokeWidth={2.3} />
-            Karşılaştır
-          </Link>
-        )}
-        <button className="analyze-btn analyze-btn-brand" onClick={onReset}>
-          <Sparkles size={16} strokeWidth={2.3} />
-          {onReset ? (
-            "Yeni Analiz"
-          ) : (
-            <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>
-              Yeni Analiz
+          <div style={{ flex: 1 }} />
+          <button className="analyze-btn" onClick={handleExportPdf} disabled={exporting} style={{ opacity: exporting ? 0.6 : 1 }}>
+            <Download size={16} strokeWidth={2.3} />
+            {exporting ? "Hazırlanıyor…" : "PDF İndir"}
+          </button>
+          {scanId && (
+            <Link href={`/history?preselect=${scanId}`} className="analyze-btn" style={{ background: "var(--ink-3)", color: "var(--chalk)", textDecoration: "none" }}>
+              <GitCompare size={16} strokeWidth={2.3} />
+              Karşılaştır
             </Link>
           )}
-        </button>
-        {onClose && (
-          <button className="kma-close-btn" onClick={onClose} aria-label="Kapat">
-            <X size={18} />
+          <button className="analyze-btn analyze-btn-brand" onClick={onReset}>
+            <Sparkles size={16} strokeWidth={2.3} />
+            {onReset ? (
+              "Yeni Analiz"
+            ) : (
+              <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>
+                Yeni Analiz
+              </Link>
+            )}
           </button>
-        )}
-      </div>
+          {onClose && (
+            <button className="kma-close-btn" onClick={onClose} aria-label="Kapat">
+              <X size={18} />
+            </button>
+          )}
+        </div>
 
-      <div className="kma-main">
         <div className="top-grid">
           <div className="panel dial-panel">
             <div className="panel-title">App Health Score</div>
