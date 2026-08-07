@@ -28,7 +28,7 @@ export default function AppSidebar() {
         }
         .kma-sidebar-logo { display: flex; align-items: center; gap: 8px; padding: 0 8px; margin-bottom: 28px; }
         .kma-sidebar-section { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: var(--muted); padding: 0 8px; margin-bottom: 10px; }
-        .kma-sidebar-nav { display: flex; flex-direction: column; gap: 7px; }
+        .kma-sidebar-nav { display: flex; flex-direction: column; gap: 17px; }
         .kma-sidebar-link {
           display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px;
           font-size: 14.5px; color: var(--chalk); text-decoration: none; transition: background 0.15s ease;
