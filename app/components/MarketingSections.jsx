@@ -241,6 +241,40 @@ function FreshIcon({ size = 36 }) {
   );
 }
 
+function Reveal({ children, delay = 0 }) {
+  const ref = React.useRef(null);
+  const [visible, setVisible] = React.useState(false);
+
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(22px)",
+        transition: `opacity 0.6s ease ${delay}ms, transform 0.6s ease ${delay}ms`,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
 function FaqItem({ q, a }) {
   const [open, setOpen] = React.useState(false);
   return (
@@ -405,6 +439,21 @@ export default function MarketingSections() {
         .mkt-review-body { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
 
         .mkt-priority-list { display: flex; flex-direction: column; gap: 8px; }
+        .mkt-feature-card-lift { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+        .mkt-feature-card-lift:hover { transform: translateY(-6px); box-shadow: 0 16px 32px rgba(20,33,61,0.1); }
+        .mkt-pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+        .mkt-pill-check {
+          display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600;
+          color: var(--brand); background: color-mix(in srgb, var(--brand) 12%, transparent);
+          padding: 5px 11px; border-radius: 999px;
+        }
+        .mkt-progress-label { display: flex; align-items: center; justify-content: space-between; font-size: 11.5px; color: var(--muted); margin-bottom: 6px; }
+        .mkt-progress-bar { height: 6px; border-radius: 3px; background: var(--ink-3); overflow: hidden; }
+        .mkt-progress-fill {
+          height: 100%; border-radius: 3px; background: var(--brand); width: 0%;
+          animation: mkt-fill-grow 1.1s ease 0.2s forwards;
+        }
+        @keyframes mkt-fill-grow { to { width: var(--fill-to); } }
         .mkt-priority-row { display: flex; align-items: center; gap: 10px; background: var(--ink); border-radius: 8px; padding: 8px 12px; }
         .mkt-priority-row + .mkt-priority-row { margin-top: 8px; }
         .mkt-priority-tag { font-family: var(--font-mono); font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; }
@@ -686,19 +735,24 @@ export default function MarketingSections() {
         <div className="mkt-section-title">Deep, but never messy</div>
         <div className="mkt-section-sub">13 categories of findings, prioritized by impact, and tracked with weekly digests and competitor comparisons.</div>
         <div className="mkt-grid-4">
-          <div className="mkt-feature-card">
+          <Reveal delay={0}>
+          <div className="mkt-feature-card mkt-feature-card-lift">
             <div className="mkt-feature-icon" style={{ background: "transparent" }}><AppStoreDataIcon size={66} /></div>
             <div className="mkt-feature-title">13 categories, 4 lenses</div>
-            <div className="mkt-feature-desc" style={{ marginBottom: 43 }}>From onboarding to accessibility, every finding maps to one of the UI / UX / Accessibility / Product lenses.</div>
-            <div className="mkt-priority-list">
-              <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UI</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>2 critical · 1 warning</span></div>
-              <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UX</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>1 warning</span></div>
+            <div className="mkt-feature-desc" style={{ marginBottom: 20 }}>From onboarding to accessibility, every finding maps to one of the UI / UX / Accessibility / Product lenses.</div>
+            <div className="mkt-pill-row">
+              <span className="mkt-pill-check"><CheckCircle2 size={12} /> UI scanned</span>
+              <span className="mkt-pill-check"><CheckCircle2 size={12} /> UX scanned</span>
             </div>
+            <div className="mkt-progress-label"><span>Coverage</span><span>13/13</span></div>
+            <div className="mkt-progress-bar"><div className="mkt-progress-fill" style={{ "--fill-to": "100%" }} /></div>
           </div>
-          <div className="mkt-feature-card">
+          </Reveal>
+          <Reveal delay={100}>
+          <div className="mkt-feature-card mkt-feature-card-lift">
             <div className="mkt-feature-icon" style={{ background: "transparent" }}><FreshIcon size={66} /></div>
             <div className="mkt-feature-title">Prioritized by impact</div>
-            <div className="mkt-feature-desc" style={{ marginBottom: 43 }}>We tell you what to fix first by matching high impact with low implementation effort, so nothing important slips through.</div>
+            <div className="mkt-feature-desc" style={{ marginBottom: 20 }}>We tell you what to fix first by matching high impact with low implementation effort, so nothing important slips through.</div>
             <div className="mkt-priority-list">
               {PRIORITY_ITEMS.slice(0, 2).map((p) => (
                 <div className="mkt-priority-row" key={p.tag}>
@@ -708,32 +762,35 @@ export default function MarketingSections() {
                 </div>
               ))}
             </div>
+            <div className="mkt-progress-label" style={{ marginTop: 16 }}><span>Quick wins ready</span><span>5</span></div>
+            <div className="mkt-progress-bar"><div className="mkt-progress-fill" style={{ "--fill-to": "72%" }} /></div>
           </div>
-          <div className="mkt-feature-card">
+          </Reveal>
+          <Reveal delay={200}>
+          <div className="mkt-feature-card mkt-feature-card-lift">
             <div className="mkt-feature-icon" style={{ background: "transparent" }}><AppStoreDataIcon size={66} /></div>
             <div className="mkt-feature-title">Weekly review digest</div>
-            <div className="mkt-feature-desc" style={{ marginBottom: 43 }}>Get a summary of a tracked app's new reviews delivered to your inbox every week.</div>
+            <div className="mkt-feature-desc" style={{ marginBottom: 20 }}>Get a summary of a tracked app's new reviews delivered to your inbox every week.</div>
             <div className="mkt-showcase-visual">
               <Mail size={22} color="var(--muted)" className="mkt-bounce" />
               <span style={{ fontSize: 12, color: "var(--muted)" }}>Every Monday, automatic</span>
             </div>
-          </div>
-          <div className="mkt-feature-card">
-            <div className="mkt-feature-icon" style={{ background: "transparent" }}><FreshIcon size={66} /></div>
-            <div className="mkt-feature-title">Compare with a competitor</div>
-            <div className="mkt-feature-desc" style={{ marginBottom: 43 }}>Put your app side by side with a competitor — scores and findings, one screen.</div>
-            <div className="mkt-showcase-visual" style={{ flexDirection: "row", gap: 24 }}>
-              <div style={{ textAlign: "center" }}>
-                <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--teal)" }}>78</div>
-                <div style={{ fontSize: 10, color: "var(--muted)" }}>You</div>
-              </div>
-              <GitCompare size={16} color="var(--muted)" className="mkt-pulse-scale" />
-              <div style={{ textAlign: "center" }}>
-                <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--yellow)" }}>61</div>
-                <div style={{ fontSize: 10, color: "var(--muted)" }}>Competitor</div>
-              </div>
+            <div className="mkt-pill-row" style={{ marginTop: 14 }}>
+              <span className="mkt-pill-check"><CheckCircle2 size={12} /> Delivered weekly</span>
             </div>
           </div>
+          </Reveal>
+          <Reveal delay={300}>
+          <div className="mkt-feature-card mkt-feature-card-lift">
+            <div className="mkt-feature-icon" style={{ background: "transparent" }}><FreshIcon size={66} /></div>
+            <div className="mkt-feature-title">Compare with a competitor</div>
+            <div className="mkt-feature-desc" style={{ marginBottom: 20 }}>Put your app side by side with a competitor — scores and findings, one screen.</div>
+            <div className="mkt-progress-label"><span>You</span><span style={{ color: "var(--teal)", fontWeight: 700 }}>78%</span></div>
+            <div className="mkt-progress-bar"><div className="mkt-progress-fill" style={{ "--fill-to": "78%", background: "var(--teal)" }} /></div>
+            <div className="mkt-progress-label" style={{ marginTop: 12 }}><span>Competitor</span><span style={{ color: "var(--yellow)", fontWeight: 700 }}>61%</span></div>
+            <div className="mkt-progress-bar"><div className="mkt-progress-fill" style={{ "--fill-to": "61%", background: "var(--yellow)" }} /></div>
+          </div>
+          </Reveal>
         </div>
       </div>
 
