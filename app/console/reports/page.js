@@ -205,11 +205,11 @@ export default function ConsoleReportsPage() {
         .reports-tab-count { font-family: var(--font-mono); font-size: 11px; opacity: 0.7; }
         .reports-table { width: 100%; border-collapse: collapse; background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 14px; overflow: hidden; }
         .reports-table th {
-          text-align: left; font-size: 11px; letter-spacing: 0.06em; color: var(--muted); font-weight: 600;
-          padding: 14px 16px; border-bottom: 1px solid var(--ink-3); text-transform: uppercase;
+          text-align: left; font-size: 11px; letter-spacing: 0.06em; color: color-mix(in srgb, var(--muted) 75%, black); font-weight: 600;
+          padding: 14px 16px; border-bottom: 1px solid color-mix(in srgb, var(--ink-3) 55%, white); text-transform: uppercase;
           height: 56px; box-sizing: border-box; background: var(--ink);
         }
-        .reports-table td { padding: 14px 16px; border-bottom: 1px solid var(--ink-3); font-size: 14px; color: var(--chalk); vertical-align: middle; height: 56px; box-sizing: border-box; }
+        .reports-table td { padding: 14px 16px; border-bottom: 1px solid color-mix(in srgb, var(--ink-3) 55%, white); font-size: 14px; color: var(--chalk); vertical-align: middle; height: 56px; box-sizing: border-box; }
         .reports-col-center, th.reports-col-center, td.reports-col-center { text-align: center; }
         .reports-table tr:last-child td { border-bottom: none; }
         .reports-table tr { transition: background 0.1s ease; }
