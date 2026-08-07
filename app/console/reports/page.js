@@ -207,9 +207,9 @@ export default function ConsoleReportsPage() {
         .reports-table th {
           text-align: left; font-size: 11px; letter-spacing: 0.06em; color: color-mix(in srgb, var(--muted) 55%, black); font-weight: 600;
           padding: 14px 16px; border-bottom: 1px solid color-mix(in srgb, var(--ink-3) 55%, white); text-transform: uppercase;
-          height: 56px; box-sizing: border-box; background: var(--ink-3);
+          height: 65px; box-sizing: border-box; background: var(--ink-3);
         }
-        .reports-table td { padding: 14px 16px; border-bottom: 1px solid color-mix(in srgb, var(--ink-3) 55%, white); font-size: 14px; color: var(--chalk); vertical-align: middle; height: 56px; box-sizing: border-box; }
+        .reports-table td { padding: 14px 16px; border-bottom: 1px solid color-mix(in srgb, var(--ink-3) 55%, white); font-size: 14px; color: var(--chalk); vertical-align: middle; height: 65px; box-sizing: border-box; }
         .reports-col-center, th.reports-col-center, td.reports-col-center { text-align: center; }
         .reports-table tr:last-child td { border-bottom: none; }
         .reports-table tr { transition: background 0.1s ease; }
