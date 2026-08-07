@@ -325,7 +325,6 @@ export default function ConsoleReportsPage() {
                     </span>
                   ) : (
                     <span className="reports-type-tag reports-type-individual">
-                      <FileText size={11} style={{ marginRight: 4 }} />
                       Individual
                     </span>
                   )}
