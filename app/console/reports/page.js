@@ -209,6 +209,7 @@ export default function ConsoleReportsPage() {
           padding: 14px 16px; border-bottom: 1px solid var(--ink-3); text-transform: uppercase;
         }
         .reports-table td { padding: 14px 16px; border-bottom: 1px solid var(--ink-3); font-size: 14px; color: var(--chalk); vertical-align: middle; }
+        .reports-col-center { text-align: center; }
         .reports-table tr:last-child td { border-bottom: none; }
         .reports-table tr { transition: background 0.1s ease; }
         .reports-table tbody tr:hover { background: var(--ink); }
@@ -221,7 +222,7 @@ export default function ConsoleReportsPage() {
         .reports-type-comparison { background: color-mix(in srgb, var(--brand) 15%, transparent); color: var(--brand); }
         .reports-empty { text-align: center; padding: 80px 20px; color: var(--muted); }
         .reports-checkbox { width: 16px; height: 16px; cursor: pointer; accent-color: var(--brand); }
-        .reports-row-actions { display: flex; align-items: center; gap: 6px; opacity: 0; transition: opacity 0.12s ease; }
+        .reports-row-actions { display: flex; align-items: center; justify-content: center; gap: 6px; opacity: 0; transition: opacity 0.12s ease; }
         .reports-table tbody tr:hover .reports-row-actions { opacity: 1; }
         .reports-action-btn {
           width: 30px; height: 30px; border-radius: 8px; border: none; background: var(--ink-3);
@@ -290,10 +291,10 @@ export default function ConsoleReportsPage() {
                 <input type="checkbox" className="reports-checkbox" checked={allSelected} onChange={toggleAll} />
               </th>
               <th>Report</th>
-              <th style={{ width: 175 }}>Type</th>
-              <th style={{ width: 175 }}>Reviews</th>
-              <th style={{ width: 175 }}>Created</th>
-              <th style={{ width: 175 }}>Actions</th>
+              <th className="reports-col-center" style={{ width: 175 }}>Type</th>
+              <th className="reports-col-center" style={{ width: 175 }}>Reviews</th>
+              <th className="reports-col-center" style={{ width: 175 }}>Created</th>
+              <th className="reports-col-center" style={{ width: 175 }}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -316,7 +317,7 @@ export default function ConsoleReportsPage() {
                     </div>
                   </div>
                 </td>
-                <td>
+                <td className="reports-col-center">
                   {r.kind === "comparison" ? (
                     <span className="reports-type-tag reports-type-comparison">
                       <GitCompare size={11} style={{ marginRight: 4 }} />
@@ -329,9 +330,9 @@ export default function ConsoleReportsPage() {
                     </span>
                   )}
                 </td>
-                <td>{r.reviewCount ?? "—"}</td>
-                <td>{new Date(r.createdAt).toLocaleDateString("tr-TR")}</td>
-                <td>
+                <td className="reports-col-center">{r.reviewCount ?? "—"}</td>
+                <td className="reports-col-center">{new Date(r.createdAt).toLocaleDateString("tr-TR")}</td>
+                <td className="reports-col-center">
                   <div className="reports-row-actions">
                     <button className="reports-action-btn" onClick={() => router.push(r.href)} aria-label="Görüntüle">
                       <Eye size={14} />
