@@ -687,7 +687,7 @@ export default function MarketingSections() {
         <div className="mkt-section-sub">13 categories of findings, prioritized by impact, and tracked with weekly digests and competitor comparisons.</div>
         <div className="mkt-grid-4">
           <div className="mkt-feature-card">
-            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon03 size={66} /></div>
+            <div className="mkt-feature-icon" style={{ background: "transparent" }}><AppStoreDataIcon size={66} /></div>
             <div className="mkt-feature-title">13 categories, 4 lenses</div>
             <div className="mkt-feature-desc" style={{ marginBottom: 43 }}>From onboarding to accessibility, every finding maps to one of the UI / UX / Accessibility / Product lenses.</div>
             <div className="mkt-priority-list">
@@ -696,7 +696,7 @@ export default function MarketingSections() {
             </div>
           </div>
           <div className="mkt-feature-card">
-            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon04 size={66} /></div>
+            <div className="mkt-feature-icon" style={{ background: "transparent" }}><FreshIcon size={66} /></div>
             <div className="mkt-feature-title">Prioritized by impact</div>
             <div className="mkt-feature-desc" style={{ marginBottom: 43 }}>We tell you what to fix first by matching high impact with low implementation effort, so nothing important slips through.</div>
             <div className="mkt-priority-list">
@@ -710,7 +710,7 @@ export default function MarketingSections() {
             </div>
           </div>
           <div className="mkt-feature-card">
-            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon05 size={66} /></div>
+            <div className="mkt-feature-icon" style={{ background: "transparent" }}><AppStoreDataIcon size={66} /></div>
             <div className="mkt-feature-title">Weekly review digest</div>
             <div className="mkt-feature-desc" style={{ marginBottom: 43 }}>Get a summary of a tracked app's new reviews delivered to your inbox every week.</div>
             <div className="mkt-showcase-visual">
@@ -719,7 +719,7 @@ export default function MarketingSections() {
             </div>
           </div>
           <div className="mkt-feature-card">
-            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon06 size={66} /></div>
+            <div className="mkt-feature-icon" style={{ background: "transparent" }}><FreshIcon size={66} /></div>
             <div className="mkt-feature-title">Compare with a competitor</div>
             <div className="mkt-feature-desc" style={{ marginBottom: 43 }}>Put your app side by side with a competitor — scores and findings, one screen.</div>
             <div className="mkt-showcase-visual" style={{ flexDirection: "row", gap: 24 }}>
