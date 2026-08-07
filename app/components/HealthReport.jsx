@@ -134,6 +134,60 @@ const HEALTH_SCORE = 58;
 // ticks beyond the current score fade to gray.
 // ---------------------------------------------------------------------------
 
+function ToolbarAppIcon({ name, storeUrl }) {
+  const [iconUrl, setIconUrl] = useState(null);
+
+  React.useEffect(() => {
+    if (!storeUrl) return;
+    let cancelled = false;
+    fetch(`/api/app-icon?storeUrl=${encodeURIComponent(storeUrl)}`)
+      .then((r) => r.json())
+      .then((d) => {
+        if (!cancelled && d.iconUrl) setIconUrl(d.iconUrl);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [storeUrl]);
+
+  const letter = (name || "?").trim().charAt(0).toUpperCase();
+
+  if (iconUrl) {
+    return <img src={iconUrl} alt="" className="kma-toolbar-app-icon" />;
+  }
+  return (
+    <div className="kma-toolbar-app-icon kma-toolbar-app-icon-fallback">{letter}</div>
+  );
+}
+
+// Bulgu say\u0131lar\u0131ndan sahte ama tutarl\u0131 (seed'li) bir "waveform" y\u00fcksekli\u011fi \u00fcretir.
+function seededHeight(seed, min = 12, max = 42) {
+  const x = Math.sin(seed * 999.17) * 10000;
+  const frac = x - Math.floor(x);
+  return Math.round(min + frac * (max - min));
+}
+
+function Waveform({ bad, warn, good }) {
+  const total = bad + warn + good || 1;
+  const barCount = 60;
+  const bars = Array.from({ length: barCount }, (_, i) => {
+    const ratio = i / barCount;
+    let color;
+    if (ratio < bad / total) color = "var(--yellow)";
+    else if (ratio < (bad + warn) / total) color = "var(--teal)";
+    else color = "var(--brand)";
+    return { height: seededHeight(i + bad * 3 + warn * 7 + good * 11), color };
+  });
+  return (
+    <div className="waveform-bars">
+      {bars.map((b, i) => (
+        <div key={i} className="waveform-bar" style={{ height: b.height, background: b.color }} />
+      ))}
+    </div>
+  );
+}
+
 function QueriedAppBadge({ name, storeUrl }) {
   const [iconUrl, setIconUrl] = useState(null);
 
@@ -432,6 +486,7 @@ const LENS_MAP = {
 };
 
 const LENS_ORDER = ["UI", "UX", "Erişilebilirlik", "Ürün"];
+const LENS_DISPLAY_LABEL = { UI: "USER INTERFACE", UX: "USER EXPERIENCE", Erişilebilirlik: "ACCESSIBILITY", Ürün: "PRODUCT" };
 const LENS_ICON = { UI: Palette, UX: Compass, Erişilebilirlik: Accessibility, Ürün: TrendingDown };
 const LENS_SUBTITLE = {
   UI: "Tasarım sistemi & görsel tutarlılık",
@@ -582,6 +637,21 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
     };
   }).filter((l) => l.total > 0);
 
+  const lensSummaryFull = LENS_ORDER.map((lens) => {
+    const items = findings.filter((f) => LENS_MAP[f.key] === lens);
+    return {
+      lens,
+      bad: items.filter((f) => f.status === "bad").length,
+      warn: items.filter((f) => f.status === "warn").length,
+      good: items.filter((f) => f.status === "good").length,
+      total: items.length,
+    };
+  });
+
+  const dialCaption = `${findings.length} bulgudan ${badCount} kritik, ${warnCount} dikkat gerektiriyor`;
+  const reportDateLabel = new Date().toLocaleDateString("tr-TR", { weekday: "long", day: "numeric", month: "long" }) +
+    " · " + new Date().toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" });
+
   const IMPACT_RANK = { bad: 2, warn: 1, good: 0 };
   const priorityActions = findings
     .filter((f) => f.status !== "good")
@@ -680,7 +750,57 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .analyze-btn:active { transform: translateY(0); }
 
         .panel { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 12px; padding: 18px 20px; box-shadow: var(--shadow); }
-        .panel-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--muted); margin-bottom: 12px; }
+        .panel-title { font-family: var(--font-display); font-size: 17px; letter-spacing: 0; font-weight: 700; color: var(--chalk); margin-bottom: 4px; }
+        .panel-subtitle { font-size: 12px; color: var(--muted); margin-bottom: 14px; }
+        .panel-divider { height: 1px; background: var(--ink-3); margin-bottom: 16px; }
+
+        .kma-toolbar-card {
+          display: flex; align-items: center; gap: 12px; background: var(--ink-2); border: 1px solid var(--ink-3);
+          border-radius: 16px; padding: 16px 20px; margin-bottom: 20px; flex-wrap: wrap;
+        }
+        .kma-toolbar-app { display: flex; align-items: center; gap: 12px; }
+        .kma-toolbar-app-icon { width: 46px; height: 46px; border-radius: 12px; object-fit: cover; border: 1px solid var(--ink-3); }
+        .kma-toolbar-app-icon-fallback {
+          background: var(--brand); color: #fff; display: flex; align-items: center; justify-content: center;
+          font-weight: 700; font-size: 18px;
+        }
+        .kma-toolbar-app-name { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--chalk); }
+        .kma-toolbar-app-date { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+        .analyze-btn-brand { background: var(--brand); color: #fff; }
+
+        .summary-badge-list { display: flex; flex-direction: column; gap: 14px; }
+        .summary-badge-row { display: flex; align-items: center; gap: 12px; }
+        .summary-badge {
+          width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+          font-weight: 700; font-size: 13px; flex-shrink: 0;
+        }
+        .summary-badge-title { font-size: 13.5px; font-weight: 600; color: var(--chalk); }
+
+        .priority-action-row-v2 { display: flex; align-items: center; gap: 12px; padding: 10px 0; }
+        .priority-action-num-v2 {
+          width: 26px; height: 26px; border-radius: 8px; background: var(--ink-3); color: var(--chalk);
+          font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .priority-action-title-v2 { font-size: 13.5px; font-weight: 600; color: var(--chalk); }
+
+        .impact-row-v2 { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 6px 0; }
+        .impact-label-v2 { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--chalk); }
+        .impact-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--brand); flex-shrink: 0; }
+        .impact-pill { font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 999px; white-space: nowrap; }
+
+        .lens-count-row { display: flex; }
+        .lens-count-item { flex: 1; text-align: center; padding: 0 12px; }
+        .lens-count-num { font-family: var(--font-display); font-size: 34px; font-weight: 800; color: var(--chalk); }
+        .lens-count-label { font-size: 11px; font-weight: 600; letter-spacing: 0.05em; color: var(--muted); margin-top: 4px; }
+
+        .waveform-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        @media (max-width: 800px) { .waveform-grid { grid-template-columns: 1fr; } }
+        .waveform-bars { display: flex; align-items: flex-end; gap: 2px; height: 42px; }
+        .waveform-bar { width: 3px; border-radius: 2px; animation: mkt-fill-grow-h 0.7s ease forwards; }
+        @keyframes mkt-fill-grow-h { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+        .waveform-caption { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; font-size: 11px; }
+        .waveform-caption-label { font-weight: 700; color: var(--chalk); letter-spacing: 0.04em; }
+        .waveform-caption-counts { color: var(--muted); font-family: var(--font-mono); font-size: 10.5px; }
         .ai-summary-text { font-size: 13.5px; line-height: 1.65; color: var(--chalk); }
         .priority-actions-list { display: flex; flex-direction: column; gap: 10px; }
         .priority-action-row { display: flex; align-items: center; gap: 8px; }
@@ -710,7 +830,8 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         @media (max-width: 900px) {
           .top-grid { grid-template-columns: 1fr; }
         }
-        .dial-panel { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .dial-panel { display: flex; flex-direction: column; align-items: flex-start; }
+        .dial-panel .dial-wrap { align-self: center; display: flex; flex-direction: column; align-items: center; }
         .dial-caption { font-size: 12px; color: var(--muted); text-align: center; margin-top: 4px; }
 
         .hist-header { margin-bottom: 10px; }
@@ -915,95 +1036,104 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .soon-badge { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; color: var(--muted); border: 1px solid var(--ink-3); padding: 2px 6px; border-radius: 4px; }
       `}</style>
 
-      <div className="kma-header">
-        <QueriedAppBadge name={appLabel} storeUrl={storeUrl} />
-        {onClose ? (
+      <div className="kma-toolbar-card no-print">
+        <div className="kma-toolbar-app">
+          <ToolbarAppIcon name={appLabel} storeUrl={storeUrl} />
+          <div>
+            <div className="kma-toolbar-app-name">{appLabel}</div>
+            <div className="kma-toolbar-app-date">{reportDateLabel}</div>
+          </div>
+        </div>
+        <div style={{ flex: 1 }} />
+        <button className="analyze-btn" onClick={handleExportPdf} disabled={exporting} style={{ opacity: exporting ? 0.6 : 1 }}>
+          <Download size={16} strokeWidth={2.3} />
+          {exporting ? "Hazırlanıyor…" : "PDF İndir"}
+        </button>
+        {scanId && (
+          <Link href={`/history?preselect=${scanId}`} className="analyze-btn" style={{ background: "var(--ink-3)", color: "var(--chalk)", textDecoration: "none" }}>
+            <GitCompare size={16} strokeWidth={2.3} />
+            Karşılaştır
+          </Link>
+        )}
+        <button className="analyze-btn analyze-btn-brand" onClick={onReset}>
+          <Sparkles size={16} strokeWidth={2.3} />
+          {onReset ? (
+            "Yeni Analiz"
+          ) : (
+            <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>
+              Yeni Analiz
+            </Link>
+          )}
+        </button>
+        {onClose && (
           <button className="kma-close-btn" onClick={onClose} aria-label="Kapat">
             <X size={18} />
           </button>
-        ) : (
-          <div className="app-picker">
-            {appLabel}
-            <ChevronDown size={14} />
-          </div>
         )}
       </div>
 
       <div className="kma-main">
-        <div className="upload-panel no-print">
-          <div className="upload-slot-group">
-            <div className="upload-slot">
-              <UploadCloud size={18} color="var(--yellow)" />
-              <span>Analiz {usingRealData ? "tamamlandı" : "örnek veriyle gösteriliyor"}</span>
-            </div>
-            <div className="upload-slot">
-              <Link2 size={18} color="var(--yellow)" />
-              <span>{reviewSummary ? `${reviewSummary.totalReviews} yorum incelendi` : "Yorum verisi yok"}</span>
-            </div>
-          </div>
-          <div style={{ flex: 1 }} />
-          <button className="analyze-btn" onClick={handleExportPdf} disabled={exporting} style={{ opacity: exporting ? 0.6 : 1 }}>
-            <Download size={16} strokeWidth={2.3} />
-            {exporting ? "Hazırlanıyor…" : "PDF İndir"}
-          </button>
-          {onViewHistory && (
-            <button className="analyze-btn" onClick={onViewHistory} style={{ background: "var(--ink-3)", color: "var(--chalk)" }}>
-              <History size={16} strokeWidth={2.3} />
-              Geçmiş
-            </button>
-          )}
-          {scanId && (
-            <Link href={`/history?preselect=${scanId}`} className="analyze-btn" style={{ background: "var(--ink-3)", color: "var(--chalk)", textDecoration: "none" }}>
-              <GitCompare size={16} strokeWidth={2.3} />
-              Rakiple Karşılaştır
-            </Link>
-          )}
-          <button className="analyze-btn" onClick={onReset}>
-            <Sparkles size={16} strokeWidth={2.3} />
-            {onReset ? (
-              "Yeni Analiz"
-            ) : (
-              <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>
-                Yeni Analiz
-              </Link>
-            )}
-          </button>
-        </div>
-
         <div className="top-grid">
           <div className="panel dial-panel">
-            <HealthDial score={healthScore} delta={history.length >= 2 ? healthScore - history[history.length - 2].health_score : null} />
-            <div className="dial-caption">
-              {findings.length} bulgudan {badCount} kritik, {warnCount} dikkat gerektiriyor
+            <div className="panel-title">App Health Score</div>
+            <div className="panel-subtitle">{dialCaption}</div>
+            <div className="dial-wrap">
+              <HealthDial score={healthScore} delta={history.length >= 2 ? healthScore - history[history.length - 2].health_score : null} />
             </div>
           </div>
           <div className="panel">
-            <div className="panel-title">ÖZET</div>
-            <div className="summary-list">
-              <div className="summary-row"><span className="summary-count" style={{ color: "var(--kick)" }}>{badCount}</span> Kritik seviyede sorun</div>
-              <div className="summary-row"><span className="summary-count" style={{ color: "var(--yellow)" }}>{warnCount}</span> Dikkat gerektiren bulgu</div>
-              <div className="summary-row"><span className="summary-count" style={{ color: "var(--teal)" }}>{goodCount}</span> Sorunsuz alan</div>
+            <div className="panel-title">Summary</div>
+            <div className="panel-subtitle">{dialCaption}</div>
+            <div className="summary-badge-list">
+              <div className="summary-badge-row">
+                <span className="summary-badge" style={{ background: "color-mix(in srgb, var(--kick) 15%, transparent)", color: "var(--kick)" }}>{badCount}</span>
+                <div>
+                  <div className="summary-badge-title">Kritik seviyede sorun</div>
+                </div>
+              </div>
+              <div className="summary-badge-row">
+                <span className="summary-badge" style={{ background: "color-mix(in srgb, var(--yellow) 15%, transparent)", color: "var(--yellow)" }}>{warnCount}</span>
+                <div>
+                  <div className="summary-badge-title">Dikkat gerektiren bulgu</div>
+                </div>
+              </div>
+              <div className="summary-badge-row">
+                <span className="summary-badge" style={{ background: "color-mix(in srgb, var(--teal) 15%, transparent)", color: "var(--teal)" }}>{goodCount}</span>
+                <div>
+                  <div className="summary-badge-title">Sorunsuz alan</div>
+                </div>
+              </div>
               {reviewSummary && (
-                <div className="summary-row"><span className="summary-count" style={{ color: "var(--chalk)" }}>{reviewSummary.totalReviews}</span> App Store yorumu ayrıca analiz edildi</div>
+                <div className="summary-badge-row">
+                  <span className="summary-badge" style={{ background: "var(--ink-3)", color: "var(--chalk)" }}>{reviewSummary.totalReviews}</span>
+                  <div>
+                    <div className="summary-badge-title">App Store yorumu analiz edildi</div>
+                  </div>
+                </div>
               )}
             </div>
           </div>
           {usingRealData && data.aiSummary && (
             <div className="panel">
-              <div className="panel-title">AI ÖZETİ</div>
+              <div className="panel-title">AI Summary</div>
+              <div className="panel-subtitle">{dialCaption}</div>
               <p className="ai-summary-text">{data.aiSummary}</p>
             </div>
           )}
           {priorityActions.length > 0 && (
             <div className="panel">
-              <div className="panel-title">ÖNCELİKLİ AKSİYONLAR</div>
+              <div className="panel-title">Öncelikli Aksiyonlar</div>
+              <div className="panel-subtitle">{dialCaption}</div>
+              <div className="panel-divider" />
               <div className="priority-actions-list">
                 {priorityActions.map((f, i) => {
                   const meta = STATUS_META[f.status];
                   return (
-                    <div className="priority-action-row" key={i}>
-                      <span className="priority-action-num">{i + 1}</span>
-                      <span className="priority-action-title">{f.title}</span>
+                    <div className="priority-action-row-v2" key={i}>
+                      <span className="priority-action-num-v2">{i + 1}</span>
+                      <div style={{ flex: 1 }}>
+                        <div className="priority-action-title-v2">{f.title}</div>
+                      </div>
                       <span className="priority-action-tag" style={{ color: meta.color, background: `color-mix(in srgb, ${meta.color} 15%, transparent)` }}>{meta.label}</span>
                     </div>
                   );
@@ -1013,19 +1143,21 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           )}
           {totalFindingsCount > 0 && (
             <div className="panel">
-              <div className="panel-title">TAHMİNİ ETKİ</div>
+              <div className="panel-title">Tahmini Etki</div>
+              <div className="panel-subtitle">{dialCaption}</div>
+              <div className="panel-divider" />
               <div className="impact-list">
-                <div className="impact-row">
-                  <span className="impact-label">Sağlık Skoru (tahmini üst sınır)</span>
-                  <span className="impact-value" style={{ color: "var(--teal)" }}>{healthScore} → ~{potentialScore}</span>
+                <div className="impact-row-v2">
+                  <span className="impact-label-v2"><span className="impact-dot" />Sağlık Skoru (tahmini üst sınır)</span>
+                  <span className="impact-pill" style={{ color: "var(--brand)", background: "color-mix(in srgb, var(--brand) 15%, transparent)" }}>{healthScore} → ~{potentialScore}</span>
                 </div>
-                <div className="impact-row">
-                  <span className="impact-label">Dönüşüm potansiyeli</span>
-                  <span className="impact-value" style={{ color: conversionColor }}>{conversionLevel}</span>
+                <div className="impact-row-v2">
+                  <span className="impact-label-v2"><span className="impact-dot" />Dönüşüm potansiyeli</span>
+                  <span className="impact-pill" style={{ color: conversionColor, background: `color-mix(in srgb, ${conversionColor} 15%, transparent)` }}>{conversionLevel}</span>
                 </div>
-                <div className="impact-row">
-                  <span className="impact-label">Kullanıcı sürtünmesi</span>
-                  <span className="impact-value" style={{ color: frictionColor }}>{frictionLevel}</span>
+                <div className="impact-row-v2">
+                  <span className="impact-label-v2"><span className="impact-dot" />Kullanıcı sürtünmesi</span>
+                  <span className="impact-pill" style={{ color: frictionColor, background: `color-mix(in srgb, ${frictionColor} 15%, transparent)` }}>{frictionLevel}</span>
                 </div>
               </div>
               <div className="impact-disclaimer">Bu rakamlar bulgu sayısına dayalı kaba bir tahmindir, kesin bir vaat değildir.</div>
@@ -1033,21 +1165,18 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           )}
         </div>
 
-        {lensScores && (
+        {lensSummaryFull.length > 0 && (
           <div className="panel">
-            <div className="panel-title">MERCEK BAZLI SKORLAR</div>
-            <div className="lens-score-row">
-              {LENS_ORDER.map((lens) => {
-                const score = lensScores[lens];
-                const color =
-                  score == null ? "var(--muted)" : score >= 80 ? "var(--teal)" : score >= 50 ? "var(--yellow)" : "var(--kick)";
-                return (
-                  <div className="lens-score-item" key={lens}>
-                    <div className="lens-score-num" style={{ color }}>{score ?? "—"}</div>
-                    <div className="lens-score-label">{lens}</div>
-                  </div>
-                );
-              })}
+            <div className="panel-title">Mercek Bazlı Skorlar</div>
+            <div className="panel-subtitle">{dialCaption}</div>
+            <div className="panel-divider" />
+            <div className="lens-count-row">
+              {lensSummaryFull.map((l, i) => (
+                <div className="lens-count-item" key={l.lens} style={{ borderLeft: i > 0 ? "1px solid var(--ink-3)" : "none" }}>
+                  <div className="lens-count-num">{l.total}</div>
+                  <div className="lens-count-label">{LENS_DISPLAY_LABEL[l.lens] || l.lens}</div>
+                </div>
+              ))}
             </div>
           </div>
         )}
@@ -1067,20 +1196,20 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         {lensSummary.length > 0 && (
           <div className="panel">
-            <div className="panel-title">ANALİZ VERİLERİ</div>
-            <div className="lens-grid">
+            <div className="panel-title">Analiz Verileri</div>
+            <div className="panel-subtitle">{dialCaption}</div>
+            <div className="panel-divider" />
+            <div className="waveform-grid">
               {lensSummary.map((l) => (
-                <div className="lens-item" key={l.lens}>
-                  <div className="lens-name">{l.lens}</div>
-                  <div className="lens-bar">
-                    {l.bad > 0 && <div className="lens-seg" style={{ flex: l.bad, background: "var(--kick)" }} />}
-                    {l.warn > 0 && <div className="lens-seg" style={{ flex: l.warn, background: "var(--yellow)" }} />}
-                    {l.good > 0 && <div className="lens-seg" style={{ flex: l.good, background: "var(--teal)" }} />}
-                  </div>
-                  <div className="lens-count">
-                    {l.bad > 0 && <span style={{ color: "var(--kick)" }}>{l.bad} kritik</span>}
-                    {l.warn > 0 && <span style={{ color: "var(--yellow)" }}>{l.warn} dikkat</span>}
-                    {l.good > 0 && <span style={{ color: "var(--teal)" }}>{l.good} sorunsuz</span>}
+                <div className="waveform-item" key={l.lens}>
+                  <Waveform bad={l.bad} warn={l.warn} good={l.good} />
+                  <div className="waveform-caption">
+                    <span className="waveform-caption-label">{(l.lens || "").toUpperCase()}</span>
+                    <span className="waveform-caption-counts">
+                      {l.bad > 0 && <span style={{ color: "var(--kick)" }}>{l.bad} Kritik</span>}
+                      {l.bad > 0 && (l.warn > 0 || l.good > 0) && " · "}
+                      {l.warn > 0 && <span style={{ color: "var(--yellow)" }}>{l.warn} Dikkat</span>}
+                    </span>
                   </div>
                 </div>
               ))}
