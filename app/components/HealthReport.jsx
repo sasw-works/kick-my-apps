@@ -551,7 +551,8 @@ function HistoryPanel({ history }) {
   return (
     <div className="panel">
       <div className="hist-header">
-        <div className="panel-title" style={{ marginBottom: 0 }}>SAĞLIK SKORU TRENDİ · {history.length} tarama</div>
+        <div className="panel-title">Sağlık Skoru Trendi</div>
+        <div className="panel-subtitle">{history.length} tarama üzerinden zaman içindeki değişim</div>
       </div>
       {history.length >= 2 ? (
         <>
@@ -1210,7 +1211,8 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         {screenshots.length > 0 && (
           <div className="panel">
-            <div className="panel-title">EKRAN GÖRÜNTÜLERİ (İŞARETLİ)</div>
+            <div className="panel-title">Ekran Görüntüleri (İşaretli)</div>
+            <div className="panel-subtitle">{dialCaption}</div>
             <div className="shot-grid">
               {screenshots.map((url, i) => (
                 <AnnotatedScreenshot key={i} url={url} index={i + 1} findings={findings} />
@@ -1244,9 +1246,10 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           </div>
         )}
 
-        <div>
+        <div className="panel">
+          <div className="panel-title">Bulgular</div>
+          <div className="panel-subtitle">{dialCaption}</div>
           <div className="bulgular-header">
-            <div className="panel-title" style={{ marginBottom: 0 }}>BULGULAR</div>
             <div className="finding-filter-tabs">
               <button className={`finding-filter-tab ${findingFilter === "all" ? "finding-filter-tab-active" : ""}`} onClick={() => setFindingFilter("all")}>
                 Tümü <span className="finding-filter-count">{findings.length}</span>
@@ -1291,7 +1294,8 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         {quickWins.length > 0 && (
           <div className="panel">
-            <div className="panel-title">⭐ HIZLI KAZANIMLAR · Yüksek etki, düşük efor</div>
+            <div className="panel-title">Hızlı Kazanımlar</div>
+            <div className="panel-subtitle">Yüksek etki, düşük efor · {dialCaption}</div>
             <div className="qw-list">
               {quickWins.map((f) => (
                 <div className="qw-row" key={f.key}>
@@ -1315,7 +1319,8 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         {reviewSummary && (
         <div className="panel">
-          <div className="panel-title">APP STORE YORUM ANALİZİ</div>
+          <div className="panel-title">App Store Yorum Analizi</div>
+          <div className="panel-subtitle">{reviewSummary.totalReviews} yorum üzerinden çıkarılan içgörüler</div>
           <div className="review-grid">
             <div>
               <div className="review-meta">
@@ -1391,8 +1396,9 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         {asoReview && (
           <div className="panel">
-            <div className="panel-title">APP STORE LİSTELEME (ASO)</div>
-            <div className="aso-meta">
+          <div className="panel-title">App Store Listeleme (ASO)</div>
+          <div className="panel-subtitle">{dialCaption}</div>
+          <div className="aso-meta">
               {asoReview.version && <span>Sürüm {asoReview.version}</span>}
               {asoReview.genre && <span>· {asoReview.genre}</span>}
               {typeof asoReview.screenshotCount === "number" && <span>· {asoReview.screenshotCount} mağaza görseli</span>}
@@ -1421,7 +1427,8 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         {approvalRisks.length > 0 && (
           <div className="panel">
-            <div className="panel-title">GÜNCELLEME / İNCELEME RİSKİ</div>
+            <div className="panel-title">Güncelleme / İnceleme Riski</div>
+            <div className="panel-subtitle">{dialCaption}</div>
             <div className="risk-disclaimer">
               Uygulama zaten yayında — bunlar "ilk onay" riski değil, bir sonraki güncellemede veya
               rastgele bir mağaza denetiminde sorun çıkarabilecek sinyaller. Kesin bir garanti değil.
