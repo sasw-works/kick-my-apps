@@ -823,12 +823,13 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .lens-score-num { font-family: var(--font-display); font-size: 32px; font-weight: 700; line-height: 1; }
         .lens-score-label { font-size: 12px; color: var(--muted); margin-top: 6px; }
 
-        .top-grid { display: grid; grid-template-columns: 260px repeat(3, 1fr); gap: 18px; }
-        @media (max-width: 1300px) {
-          .top-grid { grid-template-columns: 260px 1fr 1fr; }
-        }
+        .top-grid { display: grid; grid-template-columns: 260px 1fr 1fr; gap: 18px; margin-bottom: 18px; }
         @media (max-width: 900px) {
           .top-grid { grid-template-columns: 1fr; }
+        }
+        .action-impact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+        @media (max-width: 900px) {
+          .action-impact-grid { grid-template-columns: 1fr; }
         }
         .dial-panel { display: flex; flex-direction: column; align-items: flex-start; }
         .dial-panel .dial-wrap { align-self: center; display: flex; flex-direction: column; align-items: center; }
@@ -1120,6 +1121,9 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
               <p className="ai-summary-text">{data.aiSummary}</p>
             </div>
           )}
+        </div>
+
+        <div className="action-impact-grid">
           {priorityActions.length > 0 && (
             <div className="panel">
               <div className="panel-title">Öncelikli Aksiyonlar</div>
