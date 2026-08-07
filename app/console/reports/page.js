@@ -209,7 +209,7 @@ export default function ConsoleReportsPage() {
           padding: 14px 16px; border-bottom: 1px solid var(--ink-3); text-transform: uppercase;
         }
         .reports-table td { padding: 14px 16px; border-bottom: 1px solid var(--ink-3); font-size: 14px; color: var(--chalk); vertical-align: middle; }
-        .reports-col-center { text-align: center; }
+        .reports-col-center, th.reports-col-center, td.reports-col-center { text-align: center; }
         .reports-table tr:last-child td { border-bottom: none; }
         .reports-table tr { transition: background 0.1s ease; }
         .reports-table tbody tr:hover { background: var(--ink); }
