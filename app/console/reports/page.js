@@ -288,7 +288,7 @@ export default function ConsoleReportsPage() {
         <table className="reports-table">
           <thead>
             <tr>
-              <th style={{ width: 40 }}>
+              <th style={{ width: 40, paddingLeft: 21 }}>
                 <input type="checkbox" className="reports-checkbox" checked={allSelected} onChange={toggleAll} />
               </th>
               <th>Report</th>
@@ -301,7 +301,7 @@ export default function ConsoleReportsPage() {
           <tbody>
             {rows.map((r) => (
               <tr key={r.key} className={selected.has(r.key) ? "reports-row-selected" : ""}>
-                <td>
+                <td style={{ paddingLeft: 21 }}>
                   <input
                     type="checkbox"
                     className="reports-checkbox"
