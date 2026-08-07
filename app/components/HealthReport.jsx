@@ -1181,6 +1181,27 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           </div>
         )}
 
+        {lensScores && (
+          <div className="panel">
+            <div className="panel-title">Mercek Bazlı Kalite Skoru</div>
+            <div className="panel-subtitle">0-100 arası, o mercekteki bulguların ne kadarının sorunsuz olduğuna dayalı</div>
+            <div className="panel-divider" />
+            <div className="lens-score-row">
+              {LENS_ORDER.map((lens) => {
+                const score = lensScores[lens];
+                const color =
+                  score == null ? "var(--muted)" : score >= 80 ? "var(--teal)" : score >= 50 ? "var(--yellow)" : "var(--kick)";
+                return (
+                  <div className="lens-score-item" key={lens}>
+                    <div className="lens-score-num" style={{ color }}>{score ?? "—"}</div>
+                    <div className="lens-score-label">{lens}</div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         <HistoryPanel history={history} />
 
         {screenshots.length > 0 && (
@@ -1209,6 +1230,8 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
                       {l.bad > 0 && <span style={{ color: "var(--kick)" }}>{l.bad} Kritik</span>}
                       {l.bad > 0 && (l.warn > 0 || l.good > 0) && " · "}
                       {l.warn > 0 && <span style={{ color: "var(--yellow)" }}>{l.warn} Dikkat</span>}
+                      {l.warn > 0 && l.good > 0 && " · "}
+                      {l.good > 0 && <span style={{ color: "var(--teal)" }}>{l.good} Sorunsuz</span>}
                     </span>
                   </div>
                 </div>
