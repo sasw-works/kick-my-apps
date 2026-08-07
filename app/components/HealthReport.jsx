@@ -772,7 +772,8 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .summary-badge-list { display: flex; flex-direction: column; gap: 14px; }
         .summary-badge-row { display: flex; align-items: center; gap: 12px; }
         .summary-badge {
-          font-weight: 700; font-size: 13.5px; flex-shrink: 0; min-width: 20px;
+          width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+          font-weight: 700; font-size: 13.5px; flex-shrink: 0;
         }
         .summary-badge-title { font-size: 13.5px; font-weight: 400; color: var(--chalk); }
 
@@ -1087,26 +1088,26 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
             <div className="panel-subtitle">{dialCaption}</div>
             <div className="summary-badge-list">
               <div className="summary-badge-row">
-                <span className="summary-badge" style={{ color: "var(--kick)" }}>{badCount}</span>
+                <span className="summary-badge" style={{ background: "color-mix(in srgb, var(--kick) 15%, transparent)", color: "var(--kick)" }}>{badCount}</span>
                 <div>
                   <div className="summary-badge-title">Kritik seviyede sorun</div>
                 </div>
               </div>
               <div className="summary-badge-row">
-                <span className="summary-badge" style={{ color: "var(--yellow)" }}>{warnCount}</span>
+                <span className="summary-badge" style={{ background: "color-mix(in srgb, var(--yellow) 15%, transparent)", color: "var(--yellow)" }}>{warnCount}</span>
                 <div>
                   <div className="summary-badge-title">Dikkat gerektiren bulgu</div>
                 </div>
               </div>
               <div className="summary-badge-row">
-                <span className="summary-badge" style={{ color: "var(--teal)" }}>{goodCount}</span>
+                <span className="summary-badge" style={{ background: "color-mix(in srgb, var(--teal) 15%, transparent)", color: "var(--teal)" }}>{goodCount}</span>
                 <div>
                   <div className="summary-badge-title">Sorunsuz alan</div>
                 </div>
               </div>
               {reviewSummary && (
                 <div className="summary-badge-row">
-                  <span className="summary-badge" style={{ color: "var(--chalk)" }}>{reviewSummary.totalReviews}</span>
+                  <span className="summary-badge" style={{ background: "var(--ink-3)", color: "var(--chalk)" }}>{reviewSummary.totalReviews}</span>
                   <div>
                     <div className="summary-badge-title">App Store yorumu analiz edildi</div>
                   </div>
