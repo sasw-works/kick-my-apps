@@ -751,7 +751,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         .panel { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 12px; padding: 32px; box-shadow: var(--shadow); }
         .panel-title { font-family: var(--font-display); font-size: 17px; letter-spacing: 0; font-weight: 700; color: var(--chalk); margin-bottom: 4px; }
-        .panel-subtitle { font-size: 12px; color: var(--muted); margin-bottom: 14px; }
+        .panel-subtitle { font-size: 12px; color: var(--muted); margin-bottom: 32px; }
         .panel-divider { height: 1px; background: var(--ink-3); margin-bottom: 16px; }
 
         .kma-toolbar-card {
