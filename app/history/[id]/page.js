@@ -32,7 +32,7 @@ export default function ScanDetailPage() {
       className="min-h-screen px-4 pb-4 md:px-8 md:pb-8"
       style={{ background: "var(--ink)", paddingTop: 100 }}
     >
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-[1240px] mx-auto">
         {loading ? (
           <div style={{ textAlign: "center", color: "var(--muted)", padding: "60px 0" }}>
             <Loader2 size={22} style={{ margin: "0 auto 8px", animation: "spin 0.9s linear infinite" }} />

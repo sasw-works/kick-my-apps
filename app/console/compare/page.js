@@ -122,7 +122,7 @@ export default function ConsoleComparePage() {
   return (
     <main className="compare-page">
       <style>{`
-        .compare-page { padding: 48px 40px 100px; max-width: 1100px; margin: 0 auto; }
+        .compare-page { padding: 48px 40px 100px; max-width: 1240px; margin: 0 auto; }
         .compare-header { text-align: center; margin-bottom: 44px; }
         .compare-header-icon {
           width: 48px; height: 48px; border-radius: 50%; background: color-mix(in srgb, var(--brand) 12%, transparent);

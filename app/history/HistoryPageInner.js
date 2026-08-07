@@ -45,7 +45,7 @@ function HistoryPageContent() {
       className="min-h-screen px-4 pb-4 md:px-8 md:pb-8"
       style={{ background: "var(--ink)", paddingTop: 100 }}
     >
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-[1240px] mx-auto">
         {stage === "list" && (
           <HistoryList
             onBack={() => router.push("/")}

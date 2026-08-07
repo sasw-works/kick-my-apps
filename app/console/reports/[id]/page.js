@@ -39,7 +39,7 @@ export default function ConsoleReportDetailPage() {
 
   return (
     <main className="min-h-screen px-6 py-8" style={{ background: "var(--ink)" }}>
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-[1240px] mx-auto">
         <HealthReport
           data={scan.result_json}
           appLabel={scan.app_name}

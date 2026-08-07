@@ -185,7 +185,7 @@ export default function ConsoleReportsPage() {
   return (
     <main className="reports-page">
       <style>{`
-        .reports-page { padding: 32px 40px 120px; max-width: 1300px; margin: 0 auto; }
+        .reports-page { padding: 32px 40px 120px; max-width: 1240px; margin: 0 auto; }
         .reports-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 24px; }
         .reports-search {
           flex: 1; max-width: 640px; display: flex; align-items: center; gap: 10px;
