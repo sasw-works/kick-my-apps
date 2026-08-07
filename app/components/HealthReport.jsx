@@ -1247,9 +1247,11 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         )}
 
         <div className="panel">
-          <div className="panel-title">Bulgular</div>
-          <div className="panel-subtitle">{dialCaption}</div>
           <div className="bulgular-header">
+            <div>
+              <div className="panel-title">Bulgular</div>
+              <div className="panel-subtitle" style={{ marginBottom: 0 }}>{dialCaption}</div>
+            </div>
             <div className="finding-filter-tabs">
               <button className={`finding-filter-tab ${findingFilter === "all" ? "finding-filter-tab-active" : ""}`} onClick={() => setFindingFilter("all")}>
                 Tümü <span className="finding-filter-count">{findings.length}</span>
