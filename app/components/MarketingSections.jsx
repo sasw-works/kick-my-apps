@@ -316,8 +316,9 @@ export default function MarketingSections() {
           background: var(--ink); border-radius: 999px; padding: 5px 14px; flex: 1; max-width: 260px;
         }
         .mkt-preview-card {
-          background: var(--ink-2); padding: 28px;
+          background: var(--ink-2); padding: 0;
         }
+        .mkt-preview-full-img { width: 100%; display: block; }
         .mkt-preview-body { display: flex; gap: 28px; align-items: flex-start; }
         .mkt-preview-chart { width: 260px; flex-shrink: 0; border-radius: 12px; margin-right: 25px; }
         .mkt-preview-right { flex: 1; min-width: 0; }
@@ -607,22 +608,7 @@ export default function MarketingSections() {
             <div className="mkt-browser-url">kickmyapps.com/report</div>
           </div>
           <div className="mkt-preview-card">
-            <div className="mkt-preview-body">
-              <img src="/chart.svg" alt="" className="mkt-preview-chart" />
-              <div className="mkt-preview-right">
-                <div className="mkt-preview-header">
-                  <div className="mkt-preview-score">
-                    <div className="mkt-preview-score-num">84</div>
-                    <div style={{ fontSize: 12, color: "var(--muted)" }}>APP HEALTH SCORE</div>
-                  </div>
-                </div>
-                <div className="mkt-preview-findings">
-                  <div className="mkt-preview-row"><CheckCircle2 size={15} color="var(--teal)" /><span>Font hierarchy is clear and consistent</span></div>
-                  <div className="mkt-preview-row"><AlertTriangle size={15} color="var(--yellow)" /><span>Onboarding is 7 screens — a bit long</span></div>
-                  <div className="mkt-preview-row"><XCircle size={15} color="var(--kick)" /><span>CTA button has low contrast</span></div>
-                </div>
-              </div>
-            </div>
+            <img src="/kma-console-preview.png" alt="Kick My Apps console" className="mkt-preview-full-img" />
           </div>
         </div>
       </div>
