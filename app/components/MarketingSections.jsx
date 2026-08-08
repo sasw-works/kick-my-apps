@@ -441,6 +441,13 @@ export default function MarketingSections() {
           flex: 0 0 600px; box-sizing: border-box;
           padding: 56px 40px 40px 0; display: flex; flex-direction: column; justify-content: center;
         }
+        .mkt-grid-dark-title-h {
+          font-family: var(--font-display); font-size: 38px; font-weight: 700; color: #FFFFFF;
+          line-height: 1.15; letter-spacing: -0.01em; margin-bottom: 16px;
+        }
+        .mkt-grid-dark-title-p {
+          font-size: 15px; font-family: var(--font-body); color: rgba(255,255,255,0.6); line-height: 1.6; max-width: 420px;
+        }
         .mkt-grid-dark-spacer { flex: 0 0 auto; }
         .mkt-grid-dark-spacer-md { flex-basis: 300px; }
         .mkt-grid-dark-spacer-sm { flex-basis: 0px; }
@@ -744,7 +751,10 @@ export default function MarketingSections() {
         </video>
         <div className="mkt-grid-dark-inner">
         <div className="mkt-grid-dark-row">
-          <div className="mkt-grid-dark-title" />
+          <div className="mkt-grid-dark-title">
+            <div className="mkt-grid-dark-title-h">It really does<br />a lot now</div>
+            <div className="mkt-grid-dark-title-p">From screenshot analysis to weekly digests — everything you need to keep your app healthy, in one place.</div>
+          </div>
           {ALL_FEATURES.slice(0, 3).map((f) => (
             <div className="mkt-grid-dark-cell" key={f.title} style={{ "--cell-fill": "#FDFF00" }}>
               <div className="mkt-grid-dark-fill" style={f.bgImage ? { backgroundImage: `url(${f.bgImage})` } : undefined} />
