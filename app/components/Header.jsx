@@ -71,6 +71,25 @@ function NavDropdown({ label, items, open, onEnter, onLeave }) {
 
 export default function Header() {
   const [openMenu, setOpenMenu] = useState(null); // "features" | "usecases" | null
+  const closeTimer = useRef(null);
+
+  const openWithDelay = (key) => {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+    setOpenMenu(key);
+  };
+
+  const closeWithDelay = () => {
+    closeTimer.current = setTimeout(() => setOpenMenu(null), 180);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (closeTimer.current) clearTimeout(closeTimer.current);
+    };
+  }, []);
 
   return (
     <div className="kma-header-wrap">
@@ -144,15 +163,15 @@ export default function Header() {
             label="Features"
             items={FEATURE_ITEMS}
             open={openMenu === "features"}
-            onEnter={() => setOpenMenu("features")}
-            onLeave={() => setOpenMenu(null)}
+            onEnter={() => openWithDelay("features")}
+            onLeave={closeWithDelay}
           />
           <NavDropdown
             label="Use Cases"
             items={USE_CASE_ITEMS}
             open={openMenu === "usecases"}
-            onEnter={() => setOpenMenu("usecases")}
-            onLeave={() => setOpenMenu(null)}
+            onEnter={() => openWithDelay("usecases")}
+            onLeave={closeWithDelay}
           />
           <span className="kma-header-navitem">Pricing</span>
           <span className="kma-header-navitem">Blog</span>
