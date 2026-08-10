@@ -52,6 +52,61 @@ const ALL_FEATURES = [
   { icon: Download, title: "PDF Export", desc: "Download your full report as a PDF and share it instantly.", color: "var(--yellow)", fill: "#F3C468", bgImage: null },
 ];
 
+const PRICING_PLANS = [
+  {
+    tier: "FREE",
+    name: "Free",
+    price: "€0",
+    priceNote: "Free forever",
+    desc: "For curious founders and designers testing the value of feedback intelligence.",
+    features: [
+      { text: "2 AI reports per month", included: true },
+      { text: "1 comparison report per month", included: true },
+      { text: "Share reports via link", included: true },
+      { text: "Pulse alerts", included: false },
+      { text: "PDF export", included: false },
+      { text: "Email support (48h response)", included: true },
+    ],
+    cta: "Get started free",
+    highlighted: false,
+  },
+  {
+    tier: "PRO",
+    name: "Pro",
+    price: "€11",
+    priceSuffix: "/mo",
+    priceNote: "€134/yr · billed annually",
+    desc: "For PMs, UX leads, and founders who need continuous competitive intelligence.",
+    features: [
+      { text: "10 AI reports per month", included: true },
+      { text: "3 comparison reports per month", included: true },
+      { text: "Share reports via link", included: true },
+      { text: "2 Pulse monitors", included: true },
+      { text: "PDF export", included: true },
+      { text: "Priority email support (24h response)", included: true },
+    ],
+    cta: "Upgrade to Pro",
+    highlighted: true,
+  },
+  {
+    tier: "ENTERPRISE",
+    name: "Enterprise",
+    price: "Custom",
+    priceNote: "Tailored to your organization",
+    desc: "For teams and organizations that need custom limits, SSO, and integrations.",
+    features: [
+      { text: "Everything in Pro, unlimited", included: true, bold: true },
+      { text: "Unlimited seats", included: true },
+      { text: "SSO authentication (available on request)", included: true },
+      { text: "Slack & Teams integration (available on request)", included: true },
+      { text: "API access & data export (available on request)", included: true },
+      { text: "Dedicated support", included: true },
+    ],
+    cta: "Contact Us",
+    highlighted: false,
+  },
+];
+
 const FAQ = [
   {
     q: "What data do you collect?",
@@ -539,6 +594,42 @@ export default function MarketingSections() {
         .mkt-carousel-arrow:hover { border-color: var(--brand); }
 
         .faq-eyebrow { font-size: 15px; font-family: var(--font-body); color: var(--muted); text-align: center; margin-bottom: 8px; }
+
+        .mkt-pricing { margin-top: 150px; }
+        .mkt-pricing-header { text-align: center; margin-bottom: 48px; }
+        .mkt-pricing-title { font-family: var(--font-display); font-size: 44px; font-weight: 800; color: var(--chalk); margin-bottom: 12px; }
+        .mkt-pricing-sub { font-size: 16px; color: var(--muted); }
+        .mkt-pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: start; }
+        @media (max-width: 900px) { .mkt-pricing-grid { grid-template-columns: 1fr; } }
+        .mkt-pricing-card {
+          position: relative; background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 20px;
+          padding: 32px; display: flex; flex-direction: column;
+        }
+        .mkt-pricing-card-highlighted { border: 2px solid var(--brand); box-shadow: 0 12px 32px color-mix(in srgb, var(--brand) 15%, transparent); }
+        .mkt-pricing-badge {
+          position: absolute; top: -16px; left: 50%; transform: translateX(-50%);
+          background: var(--brand); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+          padding: 6px 16px; border-radius: 999px; white-space: nowrap;
+        }
+        .mkt-pricing-tier {
+          display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: var(--muted);
+          background: var(--ink-3); padding: 5px 12px; border-radius: 999px; width: fit-content; margin-bottom: 20px;
+        }
+        .mkt-pricing-card-highlighted .mkt-pricing-tier { background: color-mix(in srgb, var(--brand) 15%, transparent); color: var(--brand); }
+        .mkt-pricing-price-row { display: flex; align-items: baseline; gap: 4px; }
+        .mkt-pricing-price { font-family: var(--font-display); font-size: 42px; font-weight: 800; color: var(--chalk); }
+        .mkt-pricing-price-suffix { font-size: 15px; color: var(--muted); }
+        .mkt-pricing-note { font-size: 13px; color: var(--muted); margin-top: 6px; margin-bottom: 20px; }
+        .mkt-pricing-desc { font-size: 14px; color: var(--chalk); line-height: 1.55; min-height: 66px; }
+        .mkt-pricing-divider { height: 1px; background: var(--ink-3); margin: 20px 0; }
+        .mkt-pricing-features { display: flex; flex-direction: column; gap: 16px; flex: 1; margin-bottom: 28px; }
+        .mkt-pricing-feature-row { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; line-height: 1.4; }
+        .mkt-pricing-feature-row svg { flex-shrink: 0; margin-top: 2px; }
+        .mkt-pricing-cta {
+          border: none; border-radius: 999px; padding: 15px; font-size: 15px; font-weight: 700; cursor: pointer;
+          background: var(--ink-3); color: var(--chalk); width: 100%;
+        }
+        .mkt-pricing-cta-brand { background: var(--chalk); color: #fff; }
         .faq-list { max-width: 720px; margin: 0 auto 40px; border-top: 1px solid var(--ink-3); }
         .faq-row { border-bottom: 1px solid var(--ink-3); }
         .faq-q {
@@ -765,6 +856,42 @@ export default function MarketingSections() {
             </div>
           ))}
         </div>
+        </div>
+      </div>
+
+      {/* Pricing */}
+      <div className="mkt-pricing">
+        <div className="mkt-pricing-header">
+          <div className="mkt-pricing-title">Choose your plan</div>
+          <div className="mkt-pricing-sub">Start free, upgrade when you need more. Cancel anytime.</div>
+        </div>
+        <div className="mkt-pricing-grid">
+          {PRICING_PLANS.map((plan) => (
+            <div key={plan.tier} className={`mkt-pricing-card ${plan.highlighted ? "mkt-pricing-card-highlighted" : ""}`}>
+              {plan.highlighted && <div className="mkt-pricing-badge">MOST POPULAR</div>}
+              <div className="mkt-pricing-tier">{plan.tier}</div>
+              <div className="mkt-pricing-price-row">
+                <span className="mkt-pricing-price">{plan.price}</span>
+                {plan.priceSuffix && <span className="mkt-pricing-price-suffix">{plan.priceSuffix}</span>}
+              </div>
+              <div className="mkt-pricing-note">{plan.priceNote}</div>
+              <div className="mkt-pricing-desc">{plan.desc}</div>
+              <div className="mkt-pricing-divider" />
+              <div className="mkt-pricing-features">
+                {plan.features.map((f, i) => (
+                  <div className="mkt-pricing-feature-row" key={i}>
+                    {f.included ? (
+                      <CheckCircle2 size={16} color="var(--teal)" />
+                    ) : (
+                      <XCircle size={16} color="var(--ink-3)" />
+                    )}
+                    <span style={{ color: f.included ? "var(--chalk)" : "var(--muted)", fontWeight: f.bold ? 700 : 400 }}>{f.text}</span>
+                  </div>
+                ))}
+              </div>
+              <button className={`mkt-pricing-cta ${plan.highlighted ? "mkt-pricing-cta-brand" : ""}`}>{plan.cta}</button>
+            </div>
+          ))}
         </div>
       </div>
 
