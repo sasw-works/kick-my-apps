@@ -598,7 +598,10 @@ export default function MarketingSections() {
 
         .faq-eyebrow { font-size: 15px; font-family: var(--font-body); color: var(--muted); text-align: center; margin-bottom: 8px; }
 
-        .mkt-pricing { margin-top: 150px; }
+        .mkt-pricing { margin-top: 150px; width: calc(100% + 150px); max-width: 1150px; margin-left: -75px; margin-right: -75px; }
+        @media (max-width: 1100px) {
+          .mkt-pricing { width: 100%; max-width: 100%; margin-left: 0; margin-right: 0; }
+        }
         .mkt-pricing-header { margin-bottom: 48px; }
         .mkt-pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: start; }
         @media (max-width: 900px) { .mkt-pricing-grid { grid-template-columns: 1fr; } }
