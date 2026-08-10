@@ -99,9 +99,9 @@ const PRICING_PLANS = [
     features: [
       { text: "Everything in Pro, unlimited", included: true, bold: true },
       { text: "Unlimited seats", included: true },
-      { text: "SSO authentication (available on request)", included: true },
-      { text: "Slack & Teams integration (available on request)", included: true },
-      { text: "API access & data export (available on request)", included: true },
+      { text: "SSO authentication", included: true },
+      { text: "Slack & Teams integration", included: true },
+      { text: "API access & data export", included: true },
       { text: "Dedicated support", included: true },
     ],
     cta: "Contact Us",
