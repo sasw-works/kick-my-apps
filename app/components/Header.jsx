@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import LogoMark from "./LogoMark";
-import { Camera, Star, FileSearch, GitCompare, Mail, Users, Rocket, Palette } from "lucide-react";
+import { Camera, Star, FileSearch, GitCompare, Mail, Users, Rocket, Palette, Plus, X } from "lucide-react";
 
 const FEATURE_ITEMS = [
   { icon: Camera, title: "Screenshot Analysis", desc: "Find UI/UX issues automatically" },
@@ -20,25 +21,50 @@ const USE_CASE_ITEMS = [
 ];
 
 function NavDropdown({ label, items, open, onEnter, onLeave }) {
+  const anchorRef = useRef(null);
+  const [coords, setCoords] = useState(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
+  useEffect(() => {
+    if (open && anchorRef.current) {
+      const rect = anchorRef.current.getBoundingClientRect();
+      setCoords({ top: rect.bottom + 18, left: rect.left + rect.width / 2 });
+    }
+  }, [open]);
+
   return (
-    <div className="kma-navdrop" onMouseEnter={onEnter} onMouseLeave={onLeave}>
-      <span className="kma-header-navitem kma-header-navitem-clickable">{label}</span>
-      {open && (
-        <div className="kma-navdrop-panel">
-          {items.map((item) => {
-            const Icon = item.icon;
-            return (
-              <div className="kma-navdrop-item" key={item.title}>
-                <div className="kma-navdrop-icon"><Icon size={16} /></div>
-                <div>
-                  <div className="kma-navdrop-item-title">{item.title}</div>
-                  <div className="kma-navdrop-item-desc">{item.desc}</div>
+    <div className="kma-navdrop" ref={anchorRef} onMouseEnter={onEnter} onMouseLeave={onLeave}>
+      <span className="kma-header-navitem kma-header-navitem-clickable">
+        {label}
+        <span className={`kma-navdrop-toggle ${open ? "kma-navdrop-toggle-open" : ""}`}>
+          {open ? <X size={11} /> : <Plus size={11} />}
+        </span>
+      </span>
+      {mounted && open && coords &&
+        createPortal(
+          <div
+            className="kma-navdrop-panel"
+            style={{ top: coords.top, left: coords.left }}
+            onMouseEnter={onEnter}
+            onMouseLeave={onLeave}
+          >
+            {items.map((item) => {
+              const Icon = item.icon;
+              return (
+                <div className="kma-navdrop-item" key={item.title}>
+                  <div className="kma-navdrop-icon"><Icon size={16} /></div>
+                  <div>
+                    <div className="kma-navdrop-item-title">{item.title}</div>
+                    <div className="kma-navdrop-item-desc">{item.desc}</div>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
+              );
+            })}
+          </div>,
+          document.body
+        )}
     </div>
   );
 }
@@ -89,6 +115,7 @@ export default function Header() {
           margin-right: 34px;
         }
         .kma-header-navitem {
+          display: flex; align-items: center; gap: 6px;
           font-size: 15px;
           font-weight: 500;
           color: var(--chalk);
@@ -96,52 +123,13 @@ export default function Header() {
           white-space: nowrap;
         }
         .kma-header-navitem-clickable { cursor: pointer; }
-        .kma-navdrop { position: relative; }
-        .kma-navdrop-panel {
-          position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
-          margin-top: 18px; background: var(--ink-2); border: 1px solid var(--ink-3);
-          border-radius: 14px; padding: 10px; box-shadow: 0 16px 40px rgba(20,33,61,0.14);
-          min-width: 260px;
-        }
-        .kma-navdrop-item {
-          display: flex; align-items: flex-start; gap: 12px; padding: 10px 12px; border-radius: 10px;
-        }
-        .kma-navdrop-item:hover { background: var(--ink); }
-        .kma-navdrop-icon {
-          width: 32px; height: 32px; border-radius: 8px; background: var(--ink-3); color: var(--chalk);
+        .kma-navdrop-toggle {
+          width: 18px; height: 18px; border-radius: 50%; background: var(--ink-3); color: var(--muted);
           display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+          transition: background 0.2s ease, transform 0.3s ease;
         }
-        .kma-navdrop-item-title { font-size: 13.5px; font-weight: 600; color: var(--chalk); }
-        .kma-navdrop-item-desc { font-size: 12px; color: var(--muted); margin-top: 1px; }
-
-        .kma-header-right {
-          display: flex;
-          align-items: center;
-          gap: 20px;
-          white-space: nowrap;
-        }
-        .kma-header-history {
-          font-size: 14.5px;
-          font-weight: 500;
-          color: var(--chalk);
-          text-decoration: none;
-          white-space: nowrap;
-        }
-        .kma-header-signin {
-          background: rgb(255, 0, 122);
-          color: #FFFFFF;
-          font-size: 14.5px;
-          font-weight: 600;
-          padding: 11px 22px;
-          border-radius: 999px;
-          border: none;
-          cursor: default;
-          white-space: nowrap;
-        }
-
-        @media (max-width: 900px) {
-          .kma-header-nav { display: none; }
-        }
+        .kma-navdrop-toggle-open { background: rgb(255, 0, 122); color: #fff; transform: rotate(180deg); }
+        .kma-navdrop { position: relative; }
       `}</style>
 
       <div className="kma-header-inner">
@@ -175,6 +163,54 @@ export default function Header() {
           <button className="kma-header-signin">Sign in</button>
         </div>
       </div>
+
+      <style>{`
+        .kma-header-right {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+          white-space: nowrap;
+        }
+        .kma-header-history {
+          font-size: 14.5px;
+          font-weight: 500;
+          color: var(--chalk);
+          text-decoration: none;
+          white-space: nowrap;
+        }
+        .kma-header-signin {
+          background: rgb(255, 0, 122);
+          color: #FFFFFF;
+          font-size: 14.5px;
+          font-weight: 600;
+          padding: 11px 22px;
+          border-radius: 999px;
+          border: none;
+          cursor: default;
+          white-space: nowrap;
+        }
+
+        @media (max-width: 900px) {
+          .kma-header-nav { display: none; }
+        }
+
+        .kma-navdrop-panel {
+          position: fixed; transform: translateX(-50%);
+          background: var(--ink-2); border: 1px solid var(--ink-3);
+          border-radius: 14px; padding: 10px; box-shadow: 0 16px 40px rgba(20,33,61,0.18);
+          min-width: 260px; z-index: 200;
+        }
+        .kma-navdrop-item {
+          display: flex; align-items: flex-start; gap: 12px; padding: 10px 12px; border-radius: 10px;
+        }
+        .kma-navdrop-item:hover { background: var(--ink); }
+        .kma-navdrop-icon {
+          width: 32px; height: 32px; border-radius: 8px; background: var(--ink-3); color: var(--chalk);
+          display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .kma-navdrop-item-title { font-size: 13.5px; font-weight: 600; color: var(--chalk); }
+        .kma-navdrop-item-desc { font-size: 12px; color: var(--muted); margin-top: 1px; }
+      `}</style>
     </div>
   );
 }
