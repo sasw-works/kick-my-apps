@@ -596,9 +596,7 @@ export default function MarketingSections() {
         .faq-eyebrow { font-size: 15px; font-family: var(--font-body); color: var(--muted); text-align: center; margin-bottom: 8px; }
 
         .mkt-pricing { margin-top: 150px; }
-        .mkt-pricing-header { text-align: center; margin-bottom: 48px; }
-        .mkt-pricing-title { font-family: var(--font-display); font-size: 44px; font-weight: 800; color: var(--chalk); margin-bottom: 12px; }
-        .mkt-pricing-sub { font-size: 16px; color: var(--muted); }
+        .mkt-pricing-header { margin-bottom: 48px; }
         .mkt-pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: start; }
         @media (max-width: 900px) { .mkt-pricing-grid { grid-template-columns: 1fr; } }
         .mkt-pricing-card {
@@ -617,16 +615,16 @@ export default function MarketingSections() {
         }
         .mkt-pricing-card-highlighted .mkt-pricing-tier { background: color-mix(in srgb, var(--brand) 15%, transparent); color: var(--brand); }
         .mkt-pricing-price-row { display: flex; align-items: baseline; gap: 4px; }
-        .mkt-pricing-price { font-family: var(--font-display); font-size: 42px; font-weight: 800; color: var(--chalk); }
-        .mkt-pricing-price-suffix { font-size: 15px; color: var(--muted); }
-        .mkt-pricing-note { font-size: 13px; color: var(--muted); margin-top: 6px; margin-bottom: 20px; }
-        .mkt-pricing-desc { font-size: 14px; color: var(--chalk); line-height: 1.55; min-height: 66px; }
+        .mkt-pricing-price { font-size: 34px; font-weight: 500; letter-spacing: -0.02em; color: var(--chalk); }
+        .mkt-pricing-price-suffix { font-size: 15px; font-family: var(--font-body); color: var(--muted); }
+        .mkt-pricing-note { font-size: 15px; font-family: var(--font-body); color: var(--muted); margin-top: 6px; margin-bottom: 20px; }
+        .mkt-pricing-desc { font-size: 15px; font-family: var(--font-body); color: var(--muted); line-height: 1.6; min-height: 66px; }
         .mkt-pricing-divider { height: 1px; background: var(--ink-3); margin: 20px 0; }
         .mkt-pricing-features { display: flex; flex-direction: column; gap: 16px; flex: 1; margin-bottom: 28px; }
-        .mkt-pricing-feature-row { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; line-height: 1.4; }
+        .mkt-pricing-feature-row { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; font-family: var(--font-body); line-height: 1.5; }
         .mkt-pricing-feature-row svg { flex-shrink: 0; margin-top: 2px; }
         .mkt-pricing-cta {
-          border: none; border-radius: 999px; padding: 15px; font-size: 15px; font-weight: 700; cursor: pointer;
+          border: none; border-radius: 999px; padding: 15px; font-size: 15px; font-family: var(--font-body); font-weight: 600; cursor: pointer;
           background: var(--ink-3); color: var(--chalk); width: 100%;
         }
         .mkt-pricing-cta-brand { background: var(--chalk); color: #fff; }
@@ -862,8 +860,8 @@ export default function MarketingSections() {
       {/* Pricing */}
       <div className="mkt-pricing">
         <div className="mkt-pricing-header">
-          <div className="mkt-pricing-title">Choose your plan</div>
-          <div className="mkt-pricing-sub">Start free, upgrade when you need more. Cancel anytime.</div>
+          <div className="mkt-section-title">Choose your plan</div>
+          <div className="mkt-section-sub">Start free, upgrade when you need more. Cancel anytime.</div>
         </div>
         <div className="mkt-pricing-grid">
           {PRICING_PLANS.map((plan) => (
