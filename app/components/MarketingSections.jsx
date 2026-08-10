@@ -73,9 +73,11 @@ const PRICING_PLANS = [
   {
     tier: "PRO",
     name: "Pro",
-    price: "€11",
+    priceMonthly: "€14",
+    priceMonthlyNote: "billed monthly",
+    priceAnnual: "€11",
+    priceAnnualNote: "€134/yr · billed annually",
     priceSuffix: "/mo",
-    priceNote: "€134/yr · billed annually",
     desc: "For PMs, UX leads, and founders who need continuous competitive intelligence.",
     features: [
       { text: "10 AI reports per month", included: true },
@@ -318,6 +320,7 @@ function FaqItem({ q, a }) {
 export default function MarketingSections() {
   const carouselRef = useRef(null);
   const dragState = useRef({ isDown: false, startX: 0, scrollStart: 0, moved: false });
+  const [billingCycle, setBillingCycle] = React.useState("annual"); // monthly | annual
 
   const scrollCarousel = (dir) => {
     carouselRef.current?.scrollBy({ left: dir * 380, behavior: "smooth" });
@@ -614,6 +617,15 @@ export default function MarketingSections() {
           background: var(--ink-3); padding: 5px 12px; border-radius: 999px; width: fit-content; margin-bottom: 20px;
         }
         .mkt-pricing-card-highlighted .mkt-pricing-tier { background: color-mix(in srgb, var(--brand) 15%, transparent); color: var(--brand); }
+        .mkt-pricing-tier-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+        .mkt-pricing-tier-row .mkt-pricing-tier { margin-bottom: 0; }
+        .mkt-billing-toggle { display: flex; gap: 2px; background: var(--ink-3); border-radius: 999px; padding: 3px; }
+        .mkt-billing-toggle-btn {
+          display: flex; align-items: center; gap: 6px; border: none; background: transparent;
+          padding: 6px 12px; border-radius: 999px; font-size: 13px; font-family: var(--font-body); color: var(--muted); cursor: pointer;
+        }
+        .mkt-billing-toggle-btn-active { background: var(--ink-2); color: var(--chalk); font-weight: 600; }
+        .mkt-billing-save { background: color-mix(in srgb, var(--teal) 18%, transparent); color: var(--teal); font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 999px; }
         .mkt-pricing-price-row { display: flex; align-items: baseline; gap: 4px; }
         .mkt-pricing-price { font-size: 34px; font-weight: 500; letter-spacing: -0.02em; color: var(--chalk); }
         .mkt-pricing-price-suffix { font-size: 15px; font-family: var(--font-body); color: var(--muted); }
@@ -867,12 +879,34 @@ export default function MarketingSections() {
           {PRICING_PLANS.map((plan) => (
             <div key={plan.tier} className={`mkt-pricing-card ${plan.highlighted ? "mkt-pricing-card-highlighted" : ""}`}>
               {plan.highlighted && <div className="mkt-pricing-badge">MOST POPULAR</div>}
-              <div className="mkt-pricing-tier">{plan.tier}</div>
+              <div className="mkt-pricing-tier-row">
+                <div className="mkt-pricing-tier">{plan.tier}</div>
+                {plan.highlighted && (
+                  <div className="mkt-billing-toggle">
+                    <button
+                      className={`mkt-billing-toggle-btn ${billingCycle === "monthly" ? "mkt-billing-toggle-btn-active" : ""}`}
+                      onClick={() => setBillingCycle("monthly")}
+                    >
+                      Monthly
+                    </button>
+                    <button
+                      className={`mkt-billing-toggle-btn ${billingCycle === "annual" ? "mkt-billing-toggle-btn-active" : ""}`}
+                      onClick={() => setBillingCycle("annual")}
+                    >
+                      Annual <span className="mkt-billing-save">SAVE 20%</span>
+                    </button>
+                  </div>
+                )}
+              </div>
               <div className="mkt-pricing-price-row">
-                <span className="mkt-pricing-price">{plan.price}</span>
+                <span className="mkt-pricing-price">
+                  {plan.highlighted ? (billingCycle === "annual" ? plan.priceAnnual : plan.priceMonthly) : plan.price}
+                </span>
                 {plan.priceSuffix && <span className="mkt-pricing-price-suffix">{plan.priceSuffix}</span>}
               </div>
-              <div className="mkt-pricing-note">{plan.priceNote}</div>
+              <div className="mkt-pricing-note">
+                {plan.highlighted ? (billingCycle === "annual" ? plan.priceAnnualNote : plan.priceMonthlyNote) : plan.priceNote}
+              </div>
               <div className="mkt-pricing-desc">{plan.desc}</div>
               <div className="mkt-pricing-divider" />
               <div className="mkt-pricing-features">
