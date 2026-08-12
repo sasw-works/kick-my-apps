@@ -4,14 +4,21 @@ import React, { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import LogoMark from "./LogoMark";
-import { Camera, Star, FileSearch, GitCompare, Mail, Users, Rocket, Palette, Plus, X } from "lucide-react";
+import { Camera, Star, FileSearch, GitCompare, Mail, Users, Rocket, Palette, Plus, X, ShieldQuestion, Sparkles, Code2, Image as ImageIcon, History, LayoutDashboard, Download } from "lucide-react";
 
 const FEATURE_ITEMS = [
-  { icon: Camera, title: "Screenshot Analysis", desc: "Find UI/UX issues automatically" },
-  { icon: Star, title: "App Store Reviews", desc: "Real ratings & user feedback" },
-  { icon: FileSearch, title: "ASO Review", desc: "Store listing insights" },
-  { icon: GitCompare, title: "Compare", desc: "Benchmark competitors" },
-  { icon: Mail, title: "Weekly Digest", desc: "Reviews in your inbox" },
+  { icon: Camera, title: "Screenshot Analysis", desc: "13 categories, 4 lenses" },
+  { icon: Star, title: "Real App Store Reviews", desc: "Real, public reviews in real time" },
+  { icon: FileSearch, title: "ASO / Store Listing Review", desc: "Title, description & keywords" },
+  { icon: ShieldQuestion, title: "Update Risk Check", desc: "Flags risky review signals" },
+  { icon: Sparkles, title: "Quick Wins", desc: "High impact, low effort fixes" },
+  { icon: Code2, title: "Code-Level Suggestions", desc: "Sample CSS, Swift, Kotlin" },
+  { icon: ImageIcon, title: "Visual Annotation", desc: "Findings marked on screenshots" },
+  { icon: History, title: "History & Trend", desc: "Track your score over time" },
+  { icon: GitCompare, title: "Detailed Comparison", desc: "Benchmark competitors" },
+  { icon: LayoutDashboard, title: "My Apps Dashboard", desc: "All tracked apps, one place" },
+  { icon: Mail, title: "Weekly Email Digest", desc: "Reviews in your inbox" },
+  { icon: Download, title: "PDF Export", desc: "Share your report instantly" },
 ];
 
 const USE_CASE_ITEMS = [
@@ -20,7 +27,7 @@ const USE_CASE_ITEMS = [
   { icon: Palette, title: "Designers", desc: "Spot UI/UX issues fast" },
 ];
 
-function NavDropdown({ label, items, open, onEnter, onLeave }) {
+function NavDropdown({ label, items, open, onEnter, onLeave, columns = 1 }) {
   const anchorRef = useRef(null);
   const [coords, setCoords] = useState(null);
   const [mounted, setMounted] = useState(false);
@@ -46,7 +53,7 @@ function NavDropdown({ label, items, open, onEnter, onLeave }) {
         createPortal(
           <div
             className="kma-navdrop-panel"
-            style={{ top: coords.top, left: coords.left }}
+            style={{ top: coords.top, left: coords.left, gridTemplateColumns: `repeat(${columns}, 1fr)` }}
             onMouseEnter={onEnter}
             onMouseLeave={onLeave}
           >
@@ -162,6 +169,7 @@ export default function Header() {
           <NavDropdown
             label="Features"
             items={FEATURE_ITEMS}
+            columns={2}
             open={openMenu === "features"}
             onEnter={() => openWithDelay("features")}
             onLeave={closeWithDelay}
@@ -217,7 +225,7 @@ export default function Header() {
           position: fixed; transform: translateX(-50%);
           background: var(--ink-2); border: 1px solid var(--ink-3);
           border-radius: 14px; padding: 10px; box-shadow: 0 16px 40px rgba(20,33,61,0.18);
-          min-width: 260px; z-index: 200;
+          min-width: 260px; z-index: 200; display: grid; gap: 2px;
         }
         .kma-navdrop-item {
           display: flex; align-items: flex-start; gap: 12px; padding: 10px 12px; border-radius: 10px;
