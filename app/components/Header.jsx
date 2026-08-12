@@ -260,13 +260,21 @@ export default function Header() {
         .kma-navdrop-col { display: flex; flex-direction: column; gap: 1px; flex: 1; min-width: 200px; }
         .kma-navdrop-col-label {
           font-size: 10.5px; font-weight: 700; letter-spacing: 0.07em; color: var(--muted);
-          text-transform: uppercase; padding: 6px 12px 10px;
+          text-transform: uppercase; padding: 6px 12px 10px; margin-bottom: 4px;
+          border-bottom: 1px solid var(--ink-3);
         }
         .kma-navdrop-item {
-          display: flex; flex-direction: column; padding: 10px 12px; border-radius: 10px;
+          position: relative; display: flex; flex-direction: column; padding: 10px 12px 10px 18px; border-radius: 10px;
           transition: background 0.15s ease;
+          overflow: hidden;
+        }
+        .kma-navdrop-item::before {
+          content: ""; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; border-radius: 3px;
+          background: rgb(255, 0, 122); transform: scaleY(0); transform-origin: center;
+          transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .kma-navdrop-item:hover { background: var(--ink); }
+        .kma-navdrop-item:hover::before { transform: scaleY(1); }
         .kma-navdrop-item-title { font-size: 13.5px; font-weight: 600; color: var(--chalk); transition: color 0.15s ease; }
         .kma-navdrop-item:hover .kma-navdrop-item-title { color: rgb(255, 0, 122); }
         .kma-navdrop-item-desc { font-size: 12px; color: var(--muted); margin-top: 1px; }
