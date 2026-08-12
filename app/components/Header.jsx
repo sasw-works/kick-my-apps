@@ -6,40 +6,71 @@ import Link from "next/link";
 import LogoMark from "./LogoMark";
 import { Camera, Star, FileSearch, GitCompare, Mail, Users, Rocket, Palette, Plus, X, ShieldQuestion, Sparkles, Code2, Image as ImageIcon, History, LayoutDashboard, Download } from "lucide-react";
 
-const FEATURE_ITEMS = [
-  { icon: Camera, title: "Screenshot Analysis", desc: "13 categories, 4 lenses" },
-  { icon: Star, title: "Real App Store Reviews", desc: "Real, public reviews in real time" },
-  { icon: FileSearch, title: "ASO / Store Listing Review", desc: "Title, description & keywords" },
-  { icon: ShieldQuestion, title: "Update Risk Check", desc: "Flags risky review signals" },
-  { icon: Sparkles, title: "Quick Wins", desc: "High impact, low effort fixes" },
-  { icon: Code2, title: "Code-Level Suggestions", desc: "Sample CSS, Swift, Kotlin" },
-  { icon: ImageIcon, title: "Visual Annotation", desc: "Findings marked on screenshots" },
-  { icon: History, title: "History & Trend", desc: "Track your score over time" },
-  { icon: GitCompare, title: "Detailed Comparison", desc: "Benchmark competitors" },
-  { icon: LayoutDashboard, title: "My Apps Dashboard", desc: "All tracked apps, one place" },
-  { icon: Mail, title: "Weekly Email Digest", desc: "Reviews in your inbox" },
-  { icon: Download, title: "PDF Export", desc: "Share your report instantly" },
+const FEATURE_GROUPS = [
+  {
+    label: "Analysis",
+    items: [
+      { icon: Camera, title: "Screenshot Analysis", desc: "13 categories, 4 lenses" },
+      { icon: FileSearch, title: "ASO / Store Listing Review", desc: "Title, description & keywords" },
+      { icon: ShieldQuestion, title: "Update Risk Check", desc: "Flags risky review signals" },
+      { icon: ImageIcon, title: "Visual Annotation", desc: "Findings marked on screenshots" },
+    ],
+  },
+  {
+    label: "Insights",
+    items: [
+      { icon: Star, title: "Real App Store Reviews", desc: "Real, public reviews in real time" },
+      { icon: Sparkles, title: "Quick Wins", desc: "High impact, low effort fixes" },
+      { icon: Code2, title: "Code-Level Suggestions", desc: "Sample CSS, Swift, Kotlin" },
+      { icon: History, title: "History & Trend", desc: "Track your score over time" },
+    ],
+  },
+  {
+    label: "Collaboration",
+    items: [
+      { icon: GitCompare, title: "Detailed Comparison", desc: "Benchmark competitors" },
+      { icon: LayoutDashboard, title: "My Apps Dashboard", desc: "All tracked apps, one place" },
+      { icon: Mail, title: "Weekly Email Digest", desc: "Reviews in your inbox" },
+      { icon: Download, title: "PDF Export", desc: "Share your report instantly" },
+    ],
+  },
 ];
 
-const USE_CASE_ITEMS = [
-  { icon: Users, title: "Product Managers", desc: "Prioritize the roadmap" },
-  { icon: Rocket, title: "Indie Developers", desc: "Ship with confidence" },
-  { icon: Palette, title: "Designers", desc: "Spot UI/UX issues fast" },
+const USE_CASE_GROUPS = [
+  {
+    label: "Who it's for",
+    items: [
+      { icon: Users, title: "Product Managers", desc: "Prioritize the roadmap" },
+      { icon: Rocket, title: "Indie Developers", desc: "Ship with confidence" },
+      { icon: Palette, title: "Designers", desc: "Spot UI/UX issues fast" },
+    ],
+  },
 ];
 
-function NavDropdown({ label, items, open, onEnter, onLeave, columns = 1 }) {
+function NavDropdown({ label, groups, open, onEnter, onLeave }) {
   const anchorRef = useRef(null);
   const [coords, setCoords] = useState(null);
   const [mounted, setMounted] = useState(false);
+  const [rendered, setRendered] = useState(false); // DOM'da mı (animasyon çıkışı için)
+  const [visible, setVisible] = useState(false); // animasyon durumu
 
   useEffect(() => setMounted(true), []);
 
   useEffect(() => {
+    let hideTimer;
     if (open && anchorRef.current) {
       const rect = anchorRef.current.getBoundingClientRect();
-      setCoords({ top: rect.bottom + 18, left: rect.left + rect.width / 2 });
+      setCoords({ top: rect.bottom + 16, left: rect.left + rect.width / 2 });
+      setRendered(true);
+      requestAnimationFrame(() => requestAnimationFrame(() => setVisible(true)));
+    } else {
+      setVisible(false);
+      hideTimer = setTimeout(() => setRendered(false), 200);
     }
+    return () => clearTimeout(hideTimer);
   }, [open]);
+
+  const columns = groups.length;
 
   return (
     <div className="kma-navdrop" ref={anchorRef} onMouseEnter={onEnter} onMouseLeave={onLeave}>
@@ -49,26 +80,31 @@ function NavDropdown({ label, items, open, onEnter, onLeave, columns = 1 }) {
           {open ? <X size={11} /> : <Plus size={11} />}
         </span>
       </span>
-      {mounted && open && coords &&
+      {mounted && rendered && coords &&
         createPortal(
           <div
-            className="kma-navdrop-panel"
-            style={{ top: coords.top, left: coords.left, gridTemplateColumns: `repeat(${columns}, 1fr)`, minWidth: columns * 200 }}
+            className={`kma-navdrop-panel ${visible ? "kma-navdrop-panel-visible" : ""}`}
+            style={{ top: coords.top, left: coords.left, minWidth: columns * 230 }}
             onMouseEnter={onEnter}
             onMouseLeave={onLeave}
           >
-            {items.map((item) => {
-              const Icon = item.icon;
-              return (
-                <div className="kma-navdrop-item" key={item.title}>
-                  <div className="kma-navdrop-icon"><Icon size={16} /></div>
-                  <div>
-                    <div className="kma-navdrop-item-title">{item.title}</div>
-                    <div className="kma-navdrop-item-desc">{item.desc}</div>
-                  </div>
-                </div>
-              );
-            })}
+            {groups.map((group) => (
+              <div className="kma-navdrop-col" key={group.label}>
+                <div className="kma-navdrop-col-label">{group.label}</div>
+                {group.items.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <div className="kma-navdrop-item" key={item.title}>
+                      <div className="kma-navdrop-icon"><Icon size={16} /></div>
+                      <div>
+                        <div className="kma-navdrop-item-title">{item.title}</div>
+                        <div className="kma-navdrop-item-desc">{item.desc}</div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
           </div>,
           document.body
         )}
@@ -168,15 +204,14 @@ export default function Header() {
         <nav className="kma-header-nav">
           <NavDropdown
             label="Features"
-            items={FEATURE_ITEMS}
-            columns={4}
+            groups={FEATURE_GROUPS}
             open={openMenu === "features"}
             onEnter={() => openWithDelay("features")}
             onLeave={closeWithDelay}
           />
           <NavDropdown
             label="Use Cases"
-            items={USE_CASE_ITEMS}
+            groups={USE_CASE_GROUPS}
             open={openMenu === "usecases"}
             onEnter={() => openWithDelay("usecases")}
             onLeave={closeWithDelay}
@@ -222,19 +257,32 @@ export default function Header() {
         }
 
         .kma-navdrop-panel {
-          position: fixed; transform: translateX(-50%);
+          position: fixed; transform: translateX(-50%) translateY(-8px); opacity: 0;
           background: var(--ink-2); border: 1px solid var(--ink-3);
-          border-radius: 14px; padding: 10px; box-shadow: 0 16px 40px rgba(20,33,61,0.18);
-          min-width: 260px; z-index: 200; display: grid; gap: 2px;
+          border-radius: 16px; padding: 20px; box-shadow: 0 20px 48px rgba(20,33,61,0.16);
+          z-index: 200; display: flex; gap: 8px;
+          transition: opacity 0.18s ease, transform 0.18s ease;
+          pointer-events: none;
+        }
+        .kma-navdrop-panel-visible {
+          opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto;
+        }
+        .kma-navdrop-col { display: flex; flex-direction: column; gap: 1px; flex: 1; min-width: 200px; }
+        .kma-navdrop-col-label {
+          font-size: 10.5px; font-weight: 700; letter-spacing: 0.07em; color: var(--muted);
+          text-transform: uppercase; padding: 6px 12px 10px;
         }
         .kma-navdrop-item {
           display: flex; align-items: flex-start; gap: 12px; padding: 10px 12px; border-radius: 10px;
+          transition: background 0.15s ease;
         }
         .kma-navdrop-item:hover { background: var(--ink); }
         .kma-navdrop-icon {
           width: 32px; height: 32px; border-radius: 8px; background: var(--ink-3); color: var(--chalk);
           display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+          transition: background 0.15s ease, color 0.15s ease;
         }
+        .kma-navdrop-item:hover .kma-navdrop-icon { background: rgb(255, 0, 122); color: #fff; }
         .kma-navdrop-item-title { font-size: 13.5px; font-weight: 600; color: var(--chalk); }
         .kma-navdrop-item-desc { font-size: 12px; color: var(--muted); margin-top: 1px; }
       `}</style>
