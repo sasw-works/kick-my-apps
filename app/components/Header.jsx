@@ -53,7 +53,7 @@ function NavDropdown({ label, items, open, onEnter, onLeave, columns = 1 }) {
         createPortal(
           <div
             className="kma-navdrop-panel"
-            style={{ top: coords.top, left: coords.left, gridTemplateColumns: `repeat(${columns}, 1fr)` }}
+            style={{ top: coords.top, left: coords.left, gridTemplateColumns: `repeat(${columns}, 1fr)`, minWidth: columns * 200 }}
             onMouseEnter={onEnter}
             onMouseLeave={onLeave}
           >
@@ -169,7 +169,7 @@ export default function Header() {
           <NavDropdown
             label="Features"
             items={FEATURE_ITEMS}
-            columns={2}
+            columns={4}
             open={openMenu === "features"}
             onEnter={() => openWithDelay("features")}
             onLeave={closeWithDelay}
