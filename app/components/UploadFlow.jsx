@@ -324,7 +324,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         }
         .submit-circle.submit-circle-analyzing,
         .submit-circle.submit-circle-analyzing:disabled {
-          background: rgb(255, 0, 122);
+          background: #533AFE;
           cursor: default;
         }
 

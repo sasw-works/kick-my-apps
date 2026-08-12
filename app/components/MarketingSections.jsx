@@ -435,7 +435,7 @@ export default function MarketingSections() {
         .mkt-rating-dist-row { display: flex; align-items: center; gap: 8px; }
         .mkt-rating-dist-label { font-size: 11px; color: var(--muted); width: 20px; flex-shrink: 0; font-family: var(--font-mono); }
         .mkt-rating-dist-bar { flex: 1; height: 6px; border-radius: 3px; background: var(--ink-3); overflow: hidden; }
-        .mkt-rating-dist-fill { height: 100%; background: rgb(255, 0, 122); border-radius: 3px; }
+        .mkt-rating-dist-fill { height: 100%; background: #533AFE; border-radius: 3px; }
         .mkt-rating-dist-pct { font-size: 10.5px; color: var(--muted); width: 32px; text-align: right; font-family: var(--font-mono); }
 
         .mkt-spin-slow { animation: spin-slow 3s linear infinite; }
@@ -459,7 +459,7 @@ export default function MarketingSections() {
           50% { transform: scale(1.25); }
         }
         .mkt-review-card { background: var(--ink); border-radius: 8px; padding: 10px 12px; }
-        .mkt-review-stars { color: rgb(255, 0, 122); font-size: 11px; margin-bottom: 3px; }
+        .mkt-review-stars { color: #533AFE; font-size: 11px; margin-bottom: 3px; }
         .mkt-review-title { font-size: 12.5px; font-weight: 600; color: var(--chalk); }
         .mkt-review-body { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
 
@@ -655,7 +655,7 @@ export default function MarketingSections() {
           display: flex; align-items: center; justify-content: center;
           background: var(--ink-3); transition: background 0.2s ease, transform 0.3s ease;
         }
-        .faq-toggle-open { background: rgb(255, 0, 122); transform: rotate(180deg); }
+        .faq-toggle-open { background: #533AFE; transform: rotate(180deg); }
         .faq-a-wrap {
           display: grid;
           grid-template-rows: 0fr;
@@ -670,7 +670,7 @@ export default function MarketingSections() {
         }
         .faq-a-wrap-open .faq-a { opacity: 1; transform: translateY(0); }
         .faq-support-btn {
-          display: block; margin: 0 auto; background: rgb(255, 0, 122); color: #FFFFFF;
+          display: block; margin: 0 auto; background: #533AFE; color: #FFFFFF;
           font-weight: 600; font-size: 15px; padding: 13px 28px; border-radius: 999px; border: none; cursor: default;
         }
 
@@ -684,7 +684,7 @@ export default function MarketingSections() {
           letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 32px;
         }
         .mkt-closing-btn {
-          background: rgb(255, 0, 122); color: #FFFFFF; font-weight: 600; font-size: 15px;
+          background: #533AFE; color: #FFFFFF; font-weight: 600; font-size: 15px;
           padding: 14px 32px; border-radius: 999px; border: none; cursor: pointer;
         }
         @media (max-width: 600px) {

@@ -185,7 +185,7 @@ export default function Header() {
         .kma-navdrop-chevron {
           color: var(--muted); transition: transform 0.25s ease, color 0.2s ease;
         }
-        .kma-navdrop-chevron-open { transform: rotate(180deg); color: rgb(255, 0, 122); }
+        .kma-navdrop-chevron-open { transform: rotate(180deg); color: #533AFE; }
         .kma-navdrop { position: relative; }
       `}</style>
 
@@ -236,7 +236,7 @@ export default function Header() {
           white-space: nowrap;
         }
         .kma-header-signin {
-          background: rgb(255, 0, 122);
+          background: #533AFE;
           color: #FFFFFF;
           font-size: 14.5px;
           font-weight: 600;
@@ -279,7 +279,7 @@ export default function Header() {
           transition: background 0.15s ease;
         }
         .kma-navdrop-item-title { font-size: 13.5px; font-weight: 600; color: var(--chalk); transition: color 0.15s ease; }
-        .kma-navdrop-item:hover .kma-navdrop-item-title { color: rgb(255, 0, 122); }
+        .kma-navdrop-item:hover .kma-navdrop-item-title { color: #533AFE; }
         .kma-navdrop-item-desc { font-size: 12px; color: var(--muted); margin-top: 1px; }
       `}</style>
     </div>
