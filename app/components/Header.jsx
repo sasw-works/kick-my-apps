@@ -93,7 +93,7 @@ function NavDropdown({ label, groups, open, onEnter, onLeave }) {
           >
             {groups.map((group) => (
               <div className="kma-navdrop-col" key={group.label}>
-                <div className="kma-navdrop-col-label">{group.label}</div>
+                <div className="kma-navdrop-col-label" lang="en">{group.label}</div>
                 {group.items.map((item) => (
                   <div className="kma-navdrop-item" key={item.title}>
                     <div className="kma-navdrop-item-title">{item.title}</div>
