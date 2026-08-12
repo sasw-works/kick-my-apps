@@ -297,18 +297,18 @@ export default function Header() {
           text-transform: uppercase; padding: 6px 12px 10px;
         }
         .kma-navdrop-item {
-          display: flex; flex-direction: column; padding: 10px 12px; border-radius: 10px;
+          position: relative; display: flex; flex-direction: column; padding: 10px 12px 16px; border-radius: 10px;
           transition: background 0.15s ease;
         }
-        .kma-navdrop-item-title { font-size: 13.5px; font-weight: 600; color: var(--chalk); transition: color 0.15s ease; position: relative; display: inline-block; }
+        .kma-navdrop-item-title { font-size: 13.5px; font-weight: 600; color: var(--chalk); transition: color 0.15s ease; }
         .kma-navdrop-item:hover .kma-navdrop-item-title { color: #533AFE; }
-        .kma-navdrop-item-title::after {
-          content: ""; position: absolute; left: 0; bottom: -4px; height: 2px; width: 100%;
+        .kma-navdrop-item::after {
+          content: ""; position: absolute; left: 12px; right: 12px; bottom: 4px; height: 2px;
           background: linear-gradient(90deg, #533AFE, #A78BFA);
           transform: scaleX(0); transform-origin: left;
           transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .kma-navdrop-item:hover .kma-navdrop-item-title::after { transform: scaleX(1); }
+        .kma-navdrop-item:hover::after { transform: scaleX(1); }
         .kma-navdrop-item-desc { font-size: 12px; color: var(--muted); margin-top: 1px; }
       `}</style>
     </div>
