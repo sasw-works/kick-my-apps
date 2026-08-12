@@ -6,9 +6,6 @@ import {
   Sparkles,
   Mail,
   GitCompare,
-  UserPlus,
-  ChevronDown,
-  MoreHorizontal,
   ChevronLeft,
   ChevronRight,
   Plus,
@@ -396,56 +393,6 @@ export default function MarketingSections() {
 
         .mkt-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 90px; }
         .mkt-grid-4 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 90px; }
-
-        .mkt-deeper-section {
-          display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;
-          margin-bottom: 130px; margin-top: 130px;
-        }
-        @media (max-width: 900px) {
-          .mkt-deeper-section { grid-template-columns: 1fr; }
-        }
-        .mkt-deeper-headline { font-size: 44px; font-weight: 800; font-family: var(--font-display); color: var(--chalk); line-height: 1.12; letter-spacing: -0.02em; margin-bottom: 20px; }
-        .mkt-deeper-desc { font-size: 16px; color: var(--muted); line-height: 1.6; max-width: 420px; margin-bottom: 44px; }
-        .mkt-deeper-stats { display: flex; gap: 44px; }
-        .mkt-deeper-stat-num { font-size: 40px; font-weight: 800; font-family: var(--font-display); color: var(--chalk); letter-spacing: -0.02em; }
-        .mkt-deeper-stat-label { font-size: 13px; color: var(--muted); line-height: 1.35; margin-top: 4px; }
-
-        .mkt-deeper-right { position: relative; min-height: 420px; }
-        .mkt-deeper-card {
-          background: var(--ink-2); border-radius: 16px; box-shadow: 0 16px 40px rgba(20,33,61,0.1);
-          padding: 18px; position: absolute;
-        }
-        .mkt-deeper-card-search { top: 0; left: 0; width: 66%; z-index: 2; }
-        .mkt-deeper-search-row { display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: var(--muted); }
-        .mkt-deeper-search-panel { margin-top: 16px; }
-        .mkt-deeper-search-input { display: flex; align-items: center; gap: 8px; background: var(--ink); border-radius: 10px; padding: 10px 12px; font-size: 13px; color: var(--muted); margin-bottom: 10px; }
-        .mkt-deeper-app-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 10px; }
-        .mkt-deeper-app-row-active { background: color-mix(in srgb, var(--brand) 10%, transparent); }
-        .mkt-deeper-app-avatar { width: 26px; height: 26px; border-radius: 50%; color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .mkt-deeper-app-name { font-size: 13px; color: var(--chalk); font-weight: 500; }
-        .mkt-deeper-app-meta { margin-left: auto; font-size: 11px; color: var(--muted); }
-
-        .mkt-deeper-card-progress { top: 0; right: 0; width: 38%; z-index: 1; }
-        .mkt-deeper-card-title { font-size: 13.5px; font-weight: 700; color: var(--chalk); margin-bottom: 14px; }
-        .mkt-deeper-progress-row { margin-bottom: 12px; }
-        .mkt-deeper-progress-row:last-child { margin-bottom: 0; }
-        .mkt-deeper-progress-label { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--muted); margin-bottom: 5px; }
-        .mkt-deeper-progress-bar { height: 4px; border-radius: 2px; background: var(--ink-3); overflow: hidden; }
-        .mkt-deeper-progress-fill { height: 100%; border-radius: 2px; }
-
-        .mkt-deeper-card-compare { bottom: 0; right: 4%; width: 56%; z-index: 3; }
-        .mkt-deeper-compare-header { display: flex; align-items: center; justify-content: space-between; }
-        .mkt-deeper-compare-desc { font-size: 12.5px; color: var(--muted); line-height: 1.5; margin-bottom: 16px; }
-        .mkt-deeper-compare-scores { display: flex; align-items: center; justify-content: center; gap: 24px; background: var(--ink); border-radius: 10px; padding: 14px; }
-        .mkt-deeper-compare-score { text-align: center; }
-        .mkt-deeper-compare-score-num { font-family: var(--font-display); font-size: 24px; font-weight: 700; }
-        .mkt-deeper-compare-score-label { font-size: 10px; color: var(--muted); margin-top: 2px; }
-        @media (max-width: 900px) {
-          .mkt-deeper-right { min-height: 500px; }
-          .mkt-deeper-card-search { width: 90%; }
-          .mkt-deeper-card-progress { top: auto; bottom: 190px; right: 0; width: 60%; }
-          .mkt-deeper-card-compare { bottom: 0; right: 0; width: 90%; }
-        }
         .mkt-feature-card {
           background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 16px;
           box-shadow: var(--shadow); padding: 26px;
@@ -824,75 +771,56 @@ export default function MarketingSections() {
         </div>
       </div>
 
-      {/* Go deeper without getting lost */}
-      <div className="mkt-deeper-section">
-        <div className="mkt-deeper-left">
-          <div className="mkt-deeper-headline">Go deeper<br />without getting lost</div>
-          <div className="mkt-deeper-desc">Dive deep into every finding while keeping insights clear, focused, and easy to act on.</div>
-          <div className="mkt-deeper-stats">
-            <div className="mkt-deeper-stat">
-              <div className="mkt-deeper-stat-num">13</div>
-              <div className="mkt-deeper-stat-label">Categories<br />Analyzed</div>
-            </div>
-            <div className="mkt-deeper-stat">
-              <div className="mkt-deeper-stat-num">4</div>
-              <div className="mkt-deeper-stat-label">Analysis<br />Lenses</div>
+      {/* 13 categories + Quick Wins + Weekly digest + Compare, merged */}
+      <div>
+        <div className="mkt-section-title">Deep, but never messy</div>
+        <div className="mkt-section-sub">13 categories of findings, prioritized by impact, and tracked with weekly digests and competitor comparisons.</div>
+        <div className="mkt-grid-4">
+          <div className="mkt-feature-card">
+            <div className="mkt-feature-icon" style={{ background: "transparent" }}><AppStoreDataIcon size={66} /></div>
+            <div className="mkt-feature-title">13 categories, 4 lenses</div>
+            <div className="mkt-feature-desc" style={{ marginBottom: 43 }}>From onboarding to accessibility, every finding maps to one of the UI / UX / Accessibility / Product lenses.</div>
+            <div className="mkt-priority-list">
+              <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UI</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>2 critical · 1 warning</span></div>
+              <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UX</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>1 warning</span></div>
             </div>
           </div>
-        </div>
-        <div className="mkt-deeper-right">
-          <div className="mkt-deeper-card mkt-deeper-card-search">
-            <div className="mkt-deeper-search-row">
-              <UserPlus size={16} color="var(--muted)" />
-              <span>Submit your App Name or Store Link</span>
-              <ChevronDown size={15} color="var(--muted)" style={{ marginLeft: "auto" }} />
-            </div>
-            <div className="mkt-deeper-search-panel">
-              <div className="mkt-deeper-search-input"><Search size={14} color="var(--muted)" /><span>Search</span></div>
-              {[
-                { name: "Wallet Pro", meta: "12 tasks in progress", color: "#F5433A" },
-                { name: "ShopEasy", meta: null, color: "#7CB342", active: true },
-                { name: "MetroBank", meta: null, color: "#29B6F6" },
-                { name: "TransitGo", meta: null, color: "#7E57C2" },
-              ].map((app) => (
-                <div className={`mkt-deeper-app-row ${app.active ? "mkt-deeper-app-row-active" : ""}`} key={app.name}>
-                  <div className="mkt-deeper-app-avatar" style={{ background: app.color }}>{app.name[0]}</div>
-                  <span className="mkt-deeper-app-name">{app.name}</span>
-                  {app.meta && <span className="mkt-deeper-app-meta">{app.meta}</span>}
+          <div className="mkt-feature-card">
+            <div className="mkt-feature-icon" style={{ background: "transparent" }}><FreshIcon size={66} /></div>
+            <div className="mkt-feature-title">Prioritized by impact</div>
+            <div className="mkt-feature-desc" style={{ marginBottom: 43 }}>We tell you what to fix first by matching high impact with low implementation effort, so nothing important slips through.</div>
+            <div className="mkt-priority-list">
+              {PRIORITY_ITEMS.slice(0, 2).map((p) => (
+                <div className="mkt-priority-row" key={p.tag}>
+                  <span className={`mkt-priority-tag ${p.color === "var(--kick)" ? "mkt-tag-pulse" : ""}`} style={{ color: p.color, background: "var(--ink-3)" }}>{p.tag}</span>
+                  <span className="mkt-priority-title">{p.title}</span>
+                  <span className="mkt-priority-meta">{p.meta}</span>
                 </div>
               ))}
             </div>
           </div>
-
-          <div className="mkt-deeper-card mkt-deeper-card-progress">
-            <div className="mkt-deeper-card-title">Analysis Coverage</div>
-            {[
-              { label: "UI Findings", value: "3/8", pct: 38, color: "var(--yellow)" },
-              { label: "UX Findings", value: "6/10", pct: 60, color: "var(--teal)" },
-              { label: "Accessibility", value: "2/7", pct: 29, color: "var(--brand)" },
-            ].map((row) => (
-              <div className="mkt-deeper-progress-row" key={row.label}>
-                <div className="mkt-deeper-progress-label"><span>{row.label}</span><span>{row.value}</span></div>
-                <div className="mkt-deeper-progress-bar"><div className="mkt-deeper-progress-fill" style={{ width: `${row.pct}%`, background: row.color }} /></div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mkt-deeper-card mkt-deeper-card-compare">
-            <div className="mkt-deeper-compare-header">
-              <div className="mkt-deeper-card-title" style={{ marginBottom: 4 }}>Compare with a competitor</div>
-              <MoreHorizontal size={16} color="var(--muted)" />
+          <div className="mkt-feature-card">
+            <div className="mkt-feature-icon" style={{ background: "transparent" }}><AppStoreDataIcon size={66} /></div>
+            <div className="mkt-feature-title">Weekly review digest</div>
+            <div className="mkt-feature-desc" style={{ marginBottom: 43 }}>Get a summary of a tracked app's new reviews delivered to your inbox every week.</div>
+            <div className="mkt-showcase-visual">
+              <Mail size={22} color="var(--muted)" className="mkt-bounce" />
+              <span style={{ fontSize: 12, color: "var(--muted)" }}>Every Monday, automatic</span>
             </div>
-            <div className="mkt-deeper-compare-desc">Put your app side by side with a competitor — scores and findings, one screen.</div>
-            <div className="mkt-deeper-compare-scores">
-              <div className="mkt-deeper-compare-score">
-                <div className="mkt-deeper-compare-score-num" style={{ color: "var(--teal)" }}>78</div>
-                <div className="mkt-deeper-compare-score-label">You</div>
+          </div>
+          <div className="mkt-feature-card">
+            <div className="mkt-feature-icon" style={{ background: "transparent" }}><FreshIcon size={66} /></div>
+            <div className="mkt-feature-title">Compare with a competitor</div>
+            <div className="mkt-feature-desc" style={{ marginBottom: 43 }}>Put your app side by side with a competitor — scores and findings, one screen.</div>
+            <div className="mkt-showcase-visual" style={{ flexDirection: "row", gap: 24 }}>
+              <div style={{ textAlign: "center" }}>
+                <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--teal)" }}>78</div>
+                <div style={{ fontSize: 10, color: "var(--muted)" }}>You</div>
               </div>
-              <GitCompare size={16} color="var(--muted)" />
-              <div className="mkt-deeper-compare-score">
-                <div className="mkt-deeper-compare-score-num" style={{ color: "var(--yellow)" }}>61</div>
-                <div className="mkt-deeper-compare-score-label">Competitor</div>
+              <GitCompare size={16} color="var(--muted)" className="mkt-pulse-scale" />
+              <div style={{ textAlign: "center" }}>
+                <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--yellow)" }}>61</div>
+                <div style={{ fontSize: 10, color: "var(--muted)" }}>Competitor</div>
               </div>
             </div>
           </div>
