@@ -303,7 +303,7 @@ export default function Header() {
         .kma-navdrop-item-title { font-size: 13.5px; font-weight: 600; color: var(--chalk); transition: color 0.15s ease; }
         .kma-navdrop-item:hover .kma-navdrop-item-title { color: #533AFE; }
         .kma-navdrop-item::after {
-          content: ""; position: absolute; left: 12px; right: 12px; bottom: 4px; height: 2px;
+          content: ""; position: absolute; left: 12px; right: 12px; bottom: 4px; height: 1px;
           background: linear-gradient(90deg, #533AFE, #A78BFA);
           transform: scaleX(0); transform-origin: left;
           transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
