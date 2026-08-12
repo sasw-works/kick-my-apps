@@ -298,7 +298,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           cursor: pointer;
           transition: border-color 0.15s ease, background 0.15s ease;
         }
-        .upload-pill span { font-size: 15px; color: var(--chalk); }
+        .upload-pill span { font-size: 15px; color: var(--muted); }
         .upload-pill:hover { border-color: var(--muted); }
         .dropzone-active { background: var(--ink-3); }
 
@@ -540,7 +540,9 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
             onChange={(e) => addFiles(e.target.files)}
           />
           <UploadIcon size={14} color="var(--muted)" />
-          <span>{files.length > 0 ? `${files.length} screenshots selected` : "Upload UI screens"}</span>
+          <span style={{ color: files.length > 0 ? "var(--chalk)" : "var(--muted)" }}>
+            {files.length > 0 ? `${files.length} screenshots selected` : "Upload UI screens"}
+          </span>
         </label>
 
         <button className={`submit-circle ${analyzing ? "submit-circle-analyzing" : ""}`} disabled={!canAnalyze} onClick={handleAnalyze} aria-label="Analiz Et">
