@@ -137,7 +137,7 @@ export default function Header() {
         .kma-header-wrap {
           position: sticky;
           top: 0;
-          z-index: 50;
+          z-index: 160;
           padding: 24px 40px 110px;
           margin-bottom: -110px;
           pointer-events: none;
