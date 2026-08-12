@@ -211,12 +211,10 @@ export default function Header() {
             onEnter={() => openWithDelay("usecases")}
             onLeave={closeWithDelay}
           />
-          <span className="kma-header-navitem">Pricing</span>
           <span className="kma-header-navitem">Blog</span>
         </nav>
 
         <div className="kma-header-right">
-          <Link href="/history" className="kma-header-history">Geçmiş Analizlerim</Link>
           <button className="kma-header-signin">Sign in</button>
         </div>
       </div>
