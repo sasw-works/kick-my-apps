@@ -266,7 +266,6 @@ export default function Header() {
           display: flex; flex-direction: column; padding: 10px 12px; border-radius: 10px;
           transition: background 0.15s ease;
         }
-        .kma-navdrop-item:hover { background: var(--ink); }
         .kma-navdrop-item-title { font-size: 13.5px; font-weight: 600; color: var(--chalk); transition: color 0.15s ease; }
         .kma-navdrop-item:hover .kma-navdrop-item-title { color: rgb(255, 0, 122); }
         .kma-navdrop-item-desc { font-size: 12px; color: var(--muted); margin-top: 1px; }
