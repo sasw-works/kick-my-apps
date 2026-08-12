@@ -261,7 +261,7 @@ export default function Header() {
         .kma-navdrop-panel {
           position: fixed; transform: translateX(-50%) translateY(-8px); opacity: 0;
           background: var(--ink-2);
-          border-radius: 4px; padding: 20px;
+          border-radius: 4px; padding: 30px;
           z-index: 200; display: flex; gap: 8px;
           transition: opacity 0.18s ease, transform 0.18s ease;
           pointer-events: none;
@@ -269,7 +269,7 @@ export default function Header() {
         .kma-navdrop-panel-visible {
           opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto;
         }
-        .kma-navdrop-col { display: flex; flex-direction: column; gap: 1px; flex: 1; min-width: 200px; }
+        .kma-navdrop-col { display: flex; flex-direction: column; gap: 11px; flex: 1; min-width: 200px; }
         .kma-navdrop-col-label {
           font-size: 10.5px; font-weight: 700; letter-spacing: 0.07em; color: var(--muted);
           text-transform: uppercase; padding: 6px 12px 10px;
