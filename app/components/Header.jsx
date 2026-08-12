@@ -4,34 +4,34 @@ import React, { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import LogoMark from "./LogoMark";
-import { Camera, Star, FileSearch, GitCompare, Mail, Users, Rocket, Palette, Plus, X, ShieldQuestion, Sparkles, Code2, Image as ImageIcon, History, LayoutDashboard, Download } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 const FEATURE_GROUPS = [
   {
     label: "Analysis",
     items: [
-      { icon: Camera, title: "Screenshot Analysis", desc: "13 categories, 4 lenses" },
-      { icon: FileSearch, title: "ASO / Store Listing Review", desc: "Title, description & keywords" },
-      { icon: ShieldQuestion, title: "Update Risk Check", desc: "Flags risky review signals" },
-      { icon: ImageIcon, title: "Visual Annotation", desc: "Findings marked on screenshots" },
+      { title: "Screenshot Analysis", desc: "13 categories, 4 lenses" },
+      { title: "ASO / Store Listing Review", desc: "Title, description & keywords" },
+      { title: "Update Risk Check", desc: "Flags risky review signals" },
+      { title: "Visual Annotation", desc: "Findings marked on screenshots" },
     ],
   },
   {
     label: "Insights",
     items: [
-      { icon: Star, title: "Real App Store Reviews", desc: "Real, public reviews in real time" },
-      { icon: Sparkles, title: "Quick Wins", desc: "High impact, low effort fixes" },
-      { icon: Code2, title: "Code-Level Suggestions", desc: "Sample CSS, Swift, Kotlin" },
-      { icon: History, title: "History & Trend", desc: "Track your score over time" },
+      { title: "Real App Store Reviews", desc: "Real, public reviews in real time" },
+      { title: "Quick Wins", desc: "High impact, low effort fixes" },
+      { title: "Code-Level Suggestions", desc: "Sample CSS, Swift, Kotlin" },
+      { title: "History & Trend", desc: "Track your score over time" },
     ],
   },
   {
     label: "Collaboration",
     items: [
-      { icon: GitCompare, title: "Detailed Comparison", desc: "Benchmark competitors" },
-      { icon: LayoutDashboard, title: "My Apps Dashboard", desc: "All tracked apps, one place" },
-      { icon: Mail, title: "Weekly Email Digest", desc: "Reviews in your inbox" },
-      { icon: Download, title: "PDF Export", desc: "Share your report instantly" },
+      { title: "Detailed Comparison", desc: "Benchmark competitors" },
+      { title: "My Apps Dashboard", desc: "All tracked apps, one place" },
+      { title: "Weekly Email Digest", desc: "Reviews in your inbox" },
+      { title: "PDF Export", desc: "Share your report instantly" },
     ],
   },
 ];
@@ -40,9 +40,9 @@ const USE_CASE_GROUPS = [
   {
     label: "Who it's for",
     items: [
-      { icon: Users, title: "Product Managers", desc: "Prioritize the roadmap" },
-      { icon: Rocket, title: "Indie Developers", desc: "Ship with confidence" },
-      { icon: Palette, title: "Designers", desc: "Spot UI/UX issues fast" },
+      { title: "Product Managers", desc: "Prioritize the roadmap" },
+      { title: "Indie Developers", desc: "Ship with confidence" },
+      { title: "Designers", desc: "Spot UI/UX issues fast" },
     ],
   },
 ];
@@ -76,33 +76,25 @@ function NavDropdown({ label, groups, open, onEnter, onLeave }) {
     <div className="kma-navdrop" ref={anchorRef} onMouseEnter={onEnter} onMouseLeave={onLeave}>
       <span className="kma-header-navitem kma-header-navitem-clickable">
         {label}
-        <span className={`kma-navdrop-toggle ${open ? "kma-navdrop-toggle-open" : ""}`}>
-          {open ? <X size={11} /> : <Plus size={11} />}
-        </span>
+        <ChevronDown size={14} className={`kma-navdrop-chevron ${open ? "kma-navdrop-chevron-open" : ""}`} />
       </span>
       {mounted && rendered && coords &&
         createPortal(
           <div
             className={`kma-navdrop-panel ${visible ? "kma-navdrop-panel-visible" : ""}`}
-            style={{ top: coords.top, left: coords.left, minWidth: columns * 230 }}
+            style={{ top: coords.top, left: coords.left, minWidth: columns * 230 + 150 }}
             onMouseEnter={onEnter}
             onMouseLeave={onLeave}
           >
             {groups.map((group) => (
               <div className="kma-navdrop-col" key={group.label}>
                 <div className="kma-navdrop-col-label">{group.label}</div>
-                {group.items.map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <div className="kma-navdrop-item" key={item.title}>
-                      <div className="kma-navdrop-icon"><Icon size={16} /></div>
-                      <div>
-                        <div className="kma-navdrop-item-title">{item.title}</div>
-                        <div className="kma-navdrop-item-desc">{item.desc}</div>
-                      </div>
-                    </div>
-                  );
-                })}
+                {group.items.map((item) => (
+                  <div className="kma-navdrop-item" key={item.title}>
+                    <div className="kma-navdrop-item-title">{item.title}</div>
+                    <div className="kma-navdrop-item-desc">{item.desc}</div>
+                  </div>
+                ))}
               </div>
             ))}
           </div>,
@@ -185,12 +177,10 @@ export default function Header() {
           white-space: nowrap;
         }
         .kma-header-navitem-clickable { cursor: pointer; }
-        .kma-navdrop-toggle {
-          width: 18px; height: 18px; border-radius: 50%; background: var(--ink-3); color: var(--muted);
-          display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-          transition: background 0.2s ease, transform 0.3s ease;
+        .kma-navdrop-chevron {
+          color: var(--muted); transition: transform 0.25s ease, color 0.2s ease;
         }
-        .kma-navdrop-toggle-open { background: rgb(255, 0, 122); color: #fff; transform: rotate(180deg); }
+        .kma-navdrop-chevron-open { transform: rotate(180deg); color: rgb(255, 0, 122); }
         .kma-navdrop { position: relative; }
       `}</style>
 
@@ -273,17 +263,12 @@ export default function Header() {
           text-transform: uppercase; padding: 6px 12px 10px;
         }
         .kma-navdrop-item {
-          display: flex; align-items: flex-start; gap: 12px; padding: 10px 12px; border-radius: 10px;
+          display: flex; flex-direction: column; padding: 10px 12px; border-radius: 10px;
           transition: background 0.15s ease;
         }
         .kma-navdrop-item:hover { background: var(--ink); }
-        .kma-navdrop-icon {
-          width: 32px; height: 32px; border-radius: 8px; background: var(--ink-3); color: var(--chalk);
-          display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-          transition: background 0.15s ease, color 0.15s ease;
-        }
-        .kma-navdrop-item:hover .kma-navdrop-icon { background: rgb(255, 0, 122); color: #fff; }
-        .kma-navdrop-item-title { font-size: 13.5px; font-weight: 600; color: var(--chalk); }
+        .kma-navdrop-item-title { font-size: 13.5px; font-weight: 600; color: var(--chalk); transition: color 0.15s ease; }
+        .kma-navdrop-item:hover .kma-navdrop-item-title { color: rgb(255, 0, 122); }
         .kma-navdrop-item-desc { font-size: 12px; color: var(--muted); margin-top: 1px; }
       `}</style>
     </div>
