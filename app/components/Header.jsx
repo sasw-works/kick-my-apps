@@ -78,6 +78,11 @@ function NavDropdown({ label, groups, open, onEnter, onLeave }) {
         {label}
         <ChevronDown size={14} className={`kma-navdrop-chevron ${open ? "kma-navdrop-chevron-open" : ""}`} />
       </span>
+      {mounted && rendered &&
+        createPortal(
+          <div className={`kma-navdrop-backdrop ${visible ? "kma-navdrop-backdrop-visible" : ""}`} />,
+          document.body
+        )}
       {mounted && rendered && coords &&
         createPortal(
           <div
@@ -246,6 +251,13 @@ export default function Header() {
           .kma-header-nav { display: none; }
         }
 
+        .kma-navdrop-backdrop {
+          position: fixed; inset: 0; z-index: 150; opacity: 0;
+          background: rgba(20,33,61,0.06);
+          -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+          transition: opacity 0.25s ease; pointer-events: none;
+        }
+        .kma-navdrop-backdrop-visible { opacity: 1; }
         .kma-navdrop-panel {
           position: fixed; transform: translateX(-50%) translateY(-8px); opacity: 0;
           background: var(--ink-2); border: 1px solid var(--ink-3);
