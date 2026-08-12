@@ -322,6 +322,24 @@ export default function MarketingSections() {
   const dragState = useRef({ isDown: false, startX: 0, scrollStart: 0, moved: false });
   const [billingCycle, setBillingCycle] = React.useState("annual"); // monthly | annual
 
+  React.useEffect(() => {
+    const els = document.querySelectorAll(".mkt-reveal");
+    if (!els.length) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("mkt-reveal-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+    els.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
   const scrollCarousel = (dir) => {
     carouselRef.current?.scrollBy({ left: dir * 380, behavior: "smooth" });
   };
@@ -348,6 +366,14 @@ export default function MarketingSections() {
     <div className="mkt-root">
       <style>{`
         .mkt-root { width: 100%; max-width: 1000px; margin: 90px auto 0; font-family: var(--font-inter), sans-serif; }
+        .mkt-lift { transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease, border-color 0.28s ease; }
+        .mkt-lift:hover { transform: translateY(-5px); box-shadow: 0 18px 36px rgba(20,33,61,0.08); }
+        .mkt-reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+        .mkt-reveal-visible { opacity: 1; transform: translateY(0); }
+        .mkt-reveal-d1 { transition-delay: 0.08s; }
+        .mkt-reveal-d2 { transition-delay: 0.16s; }
+        .mkt-reveal-d3 { transition-delay: 0.24s; }
+        .mkt-reveal-d4 { transition-delay: 0.32s; }
         .mkt-section-title { font-size: 34px; font-weight: 500; letter-spacing: -0.02em; color: var(--chalk); text-align: center; margin-bottom: 10px; }
         .mkt-section-sub { font-size: 15px; font-family: var(--font-body); color: var(--muted); text-align: center; max-width: 480px; margin: 0 auto 40px; }
         .mkt-title-card {
@@ -396,9 +422,9 @@ export default function MarketingSections() {
         .mkt-feature-card {
           background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 16px;
           box-shadow: var(--shadow); padding: 26px;
-          transition: transform 0.2s ease, border-color 0.2s ease;
+          transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.28s ease, box-shadow 0.28s ease;
         }
-        .mkt-feature-card:hover { transform: translateY(-3px); border-color: var(--brand); }
+        .mkt-feature-card:hover { transform: translateY(-5px); border-color: var(--brand); box-shadow: 0 18px 36px rgba(20,33,61,0.08); }
 
         .mkt-halo {
           position: relative; border-radius: 24px; padding: 17px; overflow: hidden;
@@ -608,8 +634,11 @@ export default function MarketingSections() {
         .mkt-pricing-card {
           position: relative; background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 20px;
           padding: 32px; display: flex; flex-direction: column;
+          transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease;
         }
+        .mkt-pricing-card:hover { transform: translateY(-5px); box-shadow: 0 18px 36px rgba(20,33,61,0.08); }
         .mkt-pricing-card-highlighted { border: 2px solid var(--brand); box-shadow: 0 12px 32px color-mix(in srgb, var(--brand) 15%, transparent); }
+        .mkt-pricing-card-highlighted:hover { box-shadow: 0 20px 40px color-mix(in srgb, var(--brand) 22%, transparent); }
         .mkt-pricing-badge {
           position: absolute; top: -16px; left: 50%; transform: translateX(-50%);
           background: var(--brand); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
@@ -649,7 +678,9 @@ export default function MarketingSections() {
           width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 20px;
           background: none; border: none; cursor: pointer; padding: 26px 4px;
           font-size: 19px; font-weight: 500; color: var(--chalk); text-align: left;
+          transition: color 0.2s ease;
         }
+        .faq-q:hover { color: var(--brand); }
         .faq-toggle {
           width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
           display: flex; align-items: center; justify-content: center;
@@ -718,7 +749,7 @@ export default function MarketingSections() {
       </div>
 
       {/* App Store data + Always fresh */}
-      <div>
+      <div className="mkt-reveal">
         <div className="mkt-section-title">Everything your reviews are telling you</div>
         <div className="mkt-section-sub">Screenshot analysis and real user reviews meet in the same report.</div>
         <div className="mkt-grid-2">
@@ -772,7 +803,7 @@ export default function MarketingSections() {
       </div>
 
       {/* 13 categories + Quick Wins + Weekly digest + Compare, merged */}
-      <div>
+      <div className="mkt-reveal">
         <div className="mkt-section-title">Deep, but never messy</div>
         <div className="mkt-section-sub">13 categories of findings, prioritized by impact, and tracked with weekly digests and competitor comparisons.</div>
         <div className="mkt-grid-4">
@@ -873,7 +904,7 @@ export default function MarketingSections() {
       </div>
 
       {/* Pricing */}
-      <div className="mkt-pricing">
+      <div className="mkt-pricing mkt-reveal">
         <div className="mkt-pricing-header">
           <div className="mkt-section-title">Choose your plan</div>
           <div className="mkt-section-sub">Start free, upgrade when you need more. Cancel anytime.</div>
@@ -931,7 +962,7 @@ export default function MarketingSections() {
       </div>
 
       {/* FAQ */}
-      <div>
+      <div className="mkt-reveal">
         <div className="faq-eyebrow" style={{ marginTop: 150 }}>We're happy to answer your questions</div>
         <div className="mkt-section-title">Frequently asked questions</div>
         <div className="mkt-section-sub">&nbsp;</div>
@@ -944,7 +975,7 @@ export default function MarketingSections() {
       </div>
 
       {/* Closing CTA */}
-      <div className="mkt-fullbleed mkt-closing-cta">
+      <div className="mkt-fullbleed mkt-closing-cta mkt-reveal">
         <div className="mkt-closing-logo"><FooterLogo size={140} /></div>
         <div className="mkt-closing-heading">Ready to see<br />what's hurting your app?</div>
         <button
