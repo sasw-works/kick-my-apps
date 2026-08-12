@@ -78,7 +78,7 @@ function NavDropdown({ label, groups, open, onEnter, onLeave }) {
     let hideTimer;
     if (open && anchorRef.current) {
       const rect = anchorRef.current.getBoundingClientRect();
-      setCoords({ top: rect.bottom + 16, left: rect.left + rect.width / 2 });
+      setCoords({ top: rect.bottom + 26, left: rect.left + rect.width / 2 });
       setRendered(true);
       requestAnimationFrame(() => requestAnimationFrame(() => setVisible(true)));
     } else {
