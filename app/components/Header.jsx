@@ -47,6 +47,24 @@ const USE_CASE_GROUPS = [
   },
 ];
 
+const RESOURCES_GROUPS = [
+  {
+    label: "Learn",
+    items: [
+      { title: "Guides", desc: "ASO and app health playbooks" },
+      { title: "Blog", desc: "Product updates and insights" },
+      { title: "Customer Stories", desc: "How teams use Kick My Apps" },
+    ],
+  },
+  {
+    label: "Support",
+    items: [
+      { title: "Help Center", desc: "Answers to common questions" },
+      { title: "Product Updates", desc: "What's new and shipped" },
+    ],
+  },
+];
+
 function NavDropdown({ label, groups, open, onEnter, onLeave }) {
   const anchorRef = useRef(null);
   const [coords, setCoords] = useState(null);
@@ -211,7 +229,13 @@ export default function Header() {
             onEnter={() => openWithDelay("usecases")}
             onLeave={closeWithDelay}
           />
-          <span className="kma-header-navitem">Blog</span>
+          <NavDropdown
+            label="Resources"
+            groups={RESOURCES_GROUPS}
+            open={openMenu === "resources"}
+            onEnter={() => openWithDelay("resources")}
+            onLeave={closeWithDelay}
+          />
         </nav>
 
         <div className="kma-header-right">
