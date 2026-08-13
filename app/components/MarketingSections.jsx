@@ -810,19 +810,19 @@ export default function MarketingSections() {
         <div className="mkt-section-title">Deep, but never messy</div>
         <div className="mkt-section-sub">13 categories of findings, prioritized by impact, and tracked with weekly digests and competitor comparisons.</div>
         <div className="mkt-grid-4">
-          <div className="mkt-feature-card">
-            <div className="mkt-feature-icon" style={{ background: "transparent" }}><AppStoreDataIcon size={66} /></div>
+          <div className="mkt-feature-card mkt-lift">
+            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon03 size={66} /></div>
             <div className="mkt-feature-title">13 categories, 4 lenses</div>
-            <div className="mkt-feature-desc" style={{ marginBottom: 43 }}>From onboarding to accessibility, every finding maps to one of the UI / UX / Accessibility / Product lenses.</div>
+            <div className="mkt-feature-desc" style={{ marginBottom: 22 }}>From onboarding to accessibility, every finding maps to one of the UI / UX / Accessibility / Product lenses.</div>
             <div className="mkt-priority-list">
               <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UI</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>2 critical · 1 warning</span></div>
               <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UX</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>1 warning</span></div>
             </div>
           </div>
-          <div className="mkt-feature-card">
-            <div className="mkt-feature-icon" style={{ background: "transparent" }}><FreshIcon size={66} /></div>
+          <div className="mkt-feature-card mkt-lift">
+            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon04 size={66} /></div>
             <div className="mkt-feature-title">Prioritized by impact</div>
-            <div className="mkt-feature-desc" style={{ marginBottom: 43 }}>We tell you what to fix first by matching high impact with low implementation effort, so nothing important slips through.</div>
+            <div className="mkt-feature-desc" style={{ marginBottom: 22 }}>We tell you what to fix first by matching high impact with low implementation effort, so nothing important slips through.</div>
             <div className="mkt-priority-list">
               {PRIORITY_ITEMS.slice(0, 2).map((p) => (
                 <div className="mkt-priority-row" key={p.tag}>
@@ -833,19 +833,19 @@ export default function MarketingSections() {
               ))}
             </div>
           </div>
-          <div className="mkt-feature-card">
-            <div className="mkt-feature-icon" style={{ background: "transparent" }}><AppStoreDataIcon size={66} /></div>
+          <div className="mkt-feature-card mkt-lift">
+            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon05 size={66} /></div>
             <div className="mkt-feature-title">Weekly review digest</div>
-            <div className="mkt-feature-desc" style={{ marginBottom: 43 }}>Get a summary of a tracked app's new reviews delivered to your inbox every week.</div>
+            <div className="mkt-feature-desc" style={{ marginBottom: 22 }}>Get a summary of a tracked app's new reviews delivered to your inbox every week.</div>
             <div className="mkt-showcase-visual">
-              <Mail size={22} color="var(--muted)" className="mkt-bounce" />
+              <Mail size={22} color="var(--brand)" className="mkt-bounce" />
               <span style={{ fontSize: 12, color: "var(--muted)" }}>Every Monday, automatic</span>
             </div>
           </div>
-          <div className="mkt-feature-card">
-            <div className="mkt-feature-icon" style={{ background: "transparent" }}><FreshIcon size={66} /></div>
+          <div className="mkt-feature-card mkt-lift">
+            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon06 size={66} /></div>
             <div className="mkt-feature-title">Compare with a competitor</div>
-            <div className="mkt-feature-desc" style={{ marginBottom: 43 }}>Put your app side by side with a competitor — scores and findings, one screen.</div>
+            <div className="mkt-feature-desc" style={{ marginBottom: 22 }}>Put your app side by side with a competitor — scores and findings, one screen.</div>
             <div className="mkt-showcase-visual" style={{ flexDirection: "row", gap: 24 }}>
               <div style={{ textAlign: "center" }}>
                 <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--teal)" }}>78</div>
