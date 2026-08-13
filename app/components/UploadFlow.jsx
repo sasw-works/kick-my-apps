@@ -232,7 +232,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         }
         .hero-search-anchor { position: relative; }
         .hero-search-pill {
-          width: 620px;
+          width: 640px;
           height: 75px;
           box-sizing: border-box;
           display: flex;
@@ -282,7 +282,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         }
 
         .upload-pill {
-          width: 270px;
+          width: 250px;
           height: 75px;
           box-sizing: border-box;
           display: flex;
