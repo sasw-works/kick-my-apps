@@ -298,6 +298,38 @@ function FreshIcon({ size = 36 }) {
   );
 }
 
+function CountUp({ to, duration = 1200 }) {
+  const ref = React.useRef(null);
+  const [value, setValue] = React.useState(0);
+  const started = React.useRef(false);
+
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started.current) {
+          started.current = true;
+          const start = performance.now();
+          const tick = (now) => {
+            const progress = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            setValue(Math.round(eased * to));
+            if (progress < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [to, duration]);
+
+  return <span ref={ref}>{value}</span>;
+}
+
 function FaqItem({ q, a }) {
   const [open, setOpen] = React.useState(false);
   return (
@@ -418,7 +450,13 @@ export default function MarketingSections() {
         .mkt-preview-row span { flex: 1; color: var(--chalk); }
 
         .mkt-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 90px; }
-        .mkt-grid-4 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 90px; }
+        .mkt-grid-4 { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: auto auto; gap: 20px; margin-bottom: 90px; }
+        .mkt-deep-card-1 { grid-column: span 2; grid-row: span 2; }
+        .mkt-deep-card-4 { grid-row: span 2; }
+        @media (max-width: 900px) {
+          .mkt-grid-4 { grid-template-columns: 1fr; }
+          .mkt-deep-card-1, .mkt-deep-card-4 { grid-column: span 1; grid-row: span 1; }
+        }
         .mkt-feature-card {
           background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 16px;
           box-shadow: var(--shadow); padding: 26px;
@@ -431,7 +469,15 @@ export default function MarketingSections() {
         }
         .mkt-deep-card .mkt-feature-title { font-size: 22px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 10px; }
         .mkt-deep-card .mkt-feature-desc { font-size: 15px; }
-        .mkt-deep-card-1 { background: linear-gradient(160deg, color-mix(in srgb, var(--brand) 6%, var(--ink-2)), var(--ink-2) 55%); }
+        .mkt-deep-card-1 {
+          background: linear-gradient(160deg, color-mix(in srgb, var(--brand) 6%, var(--ink-2)), var(--ink-2) 55%);
+          background-size: 200% 200%;
+          animation: mkt-deep-drift 10s ease-in-out infinite;
+        }
+        @keyframes mkt-deep-drift {
+          0%, 100% { background-position: 0% 0%; }
+          50% { background-position: 100% 100%; }
+        }
         .mkt-deep-card-2 { background: linear-gradient(160deg, color-mix(in srgb, var(--teal) 8%, var(--ink-2)), var(--ink-2) 55%); }
         .mkt-deep-card-3 { background: linear-gradient(160deg, color-mix(in srgb, var(--yellow) 10%, var(--ink-2)), var(--ink-2) 55%); }
         .mkt-deep-card-4 { background: linear-gradient(160deg, color-mix(in srgb, var(--kick) 6%, var(--ink-2)), var(--ink-2) 55%); }
@@ -874,12 +920,12 @@ export default function MarketingSections() {
             <div className="mkt-deep-preview">
               <div className="mkt-deep-preview-frame" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 24 }}>
                 <div style={{ textAlign: "center" }}>
-                  <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--teal)" }}>78</div>
+                  <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--teal)" }}><CountUp to={78} /></div>
                   <div style={{ fontSize: 10, color: "var(--muted)" }}>You</div>
                 </div>
                 <GitCompare size={16} color="var(--muted)" className="mkt-pulse-scale" />
                 <div style={{ textAlign: "center" }}>
-                  <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--yellow)" }}>61</div>
+                  <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--yellow)" }}><CountUp to={61} /></div>
                   <div style={{ fontSize: 10, color: "var(--muted)" }}>Competitor</div>
                 </div>
               </div>
