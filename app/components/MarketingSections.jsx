@@ -514,10 +514,13 @@ export default function MarketingSections() {
           position: absolute; inset: 0; width: 100%; height: 100%;
           object-fit: cover; z-index: 0; transform: scaleX(-1); opacity: 0.5;
         }
+        .mkt-grid-dark-video-overlay {
+          z-index: 1; opacity: 0.5; transform: none;
+        }
         .mkt-grid-dark-inner {
           max-width: 1500px; margin-left: auto; margin-right: 0; overflow-x: auto;
           border-top: 1px solid rgba(255,255,255,0.5); border-bottom: 1px solid rgba(255,255,255,0.5);
-          position: relative; z-index: 1;
+          position: relative; z-index: 2;
         }
         .mkt-grid-dark-row {
           display: flex;
@@ -862,6 +865,9 @@ export default function MarketingSections() {
       <div className="mkt-fullbleed mkt-grid-dark-wrap">
         <video className="mkt-grid-dark-video" autoPlay loop muted playsInline>
           <source src="/dark-grid-bg.mp4" type="video/mp4" />
+        </video>
+        <video className="mkt-grid-dark-video mkt-grid-dark-video-overlay" autoPlay loop muted playsInline>
+          <source src="/dark-grid-bg-overlay.mp4" type="video/mp4" />
         </video>
         <div className="mkt-grid-dark-inner">
         <div className="mkt-grid-dark-row">
