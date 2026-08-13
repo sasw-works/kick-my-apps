@@ -426,6 +426,21 @@ export default function MarketingSections() {
         }
         .mkt-feature-card:hover { transform: translateY(-5px); border-color: var(--brand); box-shadow: 0 18px 36px rgba(20,33,61,0.08); }
 
+        .mkt-deep-card {
+          padding: 36px !important; border-radius: 20px !important; display: flex; flex-direction: column;
+        }
+        .mkt-deep-card .mkt-feature-title { font-size: 22px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 10px; }
+        .mkt-deep-card .mkt-feature-desc { font-size: 15px; }
+        .mkt-deep-card-1 { background: linear-gradient(160deg, color-mix(in srgb, var(--brand) 6%, var(--ink-2)), var(--ink-2) 55%); }
+        .mkt-deep-card-2 { background: linear-gradient(160deg, color-mix(in srgb, var(--teal) 8%, var(--ink-2)), var(--ink-2) 55%); }
+        .mkt-deep-card-3 { background: linear-gradient(160deg, color-mix(in srgb, var(--yellow) 10%, var(--ink-2)), var(--ink-2) 55%); }
+        .mkt-deep-card-4 { background: linear-gradient(160deg, color-mix(in srgb, var(--kick) 6%, var(--ink-2)), var(--ink-2) 55%); }
+        .mkt-deep-preview { margin-top: auto; padding-top: 22px; }
+        .mkt-deep-preview-frame {
+          background: var(--ink); border: 1px solid var(--ink-3); border-radius: 14px; padding: 18px;
+          box-shadow: 0 8px 24px rgba(20,33,61,0.06);
+        }
+
         .mkt-halo {
           position: relative; border-radius: 24px; padding: 17px; overflow: hidden;
           display: flex; height: 100%; box-sizing: border-box;
@@ -810,51 +825,63 @@ export default function MarketingSections() {
         <div className="mkt-section-title">Deep, but never messy</div>
         <div className="mkt-section-sub">13 categories of findings, prioritized by impact, and tracked with weekly digests and competitor comparisons.</div>
         <div className="mkt-grid-4">
-          <div className="mkt-feature-card mkt-lift">
-            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon03 size={66} /></div>
+          <div className="mkt-feature-card mkt-lift mkt-deep-card mkt-deep-card-1">
+            <div className="mkt-feature-icon" style={{ background: "transparent", marginBottom: 18 }}><Icon03 size={48} /></div>
             <div className="mkt-feature-title">13 categories, 4 lenses</div>
-            <div className="mkt-feature-desc" style={{ marginBottom: 22 }}>From onboarding to accessibility, every finding maps to one of the UI / UX / Accessibility / Product lenses.</div>
-            <div className="mkt-priority-list">
-              <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UI</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>2 critical · 1 warning</span></div>
-              <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UX</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>1 warning</span></div>
-            </div>
-          </div>
-          <div className="mkt-feature-card mkt-lift">
-            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon04 size={66} /></div>
-            <div className="mkt-feature-title">Prioritized by impact</div>
-            <div className="mkt-feature-desc" style={{ marginBottom: 22 }}>We tell you what to fix first by matching high impact with low implementation effort, so nothing important slips through.</div>
-            <div className="mkt-priority-list">
-              {PRIORITY_ITEMS.slice(0, 2).map((p) => (
-                <div className="mkt-priority-row" key={p.tag}>
-                  <span className={`mkt-priority-tag ${p.color === "var(--kick)" ? "mkt-tag-pulse" : ""}`} style={{ color: p.color, background: "var(--ink-3)" }}>{p.tag}</span>
-                  <span className="mkt-priority-title">{p.title}</span>
-                  <span className="mkt-priority-meta">{p.meta}</span>
+            <div className="mkt-feature-desc">From onboarding to accessibility, every finding maps to one of the UI / UX / Accessibility / Product lenses.</div>
+            <div className="mkt-deep-preview">
+              <div className="mkt-deep-preview-frame">
+                <div className="mkt-priority-list">
+                  <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UI</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>2 critical · 1 warning</span></div>
+                  <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UX</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>1 warning</span></div>
                 </div>
-              ))}
-            </div>
-          </div>
-          <div className="mkt-feature-card mkt-lift">
-            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon05 size={66} /></div>
-            <div className="mkt-feature-title">Weekly review digest</div>
-            <div className="mkt-feature-desc" style={{ marginBottom: 22 }}>Get a summary of a tracked app's new reviews delivered to your inbox every week.</div>
-            <div className="mkt-showcase-visual">
-              <Mail size={22} color="var(--brand)" className="mkt-bounce" />
-              <span style={{ fontSize: 12, color: "var(--muted)" }}>Every Monday, automatic</span>
-            </div>
-          </div>
-          <div className="mkt-feature-card mkt-lift">
-            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon06 size={66} /></div>
-            <div className="mkt-feature-title">Compare with a competitor</div>
-            <div className="mkt-feature-desc" style={{ marginBottom: 22 }}>Put your app side by side with a competitor — scores and findings, one screen.</div>
-            <div className="mkt-showcase-visual" style={{ flexDirection: "row", gap: 24 }}>
-              <div style={{ textAlign: "center" }}>
-                <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--teal)" }}>78</div>
-                <div style={{ fontSize: 10, color: "var(--muted)" }}>You</div>
               </div>
-              <GitCompare size={16} color="var(--muted)" className="mkt-pulse-scale" />
-              <div style={{ textAlign: "center" }}>
-                <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--yellow)" }}>61</div>
-                <div style={{ fontSize: 10, color: "var(--muted)" }}>Competitor</div>
+            </div>
+          </div>
+          <div className="mkt-feature-card mkt-lift mkt-deep-card mkt-deep-card-2">
+            <div className="mkt-feature-icon" style={{ background: "transparent", marginBottom: 18 }}><Icon04 size={48} /></div>
+            <div className="mkt-feature-title">Prioritized by impact</div>
+            <div className="mkt-feature-desc">We tell you what to fix first by matching high impact with low implementation effort, so nothing important slips through.</div>
+            <div className="mkt-deep-preview">
+              <div className="mkt-deep-preview-frame">
+                <div className="mkt-priority-list">
+                  {PRIORITY_ITEMS.slice(0, 2).map((p) => (
+                    <div className="mkt-priority-row" key={p.tag}>
+                      <span className={`mkt-priority-tag ${p.color === "var(--kick)" ? "mkt-tag-pulse" : ""}`} style={{ color: p.color, background: "var(--ink-3)" }}>{p.tag}</span>
+                      <span className="mkt-priority-title">{p.title}</span>
+                      <span className="mkt-priority-meta">{p.meta}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="mkt-feature-card mkt-lift mkt-deep-card mkt-deep-card-3">
+            <div className="mkt-feature-icon" style={{ background: "transparent", marginBottom: 18 }}><Icon05 size={48} /></div>
+            <div className="mkt-feature-title">Weekly review digest</div>
+            <div className="mkt-feature-desc">Get a summary of a tracked app's new reviews delivered to your inbox every week.</div>
+            <div className="mkt-deep-preview">
+              <div className="mkt-deep-preview-frame" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, flexDirection: "column" }}>
+                <Mail size={22} color="var(--brand)" className="mkt-bounce" />
+                <span style={{ fontSize: 12, color: "var(--muted)" }}>Every Monday, automatic</span>
+              </div>
+            </div>
+          </div>
+          <div className="mkt-feature-card mkt-lift mkt-deep-card mkt-deep-card-4">
+            <div className="mkt-feature-icon" style={{ background: "transparent", marginBottom: 18 }}><Icon06 size={48} /></div>
+            <div className="mkt-feature-title">Compare with a competitor</div>
+            <div className="mkt-feature-desc">Put your app side by side with a competitor — scores and findings, one screen.</div>
+            <div className="mkt-deep-preview">
+              <div className="mkt-deep-preview-frame" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 24 }}>
+                <div style={{ textAlign: "center" }}>
+                  <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--teal)" }}>78</div>
+                  <div style={{ fontSize: 10, color: "var(--muted)" }}>You</div>
+                </div>
+                <GitCompare size={16} color="var(--muted)" className="mkt-pulse-scale" />
+                <div style={{ textAlign: "center" }}>
+                  <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--yellow)" }}>61</div>
+                  <div style={{ fontSize: 10, color: "var(--muted)" }}>Competitor</div>
+                </div>
               </div>
             </div>
           </div>
