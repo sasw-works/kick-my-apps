@@ -515,7 +515,7 @@ export default function MarketingSections() {
           object-fit: cover; z-index: 0; transform: scaleX(-1); opacity: 0.5;
         }
         .mkt-grid-dark-video-overlay {
-          z-index: 1; opacity: 0.375; transform: none;
+          z-index: 1; opacity: 0.2625; transform: none;
         }
         .mkt-grid-dark-inner {
           max-width: 1500px; margin-left: auto; margin-right: 0; overflow-x: auto;
