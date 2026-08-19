@@ -715,7 +715,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           padding: 7px 12px; border-radius: 8px;
         }
         .kma-close-btn {
-          width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--ink-3);
+          width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--ink-3);
           background: var(--ink-2); color: var(--chalk); display: flex; align-items: center; justify-content: center;
           cursor: pointer; transition: background 0.15s ease, border-color 0.15s ease;
         }
@@ -1054,7 +1054,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
               display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
               background: "var(--ink-2)", border: "1px solid var(--ink-3)", borderRadius: 999,
               padding: "0 14px", fontSize: 12.5, color: "var(--muted)", height: 44, boxSizing: "border-box",
-              opacity: exporting ? 0.6 : 1,
+              minWidth: 150, opacity: exporting ? 0.6 : 1,
             }}
           >
             {exporting ? "Hazırlanıyor…" : "PDF İndir"}
@@ -1067,7 +1067,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
                 display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
                 background: "var(--ink-2)", border: "1px solid var(--ink-3)", borderRadius: 999,
                 padding: "0 14px", fontSize: 12.5, color: "var(--muted)", height: 44, boxSizing: "border-box",
-                textDecoration: "none",
+                minWidth: 150, textDecoration: "none",
               }}
             >
               Karşılaştır
@@ -1079,7 +1079,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
             style={{
               display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
               background: "var(--brand)", border: "1px solid var(--brand)", borderRadius: 999,
-              padding: "0 14px", fontSize: 12.5, fontWeight: 600, color: "#fff", height: 44, boxSizing: "border-box",
+              padding: "0 14px", fontSize: 12.5, fontWeight: 600, color: "#fff", height: 44, boxSizing: "border-box", minWidth: 150,
             }}
           >
             {onReset ? (
