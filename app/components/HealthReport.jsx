@@ -951,11 +951,15 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .finding-code pre { margin: 0; padding: 4px 10px 10px; overflow-x: auto; }
         .finding-code code { font-family: var(--font-mono); font-size: 12px; color: #f5f3ee; white-space: pre; }
 
+        .review-pair-grid { display: grid; grid-template-columns: 1fr 1fr; column-gap: 32px; row-gap: 20px; align-items: center; }
+        .review-pair-cell { display: flex; align-items: center; }
+        .review-extra { margin-top: 14px; }
         .review-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
         .review-meta { display: flex; align-items: baseline; gap: 14px; margin-bottom: 14px; }
         .review-count { font-family: var(--font-display); font-size: 28px; font-weight: 500; letter-spacing: -0.01em; }
         .review-rating { font-family: var(--font-mono); color: var(--yellow); font-size: 13.5px; }
-        .complaint-row { display: flex; align-items: center; gap: 10px; margin-bottom: 30px; }
+        .complaint-row { display: flex; align-items: center; gap: 10px; margin-bottom: 30px; width: 100%; }
+        .review-pair-cell .complaint-row { margin-bottom: 0; }
         .complaint-label { font-size: 12px; width: 150px; color: var(--chalk); flex-shrink: 0; }
         .complaint-track { flex: 1; height: 6px; background: var(--ink-3); border-radius: 3px; overflow: hidden; }
         .complaint-fill { height: 100%; background: var(--kick); border-radius: 3px; }
@@ -1348,74 +1352,78 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         <div className="panel">
           <div className="panel-title">App Store Yorum Analizi</div>
           <div className="panel-subtitle">{reviewSummary.totalReviews} yorum üzerinden çıkarılan içgörüler</div>
-          <div className="review-grid">
-            <div>
-              <div className="review-meta">
-                <span className="review-count">{reviewSummary.totalReviews.toLocaleString("tr-TR")}</span>
-                <span className="review-rating">★ {reviewSummary.avgRating} ortalama</span>
-              </div>
-              {reviewSummary.topComplaints.map((c) => (
-                <ComplaintBar key={c.label} label={c.label} pct={c.pct} />
-              ))}
 
-              {reviewSummary.ratingDistribution && (
-                <>
-                  <div className="review-subtitle">YILDIZ DAĞILIMI</div>
-                  {reviewSummary.ratingDistribution
+          <div className="review-pair-grid">
+            <div className="review-meta">
+              <span className="review-count">{reviewSummary.totalReviews.toLocaleString("tr-TR")}</span>
+              <span className="review-rating">★ {reviewSummary.avgRating} ortalama</span>
+            </div>
+            <div className="panel-title">Önerilen Roadmap</div>
+
+            {Array.from({ length: Math.max(reviewSummary.topComplaints.length, reviewSummary.roadmap.length) }).map((_, i) => (
+              <React.Fragment key={i}>
+                <div className="review-pair-cell">
+                  {reviewSummary.topComplaints[i] && (
+                    <ComplaintBar label={reviewSummary.topComplaints[i].label} pct={reviewSummary.topComplaints[i].pct} />
+                  )}
+                </div>
+                <div className="review-pair-cell">
+                  {reviewSummary.roadmap[i] && (
+                    <div className="roadmap-item">
+                      <span className="roadmap-num">{i + 1}</span>
+                      <span>{reviewSummary.roadmap[i]}</span>
+                    </div>
+                  )}
+                </div>
+              </React.Fragment>
+            ))}
+          </div>
+
+          <div className="review-extra">
+            {reviewSummary.ratingDistribution && (
+              <>
+                <div className="review-subtitle">YILDIZ DAĞILIMI</div>
+                {reviewSummary.ratingDistribution
+                  .slice()
+                  .reverse()
+                  .map((r) => (
+                    <RatingBar key={r.star} star={r.star} count={r.count} total={reviewSummary.totalReviews} />
+                  ))}
+              </>
+            )}
+
+            {reviewSummary.mostHelpfulNegative && (
+              <div className="helpful-negative">
+                <div className="helpful-negative-label">EN ÇOK OY ALAN OLUMSUZ YORUM</div>
+                <div className="helpful-negative-stars">{"★".repeat(reviewSummary.mostHelpfulNegative.rating)}{"☆".repeat(5 - reviewSummary.mostHelpfulNegative.rating)}</div>
+                <p className="helpful-negative-text">
+                  {(reviewSummary.mostHelpfulNegative.content || "").slice(0, 220)}
+                  {(reviewSummary.mostHelpfulNegative.content || "").length > 220 ? "…" : ""}
+                </p>
+              </div>
+            )}
+
+            {reviewSummary.versionTrend && reviewSummary.versionTrend.length >= 2 && (
+              <div className="version-trend">
+                <div className="helpful-negative-label">SÜRÜME GÖRE PUAN TRENDİ</div>
+                <div className="version-trend-row">
+                  {reviewSummary.versionTrend
                     .slice()
                     .reverse()
-                    .map((r) => (
-                      <RatingBar key={r.star} star={r.star} count={r.count} total={reviewSummary.totalReviews} />
+                    .map((v) => (
+                      <div className="version-chip" key={v.version}>
+                        <span className="version-chip-num">v{v.version}</span>
+                        <span
+                          className="version-chip-avg"
+                          style={{ color: v.avg >= 4 ? "var(--teal)" : v.avg >= 2.5 ? "var(--yellow)" : "var(--kick)" }}
+                        >
+                          {v.avg.toFixed(1)}★
+                        </span>
+                      </div>
                     ))}
-                </>
-              )}
-
-              {reviewSummary.mostHelpfulNegative && (
-                <div className="helpful-negative">
-                  <div className="helpful-negative-label">EN ÇOK OY ALAN OLUMSUZ YORUM</div>
-                  <div className="helpful-negative-stars">{"★".repeat(reviewSummary.mostHelpfulNegative.rating)}{"☆".repeat(5 - reviewSummary.mostHelpfulNegative.rating)}</div>
-                  <p className="helpful-negative-text">
-                    {(reviewSummary.mostHelpfulNegative.content || "").slice(0, 220)}
-                    {(reviewSummary.mostHelpfulNegative.content || "").length > 220 ? "…" : ""}
-                  </p>
                 </div>
-              )}
-
-              {reviewSummary.versionTrend && reviewSummary.versionTrend.length >= 2 && (
-                <div className="version-trend">
-                  <div className="helpful-negative-label">SÜRÜME GÖRE PUAN TRENDİ</div>
-                  <div className="version-trend-row">
-                    {reviewSummary.versionTrend
-                      .slice()
-                      .reverse()
-                      .map((v) => (
-                        <div className="version-chip" key={v.version}>
-                          <span className="version-chip-num">v{v.version}</span>
-                          <span
-                            className="version-chip-avg"
-                            style={{ color: v.avg >= 4 ? "var(--teal)" : v.avg >= 2.5 ? "var(--yellow)" : "var(--kick)" }}
-                          >
-                            {v.avg.toFixed(1)}★
-                          </span>
-                        </div>
-                      ))}
-                  </div>
-                </div>
-              )}
-            </div>
-            <div>
-              <div className="panel-title">
-                Önerilen Roadmap
               </div>
-              <div className="roadmap-list">
-                {reviewSummary.roadmap.map((item, i) => (
-                  <div className="roadmap-item" key={i}>
-                    <span className="roadmap-num">{i + 1}</span>
-                    <span>{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+            )}
           </div>
         </div>
         )}
