@@ -786,7 +786,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .impact-row-v2 { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 6px 0; }
         .impact-label-v2 { display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--chalk); }
         .impact-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--brand); flex-shrink: 0; }
-        .impact-pill { font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 999px; white-space: nowrap; }
+        .impact-pill { font-size: 12px; font-weight: 400; padding: 4px 12px; border-radius: 999px; white-space: nowrap; }
 
         .lens-count-row { display: flex; }
         .lens-count-item { flex: 1; text-align: center; padding: 0 12px; position: relative; }
@@ -813,7 +813,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
         .priority-action-title { font-size: 12px; color: var(--chalk); flex: 1; line-height: 1.4; }
-        .priority-action-tag { font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 999px; flex-shrink: 0; white-space: nowrap; }
+        .priority-action-tag { font-size: 12px; font-weight: 400; padding: 2px 8px; border-radius: 999px; flex-shrink: 0; white-space: nowrap; }
         .impact-list { display: flex; flex-direction: column; gap: 12px; }
         .impact-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
         .impact-label { font-size: 12px; color: var(--muted); }
@@ -891,7 +891,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           transition: border-color 0.15s ease, background 0.15s ease;
         }
         .finding-filter-tab:hover { border-color: var(--brand); }
-        .finding-filter-tab-active { background: var(--ink-3); border-color: var(--chalk); color: var(--chalk); font-weight: 600; }
+        .finding-filter-tab-active { background: var(--ink-3); border-color: var(--chalk); color: var(--chalk); font-weight: 400; }
         .finding-filter-count { font-family: var(--font-mono); font-size: 12px; opacity: 0.7; }
         .empty-state { color: var(--muted); font-size: 13.5px; padding: 24px 0; text-align: center; }
         .lens-group { margin-bottom: 22px; }
