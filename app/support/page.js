@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Search, Plus, X, Mail } from "lucide-react";
+import { Search, Plus, X } from "lucide-react";
 
 const SUPPORT_FAQ = [
   {
@@ -170,7 +170,7 @@ export default function SupportPage() {
         .support-contact-title { font-size: 19px; font-weight: 500; color: var(--chalk); margin-bottom: 8px; }
         .support-contact-sub { font-size: 15px; color: var(--muted); margin-bottom: 20px; }
         .support-contact-btn {
-          display: inline-flex; align-items: center; gap: 8px; background: var(--chalk); color: var(--ink-2);
+          display: inline-flex; align-items: center; gap: 8px; background: #533AFE; color: #FFFFFF;
           padding: 12px 24px; border-radius: 999px; font-size: 14.5px; font-weight: 600; text-decoration: none;
         }
       `}</style>
@@ -194,7 +194,6 @@ export default function SupportPage() {
         <div className="support-contact-title">Still need help?</div>
         <div className="support-contact-sub">Our team typically responds within 24 hours.</div>
         <a href="mailto:support@kickmyapps.com" className="support-contact-btn">
-          <Mail size={16} />
           Email support
         </a>
       </div>
