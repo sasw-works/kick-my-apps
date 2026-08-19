@@ -1404,9 +1404,8 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
               )}
             </div>
             <div>
-              <div className="panel-title" style={{ marginBottom: 10 }}>
-                <MessageSquare size={12} style={{ marginRight: 6, verticalAlign: "-2px" }} />
-                ÖNERİLEN ROADMAP
+              <div className="panel-title">
+                Önerilen Roadmap
               </div>
               <div className="roadmap-list">
                 {reviewSummary.roadmap.map((item, i) => (
