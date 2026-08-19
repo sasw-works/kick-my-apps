@@ -121,10 +121,10 @@ export default function SupportPage() {
           opacity: 0.45;
           pointer-events: none;
         }
-        .support-blob-1 { width: 102vw; height: 102vw; max-width: 1140px; max-height: 1140px; background: #C9E86A; top: -60px; left: 24%; }
-        .support-blob-2 { width: 102vw; height: 102vw; max-width: 1140px; max-height: 1140px; background: #6FC6F5; top: 120px; right: 12%; }
-        .support-blob-3 { width: 75vw; height: 75vw; max-width: 810px; max-height: 810px; background: #7EE6C4; top: 60px; left: 28%; }
-        .support-blob-4 { width: 55vw; height: 55vw; max-width: 600px; max-height: 600px; background: #FDE788; top: -20px; left: 6%; }
+        .support-blob-1 { width: 102vw; height: 102vw; max-width: 1140px; max-height: 1140px; background: #A8C9F0; top: -60px; left: 24%; }
+        .support-blob-2 { width: 102vw; height: 102vw; max-width: 1140px; max-height: 1140px; background: #C7B6F5; top: 120px; right: 12%; }
+        .support-blob-3 { width: 75vw; height: 75vw; max-width: 810px; max-height: 810px; background: #8FDDD1; top: 60px; left: 28%; }
+        .support-blob-4 { width: 55vw; height: 55vw; max-width: 600px; max-height: 600px; background: #F5C9E8; top: -20px; left: 6%; }
         .support-blob-5 { width: 60vw; height: 60vw; max-width: 640px; max-height: 640px; background: #B9A6F5; top: 220px; right: -4%; }
         .support-page { position: relative; max-width: 760px; margin: 0 auto; padding: 90px 24px 120px; font-family: var(--font-inter), sans-serif; }
         .support-hero { text-align: center; margin-bottom: 48px; position: relative; z-index: 1; }
