@@ -216,6 +216,7 @@ export default function ConsoleReportsPage() {
         .reports-table tbody tr:hover { background: var(--ink); }
         .reports-row-selected { background: color-mix(in srgb, var(--brand) 6%, transparent) !important; }
         .reports-row-name { display: flex; align-items: center; gap: 12px; }
+        .reports-row-name-clickable { cursor: pointer; width: fit-content; }
         .reports-row-title { font-weight: 600; }
         .reports-row-subtitle { font-size: 12px; color: var(--muted); margin-top: 2px; }
         .reports-type-tag { display: inline-flex; align-items: center; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; width: fit-content; }
@@ -310,7 +311,10 @@ export default function ConsoleReportsPage() {
                   />
                 </td>
                 <td>
-                  <div className="reports-row-name">
+                  <div
+                    className="reports-row-name reports-row-name-clickable"
+                    onClick={() => router.push(r.href)}
+                  >
                     {r.icon}
                     <div>
                       <div className="reports-row-title">{r.title}</div>
