@@ -990,11 +990,6 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         .roadmap-list { display: flex; flex-direction: column; gap: 30px; }
         .roadmap-item { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--chalk); }
-        .roadmap-num {
-          font-family: var(--font-mono); font-size: 12px; color: var(--ink);
-          background: var(--teal); width: 18px; height: 18px; border-radius: 50%;
-          display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
-        }
 
         .aso-meta { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-bottom: 14px; display: flex; gap: 4px; flex-wrap: wrap; }
         .aso-row { margin-bottom: 12px; }
@@ -1370,7 +1365,6 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
                 <div className="review-pair-cell">
                   {reviewSummary.roadmap[i] && (
                     <div className="roadmap-item">
-                      <span className="roadmap-num">{i + 1}</span>
                       <span>{reviewSummary.roadmap[i]}</span>
                     </div>
                   )}
