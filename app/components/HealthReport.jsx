@@ -1191,7 +1191,6 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
                   <span className="impact-pill" style={{ color: frictionColor, background: `color-mix(in srgb, ${frictionColor} 15%, transparent)` }}>{frictionLevel}</span>
                 </div>
               </div>
-              <div className="impact-disclaimer">Bu rakamlar bulgu sayısına dayalı kaba bir tahmindir, kesin bir vaat değildir.</div>
             </div>
           )}
         </div>
