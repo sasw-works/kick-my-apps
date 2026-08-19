@@ -126,7 +126,7 @@ export default function SupportPage() {
         .support-blob-3 { width: 75vw; height: 75vw; max-width: 810px; max-height: 810px; background: #8FDDD1; top: 60px; left: 28%; }
         .support-blob-4 { width: 55vw; height: 55vw; max-width: 600px; max-height: 600px; background: #F5C9E8; top: -20px; left: 6%; }
         .support-blob-5 { width: 60vw; height: 60vw; max-width: 640px; max-height: 640px; background: #B9A6F5; top: 220px; right: -4%; }
-        .support-page { position: relative; max-width: 760px; margin: 0 auto; padding: 90px 24px 120px; font-family: var(--font-inter), sans-serif; }
+        .support-page { position: relative; max-width: 910px; margin: 0 auto; padding: 90px 24px 120px; font-family: var(--font-inter), sans-serif; }
         .support-hero { text-align: center; margin-bottom: 48px; position: relative; z-index: 1; }
         .support-title {
           font-family: var(--font-display); font-size: 90px; font-weight: 700;
