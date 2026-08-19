@@ -884,7 +884,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .qw-suggestion { font-size: 12px; color: var(--muted); margin: 0; line-height: 1.5; }
 
         .finding-list { display: flex; flex-direction: column; gap: 10px; }
-        .bulgular-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
+        .bulgular-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
         .finding-filter-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
         .finding-filter-tab {
           display: flex; align-items: center; gap: 6px; background: var(--ink-2); border: 1px solid var(--ink-3);
@@ -1275,7 +1275,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           <div className="bulgular-header">
             <div>
               <div className="panel-title">Bulgular</div>
-              <div className="panel-subtitle" style={{ marginBottom: 0 }}>{dialCaption}</div>
+              <div className="panel-subtitle">{dialCaption}</div>
             </div>
             <div className="finding-filter-tabs">
               <button className={`finding-filter-tab ${findingFilter === "all" ? "finding-filter-tab-active" : ""}`} onClick={() => setFindingFilter("all")}>
@@ -1292,6 +1292,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
               </button>
             </div>
           </div>
+          <div className="panel-divider" />
           {(() => {
             const filteredFindings = findingFilter === "all" ? findings : findings.filter((f) => f.status === findingFilter);
             if (filteredFindings.length === 0) {
