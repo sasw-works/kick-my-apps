@@ -488,6 +488,7 @@ const LENS_MAP = {
 
 const LENS_ORDER = ["UI", "UX", "Erişilebilirlik", "Ürün"];
 const LENS_DISPLAY_LABEL = { UI: "USER INTERFACE", UX: "USER EXPERIENCE", Erişilebilirlik: "ACCESSIBILITY", Ürün: "PRODUCT" };
+const LENS_TITLE_LABEL = { UI: "User Interface", UX: "User Experience", Erişilebilirlik: "Accessibility", Ürün: "Product" };
 const LENS_ICON = { UI: Palette, UX: Compass, Erişilebilirlik: Accessibility, Ürün: TrendingDown };
 const LENS_SUBTITLE = {
   UI: "Tasarım sistemi & görsel tutarlılık",
@@ -1298,12 +1299,10 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
             }
             return LENS_ORDER.filter((lens) => filteredFindings.some((f) => LENS_MAP[f.key] === lens)).map((lens) => {
               const items = filteredFindings.filter((f) => LENS_MAP[f.key] === lens);
-              const LensIcon = LENS_ICON[lens];
               return (
                 <div key={lens} className="lens-group">
                   <div className="lens-group-header">
-                    <LensIcon size={14} strokeWidth={2.2} color="var(--muted)" />
-                    {lens}
+                    {LENS_TITLE_LABEL[lens] || lens}
                     <span className="lens-group-count">{items.length}</span>
                     <span className="lens-group-subtitle">{LENS_SUBTITLE[lens]}</span>
                   </div>
