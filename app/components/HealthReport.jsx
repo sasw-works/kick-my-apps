@@ -951,7 +951,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .finding-code pre { margin: 0; padding: 4px 10px 10px; overflow-x: auto; }
         .finding-code code { font-family: var(--font-mono); font-size: 12px; color: #f5f3ee; white-space: pre; }
 
-        .review-grid { display: grid; grid-template-columns: 1fr; gap: 22px; }
+        .review-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
         .review-meta { display: flex; align-items: baseline; gap: 14px; margin-bottom: 14px; }
         .review-count { font-family: var(--font-display); font-size: 28px; font-weight: 500; letter-spacing: -0.01em; }
         .review-rating { font-family: var(--font-mono); color: var(--yellow); font-size: 13.5px; }
