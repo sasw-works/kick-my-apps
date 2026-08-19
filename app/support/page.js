@@ -135,7 +135,7 @@ export default function SupportPage() {
         @media (max-width: 700px) { .support-title { font-size: 42px; } }
         .support-sub {
           font-family: var(--font-inter), sans-serif; font-size: 20px; color: #1A2B3B;
-          line-height: 1.5; margin-top: 24px; margin-bottom: 82px;
+          line-height: 1.5; margin-top: 24px; margin-bottom: 57px;
         }
         .support-search {
           width: 100%; height: 75px; margin: 0 auto; display: flex; align-items: center; gap: 12px;
@@ -175,7 +175,7 @@ export default function SupportPage() {
       `}</style>
 
       <div className="support-hero">
-        <div className="support-title">How can we help?</div>
+        <div className="support-title">Everything you need to know</div>
         <div className="support-sub">Browse common questions about analyses, billing, and your account below, or reach out to our team directly and we'll get back to you.</div>
         <div className="support-search">
           <Search size={16} color="var(--muted)" />
