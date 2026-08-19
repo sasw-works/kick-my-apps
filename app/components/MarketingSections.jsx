@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import Link from "next/link";
 import LogoMark from "./LogoMark";
 import FooterLogo from "./FooterLogo";
 import {
@@ -977,7 +978,7 @@ export default function MarketingSections() {
             <FaqItem key={f.q} q={f.q} a={f.a} />
           ))}
         </div>
-        <button className="faq-support-btn">Support Page</button>
+        <Link href="/support" className="faq-support-btn" style={{ textDecoration: "none", display: "inline-block" }}>Support Page</Link>
       </div>
 
       {/* Closing CTA */}
