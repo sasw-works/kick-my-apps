@@ -126,8 +126,8 @@ export default function SupportPage() {
         .support-blob-3 { width: 75vw; height: 75vw; max-width: 810px; max-height: 810px; background: #8FDDD1; top: 60px; left: 28%; }
         .support-blob-4 { width: 55vw; height: 55vw; max-width: 600px; max-height: 600px; background: #F5C9E8; top: -20px; left: 6%; }
         .support-blob-5 { width: 60vw; height: 60vw; max-width: 640px; max-height: 640px; background: #B9A6F5; top: 220px; right: -4%; }
-        .support-page { position: relative; max-width: 760px; margin: 0 auto; padding: 90px 24px 120px; font-family: var(--font-inter), sans-serif; }
-        .support-hero { text-align: center; margin-bottom: 48px; position: relative; z-index: 1; }
+        .support-page { position: relative; max-width: 1170px; margin: 0 auto; padding: 90px 24px 120px; font-family: var(--font-inter), sans-serif; }
+        .support-hero { text-align: center; margin-bottom: 48px; position: relative; z-index: 1; width: 100%; max-width: 1170px; margin-left: auto; margin-right: auto; }
         .support-title {
           font-family: var(--font-display); font-size: 90px; font-weight: 700;
           letter-spacing: -0.025em; line-height: 1.08; color: #1A2B3B; margin: 0 0 12px;
@@ -136,6 +136,7 @@ export default function SupportPage() {
         .support-sub {
           font-family: var(--font-inter), sans-serif; font-size: 20px; color: #1A2B3B;
           line-height: 1.5; margin-top: 24px; margin-bottom: 57px;
+          max-width: 1170px; margin-left: auto; margin-right: auto;
         }
         .support-search {
           width: 100%; height: 75px; margin: 0 auto; display: flex; align-items: center; gap: 12px;
@@ -144,7 +145,7 @@ export default function SupportPage() {
         }
         .support-search input { flex: 1; border: none; outline: none; background: transparent; font-size: 15px; color: var(--chalk); }
 
-        .support-faq-list { border-top: 1px solid var(--ink-3); margin-bottom: 56px; position: relative; z-index: 1; }
+        .support-faq-list { border-top: 1px solid var(--ink-3); margin-bottom: 56px; position: relative; z-index: 1; max-width: 760px; margin-left: auto; margin-right: auto; }
         .support-faq-row { border-bottom: 1px solid var(--ink-3); }
         .support-faq-q {
           width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 20px;
@@ -165,6 +166,7 @@ export default function SupportPage() {
 
         .support-contact {
           text-align: center; background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 16px; padding: 40px;
+          max-width: 760px; margin-left: auto; margin-right: auto;
         }
         .support-contact-title { font-size: 19px; font-weight: 500; color: var(--chalk); margin-bottom: 8px; }
         .support-contact-sub { font-size: 15px; color: var(--muted); margin-bottom: 20px; }
