@@ -144,8 +144,9 @@ export default function SupportPage() {
         }
         .support-search input { flex: 1; border: none; outline: none; background: transparent; font-size: 15px; color: var(--chalk); }
 
-        .support-faq-list { border-top: 1px solid var(--ink-3); margin-bottom: 56px; position: relative; z-index: 1; }
+        .support-faq-list { margin-bottom: 56px; position: relative; z-index: 1; }
         .support-faq-row { border-bottom: 1px solid var(--ink-3); }
+        .support-faq-row:last-child { border-bottom: none; }
         .support-faq-q {
           width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 20px;
           background: none; border: none; cursor: pointer; padding: 22px 4px;
