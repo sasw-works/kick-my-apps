@@ -831,7 +831,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         @media (max-width: 900px) {
           .top-grid { grid-template-columns: 1fr; }
         }
-        .action-impact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+        .action-impact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
         @media (max-width: 900px) {
           .action-impact-grid { grid-template-columns: 1fr; }
         }
