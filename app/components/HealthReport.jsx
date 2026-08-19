@@ -874,6 +874,8 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .finding-filter-count { font-family: var(--font-mono); font-size: 12px; opacity: 0.7; }
         .empty-state { color: var(--muted); font-size: 13.5px; padding: 24px 0; text-align: center; }
         .lens-group { margin-bottom: -13px; }
+        .lens-group-product { margin-top: 50px; }
+        .lens-group-product .lens-group-header { margin-bottom: 10px; }
         .lens-group:last-child { margin-bottom: 0; }
         .lens-group-header {
           display: flex; align-items: center; gap: 8px;
@@ -1299,7 +1301,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
             return LENS_ORDER.filter((lens) => filteredFindings.some((f) => LENS_MAP[f.key] === lens)).map((lens) => {
               const items = filteredFindings.filter((f) => LENS_MAP[f.key] === lens);
               return (
-                <div key={lens} className="lens-group">
+                <div key={lens} className={`lens-group ${lens === "Ürün" ? "lens-group-product" : ""}`}>
                   <div className="lens-group-header">
                     {LENS_TITLE_LABEL[lens] || lens}
                     <span className="lens-group-count">{items.length}</span>
