@@ -181,7 +181,7 @@ function Waveform({ bad, warn, good }) {
     return { height, color };
   });
   return (
-    <div className="waveform-bars" style={{ gridTemplateColumns: `repeat(${barCount}, 1fr)` }}>
+    <div className="waveform-bars" style={{ gridTemplateColumns: `repeat(${barCount}, 1px)` }}>
       {bars.map((b, i) => (
         <div key={i} className="waveform-bar" style={{ height: b.height, background: b.color }} />
       ))}
@@ -799,7 +799,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         .waveform-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
         @media (max-width: 800px) { .waveform-grid { grid-template-columns: 1fr; } }
-        .waveform-bars { display: grid; grid-auto-flow: column; align-items: end; gap: 1px; height: 46px; }
+        .waveform-bars { display: grid; grid-auto-flow: column; align-items: end; justify-content: space-between; height: 46px; }
         .waveform-bar { border-radius: 2px; animation: mkt-fill-grow-h 0.7s ease forwards; }
         @keyframes mkt-fill-grow-h { from { transform: scaleY(0); } to { transform: scaleY(1); } }
         .waveform-caption { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; font-size: 12px; }
