@@ -313,11 +313,9 @@ function AnnotatedScreenshot({ url, index, findings }) {
 function FindingRow({ f }) {
   const meta = STATUS_META[f.status];
   const StatusIcon = meta.Icon;
-  const Icon = f.icon;
   return (
     <div className="finding-row" style={{ borderLeftColor: meta.color }}>
       <div className="finding-row-top">
-        <Icon size={15} strokeWidth={2} color="var(--muted)" />
         <span className="finding-title">{f.title}</span>
         {f.screenshotIndex && <span className="finding-shot-ref">Ekran #{f.screenshotIndex}</span>}
         <span className="finding-status" style={{ color: meta.color }}>
