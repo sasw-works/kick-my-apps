@@ -162,7 +162,7 @@ export default function Header() {
           background: transparent;
         }
         .kma-header-blur-bg {
-          position: absolute; inset: 0;
+          position: absolute; inset: 0; z-index: 0;
           -webkit-backdrop-filter: blur(8px);
           backdrop-filter: blur(8px);
           -webkit-mask-image: linear-gradient(to bottom, black 0%, black 20%, transparent 100%);
@@ -172,6 +172,8 @@ export default function Header() {
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
         .kma-header-inner {
+          position: relative;
+          z-index: 1;
           pointer-events: auto;
           max-width: 1400px;
           margin: 0 auto;
