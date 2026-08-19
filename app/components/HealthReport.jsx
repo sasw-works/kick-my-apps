@@ -788,7 +788,11 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .impact-pill { font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 999px; white-space: nowrap; }
 
         .lens-count-row { display: flex; }
-        .lens-count-item { flex: 1; text-align: center; padding: 0 12px; }
+        .lens-count-item { flex: 1; text-align: center; padding: 0 12px; position: relative; }
+        .lens-count-item-divided::before {
+          content: ""; position: absolute; left: 0; top: 5px; bottom: 5px;
+          border-left: 1px dashed var(--ink-3);
+        }
         .lens-count-num { font-family: var(--font-display); font-size: 34px; font-weight: 800; color: var(--chalk); }
         .lens-count-label { font-size: 12px; font-weight: 600; letter-spacing: 0.05em; color: var(--muted); margin-top: 4px; }
 
@@ -1199,7 +1203,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
             <div className="panel-divider" />
             <div className="lens-count-row">
               {lensSummaryFull.map((l, i) => (
-                <div className="lens-count-item" key={l.lens} style={{ borderLeft: i > 0 ? "1px solid var(--ink-3)" : "none" }}>
+                <div className={`lens-count-item ${i > 0 ? "lens-count-item-divided" : ""}`} key={l.lens}>
                   <div className="lens-count-num">{l.total}</div>
                   <div className="lens-count-label">{LENS_DISPLAY_LABEL[l.lens] || l.lens}</div>
                 </div>
