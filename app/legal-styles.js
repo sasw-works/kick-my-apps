@@ -1,5 +1,5 @@
 export const legalStyles = `
-  .legal-page { max-width: 760px; margin: 0 auto; padding: 90px 24px 120px; font-family: var(--font-inter), sans-serif; }
+  .legal-page { max-width: 910px; margin: 0 auto; padding: 90px 24px 120px; font-family: var(--font-inter), sans-serif; }
   .legal-title { font-size: 34px; font-weight: 500; letter-spacing: -0.02em; color: var(--chalk); margin-bottom: 8px; }
   .legal-updated { font-size: 13px; color: var(--muted); margin-bottom: 48px; }
   .legal-disclaimer {
