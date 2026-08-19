@@ -1152,11 +1152,11 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         <div className="action-impact-grid">
           {priorityActions.length > 0 && (
-            <div className="panel">
+            <div className="panel" style={{ display: "flex", flexDirection: "column" }}>
               <div className="panel-title">Öncelikli Aksiyonlar</div>
               <div className="panel-subtitle">{dialCaption}</div>
               <div className="panel-divider" />
-              <div className="priority-actions-list">
+              <div className="priority-actions-list" style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
                 {priorityActions.map((f, i) => {
                   const meta = STATUS_META[f.status];
                   return (
@@ -1173,11 +1173,11 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
             </div>
           )}
           {totalFindingsCount > 0 && (
-            <div className="panel">
+            <div className="panel" style={{ display: "flex", flexDirection: "column" }}>
               <div className="panel-title">Tahmini Etki</div>
               <div className="panel-subtitle">{dialCaption}</div>
               <div className="panel-divider" />
-              <div className="impact-list">
+              <div className="impact-list" style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
                 <div className="impact-row-v2">
                   <span className="impact-label-v2"><span className="impact-dot" />Sağlık Skoru (tahmini üst sınır)</span>
                   <span className="impact-pill" style={{ color: "var(--brand)", background: "color-mix(in srgb, var(--brand) 15%, transparent)" }}>{healthScore} → ~{potentialScore}</span>
