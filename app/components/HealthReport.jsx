@@ -741,14 +741,15 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           padding: 8px 14px; font-size: 12px; color: var(--muted);
         }
         .upload-slot strong { color: var(--chalk); font-weight: 600; }
-        .analyze-btn {
-          display: flex; align-items: center; gap: 8px;
-          background: var(--brand); color: var(--ink); font-weight: 700; font-size: 13.5px;
-          padding: 12px 20px; border-radius: 8px; border: none; cursor: pointer; white-space: nowrap;
+        .reports-type-tag { display: inline-flex; align-items: center; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; width: fit-content; }
+        .reports-type-individual { background: var(--ink-3); color: var(--muted); }
+        .reports-type-comparison { background: color-mix(in srgb, var(--brand) 15%, transparent); color: var(--brand); }
+        .kma-toolbar-btn {
+          border: none; cursor: pointer; white-space: nowrap; font-family: var(--font-inter), sans-serif;
           transition: transform 0.15s ease, opacity 0.15s ease;
         }
-        .analyze-btn:hover { transform: translateY(-2px); }
-        .analyze-btn:active { transform: translateY(0); }
+        .kma-toolbar-btn:hover { transform: translateY(-2px); }
+        .kma-toolbar-btn:active { transform: translateY(0); }
 
         .panel { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 12px; padding: 24px; box-shadow: var(--shadow); }
         .panel-title { font-family: var(--font-display); font-size: 17px; letter-spacing: 0; font-weight: 600; color: var(--chalk); margin-bottom: 4px; }
@@ -767,7 +768,6 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         }
         .kma-toolbar-app-name { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--chalk); }
         .kma-toolbar-app-date { font-size: 12px; color: var(--muted); margin-top: 2px; }
-        .analyze-btn-brand { background: var(--brand); color: #fff; }
 
         .summary-badge-list { display: flex; flex-direction: column; gap: 14px; }
         .summary-badge-row { display: flex; align-items: center; gap: 12px; }
@@ -1048,18 +1048,15 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
             </div>
           </div>
           <div style={{ flex: 1 }} />
-          <button className="analyze-btn" onClick={handleExportPdf} disabled={exporting} style={{ opacity: exporting ? 0.6 : 1 }}>
-            <Download size={16} strokeWidth={2.3} />
+          <button className="reports-type-tag reports-type-individual kma-toolbar-btn" onClick={handleExportPdf} disabled={exporting} style={{ opacity: exporting ? 0.6 : 1 }}>
             {exporting ? "Hazırlanıyor…" : "PDF İndir"}
           </button>
           {scanId && (
-            <Link href={`/history?preselect=${scanId}`} className="analyze-btn" style={{ background: "var(--ink-3)", color: "var(--chalk)", textDecoration: "none" }}>
-              <GitCompare size={16} strokeWidth={2.3} />
+            <Link href={`/history?preselect=${scanId}`} className="reports-type-tag reports-type-individual kma-toolbar-btn" style={{ textDecoration: "none" }}>
               Karşılaştır
             </Link>
           )}
-          <button className="analyze-btn analyze-btn-brand" onClick={onReset}>
-            <Sparkles size={16} strokeWidth={2.3} />
+          <button className="reports-type-tag reports-type-comparison kma-toolbar-btn" onClick={onReset} style={{ background: "var(--brand)", color: "#fff" }}>
             {onReset ? (
               "Yeni Analiz"
             ) : (
