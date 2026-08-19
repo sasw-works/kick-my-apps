@@ -978,7 +978,7 @@ export default function MarketingSections() {
             <FaqItem key={f.q} q={f.q} a={f.a} />
           ))}
         </div>
-        <Link href="/support" className="faq-support-btn" style={{ textDecoration: "none", display: "inline-block" }}>Support Page</Link>
+        <Link href="/support" className="faq-support-btn" style={{ textDecoration: "none", display: "block", width: "fit-content" }}>Support Page</Link>
       </div>
 
       {/* Closing CTA */}
