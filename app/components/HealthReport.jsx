@@ -1215,7 +1215,6 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           <div className="panel">
             <div className="panel-title">Mercek Bazlı Kalite Skoru</div>
             <div className="panel-subtitle">0-100 arası, o mercekteki bulguların ne kadarının sorunsuz olduğuna dayalı</div>
-            <div className="panel-divider" />
             <div className="lens-score-row">
               {LENS_ORDER.map((lens) => {
                 const score = lensScores[lens];
