@@ -164,7 +164,7 @@ function ToolbarAppIcon({ name, storeUrl }) {
 // Bulgu say\u0131lar\u0131ndan sahte ama tutarl\u0131 (seed'li) bir "waveform" y\u00fcksekli\u011fi \u00fcretir.
 function Waveform({ bad, warn, good }) {
   const total = bad + warn + good || 1;
-  const barCount = 150;
+  const barCount = 170;
   const bars = Array.from({ length: barCount }, (_, i) => {
     const ratio = i / barCount;
     let color, height;
