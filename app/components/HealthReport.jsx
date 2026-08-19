@@ -875,21 +875,11 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .empty-state { color: var(--muted); font-size: 13.5px; padding: 24px 0; text-align: center; }
         .lens-group { margin-bottom: -13px; }
         .lens-group-product { margin-top: 50px; }
-        .lens-group-product .lens-group-header { margin-bottom: 10px; }
+        .lens-group-product .lens-group-title { margin-top: 0; }
+        .lens-group-product .lens-group-caption { margin-bottom: 10px; }
         .lens-group:last-child { margin-bottom: 0; }
-        .lens-group-header {
-          display: flex; align-items: center; gap: 8px;
-          font-size: 12px; font-weight: 700; letter-spacing: 0.02em;
-          color: var(--chalk); margin-bottom: 20px;
-        }
-        .lens-group-count {
-          font-family: var(--font-mono); font-size: 12px; color: var(--muted);
-          background: var(--ink-3); padding: 1px 7px; border-radius: 999px; margin-left: 2px;
-        }
-        .lens-group-subtitle {
-          font-family: var(--font-mono); font-size: 12px; font-weight: 400; color: var(--muted);
-          margin-left: auto;
-        }
+        .lens-group-title { font-family: var(--font-display); font-size: 17px; letter-spacing: 0; font-weight: 600; color: var(--chalk); margin-bottom: 4px; }
+        .lens-group-caption { font-size: 12px; color: var(--muted); margin-bottom: 20px; }
         .finding-row {
           background: var(--ink-2);
           border: 1px solid var(--ink-3);
@@ -1302,11 +1292,8 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
               const items = filteredFindings.filter((f) => LENS_MAP[f.key] === lens);
               return (
                 <div key={lens} className={`lens-group ${lens === "Ürün" ? "lens-group-product" : ""}`}>
-                  <div className="lens-group-header">
-                    {LENS_TITLE_LABEL[lens] || lens}
-                    <span className="lens-group-count">{items.length}</span>
-                    <span className="lens-group-subtitle">{LENS_SUBTITLE[lens]}</span>
-                  </div>
+                  <div className="lens-group-title">{LENS_TITLE_LABEL[lens] || lens}</div>
+                  <div className="lens-group-caption">{items.length} bulgu · {LENS_SUBTITLE[lens]}</div>
                   <div className="finding-list">
                     {items.map((f) => (
                       <FindingRow key={f.key} f={f} />
