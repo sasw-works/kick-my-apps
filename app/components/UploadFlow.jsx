@@ -17,7 +17,7 @@ function UploadIcon({ size = 20, color = "#222B45" }) {
   );
 }
 
-export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewHistory }) {
+export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewHistory, showBackground = true }) {
   const [files, setFiles] = useState([]);
   const [query, setQuery] = useState("");
   const [selectedApp, setSelectedApp] = useState(null); // { name, storeUrl, icon, developer }
@@ -459,13 +459,15 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         @keyframes kma-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
       `}</style>
 
-      <div className="hero-bg-wrap">
-        <div className="blob blob-1" />
-        <div className="blob blob-2" />
-        <div className="blob blob-3" />
-        <div className="blob blob-4" />
-        <div className="blob blob-5" />
-      </div>
+      {showBackground && (
+        <div className="hero-bg-wrap">
+          <div className="blob blob-1" />
+          <div className="blob blob-2" />
+          <div className="blob blob-3" />
+          <div className="blob blob-4" />
+          <div className="blob blob-5" />
+        </div>
+      )}
 
       <div className="upload-hero">
         <h1 className="hero-title">
