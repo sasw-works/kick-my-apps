@@ -1053,7 +1053,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
             style={{
               display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
               background: "var(--ink-2)", border: "1px solid var(--ink-3)", borderRadius: 999,
-              padding: "0 14px", fontSize: 12.5, color: "var(--muted)", height: 44, boxSizing: "border-box",
+              padding: "0 14px", fontSize: 13.5, color: "var(--chalk)", height: 44, boxSizing: "border-box",
               minWidth: 150, opacity: exporting ? 0.6 : 1,
             }}
           >
@@ -1066,7 +1066,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
               style={{
                 display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
                 background: "var(--ink-2)", border: "1px solid var(--ink-3)", borderRadius: 999,
-                padding: "0 14px", fontSize: 12.5, color: "var(--muted)", height: 44, boxSizing: "border-box",
+                padding: "0 14px", fontSize: 13.5, color: "var(--chalk)", height: 44, boxSizing: "border-box",
                 minWidth: 150, textDecoration: "none",
               }}
             >
