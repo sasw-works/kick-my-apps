@@ -892,12 +892,12 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           font-family: var(--font-mono); font-size: 12px; color: var(--muted);
           background: var(--ink-3); padding: 2px 7px; border-radius: 999px;
         }
-        .finding-text { font-size: 13.5px; color: var(--muted); line-height: 1.5; margin: 0 0 0 23px; }
+        .finding-text { font-size: 13.5px; color: var(--muted); line-height: 1.5; margin: 0; }
         .finding-suggestion {
           display: flex; align-items: flex-start; gap: 8px;
           background: var(--ink); border-radius: 6px; padding: 8px 10px;
           font-size: 12px; color: var(--muted); line-height: 1.4;
-          margin: 8px 0 0 23px;
+          margin: 8px 0 0 0;
         }
         .finding-suggestion {
           display: flex; align-items: flex-start; gap: 8px;
@@ -907,7 +907,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .finding-suggestion span { flex: 1; }
 
         .finding-code {
-          margin: 8px 0 0 23px;
+          margin: 8px 0 0 0;
           background: #14151a;
           border-radius: 6px;
           overflow: hidden;
