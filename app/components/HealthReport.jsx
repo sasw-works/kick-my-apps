@@ -984,8 +984,8 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .version-chip-num { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
         .version-chip-avg { font-family: var(--font-mono); font-size: 12px; font-weight: 700; }
 
-        .roadmap-list { display: flex; flex-direction: column; gap: 10px; }
-        .roadmap-item { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; }
+        .roadmap-list { display: flex; flex-direction: column; gap: 30px; }
+        .roadmap-item { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--chalk); }
         .roadmap-num {
           font-family: var(--font-mono); font-size: 12px; color: var(--ink);
           background: var(--teal); width: 18px; height: 18px; border-radius: 50%;
