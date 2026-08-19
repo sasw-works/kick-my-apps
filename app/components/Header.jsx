@@ -272,9 +272,11 @@ export default function Header() {
           padding: 11px 22px;
           border-radius: 999px;
           border: none;
-          cursor: default;
+          cursor: pointer;
           white-space: nowrap;
+          transition: filter 0.2s ease, transform 0.2s ease;
         }
+        .kma-header-signin:hover { filter: brightness(1.08); transform: translateY(-1px); }
 
         @media (max-width: 900px) {
           .kma-header-nav { display: none; }

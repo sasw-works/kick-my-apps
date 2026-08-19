@@ -172,7 +172,9 @@ export default function SupportPage() {
         .support-contact-btn {
           display: inline-flex; align-items: center; gap: 8px; background: #533AFE; color: #FFFFFF;
           padding: 12px 24px; border-radius: 999px; font-size: 14.5px; font-weight: 600; text-decoration: none;
+          cursor: pointer; transition: filter 0.2s ease, transform 0.2s ease;
         }
+        .support-contact-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
       `}</style>
 
       <div className="support-hero">

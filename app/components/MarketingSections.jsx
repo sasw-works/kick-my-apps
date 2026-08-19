@@ -674,7 +674,9 @@ export default function MarketingSections() {
         .mkt-pricing-cta {
           border: none; border-radius: 999px; padding: 15px; font-size: 15px; font-family: var(--font-body); font-weight: 600; cursor: pointer;
           background: var(--ink-3); color: var(--chalk); width: 100%;
+          transition: filter 0.2s ease, transform 0.2s ease;
         }
+        .mkt-pricing-cta:hover { filter: brightness(1.08); transform: translateY(-1px); }
         .mkt-pricing-cta-brand { background: var(--chalk); color: #fff; }
         .faq-list { max-width: 720px; margin: 0 auto 40px; border-top: 1px solid var(--ink-3); }
         .faq-row { border-bottom: 1px solid var(--ink-3); }
@@ -706,8 +708,10 @@ export default function MarketingSections() {
         .faq-a-wrap-open .faq-a { opacity: 1; transform: translateY(0); }
         .faq-support-btn {
           display: block; margin: 0 auto; background: #533AFE; color: #FFFFFF;
-          font-weight: 600; font-size: 15px; padding: 13px 28px; border-radius: 999px; border: none; cursor: default;
+          font-weight: 600; font-size: 15px; padding: 13px 28px; border-radius: 999px; border: none; cursor: pointer;
+          transition: filter 0.2s ease, transform 0.2s ease;
         }
+        .faq-support-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
 
         .mkt-closing-cta {
           background: #000000; padding: 100px 40px; margin-top: 90px;
@@ -721,7 +725,9 @@ export default function MarketingSections() {
         .mkt-closing-btn {
           background: #533AFE; color: #FFFFFF; font-weight: 600; font-size: 15px;
           padding: 14px 32px; border-radius: 999px; border: none; cursor: pointer;
+          transition: filter 0.2s ease, transform 0.2s ease;
         }
+        .mkt-closing-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
         @media (max-width: 600px) {
           .mkt-closing-heading { font-size: 30px; }
         }
