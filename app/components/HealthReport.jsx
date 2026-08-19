@@ -807,7 +807,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .waveform-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
         @media (max-width: 800px) { .waveform-grid { grid-template-columns: 1fr; } }
         .waveform-bars { display: flex; align-items: flex-end; gap: 2px; height: 46px; }
-        .waveform-bar { width: 3px; border-radius: 2px; animation: mkt-fill-grow-h 0.7s ease forwards; }
+        .waveform-bar { flex: 1; min-width: 1px; border-radius: 2px; animation: mkt-fill-grow-h 0.7s ease forwards; }
         @keyframes mkt-fill-grow-h { from { transform: scaleY(0); } to { transform: scaleY(1); } }
         .waveform-caption { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; font-size: 12px; }
         .waveform-caption-label { font-weight: 700; color: var(--chalk); letter-spacing: 0.04em; }
