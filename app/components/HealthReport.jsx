@@ -216,58 +216,80 @@ function zoneColorAt(pct) {
   return `hsl(${h}, ${s}%, ${l}%)`;
 }
 
-function HealthDial({ score = 58, size = 220, delta = null }) {
+function HealthDial({ score = 58, size = 220, delta = null, lensScores = null }) {
   const cx = size / 2;
   const cy = size / 2;
   const outerR = size / 2 - 10;
-  const innerR = outerR - 16;
-  const tickCount = 54;
-  const gapDeg = 3.2; // tikler arası nefes payı
+  const innerR = size / 2 - 44; // merkezdeki sayı için boşluk
   const rad = (deg) => (deg * Math.PI) / 180;
-  const filledTicks = Math.round((score / 100) * tickCount);
 
-  const ticks = Array.from({ length: tickCount }, (_, i) => {
-    const angle = (360 / tickCount) * i - 90; // -90: en üstten başla
-    const a1 = rad(angle + gapDeg / 2);
-    const a2 = rad(angle + 360 / tickCount - gapDeg / 2);
-    const x1 = cx + innerR * Math.cos(a1);
-    const y1 = cy + innerR * Math.sin(a1);
-    const x2 = cx + outerR * Math.cos(a1);
-    const y2 = cy + outerR * Math.sin(a1);
-    const isFilled = i < filledTicks;
-    const color = isFilled ? zoneColorAt((i / tickCount) * 100) : "var(--ink-3)";
-    return (
-      <line
-        key={i}
-        x1={x1}
-        y1={y1}
-        x2={x2}
-        y2={y2}
-        stroke={color}
-        strokeWidth={4}
-        strokeLinecap="round"
-        opacity={isFilled ? 1 : 0.5}
-      />
-    );
+  const lensData = LENS_ORDER
+    .map((lens) => ({ lens, label: LENS_TITLE_LABEL[lens] || lens, val: lensScores ? lensScores[lens] : null }))
+    .filter((d) => d.val !== null && d.val !== undefined);
+
+  const barCount = lensData.length || 4;
+  const gapDeg = 6; // çubuklar arası boşluk
+  const barWidth = 360 / barCount - gapDeg;
+
+  const bars = lensData.map((d, i) => {
+    const angle = (360 / barCount) * i - 90; // -90: en üstten başla
+    const a1 = rad(angle);
+    const a2 = rad(angle + barWidth);
+    const barR = innerR + ((outerR - innerR) * Math.max(d.val, 4)) / 100;
+    const largeArc = barWidth > 180 ? 1 : 0;
+    const x1i = cx + innerR * Math.cos(a1);
+    const y1i = cy + innerR * Math.sin(a1);
+    const x2i = cx + innerR * Math.cos(a2);
+    const y2i = cy + innerR * Math.sin(a2);
+    const x1o = cx + barR * Math.cos(a1);
+    const y1o = cy + barR * Math.sin(a1);
+    const x2o = cx + barR * Math.cos(a2);
+    const y2o = cy + barR * Math.sin(a2);
+    const color = zoneColorAt(d.val);
+    const path = `M ${x1i} ${y1i} L ${x1o} ${y1o} A ${barR} ${barR} 0 ${largeArc} 1 ${x2o} ${y2o} L ${x2i} ${y2i} A ${innerR} ${innerR} 0 ${largeArc} 0 ${x1i} ${y1i} Z`;
+    const midAngle = rad(angle + barWidth / 2);
+    const labelR = outerR + 14;
+    const labelX = cx + labelR * Math.cos(midAngle);
+    const labelY = cy + labelR * Math.sin(midAngle);
+    return { path, color, key: d.lens, label: d.label, labelX, labelY, midAngle };
   });
 
   const deltaColor = delta > 0 ? "var(--teal)" : delta < 0 ? "var(--kick)" : "var(--muted)";
+  const pad = 26; // dış etiketler için taşma payı
+  const vb = size + pad * 2;
 
   return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-      {ticks}
-      <text x={cx} y={cy - (delta !== null ? 4 : 0)} textAnchor="middle" dominantBaseline="middle" style={{ fontFamily: "var(--font-display)", fontSize: 46, fontWeight: 500, letterSpacing: "-0.02em", fill: "var(--chalk)" }}>
-        {score}
-      </text>
-      {delta !== null && (
-        <text x={cx} y={cy + 22} textAnchor="middle" style={{ fontFamily: "var(--font-mono)", fontSize: 13, fontWeight: 600, fill: deltaColor }}>
-          {delta > 0 ? "+" : ""}
-          {delta}
+    <svg width={vb} height={vb} viewBox={`0 0 ${vb} ${vb}`}>
+      <g transform={`translate(${pad}, ${pad})`}>
+        <circle cx={cx} cy={cy} r={innerR} fill="none" stroke="var(--ink-3)" strokeWidth={1} />
+        {bars.map((b) => (
+          <path key={b.key} d={b.path} fill={b.color} opacity={0.9} />
+        ))}
+        {bars.map((b) => {
+          const align = Math.cos(b.midAngle) > 0.3 ? "start" : Math.cos(b.midAngle) < -0.3 ? "end" : "middle";
+          return (
+            <text
+              key={`${b.key}-label`}
+              x={b.labelX}
+              y={b.labelY}
+              textAnchor={align}
+              dominantBaseline="middle"
+              style={{ fontFamily: "var(--font-mono)", fontSize: 9, letterSpacing: "0.04em", fill: "var(--muted)" }}
+            >
+              {b.label}
+            </text>
+          );
+        })}
+        <text x={cx} y={cy - (delta !== null ? 4 : 0)} textAnchor="middle" dominantBaseline="middle" style={{ fontFamily: "var(--font-display)", fontSize: 40, fontWeight: 500, letterSpacing: "-0.02em", fill: "var(--chalk)" }}>
+          {score}
         </text>
-      )}
-      <text x={cx} y={cy + (delta !== null ? 44 : 30)} textAnchor="middle" style={{ fontFamily: "var(--font-mono)", fontSize: 10.5, letterSpacing: "0.14em", fill: "var(--muted)" }}>
-        APP HEALTH SCORE
-      </text>
+        {delta !== null && (
+          <text x={cx} y={cy + 20} textAnchor="middle" style={{ fontFamily: "var(--font-mono)", fontSize: 12, fontWeight: 600, fill: deltaColor }}>
+            {delta > 0 ? "+" : ""}
+            {delta}
+          </text>
+        )}
+      </g>
     </svg>
   );
 }
@@ -1075,7 +1097,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
             <div className="panel-title">App Health Score</div>
             <div className="panel-subtitle">{dialCaption}</div>
             <div className="dial-wrap">
-              <HealthDial score={healthScore} delta={history.length >= 2 ? healthScore - history[history.length - 2].health_score : null} />
+              <HealthDial score={healthScore} delta={history.length >= 2 ? healthScore - history[history.length - 2].health_score : null} lensScores={lensScores} />
             </div>
           </div>
           <div className="panel">
