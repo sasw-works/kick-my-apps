@@ -160,10 +160,14 @@ export default function Header() {
           margin-bottom: -110px;
           pointer-events: none;
           background: transparent;
+        }
+        .kma-header-blur-bg {
+          position: absolute; inset: 0;
           -webkit-backdrop-filter: blur(8px);
           backdrop-filter: blur(8px);
           -webkit-mask-image: linear-gradient(to bottom, black 0%, black 20%, transparent 100%);
           mask-image: linear-gradient(to bottom, black 0%, black 20%, transparent 100%);
+          pointer-events: none;
         }
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
@@ -207,6 +211,7 @@ export default function Header() {
         .kma-navdrop { position: relative; }
       `}</style>
 
+      <div className="kma-header-blur-bg" />
       <div className="kma-header-inner">
         <Link href="/" className="kma-header-logo">
           <LogoMark size={86} />
