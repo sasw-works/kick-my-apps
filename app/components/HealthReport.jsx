@@ -1290,7 +1290,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
               </button>
             </div>
           </div>
-          <div className="panel-divider" style={{ marginBottom: 66 }} />
+          <div className="panel-divider" style={{ marginBottom: 51 }} />
           {(() => {
             const filteredFindings = findingFilter === "all" ? findings : findings.filter((f) => f.status === findingFilter);
             if (filteredFindings.length === 0) {
