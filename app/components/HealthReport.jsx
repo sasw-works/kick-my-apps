@@ -825,7 +825,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           border-radius: 12px; padding: 18px 10px;
         }
         .lens-score-num { font-family: var(--font-display); font-size: 32px; font-weight: 700; line-height: 1; }
-        .lens-score-label { font-size: 12px; color: var(--muted); margin-top: 6px; }
+        .lens-score-label { font-size: 12px; font-weight: 600; letter-spacing: 0.05em; color: var(--muted); margin-top: 6px; }
 
         .top-grid { display: grid; grid-template-columns: 330px 0.85fr 1.15fr; gap: 18px; }
         @media (max-width: 900px) {
@@ -1224,7 +1224,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
                 return (
                   <div className="lens-score-item" key={lens}>
                     <div className="lens-score-num" style={{ color }}>{score ?? "—"}</div>
-                    <div className="lens-score-label">{lens}</div>
+                    <div className="lens-score-label">{LENS_DISPLAY_LABEL[lens] || lens}</div>
                   </div>
                 );
               })}
