@@ -827,7 +827,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .lens-score-num { font-family: var(--font-display); font-size: 32px; font-weight: 700; line-height: 1; }
         .lens-score-label { font-size: 12px; font-weight: 600; letter-spacing: 0.05em; color: var(--muted); margin-top: 6px; }
 
-        .top-grid { display: grid; grid-template-columns: 330px 0.85fr 1.15fr; gap: 18px; }
+        .top-grid { display: grid; grid-template-columns: 330px 0.65fr 1.35fr; gap: 32px; }
         @media (max-width: 900px) {
           .top-grid { grid-template-columns: 1fr; }
         }
