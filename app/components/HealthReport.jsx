@@ -522,7 +522,7 @@ function HistoryPanel({ history }) {
   const deltaColor = delta >= 0 ? "var(--teal)" : "var(--kick)";
 
   return (
-    <div className="panel">
+    <div className="panel mkt-reveal">
       <div className="hist-header">
         <div className="panel-title">Sağlık Skoru Trendi</div>
         <div className="panel-subtitle">{history.length} tarama üzerinden zaman içindeki değişim</div>
@@ -556,6 +556,24 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
   const reportRef = useRef(null);
   const [exporting, setExporting] = useState(false);
   const [findingFilter, setFindingFilter] = useState("all");
+
+  React.useEffect(() => {
+    const els = document.querySelectorAll(".mkt-reveal");
+    if (!els.length) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("mkt-reveal-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.08 }
+    );
+    els.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [data]);
 
   const handleExportPdf = async () => {
     if (!reportRef.current) return;
@@ -722,7 +740,10 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .kma-toolbar-btn:hover { transform: translateY(-2px); }
         .kma-toolbar-btn:active { transform: translateY(0); }
 
-        .panel { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 12px; padding: 24px; box-shadow: var(--shadow); }
+        .panel { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 12px; padding: 24px; box-shadow: var(--shadow); transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease; }
+        .panel:hover { transform: translateY(-3px); box-shadow: 0 14px 30px rgba(0,0,0,0.18); }
+        .mkt-reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+        .mkt-reveal-visible { opacity: 1; transform: translateY(0); }
         .panel-title { font-family: var(--font-display); font-size: 17px; letter-spacing: 0; font-weight: 600; color: var(--chalk); margin-bottom: 4px; }
         .panel-subtitle { font-size: 12px; color: var(--muted); margin-bottom: 32px; }
         .panel-divider { height: 1px; background: var(--ink-3); margin-bottom: 16px; }
@@ -1071,14 +1092,14 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         </div>
 
         <div className="top-grid">
-          <div className="panel dial-panel">
+          <div className="panel dial-panel mkt-reveal">
             <div className="panel-title">App Health Score</div>
             <div className="panel-subtitle">{dialCaption}</div>
             <div className="dial-wrap">
               <HealthDial score={healthScore} delta={history.length >= 2 ? healthScore - history[history.length - 2].health_score : null} />
             </div>
           </div>
-          <div className="panel">
+          <div className="panel mkt-reveal">
             <div className="panel-title">Summary</div>
             <div className="panel-subtitle">{dialCaption}</div>
             <div className="summary-badge-list">
@@ -1111,7 +1132,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
             </div>
           </div>
           {usingRealData && data.aiSummary && (
-            <div className="panel">
+            <div className="panel mkt-reveal">
               <div className="panel-title">AI Summary</div>
               <div className="panel-subtitle">{dialCaption}</div>
               <p className="ai-summary-text">{data.aiSummary}</p>
@@ -1121,7 +1142,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         <div className="action-impact-grid">
           {priorityActions.length > 0 && (
-            <div className="panel" style={{ display: "flex", flexDirection: "column" }}>
+            <div className="panel mkt-reveal" style={{ display: "flex", flexDirection: "column" }}>
               <div className="panel-title">Öncelikli Aksiyonlar</div>
               <div className="panel-subtitle">{dialCaption}</div>
               <div className="panel-divider" />
@@ -1142,7 +1163,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
             </div>
           )}
           {totalFindingsCount > 0 && (
-            <div className="panel" style={{ display: "flex", flexDirection: "column" }}>
+            <div className="panel mkt-reveal" style={{ display: "flex", flexDirection: "column" }}>
               <div className="panel-title">Tahmini Etki</div>
               <div className="panel-subtitle">{dialCaption}</div>
               <div className="panel-divider" />
@@ -1164,8 +1185,33 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           )}
         </div>
 
+        {quickWins.length > 0 && (
+          <div className="panel mkt-reveal">
+            <div className="panel-title">Hızlı Kazanımlar</div>
+            <div className="panel-subtitle">Yüksek etki, düşük efor · {dialCaption}</div>
+            <div className="qw-list">
+              {quickWins.map((f) => (
+                <div className="qw-row" key={f.key}>
+                  <div className="qw-top">
+                    <span className="qw-title">{f.title}</span>
+                    <span className="qw-tags">
+                      <span className={`qw-tag qw-impact-${f.status}`}>
+                        Etki: {f.status === "bad" ? "Yüksek" : "Orta"}
+                      </span>
+                      <span className="qw-tag qw-effort">
+                        Efor: {EFFORT_MAP[f.key] === "low" ? "Düşük" : "Orta"}
+                      </span>
+                    </span>
+                  </div>
+                  <p className="qw-suggestion">{f.suggestion}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {lensSummaryFull.length > 0 && (
-          <div className="panel">
+          <div className="panel mkt-reveal">
             <div className="panel-title">Mercek Bazlı Skorlar</div>
             <div className="panel-subtitle">{dialCaption}</div>
             <div className="panel-divider" />
@@ -1181,7 +1227,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         )}
 
         {lensScores && (
-          <div className="panel">
+          <div className="panel mkt-reveal">
             <div className="panel-title">Mercek Bazlı Kalite Skoru</div>
             <div className="panel-subtitle">0-100 arası, o mercekteki bulguların ne kadarının sorunsuz olduğuna dayalı</div>
             <div className="lens-score-row">
@@ -1203,7 +1249,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         <HistoryPanel history={history} />
 
         {screenshots.length > 0 && (
-          <div className="panel">
+          <div className="panel mkt-reveal">
             <div className="panel-title">Ekran Görüntüleri (İşaretli)</div>
             <div className="panel-subtitle">Her bulgunun ekran üzerindeki yaklaşık konumu işaretlenmiştir</div>
             <div className="shot-grid">
@@ -1215,7 +1261,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         )}
 
         {lensSummary.length > 0 && (
-          <div className="panel">
+          <div className="panel mkt-reveal">
             <div className="panel-title">Analiz Verileri</div>
             <div className="panel-subtitle">Mercek başına bulgu dağılımının görsel dökümü</div>
             <div className="panel-divider" />
@@ -1258,7 +1304,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           </div>
         )}
 
-        <div className="panel">
+        <div className="panel mkt-reveal">
           <div className="bulgular-header">
             <div>
               <div className="panel-title">Bulgular</div>
@@ -1302,33 +1348,8 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           })()}
         </div>
 
-        {quickWins.length > 0 && (
-          <div className="panel">
-            <div className="panel-title">Hızlı Kazanımlar</div>
-            <div className="panel-subtitle">Yüksek etki, düşük efor · {dialCaption}</div>
-            <div className="qw-list">
-              {quickWins.map((f) => (
-                <div className="qw-row" key={f.key}>
-                  <div className="qw-top">
-                    <span className="qw-title">{f.title}</span>
-                    <span className="qw-tags">
-                      <span className={`qw-tag qw-impact-${f.status}`}>
-                        Etki: {f.status === "bad" ? "Yüksek" : "Orta"}
-                      </span>
-                      <span className="qw-tag qw-effort">
-                        Efor: {EFFORT_MAP[f.key] === "low" ? "Düşük" : "Orta"}
-                      </span>
-                    </span>
-                  </div>
-                  <p className="qw-suggestion">{f.suggestion}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
         {reviewSummary && (
-        <div className="panel">
+        <div className="panel mkt-reveal">
           <div className="panel-title">App Store Yorum Analizi</div>
           <div className="panel-subtitle">{reviewSummary.totalReviews} yorum üzerinden çıkarılan içgörüler</div>
 
@@ -1407,7 +1428,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         )}
 
         {asoReview && (
-          <div className="panel">
+          <div className="panel mkt-reveal">
           <div className="panel-title">App Store Listeleme (ASO)</div>
           <div className="panel-subtitle">App Store başlığı, açıklaması ve mağaza görselleri üzerine öneriler</div>
           <div className="aso-meta">
@@ -1438,7 +1459,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         )}
 
         {approvalRisks.length > 0 && (
-          <div className="panel">
+          <div className="panel mkt-reveal">
             <div className="panel-title">Güncelleme / İnceleme Riski</div>
             <div className="panel-subtitle">Bir sonraki mağaza denetiminde sorun çıkarabilecek sinyaller</div>
             <div className="risk-disclaimer">
