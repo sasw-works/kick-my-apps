@@ -927,13 +927,13 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .finding-text { font-size: 13.5px; color: var(--muted); line-height: 1.5; margin: 0 0 0 23px; }
         .finding-suggestion {
           display: flex; align-items: flex-start; gap: 8px;
-          background: var(--ink-3); border-radius: 6px; padding: 8px 10px;
+          background: var(--ink); border-radius: 6px; padding: 8px 10px;
           font-size: 12px; color: var(--muted); line-height: 1.4;
           margin: 8px 0 0 23px;
         }
         .finding-suggestion {
           display: flex; align-items: flex-start; gap: 8px;
-          background: var(--ink-3); border-radius: 6px; padding: 9px 10px;
+          background: var(--ink); border-radius: 6px; padding: 9px 10px;
           font-size: 12px; color: var(--muted); line-height: 1.4;
         }
         .finding-suggestion span { flex: 1; }
@@ -971,7 +971,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         }
 
         .helpful-negative {
-          margin-top: 16px; background: var(--ink-3); border-radius: 8px; padding: 12px 14px;
+          margin-top: 16px; background: var(--ink); border-radius: 8px; padding: 12px 14px;
         }
         .helpful-negative-label {
           font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 6px;
@@ -996,11 +996,11 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .aso-label { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 3px; }
         .aso-text { font-size: 13.5px; color: var(--chalk); line-height: 1.5; }
         .aso-suggestions { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
-        .aso-suggestion-row { display: flex; align-items: flex-start; gap: 8px; background: var(--ink-3); border-radius: 6px; padding: 8px 10px; font-size: 12px; color: var(--muted); }
+        .aso-suggestion-row { display: flex; align-items: flex-start; gap: 8px; background: var(--ink); border-radius: 6px; padding: 8px 10px; font-size: 12px; color: var(--muted); }
 
         .risk-disclaimer { font-size: 12px; color: var(--muted); margin-bottom: 12px; font-style: italic; }
         .risk-list { display: flex; flex-direction: column; gap: 8px; }
-        .risk-row { display: flex; gap: 10px; background: var(--ink-3); border-left: 3px solid var(--ink-3); border-radius: 6px; padding: 10px 12px; }
+        .risk-row { display: flex; gap: 10px; background: var(--ink); border-left: 3px solid var(--ink-3); border-radius: 6px; padding: 10px 12px; }
         .risk-issue { font-size: 13.5px; color: var(--chalk); font-weight: 600; margin-bottom: 2px; }
         .risk-guideline { font-size: 12px; color: var(--muted); font-family: var(--font-mono); }
 
