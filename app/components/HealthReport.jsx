@@ -967,7 +967,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         .review-subtitle {
           font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em;
-          color: var(--muted); margin: 91px 0 8px;
+          color: var(--muted); margin: 66px 0 33px;
         }
 
         .helpful-negative {
