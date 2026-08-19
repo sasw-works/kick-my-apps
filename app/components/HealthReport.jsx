@@ -958,7 +958,8 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .helpful-negative-stars { color: var(--yellow); font-size: 13.5px; margin-bottom: 6px; }
         .helpful-negative-text { font-size: 12px; color: var(--chalk); line-height: 1.5; margin: 0; }
 
-        .version-trend { margin-top: 16px; }
+        .version-trend { margin-top: 66px; }
+        .version-trend .helpful-negative-label { margin-bottom: 33px; }
         .version-trend-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
         .version-chip {
           display: flex; align-items: center; gap: 6px; background: var(--ink-3);
