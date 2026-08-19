@@ -162,10 +162,10 @@ function ToolbarAppIcon({ name, storeUrl }) {
 }
 
 // Bulgu say\u0131lar\u0131ndan sahte ama tutarl\u0131 (seed'li) bir "waveform" y\u00fcksekli\u011fi \u00fcretir.
-function seededHeight(seed, min = 12, max = 42) {
+function seededVariation(seed, range = 4) {
   const x = Math.sin(seed * 999.17) * 10000;
   const frac = x - Math.floor(x);
-  return Math.round(min + frac * (max - min));
+  return Math.round((frac - 0.5) * 2 * range);
 }
 
 function Waveform({ bad, warn, good }) {
@@ -173,11 +173,19 @@ function Waveform({ bad, warn, good }) {
   const barCount = 60;
   const bars = Array.from({ length: barCount }, (_, i) => {
     const ratio = i / barCount;
-    let color;
-    if (ratio < bad / total) color = "var(--yellow)";
-    else if (ratio < (bad + warn) / total) color = "var(--teal)";
-    else color = "var(--brand)";
-    return { height: seededHeight(i + bad * 3 + warn * 7 + good * 11), color };
+    let color, baseHeight;
+    if (ratio < bad / total) {
+      color = "var(--kick)";
+      baseHeight = 40; // kritik: yüksek çubuk
+    } else if (ratio < (bad + warn) / total) {
+      color = "var(--yellow)";
+      baseHeight = 26; // dikkat: orta çubuk
+    } else {
+      color = "var(--teal)";
+      baseHeight = 14; // sorunsuz: alçak çubuk
+    }
+    const height = Math.max(6, baseHeight + seededVariation(i));
+    return { height, color };
   });
   return (
     <div className="waveform-bars">
@@ -798,7 +806,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         .waveform-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
         @media (max-width: 800px) { .waveform-grid { grid-template-columns: 1fr; } }
-        .waveform-bars { display: flex; align-items: flex-end; gap: 2px; height: 42px; }
+        .waveform-bars { display: flex; align-items: flex-end; gap: 2px; height: 46px; }
         .waveform-bar { width: 3px; border-radius: 2px; animation: mkt-fill-grow-h 0.7s ease forwards; }
         @keyframes mkt-fill-grow-h { from { transform: scaleY(0); } to { transform: scaleY(1); } }
         .waveform-caption { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; font-size: 12px; }
