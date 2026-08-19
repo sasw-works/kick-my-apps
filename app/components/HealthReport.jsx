@@ -1051,9 +1051,10 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
             onClick={handleExportPdf}
             disabled={exporting}
             style={{
-              display: "inline-flex", alignItems: "center", fontSize: 12, fontWeight: 600,
-              padding: "3px 10px", borderRadius: 999, width: "fit-content",
-              background: "var(--ink-3)", color: "var(--muted)", opacity: exporting ? 0.6 : 1,
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+              background: "var(--ink-2)", border: "1px solid var(--ink-3)", borderRadius: 999,
+              padding: "0 14px", fontSize: 12.5, color: "var(--muted)", height: 44, boxSizing: "border-box",
+              opacity: exporting ? 0.6 : 1,
             }}
           >
             {exporting ? "Hazırlanıyor…" : "PDF İndir"}
@@ -1063,9 +1064,10 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
               href={`/history?preselect=${scanId}`}
               className="kma-toolbar-btn"
               style={{
-                display: "inline-flex", alignItems: "center", fontSize: 12, fontWeight: 600,
-                padding: "3px 10px", borderRadius: 999, width: "fit-content",
-                background: "var(--ink-3)", color: "var(--muted)", textDecoration: "none",
+                display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+                background: "var(--ink-2)", border: "1px solid var(--ink-3)", borderRadius: 999,
+                padding: "0 14px", fontSize: 12.5, color: "var(--muted)", height: 44, boxSizing: "border-box",
+                textDecoration: "none",
               }}
             >
               Karşılaştır
@@ -1075,9 +1077,9 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
             className="kma-toolbar-btn"
             onClick={onReset}
             style={{
-              display: "inline-flex", alignItems: "center", fontSize: 12, fontWeight: 600,
-              padding: "3px 10px", borderRadius: 999, width: "fit-content",
-              background: "var(--brand)", color: "#fff",
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+              background: "var(--brand)", border: "1px solid var(--brand)", borderRadius: 999,
+              padding: "0 14px", fontSize: 12.5, fontWeight: 600, color: "#fff", height: 44, boxSizing: "border-box",
             }}
           >
             {onReset ? (
