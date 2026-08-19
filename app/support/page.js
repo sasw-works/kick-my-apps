@@ -138,8 +138,8 @@ export default function SupportPage() {
           line-height: 1.5; margin-top: 24px; margin-bottom: 32px;
         }
         .support-search {
-          width: 100%; margin: 0 auto; display: flex; align-items: center; gap: 10px;
-          background: var(--ink-2); border: none; border-radius: 999px; padding: 14px 20px;
+          width: 100%; height: 75px; margin: 0 auto; display: flex; align-items: center; gap: 12px;
+          background: var(--ink-2); border: none; border-radius: 999px; padding: 16px 28px;
           box-sizing: border-box;
         }
         .support-search input { flex: 1; border: none; outline: none; background: transparent; font-size: 15px; color: var(--chalk); }
