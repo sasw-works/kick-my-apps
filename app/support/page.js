@@ -77,7 +77,7 @@ function SupportFaqItem({ q, a }) {
       <button className="support-faq-q" onClick={() => setOpen(!open)}>
         <span>{q}</span>
         <span className={`support-faq-toggle ${open ? "support-faq-toggle-open" : ""}`}>
-          {open ? <X size={16} color="#FFFFFF" /> : <Plus size={16} color="var(--muted)" />}
+          {open ? <X size={22} color="#FFFFFF" /> : <Plus size={22} color="var(--muted)" />}
         </span>
       </button>
       <div className="support-faq-a-wrap" style={{ gridTemplateRows: open ? "1fr" : "0fr" }}>
@@ -114,11 +114,11 @@ export default function SupportPage() {
         }
         .support-faq-q:hover { color: var(--brand); }
         .support-faq-toggle {
-          width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+          width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
           display: flex; align-items: center; justify-content: center;
           background: var(--ink-3); transition: background 0.2s ease, transform 0.3s ease;
         }
-        .support-faq-toggle-open { background: var(--brand); transform: rotate(180deg); }
+        .support-faq-toggle-open { background: #533AFE; transform: rotate(180deg); }
         .support-faq-a-wrap { display: grid; transition: grid-template-rows 0.3s ease; overflow: hidden; }
         .support-faq-a-inner { overflow: hidden; }
         .support-faq-a { font-size: 14.5px; color: var(--muted); line-height: 1.6; padding: 0 4px 22px; }
