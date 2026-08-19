@@ -162,29 +162,22 @@ function ToolbarAppIcon({ name, storeUrl }) {
 }
 
 // Bulgu say\u0131lar\u0131ndan sahte ama tutarl\u0131 (seed'li) bir "waveform" y\u00fcksekli\u011fi \u00fcretir.
-function seededVariation(seed, range = 4) {
-  const x = Math.sin(seed * 999.17) * 10000;
-  const frac = x - Math.floor(x);
-  return Math.round((frac - 0.5) * 2 * range);
-}
-
 function Waveform({ bad, warn, good }) {
   const total = bad + warn + good || 1;
   const barCount = 150;
   const bars = Array.from({ length: barCount }, (_, i) => {
     const ratio = i / barCount;
-    let color, baseHeight;
+    let color, height;
     if (ratio < bad / total) {
       color = "var(--kick)";
-      baseHeight = 40; // kritik: yüksek çubuk
+      height = 40; // kritik: yüksek çubuk
     } else if (ratio < (bad + warn) / total) {
       color = "var(--yellow)";
-      baseHeight = 26; // dikkat: orta çubuk
+      height = 26; // dikkat: orta çubuk
     } else {
       color = "var(--teal)";
-      baseHeight = 14; // sorunsuz: alçak çubuk
+      height = 14; // sorunsuz: alçak çubuk
     }
-    const height = Math.max(6, baseHeight + seededVariation(i));
     return { height, color };
   });
   return (
