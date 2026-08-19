@@ -132,7 +132,7 @@ export default function SupportPage() {
         .support-sub { font-size: 15px; color: var(--muted); margin-bottom: 32px; }
         .support-search {
           width: 100%; margin: 0 auto; display: flex; align-items: center; gap: 10px;
-          background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 999px; padding: 14px 20px;
+          background: var(--ink-2); border: none; border-radius: 999px; padding: 14px 20px;
           box-sizing: border-box;
         }
         .support-search input { flex: 1; border: none; outline: none; background: transparent; font-size: 15px; color: var(--chalk); }
