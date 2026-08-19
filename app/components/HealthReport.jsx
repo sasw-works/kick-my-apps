@@ -161,33 +161,6 @@ function ToolbarAppIcon({ name, storeUrl }) {
   );
 }
 
-// Bulgu say\u0131lar\u0131ndan sahte ama tutarl\u0131 (seed'li) bir "waveform" y\u00fcksekli\u011fi \u00fcretir.
-function Waveform({ bad, warn, good }) {
-  const total = bad + warn + good || 1;
-  const barCount = 200;
-  const bars = Array.from({ length: barCount }, (_, i) => {
-    const ratio = i / barCount;
-    let color, height;
-    if (ratio < bad / total) {
-      color = "var(--kick)";
-      height = 40; // kritik: yüksek çubuk
-    } else if (ratio < (bad + warn) / total) {
-      color = "var(--yellow)";
-      height = 26; // dikkat: orta çubuk
-    } else {
-      color = "var(--teal)";
-      height = 14; // sorunsuz: alçak çubuk
-    }
-    return { height, color };
-  });
-  return (
-    <div className="waveform-bars" style={{ gridTemplateColumns: `repeat(${barCount}, 1px)` }}>
-      {bars.map((b, i) => (
-        <div key={i} className="waveform-bar" style={{ height: b.height, background: b.color }} />
-      ))}
-    </div>
-  );
-}
 
 function QueriedAppBadge({ name, storeUrl }) {
   const [iconUrl, setIconUrl] = useState(null);
@@ -800,12 +773,17 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         .waveform-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
         @media (max-width: 800px) { .waveform-grid { grid-template-columns: 1fr; } }
-        .waveform-bars { display: grid; grid-auto-flow: column; align-items: end; justify-content: space-between; height: 46px; }
-        .waveform-bar { border-radius: 2px; animation: mkt-fill-grow-h 0.7s ease forwards; }
-        @keyframes mkt-fill-grow-h { from { transform: scaleY(0); } to { transform: scaleY(1); } }
-        .waveform-caption { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; font-size: 12px; }
-        .waveform-caption-label { font-weight: 700; color: var(--chalk); letter-spacing: 0.04em; }
-        .waveform-caption-counts { color: var(--muted); font-family: var(--font-mono); font-size: 12px; }
+
+        .stackbar-list { display: flex; flex-direction: column; gap: 22px; }
+        .stackbar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+        .stackbar-label { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; color: var(--chalk); }
+        .stackbar-counts { font-size: 11px; font-family: var(--font-mono); color: var(--muted); }
+        .stackbar-track { display: flex; height: 22px; border-radius: 6px; overflow: hidden; background: var(--ink-3); }
+        .stackbar-seg {
+          display: flex; align-items: center; justify-content: center;
+          font-size: 11px; font-weight: 700; color: var(--ink);
+          transition: width 0.6s ease;
+        }
         .ai-summary-text { font-size: 13.5px; line-height: 1.65; color: var(--chalk); }
         .priority-actions-list { display: flex; flex-direction: column; gap: 10px; }
         .priority-action-row { display: flex; align-items: center; gap: 8px; }
@@ -1251,22 +1229,41 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
             <div className="panel-title">Analiz Verileri</div>
             <div className="panel-subtitle">Mercek başına bulgu dağılımının görsel dökümü</div>
             <div className="panel-divider" />
-            <div className="waveform-grid">
-              {lensSummary.map((l) => (
-                <div className="waveform-item" key={l.lens}>
-                  <Waveform bad={l.bad} warn={l.warn} good={l.good} />
-                  <div className="waveform-caption">
-                    <span className="waveform-caption-label">{(l.lens || "").toUpperCase()}</span>
-                    <span className="waveform-caption-counts">
-                      {l.bad > 0 && <span style={{ color: "var(--kick)" }}>{l.bad} Kritik</span>}
-                      {l.bad > 0 && (l.warn > 0 || l.good > 0) && " · "}
-                      {l.warn > 0 && <span style={{ color: "var(--yellow)" }}>{l.warn} Dikkat</span>}
-                      {l.warn > 0 && l.good > 0 && " · "}
-                      {l.good > 0 && <span style={{ color: "var(--teal)" }}>{l.good} Sorunsuz</span>}
-                    </span>
+            <div className="stackbar-list">
+              {lensSummary.map((l) => {
+                const total = l.bad + l.warn + l.good || 1;
+                return (
+                  <div className="stackbar-row" key={l.lens}>
+                    <div className="stackbar-header">
+                      <span className="stackbar-label">{(l.lens || "").toUpperCase()}</span>
+                      <span className="stackbar-counts">
+                        {l.bad > 0 && <span style={{ color: "var(--kick)" }}>{l.bad} Kritik</span>}
+                        {l.bad > 0 && (l.warn > 0 || l.good > 0) && " · "}
+                        {l.warn > 0 && <span style={{ color: "var(--yellow)" }}>{l.warn} Dikkat</span>}
+                        {l.warn > 0 && l.good > 0 && " · "}
+                        {l.good > 0 && <span style={{ color: "var(--teal)" }}>{l.good} Sorunsuz</span>}
+                      </span>
+                    </div>
+                    <div className="stackbar-track">
+                      {l.bad > 0 && (
+                        <div className="stackbar-seg" style={{ width: `${(l.bad / total) * 100}%`, background: "var(--kick)" }}>
+                          {l.bad}
+                        </div>
+                      )}
+                      {l.warn > 0 && (
+                        <div className="stackbar-seg" style={{ width: `${(l.warn / total) * 100}%`, background: "var(--yellow)" }}>
+                          {l.warn}
+                        </div>
+                      )}
+                      {l.good > 0 && (
+                        <div className="stackbar-seg" style={{ width: `${(l.good / total) * 100}%`, background: "var(--teal)" }}>
+                          {l.good}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
