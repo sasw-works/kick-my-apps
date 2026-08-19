@@ -661,7 +661,7 @@ export default function MarketingSections() {
           padding: 6px 12px; border-radius: 999px; font-size: 13px; font-family: var(--font-body); color: var(--muted); cursor: pointer;
         }
         .mkt-billing-toggle-btn-active { background: var(--ink-2); color: var(--chalk); font-weight: 600; }
-        .mkt-billing-save { background: color-mix(in srgb, var(--teal) 18%, transparent); color: var(--teal); font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 999px; }
+        .mkt-billing-save { background: color-mix(in srgb, var(--teal) 18%, transparent); color: var(--teal); font-size: 10px; font-weight: 700; padding: 6px; border-radius: 999px; }
         .mkt-pricing-price-row { display: flex; align-items: baseline; gap: 4px; }
         .mkt-pricing-price { font-size: 34px; font-weight: 500; letter-spacing: -0.02em; color: var(--chalk); }
         .mkt-pricing-price-suffix { font-size: 15px; font-family: var(--font-body); color: var(--muted); }
