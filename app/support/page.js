@@ -128,8 +128,15 @@ export default function SupportPage() {
         .support-blob-5 { width: 60vw; height: 60vw; max-width: 640px; max-height: 640px; background: #B9A6F5; top: 220px; right: -4%; }
         .support-page { position: relative; max-width: 760px; margin: 0 auto; padding: 90px 24px 120px; font-family: var(--font-inter), sans-serif; }
         .support-hero { text-align: center; margin-bottom: 48px; position: relative; z-index: 1; }
-        .support-title { font-size: 34px; font-weight: 500; letter-spacing: -0.02em; color: var(--chalk); margin-bottom: 12px; }
-        .support-sub { font-size: 15px; color: var(--muted); margin-bottom: 32px; }
+        .support-title {
+          font-family: var(--font-display); font-size: 90px; font-weight: 700;
+          letter-spacing: -0.025em; line-height: 1.08; color: #1A2B3B; margin: 0 0 12px;
+        }
+        @media (max-width: 700px) { .support-title { font-size: 42px; } }
+        .support-sub {
+          font-family: var(--font-inter), sans-serif; font-size: 20px; color: #1A2B3B;
+          line-height: 1.5; margin-top: 24px; margin-bottom: 32px;
+        }
         .support-search {
           width: 100%; margin: 0 auto; display: flex; align-items: center; gap: 10px;
           background: var(--ink-2); border: none; border-radius: 999px; padding: 14px 20px;
