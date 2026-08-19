@@ -170,7 +170,7 @@ function seededVariation(seed, range = 4) {
 
 function Waveform({ bad, warn, good }) {
   const total = bad + warn + good || 1;
-  const barCount = 60;
+  const barCount = 150;
   const bars = Array.from({ length: barCount }, (_, i) => {
     const ratio = i / barCount;
     let color, baseHeight;
@@ -806,7 +806,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         .waveform-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
         @media (max-width: 800px) { .waveform-grid { grid-template-columns: 1fr; } }
-        .waveform-bars { display: flex; align-items: flex-end; gap: 2px; height: 46px; }
+        .waveform-bars { display: flex; align-items: flex-end; gap: 1px; height: 46px; }
         .waveform-bar { flex: 1; min-width: 1px; border-radius: 2px; animation: mkt-fill-grow-h 0.7s ease forwards; }
         @keyframes mkt-fill-grow-h { from { transform: scaleY(0); } to { transform: scaleY(1); } }
         .waveform-caption { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; font-size: 12px; }
