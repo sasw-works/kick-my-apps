@@ -741,9 +741,6 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           padding: 8px 14px; font-size: 12px; color: var(--muted);
         }
         .upload-slot strong { color: var(--chalk); font-weight: 600; }
-        .reports-type-tag { display: inline-flex; align-items: center; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; width: fit-content; }
-        .reports-type-individual { background: var(--ink-3); color: var(--muted); }
-        .reports-type-comparison { background: color-mix(in srgb, var(--brand) 15%, transparent); color: var(--brand); }
         .kma-toolbar-btn {
           border: none; cursor: pointer; white-space: nowrap; font-family: inherit; font-size: inherit;
           margin: 0; box-sizing: border-box; line-height: normal;
@@ -1049,15 +1046,40 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
             </div>
           </div>
           <div style={{ flex: 1 }} />
-          <button className="reports-type-tag reports-type-individual kma-toolbar-btn" onClick={handleExportPdf} disabled={exporting} style={{ opacity: exporting ? 0.6 : 1 }}>
+          <button
+            className="kma-toolbar-btn"
+            onClick={handleExportPdf}
+            disabled={exporting}
+            style={{
+              display: "inline-flex", alignItems: "center", fontSize: 12, fontWeight: 600,
+              padding: "3px 10px", borderRadius: 999, width: "fit-content",
+              background: "var(--ink-3)", color: "var(--muted)", opacity: exporting ? 0.6 : 1,
+            }}
+          >
             {exporting ? "Hazırlanıyor…" : "PDF İndir"}
           </button>
           {scanId && (
-            <Link href={`/history?preselect=${scanId}`} className="reports-type-tag reports-type-individual kma-toolbar-btn" style={{ textDecoration: "none" }}>
+            <Link
+              href={`/history?preselect=${scanId}`}
+              className="kma-toolbar-btn"
+              style={{
+                display: "inline-flex", alignItems: "center", fontSize: 12, fontWeight: 600,
+                padding: "3px 10px", borderRadius: 999, width: "fit-content",
+                background: "var(--ink-3)", color: "var(--muted)", textDecoration: "none",
+              }}
+            >
               Karşılaştır
             </Link>
           )}
-          <button className="reports-type-tag reports-type-comparison kma-toolbar-btn" onClick={onReset} style={{ background: "var(--brand)", color: "#fff" }}>
+          <button
+            className="kma-toolbar-btn"
+            onClick={onReset}
+            style={{
+              display: "inline-flex", alignItems: "center", fontSize: 12, fontWeight: 600,
+              padding: "3px 10px", borderRadius: 999, width: "fit-content",
+              background: "var(--brand)", color: "#fff",
+            }}
+          >
             {onReset ? (
               "Yeni Analiz"
             ) : (
