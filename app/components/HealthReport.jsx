@@ -719,7 +719,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           background: var(--ink-2); color: var(--chalk); display: flex; align-items: center; justify-content: center;
           cursor: pointer; transition: background 0.15s ease, border-color 0.15s ease;
         }
-        .kma-close-btn:hover { background: var(--ink-3); border-color: var(--kick); color: var(--kick); }
+        .kma-close-btn:hover { background: var(--ink-3); border-color: var(--brand); color: var(--brand); }
 
         .kma-main { padding: 24px 28px 32px; display: flex; flex-direction: column; gap: 32px; }
 
@@ -1054,7 +1054,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
               display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
               background: "var(--ink-2)", border: "1px solid var(--ink-3)", borderRadius: 999,
               padding: "0 14px", fontSize: 13.5, color: "var(--chalk)", height: 44, boxSizing: "border-box",
-              minWidth: 150, opacity: exporting ? 0.6 : 1,
+              minWidth: 125, opacity: exporting ? 0.6 : 1,
             }}
           >
             {exporting ? "Hazırlanıyor…" : "PDF İndir"}
@@ -1067,7 +1067,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
                 display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
                 background: "var(--ink-2)", border: "1px solid var(--ink-3)", borderRadius: 999,
                 padding: "0 14px", fontSize: 13.5, color: "var(--chalk)", height: 44, boxSizing: "border-box",
-                minWidth: 150, textDecoration: "none",
+                minWidth: 125, textDecoration: "none",
               }}
             >
               Karşılaştır
@@ -1079,7 +1079,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
             style={{
               display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
               background: "var(--brand)", border: "1px solid var(--brand)", borderRadius: 999,
-              padding: "0 14px", fontSize: 12.5, fontWeight: 600, color: "#fff", height: 44, boxSizing: "border-box", minWidth: 150,
+              padding: "0 14px", fontSize: 12.5, fontWeight: 600, color: "#fff", height: 44, boxSizing: "border-box", minWidth: 125,
             }}
           >
             {onReset ? (
