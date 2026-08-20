@@ -871,9 +871,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .finding-filter-tab-active { background: var(--ink-3); border-color: var(--chalk); color: var(--chalk); font-weight: 400; }
         .finding-filter-count { font-family: var(--font-mono); font-size: 12px; opacity: 0.7; }
         .empty-state { color: var(--muted); font-size: 13.5px; padding: 24px 0; text-align: center; }
-        .lens-group { margin-bottom: -13px; }
-        .lens-group-product { margin-top: 50px; }
-        .lens-group-product .lens-group-title { margin-top: 0; }
+        .lens-group { margin-bottom: 32px; }
         .lens-group:last-child { margin-bottom: 0; }
         .lens-group-title { font-family: var(--font-display); font-size: 17px; letter-spacing: 0; font-weight: 600; color: var(--chalk); margin-bottom: 4px; }
         .lens-group-caption { font-size: 12px; color: var(--muted); margin-bottom: 20px; }
@@ -1289,7 +1287,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
             return LENS_ORDER.filter((lens) => filteredFindings.some((f) => LENS_MAP[f.key] === lens)).map((lens) => {
               const items = filteredFindings.filter((f) => LENS_MAP[f.key] === lens);
               return (
-                <div key={lens} className={`lens-group ${lens === "Ürün" ? "lens-group-product" : ""}`}>
+                <div key={lens} className="lens-group">
                   <div className="lens-group-title">{LENS_TITLE_LABEL[lens] || lens}</div>
                   <div className="lens-group-caption">{items.length} bulgu · {LENS_SUBTITLE[lens]}</div>
                   <div className="finding-list">
