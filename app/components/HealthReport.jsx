@@ -312,11 +312,9 @@ function AnnotatedScreenshot({ url, index, findings }) {
 
 function FindingRow({ f }) {
   const meta = STATUS_META[f.status];
-  const StatusIcon = meta.Icon;
   return (
     <div className="finding-row" style={{ background: `color-mix(in srgb, ${meta.color} 10%, var(--ink-2))` }}>
       <span className="finding-status-pill" style={{ color: meta.color, background: `color-mix(in srgb, ${meta.color} 15%, transparent)` }}>
-        <StatusIcon size={12} strokeWidth={2.2} />
         {meta.label}
       </span>
       <div className="finding-row-top">
