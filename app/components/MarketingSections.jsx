@@ -299,38 +299,6 @@ function FreshIcon({ size = 36 }) {
   );
 }
 
-function CountUp({ to, duration = 1400, suffix = "" }) {
-  const ref = React.useRef(null);
-  const [value, setValue] = React.useState(0);
-  const started = React.useRef(false);
-
-  React.useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !started.current) {
-          started.current = true;
-          const start = performance.now();
-          const tick = (now) => {
-            const progress = Math.min((now - start) / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 3);
-            setValue(Math.round(eased * to));
-            if (progress < 1) requestAnimationFrame(tick);
-          };
-          requestAnimationFrame(tick);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.5 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [to, duration]);
-
-  return <span ref={ref}>{value}{suffix}</span>;
-}
-
 function FaqItem({ q, a }) {
   const [open, setOpen] = React.useState(false);
   return (
@@ -400,37 +368,6 @@ export default function MarketingSections() {
       <style>{`
         .mkt-root { width: 100%; max-width: 1000px; margin: 90px auto 0; font-family: var(--font-inter), sans-serif; }
         .mkt-lift { transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease, border-color 0.28s ease; }
-
-        .mkt-story { text-align: center; margin: 150px 0; }
-        .mkt-story-eyebrow { font-size: 15px; font-family: var(--font-body); color: var(--muted); margin-bottom: 16px; }
-        .mkt-story-lines { display: flex; flex-direction: column; align-items: center; gap: 2px; }
-        .mkt-story-line {
-          font-family: var(--font-display); font-size: 46px; font-weight: 700; letter-spacing: -0.02em;
-          color: var(--chalk); line-height: 1.2;
-        }
-        .mkt-story-line-accent { color: var(--brand); }
-        @media (max-width: 700px) { .mkt-story-line { font-size: 28px; } }
-
-        .mkt-stats {
-          display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
-          margin: 90px 0; padding: 40px; background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 20px;
-        }
-        @media (max-width: 700px) { .mkt-stats { grid-template-columns: 1fr 1fr; } }
-        .mkt-stat-item { text-align: center; }
-        .mkt-stat-num { font-family: var(--font-display); font-size: 44px; font-weight: 800; color: var(--brand); letter-spacing: -0.02em; }
-        .mkt-stat-label { font-size: 13px; color: var(--muted); margin-top: 6px; }
-
-        .mkt-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 90px; }
-        @media (max-width: 900px) { .mkt-steps { grid-template-columns: 1fr 1fr; } }
-        @media (max-width: 560px) { .mkt-steps { grid-template-columns: 1fr; } }
-        .mkt-step-card {
-          background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 16px; padding: 24px;
-          transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease;
-        }
-        .mkt-step-card:hover { transform: translateY(-5px); box-shadow: 0 18px 36px rgba(20,33,61,0.08); }
-        .mkt-step-num { font-family: var(--font-display); font-size: 28px; font-weight: 800; color: var(--brand); opacity: 0.4; margin-bottom: 14px; }
-        .mkt-step-title { font-size: 16px; font-weight: 600; color: var(--chalk); margin-bottom: 8px; }
-        .mkt-step-desc { font-size: 13.5px; color: var(--muted); line-height: 1.5; }
         .mkt-lift:hover { transform: translateY(-5px); box-shadow: 0 18px 36px rgba(20,33,61,0.08); }
         .mkt-reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
         .mkt-reveal-visible { opacity: 1; transform: translateY(0); }
@@ -818,59 +755,6 @@ export default function MarketingSections() {
           <div className="mkt-preview-card">
             <img src="/kma-console-preview.png" alt="Kick My Apps console" className="mkt-preview-full-img" />
           </div>
-        </div>
-      </div>
-
-      {/* Stacked scroll-reveal story headline */}
-      <div className="mkt-story">
-        <div className="mkt-story-eyebrow">Hakkımızda</div>
-        <div className="mkt-story-lines">
-          <div className="mkt-reveal mkt-story-line">App UX sağlığını</div>
-          <div className="mkt-reveal mkt-story-line" style={{ transitionDelay: "80ms" }}>gerçek verilerle</div>
-          <div className="mkt-reveal mkt-story-line" style={{ transitionDelay: "160ms" }}>yapay zeka destekli</div>
-          <div className="mkt-reveal mkt-story-line" style={{ transitionDelay: "240ms" }}>analiz ile</div>
-          <div className="mkt-reveal mkt-story-line mkt-story-line-accent" style={{ transitionDelay: "320ms" }}>net ve anlaşılır</div>
-          <div className="mkt-reveal mkt-story-line" style={{ transitionDelay: "400ms" }}>hale getiriyoruz</div>
-        </div>
-      </div>
-
-      {/* Animated big stat numbers */}
-      <div className="mkt-stats mkt-reveal">
-        <div className="mkt-stat-item">
-          <div className="mkt-stat-num"><CountUp to={13} /></div>
-          <div className="mkt-stat-label">Analiz Kategorisi</div>
-        </div>
-        <div className="mkt-stat-item">
-          <div className="mkt-stat-num"><CountUp to={4} /></div>
-          <div className="mkt-stat-label">Analiz Merceği</div>
-        </div>
-        <div className="mkt-stat-item">
-          <div className="mkt-stat-num">%<CountUp to={100} /></div>
-          <div className="mkt-stat-label">Gerçek App Store Verisi</div>
-        </div>
-        <div className="mkt-stat-item">
-          <div className="mkt-stat-num"><CountUp to={1} /></div>
-          <div className="mkt-stat-label">Tıkla, Analiz Başlasın</div>
-        </div>
-      </div>
-
-      {/* How it works */}
-      <div className="mkt-reveal">
-        <div className="mkt-section-title">Nasıl Çalışır</div>
-        <div className="mkt-section-sub">Uygulamanı gönder, yapay zeka analiz etsin, sonucu dakikalar içinde gör.</div>
-        <div className="mkt-steps">
-          {[
-            { num: "01", title: "Uygulamanı Gönder", desc: "App Store linkini yapıştır veya ekran görüntülerini yükle." },
-            { num: "02", title: "AI Analiz Etsin", desc: "13 kategori, 4 mercek üzerinden otomatik olarak taransın." },
-            { num: "03", title: "Raporunu Gör", desc: "Sağlık skoru, öncelikli aksiyonlar ve tahmini etki, tek ekranda." },
-            { num: "04", title: "İlerlemeni Takip Et", desc: "Yeni analizlerle skorunun zaman içindeki değişimini izle." },
-          ].map((s) => (
-            <div className="mkt-step-card" key={s.num}>
-              <div className="mkt-step-num">{s.num}</div>
-              <div className="mkt-step-title">{s.title}</div>
-              <div className="mkt-step-desc">{s.desc}</div>
-            </div>
-          ))}
         </div>
       </div>
 
