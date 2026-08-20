@@ -896,7 +896,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           display: flex; align-items: flex-start; gap: 8px;
           background: #FFFFFF; border-radius: 6px; padding: 8px 10px;
           font-size: 12px; color: #4B5563; line-height: 1.4;
-          margin: 8px 0 0 0;
+          margin: 18px 0 0 0;
         }
         .finding-suggestion {
           display: flex; align-items: flex-start; gap: 8px;
