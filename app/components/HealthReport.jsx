@@ -965,7 +965,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         .risk-disclaimer { font-size: 12px; color: var(--muted); margin-bottom: 12px; font-style: italic; }
         .risk-list { display: flex; flex-direction: column; gap: 8px; }
-        .risk-row { display: flex; gap: 10px; background: var(--ink); border-left: 3px solid var(--ink-3); border-radius: 6px; padding: 10px 12px; }
+        .risk-row { display: flex; gap: 10px; background: var(--ink); border-radius: 6px; padding: 10px 12px; }
         .risk-issue { font-size: 13.5px; color: var(--chalk); font-weight: 600; margin-bottom: 2px; }
         .risk-guideline { font-size: 12px; color: var(--muted); font-family: var(--font-mono); }
 
@@ -1449,7 +1449,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
             </div>
             <div className="risk-list">
               {approvalRisks.map((r, i) => (
-                <div className="risk-row" key={i} style={{ borderLeftColor: r.severity === "high" ? "var(--kick)" : "var(--yellow)" }}>
+                <div className="risk-row" key={i} style={{ background: `color-mix(in srgb, ${r.severity === "high" ? "var(--kick)" : "var(--yellow)"} 10%, var(--ink))` }}>
                   <AlertTriangle size={14} color={r.severity === "high" ? "var(--kick)" : "var(--yellow)"} />
                   <div>
                     <div className="risk-issue">{r.issue}</div>
