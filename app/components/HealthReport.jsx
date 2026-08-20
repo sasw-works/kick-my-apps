@@ -893,14 +893,14 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .finding-text { font-size: 13.5px; color: var(--muted); line-height: 1.5; margin: 0; }
         .finding-suggestion {
           display: flex; align-items: flex-start; gap: 8px;
-          background: var(--ink); border-radius: 6px; padding: 8px 10px;
-          font-size: 12px; color: var(--muted); line-height: 1.4;
+          background: #FFFFFF; border-radius: 6px; padding: 8px 10px;
+          font-size: 12px; color: #4B5563; line-height: 1.4;
           margin: 8px 0 0 0;
         }
         .finding-suggestion {
           display: flex; align-items: flex-start; gap: 8px;
-          background: var(--ink); border-radius: 6px; padding: 9px 10px;
-          font-size: 12px; color: var(--muted); line-height: 1.4;
+          background: #FFFFFF; border-radius: 6px; padding: 9px 10px;
+          font-size: 12px; color: #4B5563; line-height: 1.4;
         }
         .finding-suggestion span { flex: 1; }
 
