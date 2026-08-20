@@ -848,10 +848,9 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         .qw-list { display: flex; flex-direction: column; gap: 10px; }
         .qw-row { background: var(--ink); border-radius: 8px; padding: 12px 14px; }
-        .qw-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+        .qw-top { display: flex; align-items: center; gap: 10px; }
         .qw-title { font-size: 13.5px; font-weight: 600; }
-        .qw-tags { display: flex; gap: 6px; }
-        .qw-tag { font-family: var(--font-mono); font-size: 12px; padding: 3px 8px; border-radius: 999px; background: var(--ink-3); }
+        .qw-tags { display: flex; gap: 6px; margin-bottom: 18px; }
         .qw-impact-bad { color: var(--kick); }
         .qw-impact-warn { color: var(--yellow); }
         .qw-effort { color: var(--teal); }
@@ -1306,16 +1305,22 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
             <div className="qw-list">
               {quickWins.map((f) => (
                 <div className="qw-row" key={f.key}>
+                  <span className="qw-tags">
+                    <span
+                      className="finding-status-pill"
+                      style={{ color: STATUS_META[f.status].color, background: `color-mix(in srgb, ${STATUS_META[f.status].color} 15%, transparent)`, marginBottom: 0 }}
+                    >
+                      Etki: {f.status === "bad" ? "Yüksek" : "Orta"}
+                    </span>
+                    <span
+                      className="finding-status-pill"
+                      style={{ color: "var(--muted)", background: "var(--ink-3)", marginBottom: 0 }}
+                    >
+                      Efor: {EFFORT_MAP[f.key] === "low" ? "Düşük" : "Orta"}
+                    </span>
+                  </span>
                   <div className="qw-top">
                     <span className="qw-title">{f.title}</span>
-                    <span className="qw-tags">
-                      <span className={`qw-tag qw-impact-${f.status}`}>
-                        Etki: {f.status === "bad" ? "Yüksek" : "Orta"}
-                      </span>
-                      <span className="qw-tag qw-effort">
-                        Efor: {EFFORT_MAP[f.key] === "low" ? "Düşük" : "Orta"}
-                      </span>
-                    </span>
                   </div>
                   <p className="qw-suggestion">{f.suggestion}</p>
                 </div>
