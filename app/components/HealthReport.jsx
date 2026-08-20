@@ -314,7 +314,7 @@ function FindingRow({ f }) {
   const meta = STATUS_META[f.status];
   const StatusIcon = meta.Icon;
   return (
-    <div className="finding-row" style={{ borderLeftColor: meta.color }}>
+    <div className="finding-row" style={{ background: `color-mix(in srgb, ${meta.color} 10%, var(--ink-2))` }}>
       <div className="finding-row-top">
         <span className="finding-title">{f.title}</span>
         {f.screenshotIndex && <span className="finding-shot-ref">Ekran #{f.screenshotIndex}</span>}
@@ -880,7 +880,6 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .finding-row {
           background: var(--ink-2);
           border: 1px solid var(--ink-3);
-          border-left: 3px solid var(--ink-3);
           border-radius: 8px;
           padding: 14px 16px;
           box-shadow: var(--shadow);
