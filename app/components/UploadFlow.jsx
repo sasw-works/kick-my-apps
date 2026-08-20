@@ -189,6 +189,13 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         .blob-4 { width: 55vw; height: 55vw; max-width: 600px; max-height: 600px; background: #FDE788; top: -20px; left: 6%; }
         .blob-5 { width: 60vw; height: 60vw; max-width: 640px; max-height: 640px; background: #B9A6F5; top: 220px; right: -4%; }
 
+        .hero-collage { position: absolute; inset: 0; }
+        .hero-collage-card {
+          position: absolute; width: 64px; height: 64px; border-radius: 16px;
+          box-shadow: 0 12px 28px rgba(20,33,61,0.14); opacity: 0.85;
+        }
+        @media (max-width: 900px) { .hero-collage { display: none; } }
+
         .upload-hero { text-align: center; margin-top: 150px; margin-bottom: 0; max-width: 1170px; position: relative; z-index: 1; }
 
         .hero-title {
@@ -466,6 +473,22 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           <div className="blob blob-3" />
           <div className="blob blob-4" />
           <div className="blob blob-5" />
+          <div className="hero-collage">
+            {[
+              { top: "4%", left: "3%", rot: -8, color: "#F5433A" },
+              { top: "12%", left: "82%", rot: 6, color: "#7CB342" },
+              { top: "62%", left: "1%", rot: 5, color: "#29B6F6" },
+              { top: "68%", left: "85%", rot: -6, color: "#7E57C2" },
+              { top: "2%", left: "42%", rot: 3, color: "#F3C468" },
+              { top: "72%", left: "45%", rot: -4, color: "#31C1D2" },
+            ].map((c, i) => (
+              <div
+                key={i}
+                className="hero-collage-card"
+                style={{ top: c.top, left: c.left, transform: `rotate(${c.rot}deg)`, background: c.color }}
+              />
+            ))}
+          </div>
         </div>
       )}
 
