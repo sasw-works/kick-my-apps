@@ -315,13 +315,13 @@ function FindingRow({ f }) {
   const StatusIcon = meta.Icon;
   return (
     <div className="finding-row" style={{ background: `color-mix(in srgb, ${meta.color} 10%, var(--ink-2))` }}>
+      <span className="finding-status-pill" style={{ color: meta.color, background: `color-mix(in srgb, ${meta.color} 15%, transparent)` }}>
+        <StatusIcon size={12} strokeWidth={2.2} />
+        {meta.label}
+      </span>
       <div className="finding-row-top">
         <span className="finding-title">{f.title}</span>
         {f.screenshotIndex && <span className="finding-shot-ref">Ekran #{f.screenshotIndex}</span>}
-        <span className="finding-status" style={{ color: meta.color }}>
-          <StatusIcon size={13} strokeWidth={2.2} />
-          {meta.label}
-        </span>
       </div>
       <p className="finding-text">{f.finding}</p>
       {f.status !== "good" && (
@@ -885,7 +885,10 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         }
         .finding-row-top { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
         .finding-title { font-size: 13.5px; font-weight: 600; flex: 1; }
-        .finding-status { display: flex; align-items: center; gap: 4px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.04em; }
+        .finding-status-pill {
+          display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 400;
+          padding: 4px 12px; border-radius: 999px; white-space: nowrap; margin-bottom: 8px;
+        }
         .finding-shot-ref {
           font-family: var(--font-mono); font-size: 12px; color: var(--muted);
           background: var(--ink-3); padding: 2px 7px; border-radius: 999px;
