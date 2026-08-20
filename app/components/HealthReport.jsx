@@ -885,7 +885,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .finding-title { font-size: 13.5px; font-weight: 600; flex: 1; }
         .finding-status-pill {
           display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 400;
-          padding: 4px 12px; border-radius: 999px; white-space: nowrap; margin-bottom: 8px;
+          padding: 4px 12px; border-radius: 999px; white-space: nowrap; margin-bottom: 18px;
         }
         .finding-shot-ref {
           font-family: var(--font-mono); font-size: 12px; color: var(--muted);
