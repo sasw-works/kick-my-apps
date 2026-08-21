@@ -299,38 +299,6 @@ function FreshIcon({ size = 36 }) {
   );
 }
 
-function CountUp({ to, duration = 1400, suffix = "" }) {
-  const ref = React.useRef(null);
-  const [value, setValue] = React.useState(0);
-  const started = React.useRef(false);
-
-  React.useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !started.current) {
-          started.current = true;
-          const start = performance.now();
-          const tick = (now) => {
-            const progress = Math.min((now - start) / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 3);
-            setValue(Math.round(eased * to));
-            if (progress < 1) requestAnimationFrame(tick);
-          };
-          requestAnimationFrame(tick);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.5 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [to, duration]);
-
-  return <span ref={ref}>{value}{suffix}</span>;
-}
-
 function FaqItem({ q, a }) {
   const [open, setOpen] = React.useState(false);
   return (
@@ -451,14 +419,7 @@ export default function MarketingSections() {
         .mkt-preview-row span { flex: 1; color: var(--chalk); }
 
         .mkt-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 90px; }
-        .mkt-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 90px; }
-        .mkt-stat-box {
-          background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 20px; padding: 32px;
-          display: flex; flex-direction: column;
-        }
-        .mkt-stat-box-num { font-family: var(--font-display); font-size: 56px; font-weight: 800; color: var(--chalk); letter-spacing: -0.02em; line-height: 1; }
-        .mkt-stat-box-label { font-size: 13px; font-weight: 600; letter-spacing: 0.04em; color: var(--brand); text-transform: uppercase; margin-top: 12px; }
-        .mkt-stat-box-desc { font-size: 14px; color: var(--muted); line-height: 1.55; margin-top: 10px; }
+        .mkt-grid-4 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 90px; }
         .mkt-feature-card {
           background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 16px;
           box-shadow: var(--shadow); padding: 26px;
@@ -856,25 +817,53 @@ export default function MarketingSections() {
         <div className="mkt-section-title">Deep, but never messy</div>
         <div className="mkt-section-sub">13 categories of findings, prioritized by impact, and tracked with weekly digests and competitor comparisons.</div>
         <div className="mkt-grid-4">
-          <div className="mkt-stat-box mkt-lift">
-            <div className="mkt-stat-box-num"><CountUp to={13} /></div>
-            <div className="mkt-stat-box-label">Analiz Kategorisi</div>
-            <div className="mkt-stat-box-desc">Onboarding'den erişilebilirliğe kadar her bulgu bir kategoriye eşlenir.</div>
+          <div className="mkt-feature-card mkt-lift">
+            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon03 size={66} /></div>
+            <div className="mkt-feature-title">13 categories, 4 lenses</div>
+            <div className="mkt-feature-desc" style={{ marginBottom: 22 }}>From onboarding to accessibility, every finding maps to one of the UI / UX / Accessibility / Product lenses.</div>
+            <div className="mkt-priority-list">
+              <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UI</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>2 critical · 1 warning</span></div>
+              <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UX</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>1 warning</span></div>
+            </div>
           </div>
-          <div className="mkt-stat-box mkt-lift">
-            <div className="mkt-stat-box-num"><CountUp to={4} /></div>
-            <div className="mkt-stat-box-label">Analiz Merceği</div>
-            <div className="mkt-stat-box-desc">UI, UX, Erişilebilirlik ve Ürün açısından değerlendirilir.</div>
+          <div className="mkt-feature-card mkt-lift">
+            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon04 size={66} /></div>
+            <div className="mkt-feature-title">Prioritized by impact</div>
+            <div className="mkt-feature-desc" style={{ marginBottom: 22 }}>We tell you what to fix first by matching high impact with low implementation effort, so nothing important slips through.</div>
+            <div className="mkt-priority-list">
+              {PRIORITY_ITEMS.slice(0, 2).map((p) => (
+                <div className="mkt-priority-row" key={p.tag}>
+                  <span className={`mkt-priority-tag ${p.color === "var(--kick)" ? "mkt-tag-pulse" : ""}`} style={{ color: p.color, background: "var(--ink-3)" }}>{p.tag}</span>
+                  <span className="mkt-priority-title">{p.title}</span>
+                  <span className="mkt-priority-meta">{p.meta}</span>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="mkt-stat-box mkt-lift">
-            <div className="mkt-stat-box-num"><CountUp to={100} suffix="%" /></div>
-            <div className="mkt-stat-box-label">Gerçek Veri</div>
-            <div className="mkt-stat-box-desc">Gerçek, herkese açık App Store yorumlarını analiz ederiz.</div>
+          <div className="mkt-feature-card mkt-lift">
+            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon05 size={66} /></div>
+            <div className="mkt-feature-title">Weekly review digest</div>
+            <div className="mkt-feature-desc" style={{ marginBottom: 22 }}>Get a summary of a tracked app's new reviews delivered to your inbox every week.</div>
+            <div className="mkt-showcase-visual">
+              <Mail size={22} color="var(--brand)" className="mkt-bounce" />
+              <span style={{ fontSize: 12, color: "var(--muted)" }}>Every Monday, automatic</span>
+            </div>
           </div>
-          <div className="mkt-stat-box mkt-lift">
-            <div className="mkt-stat-box-num"><CountUp to={7} /></div>
-            <div className="mkt-stat-box-label">Gün</div>
-            <div className="mkt-stat-box-desc">Her hafta otomatik yorum özeti e-postana gelir.</div>
+          <div className="mkt-feature-card mkt-lift">
+            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon06 size={66} /></div>
+            <div className="mkt-feature-title">Compare with a competitor</div>
+            <div className="mkt-feature-desc" style={{ marginBottom: 22 }}>Put your app side by side with a competitor — scores and findings, one screen.</div>
+            <div className="mkt-showcase-visual" style={{ flexDirection: "row", gap: 24 }}>
+              <div style={{ textAlign: "center" }}>
+                <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--teal)" }}>78</div>
+                <div style={{ fontSize: 10, color: "var(--muted)" }}>You</div>
+              </div>
+              <GitCompare size={16} color="var(--muted)" className="mkt-pulse-scale" />
+              <div style={{ textAlign: "center" }}>
+                <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--yellow)" }}>61</div>
+                <div style={{ fontSize: 10, color: "var(--muted)" }}>Competitor</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
