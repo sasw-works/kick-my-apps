@@ -419,19 +419,6 @@ export default function MarketingSections() {
         .mkt-preview-row span { flex: 1; color: var(--chalk); }
 
         .mkt-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 90px; }
-        .mkt-stripe-card {
-          background: var(--color-pure-white); border-radius: var(--radius-cards, 4px);
-          padding: 32px; border: 1px solid var(--color-frost);
-        }
-        .mkt-stripe-card-label {
-          font-size: 12px; font-weight: 400; color: var(--color-smoke);
-          text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;
-        }
-        .mkt-stripe-card-title {
-          font-family: var(--font-inter), sans-serif; font-size: 26px; font-weight: 300;
-          color: var(--color-midnight-ink); letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 12px;
-        }
-        .mkt-stripe-card-desc { font-size: 16px; font-weight: 400; color: var(--color-steel); line-height: 1.5; }
         .mkt-grid-4 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 90px; }
         .mkt-feature-card {
           background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 16px;
@@ -776,45 +763,49 @@ export default function MarketingSections() {
         <div className="mkt-section-title">Everything your reviews are telling you</div>
         <div className="mkt-section-sub">Screenshot analysis and real user reviews meet in the same report.</div>
         <div className="mkt-grid-2">
-          <div className="mkt-stripe-card">
-            <div className="mkt-stripe-card-label">Real data</div>
-            <div className="mkt-stripe-card-title">Real App Store data, not guesswork</div>
-            <div className="mkt-stripe-card-desc">We analyze real, publicly available App Store reviews directly and honestly.</div>
-            <div className="mkt-priority-row" style={{ justifyContent: "flex-start", gap: 8, marginTop: 24 }}>
-              <span className="mkt-live-dot" />
-              <span style={{ fontSize: 12.5, color: "var(--color-steel)" }}>★★★★☆ · 1,240 reviews analyzed</span>
-            </div>
-            <div className="mkt-rating-dist">
-              {[
-                { star: 5, pct: 62 },
-                { star: 4, pct: 21 },
-                { star: 3, pct: 9 },
-                { star: 2, pct: 5 },
-                { star: 1, pct: 3 },
-              ].map((r) => (
-                <div className="mkt-rating-dist-row" key={r.star}>
-                  <span className="mkt-rating-dist-label">{r.star}★</span>
-                  <div className="mkt-rating-dist-bar">
-                    <div className="mkt-rating-dist-fill" style={{ width: `${r.pct}%` }} />
-                  </div>
-                  <span className="mkt-rating-dist-pct">{r.pct}%</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="mkt-stripe-card">
-            <div className="mkt-stripe-card-label">Always fresh</div>
-            <div className="mkt-stripe-card-title">No caching, ever</div>
-            <div className="mkt-stripe-card-desc">Every single analysis pulls the freshest reviews straight from the source.</div>
-            <div className="mkt-ticker" style={{ marginTop: 24 }}>
-              <div className="mkt-ticker-track">
-                {[...SAMPLE_REVIEWS, ...SAMPLE_REVIEWS].map((r, i) => (
-                  <div className="mkt-review-card" key={i}>
-                    <div className="mkt-review-stars">{"★".repeat(r.stars)}{"☆".repeat(5 - r.stars)}</div>
-                    <div className="mkt-review-title">{r.title}</div>
-                    <div className="mkt-review-body">{r.body} — {r.who}</div>
+          <div className="mkt-halo mkt-halo-pink">
+            <div className="mkt-feature-card mkt-feature-card-floating">
+              <div className="mkt-feature-icon" style={{ background: "transparent", width: 99, height: 99 }}><AppStoreDataIcon size={99} /></div>
+              <div className="mkt-feature-title">Real App Store data</div>
+              <div className="mkt-feature-desc" style={{ marginBottom: 43 }}>Not guesswork — we analyze real, publicly available App Store reviews directly and honestly.</div>
+              <div className="mkt-priority-row" style={{ justifyContent: "center", gap: 8 }}>
+                <span className="mkt-live-dot" />
+                <span style={{ fontSize: 12.5, color: "var(--muted)" }}>★★★★☆ · 1,240 reviews analyzed</span>
+              </div>
+              <div className="mkt-rating-dist">
+                {[
+                  { star: 5, pct: 62 },
+                  { star: 4, pct: 21 },
+                  { star: 3, pct: 9 },
+                  { star: 2, pct: 5 },
+                  { star: 1, pct: 3 },
+                ].map((r) => (
+                  <div className="mkt-rating-dist-row" key={r.star}>
+                    <span className="mkt-rating-dist-label">{r.star}★</span>
+                    <div className="mkt-rating-dist-bar">
+                      <div className="mkt-rating-dist-fill" style={{ width: `${r.pct}%` }} />
+                    </div>
+                    <span className="mkt-rating-dist-pct">{r.pct}%</span>
                   </div>
                 ))}
+              </div>
+            </div>
+          </div>
+          <div className="mkt-halo mkt-halo-mint">
+            <div className="mkt-feature-card mkt-feature-card-floating">
+              <div className="mkt-feature-icon" style={{ background: "transparent", width: 99, height: 99 }}><FreshIcon size={99} /></div>
+              <div className="mkt-feature-title">Always fresh</div>
+              <div className="mkt-feature-desc" style={{ marginBottom: 43 }}>No caching, ever — every single analysis pulls the freshest reviews straight from the source.</div>
+              <div className="mkt-ticker">
+                <div className="mkt-ticker-track">
+                  {[...SAMPLE_REVIEWS, ...SAMPLE_REVIEWS].map((r, i) => (
+                    <div className="mkt-review-card" key={i}>
+                      <div className="mkt-review-stars">{"★".repeat(r.stars)}{"☆".repeat(5 - r.stars)}</div>
+                      <div className="mkt-review-title">{r.title}</div>
+                      <div className="mkt-review-body">{r.body} — {r.who}</div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
