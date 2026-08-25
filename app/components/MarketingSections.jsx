@@ -420,6 +420,17 @@ export default function MarketingSections() {
 
         .mkt-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 90px; }
         .mkt-grid-4 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 90px; }
+        .mkt-secoda-card {
+          background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 16px; padding: 32px;
+          display: flex; flex-direction: column; transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease;
+        }
+        .mkt-secoda-card:hover { transform: translateY(-5px); box-shadow: 0 18px 36px rgba(20,33,61,0.08); }
+        .mkt-secoda-title { font-size: 20px; font-weight: 600; color: var(--chalk); letter-spacing: -0.01em; margin-bottom: 10px; }
+        .mkt-secoda-desc { font-size: 14.5px; color: var(--muted); line-height: 1.55; margin-bottom: 24px; }
+        .mkt-secoda-tile {
+          margin-top: auto; background: var(--ink); border: 1px solid var(--ink-3); border-radius: 12px;
+          padding: 20px; display: flex; align-items: center; justify-content: center; min-height: 96px;
+        }
         .mkt-feature-card {
           background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 16px;
           box-shadow: var(--shadow); padding: 26px;
@@ -817,51 +828,55 @@ export default function MarketingSections() {
         <div className="mkt-section-title">Deep, but never messy</div>
         <div className="mkt-section-sub">13 categories of findings, prioritized by impact, and tracked with weekly digests and competitor comparisons.</div>
         <div className="mkt-grid-4">
-          <div className="mkt-feature-card mkt-lift">
-            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon03 size={66} /></div>
-            <div className="mkt-feature-title">13 categories, 4 lenses</div>
-            <div className="mkt-feature-desc" style={{ marginBottom: 22 }}>From onboarding to accessibility, every finding maps to one of the UI / UX / Accessibility / Product lenses.</div>
-            <div className="mkt-priority-list">
-              <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UI</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>2 critical · 1 warning</span></div>
-              <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UX</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>1 warning</span></div>
-            </div>
-          </div>
-          <div className="mkt-feature-card mkt-lift">
-            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon04 size={66} /></div>
-            <div className="mkt-feature-title">Prioritized by impact</div>
-            <div className="mkt-feature-desc" style={{ marginBottom: 22 }}>We tell you what to fix first by matching high impact with low implementation effort, so nothing important slips through.</div>
-            <div className="mkt-priority-list">
-              {PRIORITY_ITEMS.slice(0, 2).map((p) => (
-                <div className="mkt-priority-row" key={p.tag}>
-                  <span className={`mkt-priority-tag ${p.color === "var(--kick)" ? "mkt-tag-pulse" : ""}`} style={{ color: p.color, background: "var(--ink-3)" }}>{p.tag}</span>
-                  <span className="mkt-priority-title">{p.title}</span>
-                  <span className="mkt-priority-meta">{p.meta}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="mkt-feature-card mkt-lift">
-            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon05 size={66} /></div>
-            <div className="mkt-feature-title">Weekly review digest</div>
-            <div className="mkt-feature-desc" style={{ marginBottom: 22 }}>Get a summary of a tracked app's new reviews delivered to your inbox every week.</div>
-            <div className="mkt-showcase-visual">
-              <Mail size={22} color="var(--brand)" className="mkt-bounce" />
-              <span style={{ fontSize: 12, color: "var(--muted)" }}>Every Monday, automatic</span>
-            </div>
-          </div>
-          <div className="mkt-feature-card mkt-lift">
-            <div className="mkt-feature-icon" style={{ background: "transparent" }}><Icon06 size={66} /></div>
-            <div className="mkt-feature-title">Compare with a competitor</div>
-            <div className="mkt-feature-desc" style={{ marginBottom: 22 }}>Put your app side by side with a competitor — scores and findings, one screen.</div>
-            <div className="mkt-showcase-visual" style={{ flexDirection: "row", gap: 24 }}>
-              <div style={{ textAlign: "center" }}>
-                <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--teal)" }}>78</div>
-                <div style={{ fontSize: 10, color: "var(--muted)" }}>You</div>
+          <div className="mkt-secoda-card mkt-lift">
+            <div className="mkt-secoda-title">See every issue in context</div>
+            <div className="mkt-secoda-desc">Every finding maps to a UI, UX, Accessibility, or Product lens — so nothing gets lost in translation.</div>
+            <div className="mkt-secoda-tile">
+              <div className="mkt-priority-list">
+                <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UI</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>2 critical · 1 warning</span></div>
+                <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UX</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>1 warning</span></div>
               </div>
-              <GitCompare size={16} color="var(--muted)" className="mkt-pulse-scale" />
-              <div style={{ textAlign: "center" }}>
-                <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--yellow)" }}>61</div>
-                <div style={{ fontSize: 10, color: "var(--muted)" }}>Competitor</div>
+            </div>
+          </div>
+          <div className="mkt-secoda-card mkt-lift">
+            <div className="mkt-secoda-title">Prioritized by impact</div>
+            <div className="mkt-secoda-desc">We tell you what to fix first by matching high impact with low implementation effort.</div>
+            <div className="mkt-secoda-tile">
+              <div className="mkt-priority-list">
+                {PRIORITY_ITEMS.slice(0, 2).map((p) => (
+                  <div className="mkt-priority-row" key={p.tag}>
+                    <span className={`mkt-priority-tag ${p.color === "var(--kick)" ? "mkt-tag-pulse" : ""}`} style={{ color: p.color, background: "var(--ink-3)" }}>{p.tag}</span>
+                    <span className="mkt-priority-title">{p.title}</span>
+                    <span className="mkt-priority-meta">{p.meta}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className="mkt-secoda-card mkt-lift">
+            <div className="mkt-secoda-title">Monitor your app at scale</div>
+            <div className="mkt-secoda-desc">Weekly digests keep you on top of new reviews without lifting a finger.</div>
+            <div className="mkt-secoda-tile">
+              <div className="mkt-showcase-visual" style={{ marginBottom: 0 }}>
+                <Mail size={22} color="var(--brand)" className="mkt-bounce" />
+                <span style={{ fontSize: 12, color: "var(--muted)" }}>Every Monday, automatic</span>
+              </div>
+            </div>
+          </div>
+          <div className="mkt-secoda-card mkt-lift">
+            <div className="mkt-secoda-title">Compare and act with confidence</div>
+            <div className="mkt-secoda-desc">Benchmark against a competitor and know exactly where you stand.</div>
+            <div className="mkt-secoda-tile">
+              <div className="mkt-showcase-visual" style={{ flexDirection: "row", gap: 24, marginBottom: 0 }}>
+                <div style={{ textAlign: "center" }}>
+                  <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--teal)" }}>78</div>
+                  <div style={{ fontSize: 10, color: "var(--muted)" }}>You</div>
+                </div>
+                <GitCompare size={16} color="var(--muted)" className="mkt-pulse-scale" />
+                <div style={{ textAlign: "center" }}>
+                  <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--yellow)" }}>61</div>
+                  <div style={{ fontSize: 10, color: "var(--muted)" }}>Competitor</div>
+                </div>
               </div>
             </div>
           </div>
