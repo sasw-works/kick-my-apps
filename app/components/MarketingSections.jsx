@@ -21,6 +21,7 @@ import {
   Download,
   ShieldQuestion,
   Search,
+  FileSearch,
 } from "lucide-react";
 
 const SAMPLE_REVIEWS = [
@@ -421,15 +422,57 @@ export default function MarketingSections() {
         .mkt-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 90px; }
         .mkt-grid-4 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 90px; }
         .mkt-secoda-card {
-          background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 16px; padding: 32px;
+          background: color-mix(in srgb, var(--chalk) 4%, var(--ink)); border-radius: 24px; padding: 40px;
           display: flex; flex-direction: column; transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease;
         }
         .mkt-secoda-card:hover { transform: translateY(-5px); box-shadow: 0 18px 36px rgba(20,33,61,0.08); }
-        .mkt-secoda-title { font-size: 20px; font-weight: 600; color: var(--chalk); letter-spacing: -0.01em; margin-bottom: 10px; }
-        .mkt-secoda-desc { font-size: 14.5px; color: var(--muted); line-height: 1.55; margin-bottom: 24px; }
-        .mkt-secoda-tile {
-          margin-top: auto; background: var(--ink); border: 1px solid var(--ink-3); border-radius: 12px;
-          padding: 20px; display: flex; align-items: center; justify-content: center; min-height: 96px;
+        .mkt-secoda-title { font-size: 30px; font-weight: 700; color: var(--chalk); letter-spacing: -0.01em; margin-bottom: 12px; }
+        .mkt-secoda-desc { font-size: 15.5px; color: var(--muted); line-height: 1.6; margin-bottom: 28px; }
+        .mkt-secoda-mock { margin-top: auto; }
+
+        .mkt-secoda-search {
+          display: flex; align-items: center; gap: 10px; background: var(--ink-2); border-radius: 999px;
+          padding: 13px 18px; font-size: 13.5px; color: var(--muted); margin-bottom: 14px;
+        }
+        .mkt-secoda-item {
+          display: flex; gap: 12px; background: var(--ink-2); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px;
+        }
+        .mkt-secoda-item-faded { opacity: 0.55; }
+        .mkt-secoda-item-icon {
+          width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .mkt-secoda-item-title { font-size: 14px; font-weight: 600; color: var(--chalk); }
+        .mkt-secoda-verified { color: var(--brand); font-size: 11px; }
+        .mkt-secoda-item-sub { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+        .mkt-secoda-item-desc { font-size: 12.5px; color: var(--muted); margin-top: 6px; line-height: 1.4; }
+        .mkt-secoda-tags { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+        .mkt-secoda-tag {
+          font-size: 11px; color: var(--muted); background: var(--ink-3); padding: 3px 9px; border-radius: 999px;
+          display: inline-flex; align-items: center; gap: 4px;
+        }
+        .mkt-secoda-tag-active { background: color-mix(in srgb, var(--brand) 12%, transparent); color: var(--brand); }
+
+        .mkt-secoda-lineage-node {
+          position: absolute; display: flex; align-items: center; gap: 10px;
+          background: var(--ink-2); border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 16px rgba(20,33,61,0.06);
+        }
+        .mkt-secoda-lineage-icon {
+          width: 30px; height: 30px; border-radius: 50%; color: #fff; font-weight: 700; font-size: 13px;
+          display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .mkt-secoda-lineage-badge {
+          position: absolute; bottom: 10px; right: 10px; display: flex; align-items: center; gap: 6px;
+          background: var(--ink-2); border-radius: 999px; padding: 8px 14px; font-size: 12px; color: var(--chalk); font-weight: 600;
+          box-shadow: 0 6px 16px rgba(20,33,61,0.06);
+        }
+
+        .mkt-secoda-chart-head { display: flex; align-items: center; justify-content: space-between; background: var(--ink-2); border-radius: 12px 12px 0 0; padding: 14px 16px 0; }
+        .mkt-secoda-chart-labels { display: flex; justify-content: space-between; font-size: 10.5px; color: var(--muted); background: var(--ink-2); border-radius: 0 0 12px 12px; padding: 0 16px 14px; }
+
+        .mkt-secoda-filter-row { margin-bottom: 8px; }
+        .mkt-secoda-addfilter {
+          display: inline-flex; align-items: center; gap: 6px; background: var(--ink-2); border: none; border-radius: 999px;
+          padding: 8px 14px; font-size: 12.5px; color: var(--muted); cursor: default; margin-top: 4px;
         }
         .mkt-feature-card {
           background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 16px;
@@ -828,56 +871,81 @@ export default function MarketingSections() {
         <div className="mkt-section-title">Deep, but never messy</div>
         <div className="mkt-section-sub">13 categories of findings, prioritized by impact, and tracked with weekly digests and competitor comparisons.</div>
         <div className="mkt-grid-4">
+          {/* Card 1: search + finding card mockup */}
           <div className="mkt-secoda-card mkt-lift">
             <div className="mkt-secoda-title">See every issue in context</div>
             <div className="mkt-secoda-desc">Every finding maps to a UI, UX, Accessibility, or Product lens — so nothing gets lost in translation.</div>
-            <div className="mkt-secoda-tile">
-              <div className="mkt-priority-list">
-                <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UI</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>2 critical · 1 warning</span></div>
-                <div className="mkt-priority-row"><span style={{ fontSize: 12.5, color: "var(--chalk)", fontWeight: 600 }}>UX</span><span style={{ fontSize: 11.5, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>1 warning</span></div>
-              </div>
-            </div>
-          </div>
-          <div className="mkt-secoda-card mkt-lift">
-            <div className="mkt-secoda-title">Prioritized by impact</div>
-            <div className="mkt-secoda-desc">We tell you what to fix first by matching high impact with low implementation effort.</div>
-            <div className="mkt-secoda-tile">
-              <div className="mkt-priority-list">
-                {PRIORITY_ITEMS.slice(0, 2).map((p) => (
-                  <div className="mkt-priority-row" key={p.tag}>
-                    <span className={`mkt-priority-tag ${p.color === "var(--kick)" ? "mkt-tag-pulse" : ""}`} style={{ color: p.color, background: "var(--ink-3)" }}>{p.tag}</span>
-                    <span className="mkt-priority-title">{p.title}</span>
-                    <span className="mkt-priority-meta">{p.meta}</span>
+            <div className="mkt-secoda-mock">
+              <div className="mkt-secoda-search"><Search size={15} color="var(--muted)" /><span>Search findings</span></div>
+              <div className="mkt-secoda-item">
+                <div className="mkt-secoda-item-icon" style={{ background: "#F5433A" }}><AlertTriangle size={13} color="#fff" /></div>
+                <div style={{ flex: 1 }}>
+                  <div className="mkt-secoda-item-title">CTA button has low contrast <span className="mkt-secoda-verified">✓</span></div>
+                  <div className="mkt-secoda-item-sub">Finding · Updated just now</div>
+                  <div className="mkt-secoda-item-desc">Primary CTA fails WCAG AA contrast ratio against the background.</div>
+                  <div className="mkt-secoda-tags">
+                    <span className="mkt-secoda-tag"><span style={{ color: "var(--kick)" }}>●</span> Kritik</span>
+                    <span className="mkt-secoda-tag">UI</span>
+                    <span className="mkt-secoda-tag">Onboarding</span>
                   </div>
-                ))}
+                </div>
+              </div>
+              <div className="mkt-secoda-item mkt-secoda-item-faded">
+                <div className="mkt-secoda-item-icon" style={{ background: "var(--ink-3)" }}><FileSearch size={13} color="var(--muted)" /></div>
+                <div style={{ flex: 1 }}>
+                  <div className="mkt-secoda-item-title">Onboarding is 7 screens</div>
+                  <div className="mkt-secoda-item-sub">Finding · Updated just now</div>
+                </div>
               </div>
             </div>
           </div>
-          <div className="mkt-secoda-card mkt-lift">
-            <div className="mkt-secoda-title">Monitor your app at scale</div>
-            <div className="mkt-secoda-desc">Weekly digests keep you on top of new reviews without lifting a finger.</div>
-            <div className="mkt-secoda-tile">
-              <div className="mkt-showcase-visual" style={{ marginBottom: 0 }}>
-                <Mail size={22} color="var(--brand)" className="mkt-bounce" />
-                <span style={{ fontSize: 12, color: "var(--muted)" }}>Every Monday, automatic</span>
-              </div>
-            </div>
-          </div>
+
+          {/* Card 2: comparison / lineage-style diagram */}
           <div className="mkt-secoda-card mkt-lift">
             <div className="mkt-secoda-title">Compare and act with confidence</div>
-            <div className="mkt-secoda-desc">Benchmark against a competitor and know exactly where you stand.</div>
-            <div className="mkt-secoda-tile">
-              <div className="mkt-showcase-visual" style={{ flexDirection: "row", gap: 24, marginBottom: 0 }}>
-                <div style={{ textAlign: "center" }}>
-                  <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--teal)" }}>78</div>
-                  <div style={{ fontSize: 10, color: "var(--muted)" }}>You</div>
-                </div>
-                <GitCompare size={16} color="var(--muted)" className="mkt-pulse-scale" />
-                <div style={{ textAlign: "center" }}>
-                  <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--yellow)" }}>61</div>
-                  <div style={{ fontSize: 10, color: "var(--muted)" }}>Competitor</div>
-                </div>
+            <div className="mkt-secoda-desc">Benchmark against a competitor and know exactly where you stand, finding by finding.</div>
+            <div className="mkt-secoda-mock" style={{ position: "relative", minHeight: 220 }}>
+              <div className="mkt-secoda-lineage-node" style={{ top: 10, left: 10 }}>
+                <div className="mkt-secoda-lineage-icon" style={{ background: "var(--teal)" }}>Y</div>
+                <div><div className="mkt-secoda-item-title" style={{ fontSize: 13 }}>Your App</div><div className="mkt-secoda-item-sub">Health score: 78</div></div>
               </div>
+              <div className="mkt-secoda-lineage-node" style={{ top: 130, left: 10 }}>
+                <div className="mkt-secoda-lineage-icon" style={{ background: "var(--yellow)" }}>C</div>
+                <div><div className="mkt-secoda-item-title" style={{ fontSize: 13 }}>Competitor</div><div className="mkt-secoda-item-sub">Health score: 61</div></div>
+              </div>
+              <div className="mkt-secoda-lineage-badge">
+                <GitCompare size={14} color="var(--brand)" />
+                <span>3 shared issues</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 3: health score trend line chart */}
+          <div className="mkt-secoda-card mkt-lift">
+            <div className="mkt-secoda-title">Track your score over time</div>
+            <div className="mkt-secoda-desc">Watch your health score evolve analysis after analysis, and see exactly what moved the needle.</div>
+            <div className="mkt-secoda-mock">
+              <div className="mkt-secoda-chart-head">
+                <span className="mkt-secoda-item-title" style={{ fontSize: 13 }}>Health score trend</span>
+                <span className="mkt-secoda-tag" style={{ color: "var(--teal)" }}>+14 this month</span>
+              </div>
+              <svg viewBox="0 0 260 90" width="100%" height="90" style={{ marginTop: 10 }}>
+                <polyline points="0,70 50,60 100,66 150,40 200,28 260,20" fill="none" stroke="var(--teal)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                <circle cx="260" cy="20" r="4" fill="var(--teal)" />
+              </svg>
+              <div className="mkt-secoda-chart-labels"><span>Ocak</span><span>Şubat</span><span>Mart</span><span>Nisan</span></div>
+            </div>
+          </div>
+
+          {/* Card 4: filter builder mockup */}
+          <div className="mkt-secoda-card mkt-lift">
+            <div className="mkt-secoda-title">Filter and prioritize instantly</div>
+            <div className="mkt-secoda-desc">We tell you what to fix first by matching high impact with low implementation effort.</div>
+            <div className="mkt-secoda-mock">
+              <div className="mkt-secoda-search"><Search size={15} color="var(--muted)" /><span>Show findings that are Any of:</span></div>
+              <div className="mkt-secoda-filter-row"><span className="mkt-secoda-tag mkt-secoda-tag-active">Status is Kritik</span></div>
+              <div className="mkt-secoda-filter-row"><span className="mkt-secoda-tag mkt-secoda-tag-active">Effort is Düşük</span></div>
+              <button className="mkt-secoda-addfilter"><Plus size={13} /> Add filter</button>
             </div>
           </div>
         </div>
