@@ -434,30 +434,38 @@ export default function MarketingSections() {
         .mkt-secoda-mock { margin-top: auto; }
 
         .mkt-secoda-search {
-          display: flex; align-items: center; gap: 10px; background: var(--ink-2); border-radius: 999px;
-          padding: 14px 20px; font-size: 14px; color: var(--muted); margin-bottom: 14px;
+          display: flex; align-items: center; gap: 12px; background: var(--ink-2); border-radius: 999px;
+          padding: 18px 24px; font-size: 16px; color: var(--muted); margin-bottom: 16px;
+          box-shadow: 0 4px 14px rgba(20,33,61,0.05);
         }
         .mkt-secoda-item {
-          display: flex; gap: 12px; background: var(--ink-2); border-radius: 14px; padding: 16px 18px; margin-bottom: 10px;
+          display: flex; gap: 14px; background: var(--ink-2); border-radius: 16px; padding: 20px 22px; margin-bottom: 12px;
+          box-shadow: 0 4px 14px rgba(20,33,61,0.05);
         }
         .mkt-secoda-item-icon {
-          width: 32px; height: 32px; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+          width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
         .mkt-secoda-item-title-row { display: flex; align-items: center; gap: 6px; }
-        .mkt-secoda-item-title { font-size: 14px; font-weight: 600; color: var(--chalk); }
-        .mkt-secoda-item-sub { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
-        .mkt-secoda-item-desc { font-size: 12.5px; color: var(--muted); margin-top: 6px; line-height: 1.4; }
-        .mkt-secoda-tags { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
-        .mkt-secoda-tag {
-          font-size: 11px; color: var(--muted); background: var(--ink-3); padding: 3px 9px; border-radius: 999px;
-          display: inline-flex; align-items: center; gap: 4px;
+        .mkt-secoda-item-title { font-size: 15px; font-weight: 700; color: var(--chalk); }
+        .mkt-secoda-check {
+          width: 15px; height: 15px; border-radius: 50%; background: var(--brand);
+          display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
-        .mkt-secoda-item-simple { opacity: 0.7; }
-        .mkt-secoda-skeleton-lines { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
-        .mkt-secoda-skeleton-lines span { display: block; height: 6px; border-radius: 3px; background: var(--ink-3); }
-        .mkt-secoda-skeleton-lines span:nth-child(1) { width: 90%; }
-        .mkt-secoda-skeleton-lines span:nth-child(2) { width: 75%; }
-        .mkt-secoda-skeleton-lines span:nth-child(3) { width: 60%; }
+        .mkt-secoda-item-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
+        .mkt-secoda-item-desc { font-size: 13.5px; color: var(--chalk); margin-top: 10px; line-height: 1.5; }
+        .mkt-secoda-plaintags { display: flex; gap: 18px; margin-top: 14px; flex-wrap: wrap; }
+        .mkt-secoda-plaintag { display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px; color: var(--chalk); }
+        .mkt-secoda-avatar {
+          width: 18px; height: 18px; border-radius: 50%; background: var(--brand); color: #fff;
+          font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+        }
+        .mkt-secoda-item-simple { opacity: 0.6; }
+        .mkt-secoda-skeleton-lines { display: flex; flex-direction: column; gap: 9px; margin-top: 12px; }
+        .mkt-secoda-skeleton-lines span { display: block; height: 8px; border-radius: 4px; background: var(--ink-3); }
+        .mkt-secoda-skeleton-lines span:nth-child(1) { width: 95%; }
+        .mkt-secoda-skeleton-lines span:nth-child(2) { width: 100%; }
+        .mkt-secoda-skeleton-lines span:nth-child(3) { width: 85%; }
+        .mkt-secoda-skeleton-lines span:nth-child(4) { width: 70%; }
 
         .mkt-secoda-lineage { position: relative; display: flex; align-items: center; min-height: 190px; }
         .mkt-secoda-lineage-main { background: var(--ink-2); border-radius: 14px; padding: 16px 18px; flex: 1; position: relative; z-index: 1; }
@@ -913,30 +921,30 @@ export default function MarketingSections() {
             <div className="mkt-secoda-title">Easily add context to your findings</div>
             <div className="mkt-secoda-desc">Organizes and enriches every finding to ensure your reports are precise, useful, and actionable. Kick My Apps consolidates analysis into one always-updated report.</div>
             <div className="mkt-secoda-mock">
-              <div className="mkt-secoda-search"><Search size={16} color="var(--muted)" /><span>Search findings</span></div>
+              <div className="mkt-secoda-search"><Search size={18} color="var(--muted)" /><span>Search findings</span></div>
               <div className="mkt-secoda-item">
-                <div className="mkt-secoda-item-icon" style={{ background: "#F5433A" }}><AlertTriangle size={14} color="#fff" /></div>
+                <div className="mkt-secoda-item-icon" style={{ background: "color-mix(in srgb, var(--brand) 12%, var(--ink-2))" }}><AlertTriangle size={18} color="var(--brand)" /></div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div className="mkt-secoda-item-title-row">
                     <span className="mkt-secoda-item-title">CTA button contrast</span>
-                    <CheckCircle2 size={13} color="var(--brand)" />
+                    <span className="mkt-secoda-check"><CheckCircle2 size={11} color="#fff" /></span>
                   </div>
                   <div className="mkt-secoda-item-sub">Finding · Updated just now</div>
                   <div className="mkt-secoda-item-desc">Primary CTA fails WCAG AA contrast against the onboarding background.</div>
-                  <div className="mkt-secoda-tags">
-                    <span className="mkt-secoda-tag"><ShieldQuestion size={11} /> Kritik</span>
-                    <span className="mkt-secoda-tag"><FileSearch size={11} /> UI Lens</span>
-                    <span className="mkt-secoda-tag"><Users size={11} /> Onboarding</span>
+                  <div className="mkt-secoda-plaintags">
+                    <span className="mkt-secoda-plaintag"><ShieldQuestion size={15} color="var(--chalk)" /> Kritik</span>
+                    <span className="mkt-secoda-plaintag"><FileSearch size={15} color="var(--brand)" /> UI Lens</span>
+                    <span className="mkt-secoda-plaintag"><span className="mkt-secoda-avatar">O</span> Onboarding</span>
                   </div>
                 </div>
               </div>
               <div className="mkt-secoda-item mkt-secoda-item-simple">
-                <div className="mkt-secoda-item-icon" style={{ background: "var(--ink-3)" }}><Mail size={14} color="var(--muted)" /></div>
+                <div className="mkt-secoda-item-icon" style={{ background: "color-mix(in srgb, var(--brand) 10%, var(--ink-2))" }}><Mail size={18} color="var(--brand)" /></div>
                 <div style={{ flex: 1 }}>
                   <div className="mkt-secoda-item-title">weekly_review_summary</div>
                   <div className="mkt-secoda-item-sub">Digest · Updated just now</div>
                   <div className="mkt-secoda-skeleton-lines">
-                    <span /><span /><span />
+                    <span /><span /><span /><span />
                   </div>
                 </div>
               </div>
