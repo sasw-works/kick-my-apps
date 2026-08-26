@@ -429,13 +429,15 @@ export default function MarketingSections() {
           display: flex; flex-direction: column; transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease;
         }
         .mkt-secoda-card:hover { transform: translateY(-5px); box-shadow: 0 18px 36px rgba(20,33,61,0.08); }
+        .mkt-secoda-eyebrow { font-size: 16px; color: var(--muted); margin-bottom: 8px; }
         .mkt-secoda-title { font-size: 30px; font-weight: 700; color: var(--chalk); letter-spacing: -0.01em; margin-bottom: 12px; }
+        .mkt-secoda-title-lg { font-size: 34px; line-height: 1.2; }
         .mkt-secoda-desc { font-size: 15.5px; color: var(--muted); line-height: 1.6; margin-bottom: 32px; }
         .mkt-secoda-mock { margin-top: auto; }
 
         .mkt-secoda-search {
-          display: flex; align-items: center; gap: 12px; background: var(--ink-2); border-radius: 999px;
-          padding: 18px 24px; font-size: 16px; color: var(--muted); margin-bottom: 16px;
+          display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--ink-2); border-radius: 999px;
+          padding: 18px 24px; font-size: 16px; color: var(--chalk); margin-bottom: 20px;
           box-shadow: 0 4px 14px rgba(20,33,61,0.05);
         }
         .mkt-secoda-item {
@@ -445,10 +447,24 @@ export default function MarketingSections() {
         .mkt-secoda-item-icon {
           width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
+        .mkt-secoda-blank-icon {
+          width: 56px; height: 56px; border-radius: 12px; background: color-mix(in srgb, var(--brand) 8%, var(--ink-3)); flex-shrink: 0;
+        }
+        .mkt-secoda-item-floaty { position: relative; overflow: visible; }
+        .mkt-float-tag {
+          position: absolute; font-size: 14px; font-weight: 500; padding: 8px 18px; border-radius: 999px; white-space: nowrap;
+        }
+        .mkt-float-tag-bl { bottom: -16px; left: -24px; }
+        .mkt-float-tag-tr { top: -16px; right: -20px; }
+        .mkt-float-tag-br { bottom: -16px; right: -20px; }
+        .mkt-float-tag-purple { background: color-mix(in srgb, var(--brand) 14%, transparent); color: var(--brand); }
+        .mkt-float-tag-pink { background: color-mix(in srgb, #E0247A 14%, transparent); color: #E0247A; }
+        .mkt-float-tag-peach { background: color-mix(in srgb, var(--yellow) 20%, transparent); color: #C2661A; }
+        .mkt-secoda-check-faded { background: var(--ink-3); }
         .mkt-secoda-item-title-row { display: flex; align-items: center; gap: 6px; }
         .mkt-secoda-item-title { font-size: 15px; font-weight: 700; color: var(--chalk); }
         .mkt-secoda-check {
-          width: 15px; height: 15px; border-radius: 50%; background: var(--brand);
+          width: 17px; height: 17px; border-radius: 50%; background: var(--brand);
           display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
         .mkt-secoda-item-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
@@ -916,37 +932,39 @@ export default function MarketingSections() {
         <div className="mkt-section-title">Deep, but never messy</div>
         <div className="mkt-section-sub">13 categories of findings, prioritized by impact, and tracked with weekly digests and competitor comparisons.</div>
         <div className="mkt-grid-4">
-          {/* Card 1: search + finding data card, matching screenshot exactly */}
+          {/* Card 1: search + finding data card, matching user's own design exactly */}
           <div className="mkt-secoda-card mkt-lift">
-            <div className="mkt-secoda-title">Easily add context to your findings</div>
-            <div className="mkt-secoda-desc">Organizes and enriches every finding to ensure your reports are precise, useful, and actionable. Kick My Apps consolidates analysis into one always-updated report.</div>
+            <div className="mkt-secoda-eyebrow">Smart prioritization</div>
+            <div className="mkt-secoda-title mkt-secoda-title-lg">Enrich your findings with meaningful context and insights</div>
+            <div className="mkt-secoda-desc">Organizes and enriches every finding to ensure your reports are precise, useful and actionable. Kick My Apps consolidates analysis into one updated report.</div>
             <div className="mkt-secoda-mock">
-              <div className="mkt-secoda-search"><Search size={18} color="var(--muted)" /><span>Search findings</span></div>
-              <div className="mkt-secoda-item">
-                <div className="mkt-secoda-item-icon" style={{ background: "color-mix(in srgb, var(--brand) 12%, var(--ink-2))" }}><AlertTriangle size={18} color="var(--brand)" /></div>
+              <div className="mkt-secoda-search"><span>Search any app...</span><Search size={18} color="var(--chalk)" /></div>
+              <div className="mkt-secoda-item mkt-secoda-item-floaty">
+                <div className="mkt-secoda-blank-icon" />
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div className="mkt-secoda-item-title-row">
                     <span className="mkt-secoda-item-title">CTA button contrast</span>
-                    <span className="mkt-secoda-check"><CheckCircle2 size={11} color="#fff" /></span>
+                    <span className="mkt-secoda-check"><CheckCircle2 size={13} color="#fff" /></span>
                   </div>
-                  <div className="mkt-secoda-item-sub">Finding · Updated just now</div>
-                  <div className="mkt-secoda-item-desc">Primary CTA fails WCAG AA contrast against the onboarding background.</div>
-                  <div className="mkt-secoda-plaintags">
-                    <span className="mkt-secoda-plaintag"><ShieldQuestion size={15} color="var(--chalk)" /> Kritik</span>
-                    <span className="mkt-secoda-plaintag"><FileSearch size={15} color="var(--brand)" /> UI Lens</span>
-                    <span className="mkt-secoda-plaintag"><span className="mkt-secoda-avatar">O</span> Onboarding</span>
-                  </div>
+                  <div className="mkt-secoda-item-sub">Updated just now</div>
+                  <div className="mkt-secoda-item-desc" style={{ marginTop: 14 }}>Primary CTA fails WCAG AA contrast against the onboarding background</div>
                 </div>
+                <span className="mkt-float-tag mkt-float-tag-purple mkt-float-tag-bl">UI Lens</span>
+                <span className="mkt-float-tag mkt-float-tag-pink mkt-float-tag-tr">Critics</span>
               </div>
-              <div className="mkt-secoda-item mkt-secoda-item-simple">
-                <div className="mkt-secoda-item-icon" style={{ background: "color-mix(in srgb, var(--brand) 10%, var(--ink-2))" }}><Mail size={18} color="var(--brand)" /></div>
+              <div className="mkt-secoda-item mkt-secoda-item-simple mkt-secoda-item-floaty">
+                <div className="mkt-secoda-blank-icon" />
                 <div style={{ flex: 1 }}>
-                  <div className="mkt-secoda-item-title">weekly_review_summary</div>
-                  <div className="mkt-secoda-item-sub">Digest · Updated just now</div>
+                  <div className="mkt-secoda-item-title-row">
+                    <span className="mkt-secoda-item-title" style={{ color: "var(--muted)" }}>Weekly review summary</span>
+                    <span className="mkt-secoda-check mkt-secoda-check-faded"><CheckCircle2 size={13} color="var(--muted)" /></span>
+                  </div>
+                  <div className="mkt-secoda-item-sub">Updated just now</div>
                   <div className="mkt-secoda-skeleton-lines">
-                    <span /><span /><span /><span />
+                    <span /><span /><span />
                   </div>
                 </div>
+                <span className="mkt-float-tag mkt-float-tag-peach mkt-float-tag-br">UX Lens</span>
               </div>
             </div>
           </div>
