@@ -297,10 +297,23 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           padding: 16px 24px;
           cursor: pointer;
           transition: border-color 0.15s ease, background 0.15s ease;
+          position: relative;
         }
         .upload-pill span { font-size: 15px; color: var(--muted); }
         .upload-pill:hover { border-color: var(--muted); }
         .dropzone-active { background: var(--ink-3); }
+        .upload-pill-tooltip {
+          position: absolute; bottom: calc(100% + 12px); left: 50%; transform: translateX(-50%) translateY(6px);
+          width: 260px; white-space: normal; text-align: left;
+          background: var(--chalk); color: var(--ink-2); font-size: 12.5px; line-height: 1.5;
+          padding: 12px 14px; border-radius: 10px; box-shadow: 0 10px 24px rgba(20,33,61,0.16);
+          opacity: 0; pointer-events: none; transition: opacity 0.18s ease, transform 0.18s ease; z-index: 20;
+        }
+        .upload-pill-tooltip::after {
+          content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+          border: 6px solid transparent; border-top-color: var(--chalk);
+        }
+        .upload-pill:hover .upload-pill-tooltip { opacity: 1; transform: translateX(-50%) translateY(0); }
 
         .submit-circle {
           width: 75px;
@@ -545,6 +558,9 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           <span style={{ color: files.length > 0 ? "var(--chalk)" : "var(--muted)" }}>
             {files.length > 0 ? `${files.length} screenshots selected` : "Upload UI screens"}
           </span>
+          <div className="upload-pill-tooltip">
+            Optionally add up to 12 screenshots (any image format) so we can spot UX, UI, and product-level issues in your design and suggest improvements.
+          </div>
         </label>
 
         <button className={`submit-circle ${analyzing ? "submit-circle-analyzing" : ""}`} disabled={!canAnalyze} onClick={handleAnalyze} aria-label="Analiz Et">
