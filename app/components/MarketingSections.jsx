@@ -434,6 +434,7 @@ export default function MarketingSections() {
         .mkt-secoda-title-lg { font-size: 34px; line-height: 1.2; }
         .mkt-secoda-desc { font-size: 15.5px; color: var(--muted); line-height: 1.6; margin-bottom: 32px; }
         .mkt-secoda-mock { margin-top: auto; }
+        .mkt-block-img { width: 100%; height: auto; display: block; border-radius: 12px; }
 
         .mkt-secoda-search {
           display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--ink-2); border-radius: 999px;
@@ -932,117 +933,36 @@ export default function MarketingSections() {
         <div className="mkt-section-title">Deep, but never messy</div>
         <div className="mkt-section-sub">13 categories of findings, prioritized by impact, and tracked with weekly digests and competitor comparisons.</div>
         <div className="mkt-grid-4">
-          {/* Card 1: search + finding data card, matching user's own design exactly */}
+          {/* Card 1 */}
           <div className="mkt-secoda-card mkt-lift">
             <div className="mkt-secoda-eyebrow">Smart prioritization</div>
-            <div className="mkt-secoda-title mkt-secoda-title-lg">Enrich your findings with meaningful context and insights</div>
-            <div className="mkt-secoda-desc">Organizes and enriches every finding to ensure your reports are precise, useful and actionable. Kick My Apps consolidates analysis into one updated report.</div>
-            <div className="mkt-secoda-mock">
-              <div className="mkt-secoda-search"><span>Search any app...</span><Search size={18} color="var(--chalk)" /></div>
-              <div className="mkt-secoda-item mkt-secoda-item-floaty">
-                <div className="mkt-secoda-blank-icon" />
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div className="mkt-secoda-item-title-row">
-                    <span className="mkt-secoda-item-title">CTA button contrast</span>
-                    <span className="mkt-secoda-check"><CheckCircle2 size={13} color="#fff" /></span>
-                  </div>
-                  <div className="mkt-secoda-item-sub">Updated just now</div>
-                  <div className="mkt-secoda-item-desc" style={{ marginTop: 14 }}>Primary CTA fails WCAG AA contrast against the onboarding background</div>
-                </div>
-                <span className="mkt-float-tag mkt-float-tag-purple mkt-float-tag-bl">UI Lens</span>
-                <span className="mkt-float-tag mkt-float-tag-pink mkt-float-tag-tr">Critics</span>
-              </div>
-              <div className="mkt-secoda-item mkt-secoda-item-simple mkt-secoda-item-floaty">
-                <div className="mkt-secoda-blank-icon" />
-                <div style={{ flex: 1 }}>
-                  <div className="mkt-secoda-item-title-row">
-                    <span className="mkt-secoda-item-title" style={{ color: "var(--muted)" }}>Weekly review summary</span>
-                    <span className="mkt-secoda-check mkt-secoda-check-faded"><CheckCircle2 size={13} color="var(--muted)" /></span>
-                  </div>
-                  <div className="mkt-secoda-item-sub">Updated just now</div>
-                  <div className="mkt-secoda-skeleton-lines">
-                    <span /><span /><span />
-                  </div>
-                </div>
-                <span className="mkt-float-tag mkt-float-tag-peach mkt-float-tag-br">UX Lens</span>
-              </div>
-            </div>
+            <div className="mkt-secoda-title mkt-secoda-title-lg">Enrich your findings with meaningful context</div>
+            <div className="mkt-secoda-desc">Organizes and enriches every finding so your reports are precise, useful and actionable — all in one updated report.</div>
+            <div className="mkt-secoda-mock"><img src="/blocks/block-1.svg" alt="" className="mkt-block-img" /></div>
           </div>
 
-          {/* Card 2: comparison diagram, matching lineage layout */}
+          {/* Card 2 */}
           <div className="mkt-secoda-card mkt-lift">
-            <div className="mkt-secoda-title">Compare with a competitor end to end</div>
-            <div className="mkt-secoda-desc">Gain clear visibility into how your app stacks up. Catch shared issues before they cost you conversions.</div>
-            <div className="mkt-secoda-mock mkt-secoda-lineage">
-              <div className="mkt-secoda-lineage-main">
-                <div className="mkt-secoda-lineage-head">
-                  <span className="mkt-secoda-item-title">Your App</span>
-                  <span className="mkt-secoda-warn"><AlertTriangle size={14} /></span>
-                </div>
-                <div className="mkt-secoda-item-sub">Report · Health score 78</div>
-                <div className="mkt-secoda-lineage-footer">Show 8 findings <ChevronDown size={12} /></div>
-                <div className="mkt-secoda-lineage-tooltip">Show 3 shared issues</div>
-              </div>
-              <div className="mkt-secoda-lineage-arrows">
-                <svg viewBox="0 0 60 120" width="60" height="120">
-                  <path d="M0,20 Q40,20 40,60 Q40,100 0,100" fill="none" stroke="var(--ink-3)" strokeWidth="2" />
-                </svg>
-              </div>
-              <div className="mkt-secoda-lineage-nodes">
-                <div className="mkt-secoda-lineage-node-sm"><span>Show 4</span></div>
-                <div className="mkt-secoda-lineage-node-sm"><span>Show 4</span></div>
-              </div>
-            </div>
+            <div className="mkt-secoda-eyebrow">Full coverage</div>
+            <div className="mkt-secoda-title mkt-secoda-title-lg">13 categories across four analysis lenses</div>
+            <div className="mkt-secoda-desc">From onboarding to accessibility, every finding maps to a UI, UX, Accessibility or Product lens — so nothing slips through.</div>
+            <div className="mkt-secoda-mock"><img src="/blocks/block-2.svg" alt="" className="mkt-block-img" /></div>
           </div>
 
-          {/* Card 3: chart card, matching Row count-style card exactly */}
+          {/* Card 3 */}
           <div className="mkt-secoda-card mkt-lift">
-            <div className="mkt-secoda-title">Monitor your score at scale</div>
-            <div className="mkt-secoda-desc">Detect drops across every analysis to safeguard your app's reputation. Get proactive visibility into anomalies before they become problems.</div>
-            <div className="mkt-secoda-mock mkt-secoda-chartcard">
-              <div className="mkt-secoda-chart-head">
-                <span className="mkt-secoda-item-title">Health score of your app</span>
-                <div className="mkt-secoda-chart-btns">
-                  <button className="mkt-secoda-btn">Acknowledge</button>
-                  <button className="mkt-secoda-btn">Resolve</button>
-                </div>
-              </div>
-              <div className="mkt-secoda-chart-body">
-                <div className="mkt-secoda-chart-axis"><span>100</span><span>50</span><span>0</span></div>
-                <svg viewBox="0 0 260 100" width="100%" height="100" preserveAspectRatio="none">
-                  <polyline points="0,30 60,55 120,85 180,80 260,20" fill="none" stroke="var(--yellow)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                  <polyline points="120,85 180,80 260,20" fill="none" stroke="var(--teal)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                  <circle cx="120" cy="85" r="4.5" fill="var(--yellow)" />
-                </svg>
-                <div className="mkt-secoda-chart-tooltip">
-                  <div className="mkt-secoda-chart-tooltip-time">Just now</div>
-                  <div className="mkt-secoda-chart-tooltip-row"><AlertTriangle size={12} color="var(--yellow)" /> Score drop <b>−12</b></div>
-                  <div className="mkt-secoda-chart-tooltip-row"><TrendingUp size={12} color="var(--teal)" /> Target <b>70–100</b></div>
-                </div>
-              </div>
-            </div>
+            <div className="mkt-secoda-eyebrow">Side by side</div>
+            <div className="mkt-secoda-title mkt-secoda-title-lg">Compare your app with a competitor</div>
+            <div className="mkt-secoda-desc">Put two reports next to each other and see exactly where you lead, where you lag, and what to fix first.</div>
+            <div className="mkt-secoda-mock"><img src="/blocks/block-3.svg" alt="" className="mkt-block-img" /></div>
           </div>
 
-          {/* Card 4: filter builder, matching exact layout */}
+          {/* Card 4 */}
           <div className="mkt-secoda-card mkt-lift">
-            <div className="mkt-secoda-title">Automate prioritization</div>
-            <div className="mkt-secoda-desc">Easily scale your review process. Filter findings in bulk, tag by lens, and know exactly what to fix first.</div>
-            <div className="mkt-secoda-mock mkt-secoda-filtercard">
-              <div className="mkt-secoda-filter-head">
-                <Search size={15} color="var(--muted)" />
-                <span>Find findings that match <span className="mkt-secoda-pill-blue">Any</span> of the following filters</span>
-              </div>
-              <div className="mkt-secoda-filter-line"><span className="mkt-secoda-pill-blue">Severity</span> is <span className="mkt-secoda-pill-blue">"Kritik"</span> or</div>
-              <div className="mkt-secoda-filter-line"><span className="mkt-secoda-pill-blue">Lens</span> is <span className="mkt-secoda-pill-blue">"UI"</span> or</div>
-              <button className="mkt-secoda-addfilter"><Plus size={13} /> Add filter</button>
-              <div className="mkt-secoda-filter-arrow"><ChevronDown size={16} color="var(--muted)" /></div>
-              <div className="mkt-secoda-filter-then">
-                <span><Search size={13} /> Then edit</span>
-                <span className="mkt-secoda-pill-blue"><Search size={11} /> Found findings</span>
-              </div>
-              <div className="mkt-secoda-filter-line"><span className="mkt-secoda-pill-blue">Mark as Priority</span></div>
-              <button className="mkt-secoda-addfilter"><Plus size={13} /> Add property</button>
-            </div>
+            <div className="mkt-secoda-eyebrow">Always on</div>
+            <div className="mkt-secoda-title mkt-secoda-title-lg">Weekly digests keep you in the loop</div>
+            <div className="mkt-secoda-desc">Get a summary of your tracked app\u2019s new reviews delivered to your inbox every week, automatically.</div>
+            <div className="mkt-secoda-mock"><img src="/blocks/block-4.svg" alt="" className="mkt-block-img" /></div>
           </div>
         </div>
       </div>
