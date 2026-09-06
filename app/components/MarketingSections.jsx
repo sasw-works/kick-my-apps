@@ -562,7 +562,24 @@ export default function MarketingSections() {
         .mkt-halo-mint { background: linear-gradient(225deg, #6564ee, #d0a5fe); }
         .mkt-feature-card-floating {
           position: relative; z-index: 1; border: none; width: 100%;
+          background: transparent; box-shadow: none; padding: 24px;
         }
+        .mkt-halo .mkt-feature-title { color: #FFFFFF; }
+        .mkt-halo .mkt-feature-desc { color: rgba(255,255,255,0.85); }
+        .mkt-halo .mkt-priority-row span { color: rgba(255,255,255,0.85) !important; }
+        .mkt-halo .mkt-rating-dist-label,
+        .mkt-halo .mkt-rating-dist-pct { color: rgba(255,255,255,0.9); }
+        .mkt-halo .mkt-rating-dist-bar { background: rgba(255,255,255,0.25); }
+        .mkt-halo .mkt-rating-dist-fill { background: #FFFFFF; }
+        .mkt-halo .mkt-review-card { background: rgba(255,255,255,0.14); }
+        .mkt-halo .mkt-review-title { color: #FFFFFF; }
+        .mkt-halo .mkt-review-body { color: rgba(255,255,255,0.8); }
+        .mkt-halo .mkt-review-stars { color: #FFE9A8; }
+        .mkt-halo .mkt-feature-icon {
+          background: rgba(255,255,255,0.9) !important; border-radius: 18px;
+          width: 99px !important; height: 99px !important; padding: 8px; box-sizing: border-box;
+        }
+        .mkt-halo:hover .mkt-feature-card-floating { transform: none; }
         .mkt-feature-icon {
           width: 66px; height: 66px; border-radius: 10px;
           display: flex; align-items: center; justify-content: center; margin-bottom: 31px;
