@@ -434,7 +434,18 @@ export default function MarketingSections() {
         .mkt-secoda-title-lg { font-size: 34px; line-height: 1.2; }
         .mkt-secoda-desc { font-size: 15.5px; color: var(--muted); line-height: 1.6; margin-bottom: 32px; }
         .mkt-secoda-mock { margin-top: auto; }
-        .mkt-block-img { width: 100%; height: auto; display: block; border-radius: 12px; }
+        .mkt-block-img {
+          width: 100%; height: auto; display: block; border-radius: 12px;
+          animation: mkt-block-float 5s ease-in-out infinite;
+        }
+        .mkt-block-img-d1 { animation-delay: 0.6s; }
+        .mkt-block-img-d2 { animation-delay: 1.2s; }
+        .mkt-block-img-d3 { animation-delay: 1.8s; }
+        @keyframes mkt-block-float {
+          0%, 100% { transform: translateY(0) scale(1); }
+          50% { transform: translateY(-8px) scale(1.012); }
+        }
+        .mkt-secoda-card:hover .mkt-block-img { animation-play-state: paused; transform: translateY(-4px) scale(1.02); transition: transform 0.4s ease; }
 
         .mkt-secoda-search {
           display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--ink-2); border-radius: 999px;
@@ -946,7 +957,7 @@ export default function MarketingSections() {
             <div className="mkt-secoda-eyebrow">Full coverage</div>
             <div className="mkt-secoda-title mkt-secoda-title-lg">13 categories across four analysis lenses</div>
             <div className="mkt-secoda-desc">From onboarding to accessibility, every finding maps to a UI, UX, Accessibility or Product lens — so nothing slips through.</div>
-            <div className="mkt-secoda-mock"><img src="/blocks/block-2.svg" alt="" className="mkt-block-img" /></div>
+            <div className="mkt-secoda-mock"><img src="/blocks/block-2.svg" alt="" className="mkt-block-img mkt-block-img-d1" /></div>
           </div>
 
           {/* Card 3 */}
@@ -954,7 +965,7 @@ export default function MarketingSections() {
             <div className="mkt-secoda-eyebrow">Side by side</div>
             <div className="mkt-secoda-title mkt-secoda-title-lg">Compare your app with a competitor</div>
             <div className="mkt-secoda-desc">Put two reports next to each other and see exactly where you lead, where you lag, and what to fix first.</div>
-            <div className="mkt-secoda-mock"><img src="/blocks/block-3.svg" alt="" className="mkt-block-img" /></div>
+            <div className="mkt-secoda-mock"><img src="/blocks/block-3.svg" alt="" className="mkt-block-img mkt-block-img-d2" /></div>
           </div>
 
           {/* Card 4 */}
@@ -962,7 +973,7 @@ export default function MarketingSections() {
             <div className="mkt-secoda-eyebrow">Always on</div>
             <div className="mkt-secoda-title mkt-secoda-title-lg">Weekly digests keep you in the loop</div>
             <div className="mkt-secoda-desc">Get a summary of your tracked app\u2019s new reviews delivered to your inbox every week, automatically.</div>
-            <div className="mkt-secoda-mock"><img src="/blocks/block-4.svg" alt="" className="mkt-block-img" /></div>
+            <div className="mkt-secoda-mock"><img src="/blocks/block-4.svg" alt="" className="mkt-block-img mkt-block-img-d3" /></div>
           </div>
         </div>
       </div>
