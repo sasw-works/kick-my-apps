@@ -325,7 +325,25 @@ function FaqItem({ q, a }) {
 export default function MarketingSections() {
   const carouselRef = useRef(null);
   const dragState = useRef({ isDown: false, startX: 0, scrollStart: 0, moved: false });
+  const cardsRef = useRef(null);
+  const cardsDrag = useRef({ isDown: false, startX: 0, scrollStart: 0 });
   const [billingCycle, setBillingCycle] = React.useState("annual"); // monthly | annual
+
+  const onCardsDragStart = (e) => {
+    const el = cardsRef.current;
+    if (!el) return;
+    cardsDrag.current = { isDown: true, startX: e.pageX, scrollStart: el.scrollLeft };
+    el.classList.add("mkt-grid-4-dragging");
+  };
+  const onCardsDragMove = (e) => {
+    const el = cardsRef.current;
+    if (!el || !cardsDrag.current.isDown) return;
+    el.scrollLeft = cardsDrag.current.scrollStart - (e.pageX - cardsDrag.current.startX);
+  };
+  const endCardsDrag = () => {
+    cardsDrag.current.isDown = false;
+    cardsRef.current?.classList.remove("mkt-grid-4-dragging");
+  };
 
   React.useEffect(() => {
     const els = document.querySelectorAll(".mkt-reveal");
@@ -423,8 +441,19 @@ export default function MarketingSections() {
         .mkt-preview-row span { flex: 1; color: var(--chalk); }
 
         .mkt-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 90px; }
-        .mkt-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 90px; }
-        @media (max-width: 1100px) { .mkt-grid-4 { grid-template-columns: 1fr 1fr; } }
+        .mkt-grid-4 {
+          display: flex; gap: 20px; margin-bottom: 90px;
+          overflow-x: auto; scrollbar-width: none; cursor: grab;
+          scroll-snap-type: x proximity; padding-bottom: 8px;
+          margin-right: -40px; padding-right: 40px;
+        }
+        .mkt-grid-4::-webkit-scrollbar { display: none; }
+        .mkt-grid-4.mkt-grid-4-dragging { cursor: grabbing; scroll-snap-type: none; user-select: none; }
+        .mkt-grid-4.mkt-grid-4-dragging * { pointer-events: none; }
+        .mkt-grid-4 > * {
+          flex: 0 0 440px; scroll-snap-align: start;
+        }
+        @media (max-width: 700px) { .mkt-grid-4 > * { flex-basis: 82vw; } }
         .mkt-secoda-card {
           background: color-mix(in srgb, var(--chalk) 4%, var(--ink)); border-radius: 24px; padding: 36px;
           display: flex; flex-direction: column; transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease;
@@ -961,7 +990,14 @@ export default function MarketingSections() {
       <div className="mkt-reveal mkt-fullbleed">
         <div className="mkt-section-title">Deep, but never messy</div>
         <div className="mkt-section-sub">13 categories of findings, prioritized by impact, and tracked with weekly digests and competitor comparisons.</div>
-        <div className="mkt-grid-4">
+        <div
+          className="mkt-grid-4"
+          ref={cardsRef}
+          onMouseDown={onCardsDragStart}
+          onMouseMove={onCardsDragMove}
+          onMouseUp={endCardsDrag}
+          onMouseLeave={endCardsDrag}
+        >
           {/* Card 1 */}
           <div className="mkt-secoda-card mkt-lift">
             <div className="mkt-secoda-eyebrow">Smart prioritization</div>
