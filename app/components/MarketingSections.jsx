@@ -426,14 +426,14 @@ export default function MarketingSections() {
         .mkt-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 90px; }
         @media (max-width: 1100px) { .mkt-grid-4 { grid-template-columns: 1fr 1fr; } }
         .mkt-secoda-card {
-          background: color-mix(in srgb, var(--chalk) 4%, var(--ink)); border-radius: 24px; padding: 28px;
+          background: color-mix(in srgb, var(--chalk) 4%, var(--ink)); border-radius: 24px; padding: 36px;
           display: flex; flex-direction: column; transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease;
         }
         .mkt-secoda-card:hover { transform: translateY(-5px); box-shadow: 0 18px 36px rgba(20,33,61,0.08); }
-        .mkt-secoda-eyebrow { font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+        .mkt-secoda-eyebrow { font-size: 14px; color: var(--muted); margin-bottom: 8px; }
         .mkt-secoda-title { font-size: 30px; font-weight: 700; color: var(--chalk); letter-spacing: -0.01em; margin-bottom: 12px; }
-        .mkt-secoda-title-lg { font-size: 20px; line-height: 1.25; margin-bottom: 10px; }
-        .mkt-secoda-desc { font-size: 13.5px; color: var(--muted); line-height: 1.55; margin-bottom: 24px; }
+        .mkt-secoda-title-lg { font-size: 24px; line-height: 1.25; margin-bottom: 12px; }
+        .mkt-secoda-desc { font-size: 14.5px; color: var(--muted); line-height: 1.6; margin-bottom: 28px; }
         .mkt-secoda-mock { margin-top: auto; }
         .mkt-block-img {
           width: 100%; height: auto; display: block; border-radius: 12px;
@@ -958,7 +958,7 @@ export default function MarketingSections() {
       </div>
 
       {/* 13 categories + Quick Wins + Weekly digest + Compare, merged */}
-      <div className="mkt-reveal">
+      <div className="mkt-reveal mkt-fullbleed">
         <div className="mkt-section-title">Deep, but never messy</div>
         <div className="mkt-section-sub">13 categories of findings, prioritized by impact, and tracked with weekly digests and competitor comparisons.</div>
         <div className="mkt-grid-4">
