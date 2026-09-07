@@ -445,7 +445,7 @@ export default function MarketingSections() {
           display: flex; gap: 20px; margin-bottom: 90px;
           overflow-x: auto; scrollbar-width: none; cursor: grab;
           scroll-snap-type: x proximity; padding-bottom: 8px;
-          margin-right: -40px; padding-right: 40px;
+          width: fit-content; max-width: 100%; margin-left: auto; margin-right: auto;
         }
         .mkt-grid-4::-webkit-scrollbar { display: none; }
         .mkt-grid-4.mkt-grid-4-dragging { cursor: grabbing; scroll-snap-type: none; user-select: none; }
