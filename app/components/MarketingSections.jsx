@@ -816,7 +816,7 @@ export default function MarketingSections() {
         .mkt-pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: start; }
         @media (max-width: 900px) { .mkt-pricing-grid { grid-template-columns: 1fr; } }
         .mkt-pricing-card {
-          position: relative; background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 20px;
+          position: relative; background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 8px;
           padding: 32px; display: flex; flex-direction: column;
           transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease;
         }
@@ -825,12 +825,14 @@ export default function MarketingSections() {
         .mkt-pricing-card-highlighted:hover { box-shadow: 0 20px 40px color-mix(in srgb, var(--brand) 22%, transparent); }
         .mkt-pricing-badge {
           position: absolute; top: -16px; left: 50%; transform: translateX(-50%);
-          background: var(--brand); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
-          padding: 6px 16px; border-radius: 999px; white-space: nowrap;
+          background: var(--brand); color: #fff; font-family: var(--font-mono), ui-monospace, monospace;
+          font-size: 11px; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase;
+          padding: 6px 16px; border-radius: 4px; white-space: nowrap;
         }
         .mkt-pricing-tier {
-          display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: var(--muted);
-          background: var(--ink-3); padding: 5px 12px; border-radius: 999px; width: fit-content; margin-bottom: 20px;
+          display: inline-block; font-family: var(--font-mono), ui-monospace, monospace;
+          font-size: 11px; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+          background: var(--ink-3); padding: 5px 12px; border-radius: 4px; width: fit-content; margin-bottom: 20px;
         }
         .mkt-pricing-card-highlighted .mkt-pricing-tier { background: color-mix(in srgb, var(--brand) 15%, transparent); color: var(--brand); }
         .mkt-pricing-tier-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
@@ -852,7 +854,7 @@ export default function MarketingSections() {
         .mkt-pricing-feature-row { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; font-family: var(--font-body); line-height: 1.5; }
         .mkt-pricing-feature-row svg { flex-shrink: 0; margin-top: 2px; }
         .mkt-pricing-cta {
-          border: none; border-radius: 999px; padding: 15px; font-size: 15px; font-family: var(--font-body); font-weight: 600; cursor: pointer;
+          border: none; border-radius: 4px; padding: 15px; font-size: 15px; font-family: var(--font-body); font-weight: 600; cursor: pointer;
           background: var(--ink-3); color: var(--chalk); width: 100%;
           transition: filter 0.2s ease, transform 0.2s ease;
         }
