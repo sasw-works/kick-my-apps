@@ -455,12 +455,16 @@ export default function MarketingSections() {
         }
         @media (max-width: 700px) { .mkt-grid-4 > * { flex-basis: 82vw; } }
         .mkt-secoda-card {
-          background: color-mix(in srgb, var(--chalk) 4%, var(--ink)); border-radius: 24px; padding: 36px;
+          background: #F4F2EF; border-radius: 8px; padding: 36px;
           display: flex; flex-direction: column;
         }
-        .mkt-secoda-eyebrow { font-size: 14px; color: var(--muted); margin-bottom: 8px; }
+        .mkt-secoda-eyebrow {
+          font-family: var(--font-mono), ui-monospace, monospace;
+          font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+          color: #7761C9; margin-bottom: 14px;
+        }
         .mkt-secoda-title { font-size: 30px; font-weight: 700; color: var(--chalk); letter-spacing: -0.01em; margin-bottom: 12px; }
-        .mkt-secoda-title-lg { font-size: 24px; font-weight: 500; line-height: 1.25; margin-bottom: 12px; }
+        .mkt-secoda-title-lg { font-size: 24px; font-weight: 500; line-height: 1.2; letter-spacing: -0.015em; color: #242422; margin-bottom: 12px; }
         .mkt-secoda-desc {
           font-size: 14.5px; color: var(--muted); line-height: 1.6; margin-bottom: 28px;
           display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
@@ -468,7 +472,7 @@ export default function MarketingSections() {
         }
         .mkt-secoda-mock { margin-top: auto; }
         .mkt-block-img {
-          width: 100%; height: auto; display: block; border-radius: 12px;
+          width: 100%; height: auto; display: block; border-radius: 8px;
           animation: mkt-block-float 5s ease-in-out infinite;
         }
         .mkt-block-img-d1 { animation-delay: 0.6s; }
