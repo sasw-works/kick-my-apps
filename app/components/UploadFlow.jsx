@@ -17,6 +17,57 @@ function UploadIcon({ size = 20, color = "#222B45" }) {
   );
 }
 
+function ReactiveLines({ count = 72 }) {
+  const wrapRef = useRef(null);
+  const barsRef = useRef([]);
+
+  // Sabit ama rastgele gorunen taban yukseklikler (seed'li, her render ayni)
+  const bases = React.useMemo(() => {
+    return Array.from({ length: count }, (_, i) => {
+      const x = Math.sin(i * 127.1) * 43758.5453;
+      const frac = x - Math.floor(x);
+      return 0.35 + frac * 0.45; // 0.35 - 0.80 arasi
+    });
+  }, [count]);
+
+  const paint = React.useCallback((cursorX) => {
+    const wrap = wrapRef.current;
+    if (!wrap) return;
+    const w = wrap.offsetWidth || 1;
+    barsRef.current.forEach((bar, i) => {
+      if (!bar) return;
+      const barX = ((i + 0.5) / count) * w;
+      const dist = cursorX === null ? Infinity : Math.abs(barX - cursorX);
+      const influence = cursorX === null ? 0 : Math.max(0, 1 - dist / 140);
+      const eased = influence * influence;
+      bar.style.transform = `scaleY(${bases[i] + eased * (1 - bases[i])})`;
+      bar.style.background = eased > 0.05 ? "var(--brand)" : "var(--ink-3)";
+      bar.style.opacity = String(0.45 + eased * 0.55);
+    });
+  }, [bases, count]);
+
+  React.useEffect(() => {
+    paint(null);
+  }, [paint]);
+
+  return (
+    <div
+      className="rl-wrap"
+      ref={wrapRef}
+      onMouseMove={(e) => {
+        const rect = wrapRef.current?.getBoundingClientRect();
+        if (rect) paint(e.clientX - rect.left);
+      }}
+      onMouseLeave={() => paint(null)}
+      aria-hidden="true"
+    >
+      {Array.from({ length: count }, (_, i) => (
+        <span key={i} className="rl-bar" ref={(el) => (barsRef.current[i] = el)} />
+      ))}
+    </div>
+  );
+}
+
 export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewHistory, showBackground = true }) {
   const [files, setFiles] = useState([]);
   const [query, setQuery] = useState("");
@@ -280,6 +331,18 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           flex-direction: column;
           gap: 12px;
         }
+
+        .rl-wrap {
+          display: flex; align-items: flex-end; justify-content: space-between;
+          gap: 3px; height: 92px; margin-top: 44px; width: 100%;
+          position: relative; z-index: 1; cursor: crosshair;
+        }
+        .rl-bar {
+          flex: 1 1 0; min-width: 2px; height: 100%; border-radius: 1px;
+          background: var(--ink-3); transform-origin: bottom center;
+          transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), background 0.28s ease, opacity 0.28s ease;
+        }
+        @media (max-width: 700px) { .rl-wrap { height: 60px; margin-top: 28px; } }
 
         .upload-pill {
           width: 250px;
@@ -567,6 +630,8 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           {analyzing ? <Loader2 size={20} className="spin" color="#FFFFFF" /> : <ArrowRight size={20} />}
         </button>
       </div>
+
+      <ReactiveLines />
 
       {files.length > 0 && (
         <div className="thumb-row" style={{ marginTop: 14 }}>
