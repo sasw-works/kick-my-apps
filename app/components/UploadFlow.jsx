@@ -17,82 +17,6 @@ function UploadIcon({ size = 20, color = "#222B45" }) {
   );
 }
 
-function ReactiveLines({ count = 64 }) {
-  const wrapRef = useRef(null);
-  const barsRef = useRef([]);
-
-  // Seed'li ama duzensiz gorunen ozellikler: kalinlik, yukseklik, renk, egim
-  const specs = React.useMemo(() => {
-    const rnd = (i, salt) => {
-      const x = Math.sin(i * 127.1 + salt * 311.7) * 43758.5453;
-      return x - Math.floor(x);
-    };
-    return Array.from({ length: count }, (_, i) => {
-      const r1 = rnd(i, 1), r2 = rnd(i, 2), r3 = rnd(i, 3), r4 = rnd(i, 4);
-      return {
-        // kalinlik: cogu ince, bazilari kalin
-        w: r1 < 0.18 ? 1 : r1 < 0.45 ? 2 : r1 < 0.8 ? 4 : 6,
-        topH: 0.45 + r2 * 0.55,      // ust kusak yuksekligi
-        botH: 0.35 + r3 * 0.6,       // alt kusak yuksekligi
-        accent: r4 > 0.955,          // seyrek mor vurgu
-        tilt: r4 > 0.93 && r4 <= 0.955, // cok seyrek egik cizgi
-      };
-    });
-  }, [count]);
-
-  const paint = React.useCallback((cursorX) => {
-    const wrap = wrapRef.current;
-    if (!wrap) return;
-    const w = wrap.offsetWidth || 1;
-    barsRef.current.forEach((bar, idx) => {
-      if (!bar) return;
-      const i = idx % count;
-      const barX = ((i + 0.5) / count) * w;
-      const dist = cursorX === null ? Infinity : Math.abs(barX - cursorX);
-      const infl = cursorX === null ? 0 : Math.max(0, 1 - dist / 130);
-      const eased = infl * infl;
-      const isTop = idx < count;
-      const base = isTop ? specs[i].topH : specs[i].botH;
-      const tilt = specs[i].tilt ? (isTop ? -14 : 12) : 0;
-      bar.style.transform = `scaleY(${base + eased * (1 - base)}) rotate(${tilt}deg)`;
-      if (!specs[i].accent) {
-        bar.style.background = eased > 0.06 ? "var(--brand)" : "#1A1A1A";
-      }
-    });
-  }, [specs, count]);
-
-  React.useEffect(() => { paint(null); }, [paint]);
-
-  const renderBand = (isTop) =>
-    Array.from({ length: count }, (_, i) => (
-      <span
-        key={`${isTop ? "t" : "b"}-${i}`}
-        className={`rl-bar ${isTop ? "rl-bar-top" : "rl-bar-bot"}`}
-        ref={(el) => (barsRef.current[isTop ? i : count + i] = el)}
-        style={{
-          width: specs[i].w,
-          background: specs[i].accent ? "#9478FC" : "#1A1A1A",
-        }}
-      />
-    ));
-
-  return (
-    <div
-      className="rl-wrap"
-      ref={wrapRef}
-      onMouseMove={(e) => {
-        const r = wrapRef.current?.getBoundingClientRect();
-        if (r) paint(e.clientX - r.left);
-      }}
-      onMouseLeave={() => paint(null)}
-      aria-hidden="true"
-    >
-      <div className="rl-band rl-band-top">{renderBand(true)}</div>
-      <div className="rl-band rl-band-bot">{renderBand(false)}</div>
-    </div>
-  );
-}
-
 export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewHistory, showBackground = true }) {
   const [files, setFiles] = useState([]);
   const [query, setQuery] = useState("");
@@ -356,21 +280,6 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           flex-direction: column;
           gap: 12px;
         }
-
-        .rl-wrap {
-          width: 100%; margin-top: 48px; position: relative; z-index: 1; cursor: crosshair;
-          display: flex; flex-direction: column;
-        }
-        .rl-band { display: flex; align-items: flex-end; justify-content: space-between; height: 84px; }
-        .rl-band-top { align-items: flex-start; }
-        .rl-band-bot { align-items: flex-end; }
-        .rl-bar {
-          display: block; border-radius: 0; height: 100%;
-          transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s ease;
-        }
-        .rl-bar-top { transform-origin: top center; }
-        .rl-bar-bot { transform-origin: bottom center; }
-        @media (max-width: 700px) { .rl-band { height: 52px; } .rl-wrap { margin-top: 30px; } }
 
         .upload-pill {
           width: 250px;
@@ -658,8 +567,6 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           {analyzing ? <Loader2 size={20} className="spin" color="#FFFFFF" /> : <ArrowRight size={20} />}
         </button>
       </div>
-
-      <ReactiveLines />
 
       {files.length > 0 && (
         <div className="thumb-row" style={{ marginTop: 14 }}>
