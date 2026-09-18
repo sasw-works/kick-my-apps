@@ -199,7 +199,7 @@ export default function Header() {
         }
         .kma-header-navitem {
           display: flex; align-items: center; gap: 6px;
-          font-size: 15px;
+          font-size: 16px;
           font-weight: 500;
           color: var(--chalk);
           user-select: none;
@@ -258,7 +258,7 @@ export default function Header() {
           white-space: nowrap;
         }
         .kma-header-history {
-          font-size: 14.5px;
+          font-size: 14px;
           font-weight: 500;
           color: var(--chalk);
           text-decoration: none;
@@ -267,7 +267,7 @@ export default function Header() {
         .kma-header-signin {
           background: #533AFE;
           color: #FFFFFF;
-          font-size: 14.5px;
+          font-size: 14px;
           font-weight: 600;
           padding: 11px 22px;
           border-radius: 999px;
@@ -302,14 +302,14 @@ export default function Header() {
         }
         .kma-navdrop-col { display: flex; flex-direction: column; gap: 11px; flex: 1; min-width: 200px; }
         .kma-navdrop-col-label {
-          font-size: 10.5px; font-weight: 700; letter-spacing: 0.07em; color: var(--muted);
+          font-size: 11px; font-weight: 700; letter-spacing: 0.07em; color: var(--muted);
           text-transform: uppercase; padding: 6px 12px 10px;
         }
         .kma-navdrop-item {
-          position: relative; display: flex; flex-direction: column; padding: 10px 12px 16px; border-radius: 10px;
+          position: relative; display: flex; flex-direction: column; padding: 10px 12px 16px; border-radius: 8px;
           transition: background 0.15s ease;
         }
-        .kma-navdrop-item-title { font-size: 13.5px; font-weight: 600; color: var(--chalk); transition: color 0.15s ease; }
+        .kma-navdrop-item-title { font-size: 14px; font-weight: 600; color: var(--chalk); transition: color 0.15s ease; }
         .kma-navdrop-item:hover .kma-navdrop-item-title { color: #533AFE; }
         .kma-navdrop-item::after {
           content: ""; position: absolute; left: 12px; right: 12px; bottom: 4px; height: 1px;

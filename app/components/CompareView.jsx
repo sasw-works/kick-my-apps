@@ -158,36 +158,36 @@ export default function CompareView({ scans, onBack }) {
           color: var(--chalk);
           font-family: var(--font-body);
           min-height: 100%;
-          border-radius: 12px;
+          border-radius: 8px;
           padding: 28px 32px;
         }
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
         .cmp-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
-        .cmp-title { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+        .cmp-title { font-family: var(--font-display); font-size: 24px; font-weight: 600; letter-spacing: -0.01em; }
         .back-btn {
           display: flex; align-items: center; gap: 6px;
           background: var(--ink-2); border: 1px solid var(--ink-3); color: var(--chalk);
-          font-size: 13px; padding: 8px 14px; border-radius: 8px; cursor: pointer;
+          font-size: 14px; padding: 8px 14px; border-radius: 8px; cursor: pointer;
         }
 
         .cmp-score-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 18px; align-items: center; margin-bottom: 18px; }
-        .cmp-score-card { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 14px; padding: 20px; text-align: center; }
-        .cmp-score-name { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+        .cmp-score-card { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 8px; padding: 20px; text-align: center; }
+        .cmp-score-name { font-size: 14px; color: var(--muted); margin-bottom: 4px; }
         .cmp-score-date { font-size: 11px; color: var(--muted); font-family: var(--font-mono); margin-bottom: 10px; }
-        .cmp-score-value { font-family: var(--font-display); font-size: 44px; font-weight: 500; letter-spacing: -0.02em; }
+        .cmp-score-value { font-family: var(--font-display); font-size: 48px; font-weight: 500; letter-spacing: -0.02em; }
         .cmp-delta { text-align: center; font-family: var(--font-mono); }
         .cmp-delta-value { font-size: 20px; font-weight: 700; }
-        .cmp-delta-label { font-size: 10.5px; color: var(--muted); letter-spacing: 0.08em; }
+        .cmp-delta-label { font-size: 11px; color: var(--muted); letter-spacing: 0.08em; }
 
         .verdict-panel {
-          background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 12px;
+          background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 8px;
           padding: 16px 18px; margin-bottom: 26px; display: flex; gap: 12px;
         }
         .verdict-icon { flex-shrink: 0; }
-        .verdict-text { font-size: 13.5px; line-height: 1.6; }
+        .verdict-text { font-size: 14px; line-height: 1.6; }
         .verdict-notes { margin-top: 8px; display: flex; flex-direction: column; gap: 4px; }
-        .verdict-note { font-size: 12.5px; color: var(--muted); }
+        .verdict-note { font-size: 12px; color: var(--muted); }
 
         .cmp-section-title {
           font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em;
@@ -195,33 +195,33 @@ export default function CompareView({ scans, onBack }) {
         }
 
         .lens-cmp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
-        .lens-cmp-card { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 10px; padding: 14px 16px; }
-        .lens-cmp-name { font-size: 12.5px; font-weight: 700; margin-bottom: 10px; }
+        .lens-cmp-card { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 8px; padding: 14px 16px; }
+        .lens-cmp-name { font-size: 12px; font-weight: 700; margin-bottom: 10px; }
         .lens-cmp-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
         .lens-cmp-label { font-size: 11px; color: var(--muted); width: 70px; flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .lens-cmp-bar { flex: 1; height: 6px; border-radius: 3px; background: var(--ink-3); overflow: hidden; }
+        .lens-cmp-bar { flex: 1; height: 6px; border-radius: 4px; background: var(--ink-3); overflow: hidden; }
         .lens-cmp-fill { height: 100%; }
 
         .fc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
-        .fc-cat-header { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; margin-bottom: 8px; grid-column: 1 / -1; }
+        .fc-cat-header { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; margin-bottom: 8px; grid-column: 1 / -1; }
         .fc-block {
           background: var(--ink-2); border: 1px solid var(--ink-3); border-left: 3px solid var(--ink-3);
           border-radius: 8px; padding: 12px 14px;
         }
         .fc-status { display: flex; align-items: center; gap: 5px; font-family: var(--font-mono); font-size: 11px; margin-bottom: 6px; }
-        .fc-text { font-size: 12.5px; color: var(--chalk); line-height: 1.5; margin: 0; }
-        .fc-suggestion { display: flex; gap: 6px; margin-top: 8px; background: var(--ink-3); border-radius: 6px; padding: 7px 9px; font-size: 11.5px; color: var(--muted); }
+        .fc-text { font-size: 12px; color: var(--chalk); line-height: 1.5; margin: 0; }
+        .fc-suggestion { display: flex; gap: 6px; margin-top: 8px; background: var(--ink-3); border-radius: 4px; padding: 7px 9px; font-size: 12px; color: var(--muted); }
         .fc-missing {
-          display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12.5px;
+          display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12px;
           background: var(--ink-2); border: 1px dashed var(--ink-3); border-radius: 8px; padding: 12px 14px;
         }
 
         .review-cmp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        .review-cmp-card { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 10px; padding: 16px 18px; }
-        .review-cmp-app { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
+        .review-cmp-card { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 8px; padding: 16px 18px; }
+        .review-cmp-app { font-size: 14px; font-weight: 700; margin-bottom: 10px; }
         .review-cmp-stat { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; }
-        .review-cmp-num { font-family: var(--font-display); font-size: 26px; font-weight: 700; }
-        .review-cmp-complaint { display: flex; align-items: center; gap: 8px; font-size: 11.5px; margin-bottom: 6px; }
+        .review-cmp-num { font-family: var(--font-display); font-size: 24px; font-weight: 700; }
+        .review-cmp-complaint { display: flex; align-items: center; gap: 8px; font-size: 12px; margin-bottom: 6px; }
         .review-cmp-complaint-label { flex: 1; color: var(--muted); }
       `}</style>
 

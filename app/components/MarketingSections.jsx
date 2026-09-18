@@ -397,11 +397,11 @@ export default function MarketingSections() {
         .mkt-reveal-d2 { transition-delay: 0.16s; }
         .mkt-reveal-d3 { transition-delay: 0.24s; }
         .mkt-reveal-d4 { transition-delay: 0.32s; }
-        .mkt-section-title { font-size: 34px; font-weight: 500; letter-spacing: -0.02em; color: var(--chalk); text-align: center; margin-bottom: 10px; }
-        .mkt-section-sub { font-size: 15px; font-family: var(--font-body); color: var(--muted); text-align: center; max-width: 480px; margin: 0 auto 40px; }
+        .mkt-section-title { font-size: 32px; font-weight: 500; letter-spacing: -0.02em; color: var(--chalk); text-align: center; margin-bottom: 10px; }
+        .mkt-section-sub { font-size: 16px; font-family: var(--font-body); color: var(--muted); text-align: center; max-width: 480px; margin: 0 auto 40px; }
         .mkt-title-card {
           background: var(--ink);
-          border-radius: 20px;
+          border-radius: 8px;
           padding: 24px 32px;
           margin: 0 auto 40px;
           width: fit-content;
@@ -409,7 +409,7 @@ export default function MarketingSections() {
         }
 
         .mkt-browser-frame {
-          border: 1px solid var(--ink-3); border-radius: 14px; overflow: hidden;
+          border: 1px solid var(--ink-3); border-radius: 8px; overflow: hidden;
           box-shadow: var(--shadow); margin-bottom: 90px;
         }
         .mkt-browser-topbar {
@@ -419,7 +419,7 @@ export default function MarketingSections() {
         .mkt-browser-dots { display: flex; gap: 7px; }
         .mkt-browser-dots span { width: 11px; height: 11px; border-radius: 50%; display: block; }
         .mkt-browser-url {
-          font-family: var(--font-mono); font-size: 11.5px; color: var(--muted);
+          font-family: var(--font-mono); font-size: 12px; color: var(--muted);
           background: var(--ink); border-radius: 999px; padding: 5px 14px; flex: 1; max-width: 260px;
         }
         .mkt-preview-card {
@@ -427,7 +427,7 @@ export default function MarketingSections() {
         }
         .mkt-preview-full-img { width: 100%; display: block; }
         .mkt-preview-body { display: flex; gap: 28px; align-items: flex-start; }
-        .mkt-preview-chart { width: 260px; flex-shrink: 0; border-radius: 12px; margin-right: 25px; }
+        .mkt-preview-chart { width: 260px; flex-shrink: 0; border-radius: 8px; margin-right: 25px; }
         .mkt-preview-right { flex: 1; min-width: 0; }
         @media (max-width: 700px) {
           .mkt-preview-body { flex-direction: column; }
@@ -435,9 +435,9 @@ export default function MarketingSections() {
         }
         .mkt-preview-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
         .mkt-preview-score { display: flex; align-items: center; gap: 14px; }
-        .mkt-preview-score-num { font-family: var(--font-display); font-size: 40px; font-weight: 700; color: var(--teal); }
+        .mkt-preview-score-num { font-family: var(--font-display); font-size: 48px; font-weight: 700; color: var(--teal); }
         .mkt-preview-findings { display: flex; flex-direction: column; gap: 8px; }
-        .mkt-preview-row { display: flex; align-items: center; gap: 10px; background: var(--ink); border-radius: 8px; padding: 10px 14px; font-size: 15px; font-family: var(--font-body); }
+        .mkt-preview-row { display: flex; align-items: center; gap: 10px; background: var(--ink); border-radius: 8px; padding: 10px 14px; font-size: 16px; font-family: var(--font-body); }
         .mkt-preview-row span { flex: 1; color: var(--chalk); }
 
         .mkt-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 90px; }
@@ -463,10 +463,10 @@ export default function MarketingSections() {
           font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
           color: #7761C9; margin-bottom: 14px;
         }
-        .mkt-secoda-title { font-size: 30px; font-weight: 700; color: var(--chalk); letter-spacing: -0.01em; margin-bottom: 12px; }
+        .mkt-secoda-title { font-size: 32px; font-weight: 700; color: var(--chalk); letter-spacing: -0.01em; margin-bottom: 12px; }
         .mkt-secoda-title-lg { font-size: 24px; font-weight: 500; line-height: 1.2; letter-spacing: -0.015em; color: #242422; margin-bottom: 12px; }
         .mkt-secoda-desc {
-          font-size: 14.5px; color: var(--muted); line-height: 1.6; margin-bottom: 28px;
+          font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 28px;
           display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
           min-height: calc(14.5px * 1.6 * 2);
         }
@@ -489,14 +489,14 @@ export default function MarketingSections() {
           box-shadow: 0 4px 14px rgba(20,33,61,0.05);
         }
         .mkt-secoda-item {
-          display: flex; gap: 14px; background: var(--ink-2); border-radius: 16px; padding: 20px 22px; margin-bottom: 12px;
+          display: flex; gap: 14px; background: var(--ink-2); border-radius: 8px; padding: 20px 22px; margin-bottom: 12px;
           box-shadow: 0 4px 14px rgba(20,33,61,0.05);
         }
         .mkt-secoda-item-icon {
-          width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+          width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
         .mkt-secoda-blank-icon {
-          width: 56px; height: 56px; border-radius: 12px; background: color-mix(in srgb, var(--brand) 8%, var(--ink-3)); flex-shrink: 0;
+          width: 56px; height: 56px; border-radius: 8px; background: color-mix(in srgb, var(--brand) 8%, var(--ink-3)); flex-shrink: 0;
         }
         .mkt-secoda-item-floaty { position: relative; overflow: visible; }
         .mkt-float-tag {
@@ -510,18 +510,18 @@ export default function MarketingSections() {
         .mkt-float-tag-peach { background: color-mix(in srgb, var(--yellow) 20%, transparent); color: #C2661A; }
         .mkt-secoda-check-faded { background: var(--ink-3); }
         .mkt-secoda-item-title-row { display: flex; align-items: center; gap: 6px; }
-        .mkt-secoda-item-title { font-size: 15px; font-weight: 700; color: var(--chalk); }
+        .mkt-secoda-item-title { font-size: 16px; font-weight: 700; color: var(--chalk); }
         .mkt-secoda-check {
           width: 17px; height: 17px; border-radius: 50%; background: var(--brand);
           display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
-        .mkt-secoda-item-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
-        .mkt-secoda-item-desc { font-size: 13.5px; color: var(--chalk); margin-top: 10px; line-height: 1.5; }
+        .mkt-secoda-item-sub { font-size: 14px; color: var(--muted); margin-top: 2px; }
+        .mkt-secoda-item-desc { font-size: 14px; color: var(--chalk); margin-top: 10px; line-height: 1.5; }
         .mkt-secoda-plaintags { display: flex; gap: 18px; margin-top: 14px; flex-wrap: wrap; }
-        .mkt-secoda-plaintag { display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px; color: var(--chalk); }
+        .mkt-secoda-plaintag { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--chalk); }
         .mkt-secoda-avatar {
           width: 18px; height: 18px; border-radius: 50%; background: var(--brand); color: #fff;
-          font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+          font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;
         }
         .mkt-secoda-item-simple { opacity: 0.6; }
         .mkt-secoda-skeleton-lines { display: flex; flex-direction: column; gap: 9px; margin-top: 12px; }
@@ -532,10 +532,10 @@ export default function MarketingSections() {
         .mkt-secoda-skeleton-lines span:nth-child(4) { width: 70%; }
 
         .mkt-secoda-lineage { position: relative; display: flex; align-items: center; min-height: 190px; }
-        .mkt-secoda-lineage-main { background: var(--ink-2); border-radius: 14px; padding: 16px 18px; flex: 1; position: relative; z-index: 1; }
+        .mkt-secoda-lineage-main { background: var(--ink-2); border-radius: 8px; padding: 16px 18px; flex: 1; position: relative; z-index: 1; }
         .mkt-secoda-lineage-head { display: flex; align-items: center; justify-content: space-between; }
         .mkt-secoda-warn { color: var(--yellow); display: flex; }
-        .mkt-secoda-lineage-footer { font-size: 11.5px; color: var(--muted); margin-top: 12px; display: flex; align-items: center; gap: 4px; }
+        .mkt-secoda-lineage-footer { font-size: 12px; color: var(--muted); margin-top: 12px; display: flex; align-items: center; gap: 4px; }
         .mkt-secoda-lineage-tooltip {
           position: absolute; bottom: -14px; right: -10px; background: var(--chalk); color: var(--ink-2);
           font-size: 11px; font-weight: 600; padding: 6px 12px; border-radius: 999px; white-space: nowrap;
@@ -543,11 +543,11 @@ export default function MarketingSections() {
         .mkt-secoda-lineage-arrows { flex-shrink: 0; color: var(--ink-3); }
         .mkt-secoda-lineage-nodes { display: flex; flex-direction: column; justify-content: space-between; height: 120px; flex-shrink: 0; }
         .mkt-secoda-lineage-node-sm {
-          width: 60px; height: 44px; border-radius: 10px; background: var(--ink-2);
-          display: flex; align-items: center; justify-content: center; font-size: 10.5px; color: var(--muted);
+          width: 60px; height: 44px; border-radius: 8px; background: var(--ink-2);
+          display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--muted);
         }
 
-        .mkt-secoda-chartcard { background: var(--ink-2); border-radius: 14px; padding: 18px; }
+        .mkt-secoda-chartcard { background: var(--ink-2); border-radius: 8px; padding: 18px; }
         .mkt-secoda-chart-head { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
         .mkt-secoda-chart-btns { display: flex; gap: 6px; }
         .mkt-secoda-btn {
@@ -555,23 +555,23 @@ export default function MarketingSections() {
           padding: 5px 10px; border-radius: 999px; cursor: default;
         }
         .mkt-secoda-chart-body { position: relative; margin-top: 16px; display: flex; gap: 8px; }
-        .mkt-secoda-chart-axis { display: flex; flex-direction: column; justify-content: space-between; font-size: 10px; color: var(--muted); padding-bottom: 4px; }
+        .mkt-secoda-chart-axis { display: flex; flex-direction: column; justify-content: space-between; font-size: 11px; color: var(--muted); padding-bottom: 4px; }
         .mkt-secoda-chart-tooltip {
           position: absolute; left: 30%; top: -8px; background: var(--chalk); color: var(--ink-2);
-          border-radius: 10px; padding: 10px 14px; font-size: 11px; min-width: 130px;
+          border-radius: 8px; padding: 10px 14px; font-size: 11px; min-width: 130px;
         }
-        .mkt-secoda-chart-tooltip-time { color: var(--muted); font-size: 10px; margin-bottom: 4px; }
+        .mkt-secoda-chart-tooltip-time { color: var(--muted); font-size: 11px; margin-bottom: 4px; }
         .mkt-secoda-chart-tooltip-row { display: flex; align-items: center; gap: 5px; margin-top: 3px; }
 
-        .mkt-secoda-filtercard { background: var(--ink-2); border-radius: 14px; padding: 18px; }
-        .mkt-secoda-filter-head { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--chalk); margin-bottom: 14px; flex-wrap: wrap; }
+        .mkt-secoda-filtercard { background: var(--ink-2); border-radius: 8px; padding: 18px; }
+        .mkt-secoda-filter-head { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--chalk); margin-bottom: 14px; flex-wrap: wrap; }
         .mkt-secoda-filter-line {
-          font-size: 12.5px; color: var(--muted); display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+          font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
           margin-bottom: 8px;
         }
         .mkt-secoda-pill-blue {
           display: inline-flex; align-items: center; gap: 4px; background: color-mix(in srgb, var(--brand) 12%, transparent);
-          color: var(--brand); font-size: 11.5px; font-weight: 600; padding: 3px 10px; border-radius: 999px;
+          color: var(--brand); font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px;
         }
         .mkt-secoda-addfilter {
           display: inline-flex; align-items: center; gap: 6px; background: var(--ink-3); border: none; border-radius: 999px;
@@ -580,18 +580,18 @@ export default function MarketingSections() {
         .mkt-secoda-filter-arrow { display: flex; justify-content: center; margin: 12px 0; }
         .mkt-secoda-filter-then {
           display: flex; align-items: center; justify-content: space-between; background: var(--ink-3);
-          border-radius: 10px; padding: 10px 14px; font-size: 12px; color: var(--chalk); margin-bottom: 12px;
+          border-radius: 8px; padding: 10px 14px; font-size: 12px; color: var(--chalk); margin-bottom: 12px;
         }
         .mkt-secoda-filter-then span { display: flex; align-items: center; gap: 6px; }
         .mkt-feature-card {
-          background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 16px;
+          background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 8px;
           box-shadow: var(--shadow); padding: 26px;
           transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.28s ease, box-shadow 0.28s ease;
         }
         .mkt-feature-card:hover { transform: translateY(-5px); border-color: var(--brand); box-shadow: 0 18px 36px rgba(20,33,61,0.08); }
 
         .mkt-halo {
-          position: relative; border-radius: 24px; padding: 17px; overflow: hidden;
+          position: relative; border-radius: 8px; padding: 17px; overflow: hidden;
           display: flex; height: 100%; box-sizing: border-box;
         }
         .mkt-halo-pink { background: linear-gradient(135deg, #31c1d2, #73e49d); }
@@ -612,16 +612,16 @@ export default function MarketingSections() {
         .mkt-halo .mkt-review-body { color: rgba(255,255,255,0.8); }
         .mkt-halo .mkt-review-stars { color: #FFE9A8; }
         .mkt-halo .mkt-feature-icon {
-          background: rgba(255,255,255,0.9) !important; border-radius: 18px;
+          background: rgba(255,255,255,0.9) !important; border-radius: 8px;
           width: 99px !important; height: 99px !important; padding: 8px; box-sizing: border-box;
         }
         .mkt-halo:hover .mkt-feature-card-floating { transform: none; }
         .mkt-feature-icon {
-          width: 66px; height: 66px; border-radius: 10px;
+          width: 66px; height: 66px; border-radius: 8px;
           display: flex; align-items: center; justify-content: center; margin-bottom: 31px;
         }
-        .mkt-feature-title { font-size: 19px; font-weight: 500; margin-bottom: 6px; }
-        .mkt-feature-desc { font-size: 15px; font-family: var(--font-body); color: var(--muted); line-height: 1.6; margin-bottom: 18px; }
+        .mkt-feature-title { font-size: 20px; font-weight: 500; margin-bottom: 6px; }
+        .mkt-feature-desc { font-size: 16px; font-family: var(--font-body); color: var(--muted); line-height: 1.6; margin-bottom: 18px; }
 
         .mkt-ticker { max-height: 168px; overflow: hidden; -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent); mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent); }
         .mkt-ticker-track { display: flex; flex-direction: column; gap: 8px; animation: ticker-scroll 14s linear infinite; }
@@ -641,9 +641,9 @@ export default function MarketingSections() {
         .mkt-rating-dist { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
         .mkt-rating-dist-row { display: flex; align-items: center; gap: 8px; }
         .mkt-rating-dist-label { font-size: 11px; color: var(--muted); width: 20px; flex-shrink: 0; font-family: var(--font-mono); }
-        .mkt-rating-dist-bar { flex: 1; height: 6px; border-radius: 3px; background: var(--ink-3); overflow: hidden; }
-        .mkt-rating-dist-fill { height: 100%; background: #533AFE; border-radius: 3px; }
-        .mkt-rating-dist-pct { font-size: 10.5px; color: var(--muted); width: 32px; text-align: right; font-family: var(--font-mono); }
+        .mkt-rating-dist-bar { flex: 1; height: 6px; border-radius: 4px; background: var(--ink-3); overflow: hidden; }
+        .mkt-rating-dist-fill { height: 100%; background: #533AFE; border-radius: 4px; }
+        .mkt-rating-dist-pct { font-size: 11px; color: var(--muted); width: 32px; text-align: right; font-family: var(--font-mono); }
 
         .mkt-spin-slow { animation: spin-slow 3s linear infinite; }
         @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -667,19 +667,19 @@ export default function MarketingSections() {
         }
         .mkt-review-card { background: var(--ink); border-radius: 8px; padding: 10px 12px; }
         .mkt-review-stars { color: #533AFE; font-size: 11px; margin-bottom: 3px; }
-        .mkt-review-title { font-size: 12.5px; font-weight: 600; color: var(--chalk); }
-        .mkt-review-body { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+        .mkt-review-title { font-size: 12px; font-weight: 600; color: var(--chalk); }
+        .mkt-review-body { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
         .mkt-priority-list { display: flex; flex-direction: column; gap: 8px; }
         .mkt-priority-row { display: flex; align-items: center; gap: 10px; background: var(--ink); border-radius: 8px; padding: 8px 12px; }
         .mkt-priority-row + .mkt-priority-row { margin-top: 8px; }
-        .mkt-priority-tag { font-family: var(--font-mono); font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; }
-        .mkt-priority-title { font-size: 12.5px; font-weight: 600; color: var(--chalk); flex: 1; }
-        .mkt-priority-meta { font-size: 10.5px; color: var(--muted); font-family: var(--font-mono); }
+        .mkt-priority-tag { font-family: var(--font-mono); font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 999px; }
+        .mkt-priority-title { font-size: 12px; font-weight: 600; color: var(--chalk); flex: 1; }
+        .mkt-priority-meta { font-size: 11px; color: var(--muted); font-family: var(--font-mono); }
 
         .mkt-showcase { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 90px; }
         .mkt-showcase-visual {
-          background: var(--ink); border-radius: 10px; padding: 20px;
+          background: var(--ink); border-radius: 8px; padding: 20px;
           display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; min-height: 120px;
         }
 
@@ -726,7 +726,7 @@ export default function MarketingSections() {
         .mkt-grid-dark-cell:hover .mkt-grid-dark-fill { opacity: 1; }
         .mkt-grid-dark-content { position: relative; z-index: 1; padding: 28px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; }
         .mkt-grid-dark-headline {
-          font-size: 17px; font-weight: 600; color: #FFFFFF; margin-bottom: 10px; transition: color 0.2s ease;
+          font-size: 16px; font-weight: 600; color: #FFFFFF; margin-bottom: 10px; transition: color 0.2s ease;
         }
         .mkt-grid-dark-desc {
           font-size: 14px; font-family: var(--font-body); color: rgba(255,255,255,0.5); line-height: 1.55;
@@ -759,7 +759,7 @@ export default function MarketingSections() {
           position: relative; overflow: hidden;
           flex: 0 0 calc((100% - 40px) / 5); max-width: 400px; height: 365px;
           scroll-snap-align: start;
-          background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 16px;
+          background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 8px;
           box-shadow: var(--shadow);
         }
         @media (max-width: 1400px) {
@@ -781,32 +781,32 @@ export default function MarketingSections() {
         .mkt-carousel-card:hover .mkt-carousel-fill { height: 100%; }
         .mkt-carousel-content { position: relative; z-index: 1; display: flex; flex-direction: column; height: 100%; padding: 34px; }
         .mkt-carousel-icon {
-          width: 36px; height: 36px; border-radius: 10px; margin-bottom: 26px;
+          width: 36px; height: 36px; border-radius: 8px; margin-bottom: 26px;
           display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
         .mkt-carousel-headline {
-          font-size: 19px; font-weight: 500; line-height: 1.35; color: var(--chalk);
+          font-size: 20px; font-weight: 500; line-height: 1.35; color: var(--chalk);
           margin-bottom: 6px; transition: color 0.3s ease;
         }
         .mkt-carousel-card:hover .mkt-carousel-headline { color: #FFFFFF; }
         .mkt-carousel-footer {
-          font-size: 15px; font-family: var(--font-body); color: var(--muted); transition: color 0.3s ease;
+          font-size: 16px; font-family: var(--font-body); color: var(--muted); transition: color 0.3s ease;
           display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
           overflow: hidden; line-height: 1.45; min-height: 4.65em;
         }
         .mkt-carousel-card:hover .mkt-carousel-footer { color: #FFFFFF; opacity: 0.85; }
 
         .mkt-carousel-nav-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 90px; }
-        .mkt-carousel-tagline { font-size: 15px; font-family: var(--font-body); color: var(--chalk); }
+        .mkt-carousel-tagline { font-size: 16px; font-family: var(--font-body); color: var(--chalk); }
         .mkt-carousel-arrows { display: flex; gap: 8px; }
         .mkt-carousel-arrow {
-          width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--ink-3);
+          width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--ink-3);
           background: var(--ink-2); color: var(--chalk); display: flex; align-items: center; justify-content: center;
           cursor: pointer; transition: border-color 0.15s ease;
         }
         .mkt-carousel-arrow:hover { border-color: var(--brand); }
 
-        .faq-eyebrow { font-size: 15px; font-family: var(--font-body); color: var(--muted); text-align: center; margin-bottom: 8px; }
+        .faq-eyebrow { font-size: 16px; font-family: var(--font-body); color: var(--muted); text-align: center; margin-bottom: 8px; }
 
         .mkt-pricing { margin-top: 150px; width: calc(100% + 150px); max-width: 1150px; margin-left: -75px; margin-right: -75px; }
         @media (max-width: 1100px) {
@@ -840,21 +840,21 @@ export default function MarketingSections() {
         .mkt-billing-toggle { display: flex; gap: 2px; background: var(--ink-3); border-radius: 999px; padding: 3px; }
         .mkt-billing-toggle-btn {
           display: flex; align-items: center; gap: 6px; border: none; background: transparent;
-          padding: 6px 8px 6px 12px; border-radius: 999px; font-size: 13px; font-family: var(--font-body); color: var(--muted); cursor: pointer;
+          padding: 6px 8px 6px 12px; border-radius: 999px; font-size: 14px; font-family: var(--font-body); color: var(--muted); cursor: pointer;
         }
         .mkt-billing-toggle-btn-active { background: var(--ink-2); color: var(--chalk); font-weight: 600; }
-        .mkt-billing-save { background: color-mix(in srgb, var(--teal) 18%, transparent); color: var(--teal); font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 999px; }
+        .mkt-billing-save { background: color-mix(in srgb, var(--teal) 18%, transparent); color: var(--teal); font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 999px; }
         .mkt-pricing-price-row { display: flex; align-items: baseline; gap: 4px; }
-        .mkt-pricing-price { font-size: 34px; font-weight: 500; letter-spacing: -0.02em; color: var(--chalk); }
-        .mkt-pricing-price-suffix { font-size: 15px; font-family: var(--font-body); color: var(--muted); }
-        .mkt-pricing-note { font-size: 15px; font-family: var(--font-body); color: var(--muted); margin-top: 6px; margin-bottom: 20px; }
-        .mkt-pricing-desc { font-size: 15px; font-family: var(--font-body); color: var(--muted); line-height: 1.6; min-height: 66px; }
+        .mkt-pricing-price { font-size: 32px; font-weight: 500; letter-spacing: -0.02em; color: var(--chalk); }
+        .mkt-pricing-price-suffix { font-size: 16px; font-family: var(--font-body); color: var(--muted); }
+        .mkt-pricing-note { font-size: 16px; font-family: var(--font-body); color: var(--muted); margin-top: 6px; margin-bottom: 20px; }
+        .mkt-pricing-desc { font-size: 16px; font-family: var(--font-body); color: var(--muted); line-height: 1.6; min-height: 66px; }
         .mkt-pricing-divider { height: 1px; background: var(--ink-3); margin: 20px 0; }
         .mkt-pricing-features { display: flex; flex-direction: column; gap: 16px; flex: 1; margin-bottom: 28px; }
-        .mkt-pricing-feature-row { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; font-family: var(--font-body); line-height: 1.5; }
+        .mkt-pricing-feature-row { display: flex; align-items: flex-start; gap: 10px; font-size: 16px; font-family: var(--font-body); line-height: 1.5; }
         .mkt-pricing-feature-row svg { flex-shrink: 0; margin-top: 2px; }
         .mkt-pricing-cta {
-          border: none; border-radius: 4px; padding: 15px; font-size: 15px; font-family: var(--font-body); font-weight: 600; cursor: pointer;
+          border: none; border-radius: 4px; padding: 15px; font-size: 16px; font-family: var(--font-body); font-weight: 600; cursor: pointer;
           background: var(--ink-3); color: var(--chalk); width: 100%;
           transition: filter 0.2s ease, transform 0.2s ease;
         }
@@ -865,7 +865,7 @@ export default function MarketingSections() {
         .faq-q {
           width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 20px;
           background: none; border: none; cursor: pointer; padding: 26px 4px;
-          font-size: 19px; font-weight: 500; color: var(--chalk); text-align: left;
+          font-size: 20px; font-weight: 500; color: var(--chalk); text-align: left;
           transition: color 0.2s ease;
         }
         .faq-q:hover { color: var(--brand); }
@@ -883,14 +883,14 @@ export default function MarketingSections() {
         .faq-a-wrap-open { grid-template-rows: 1fr; }
         .faq-a-inner { overflow: hidden; }
         .faq-a {
-          font-size: 15px; font-family: var(--font-body); color: var(--muted); line-height: 1.7; padding: 0 4px 26px; max-width: 560px;
+          font-size: 16px; font-family: var(--font-body); color: var(--muted); line-height: 1.7; padding: 0 4px 26px; max-width: 560px;
           opacity: 0; transform: translateY(-6px);
           transition: opacity 0.3s ease 0.05s, transform 0.3s ease 0.05s;
         }
         .faq-a-wrap-open .faq-a { opacity: 1; transform: translateY(0); }
         .faq-support-btn {
           display: block; margin: 0 auto; background: #533AFE; color: #FFFFFF;
-          font-weight: 600; font-size: 15px; padding: 13px 28px; border-radius: 999px; border: none; cursor: pointer;
+          font-weight: 600; font-size: 16px; padding: 13px 28px; border-radius: 999px; border: none; cursor: pointer;
           transition: filter 0.2s ease, transform 0.2s ease;
         }
         .faq-support-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
@@ -901,17 +901,17 @@ export default function MarketingSections() {
         }
         .mkt-closing-logo { margin-bottom: 40px; }
         .mkt-closing-heading {
-          font-family: var(--font-display); font-size: 44px; font-weight: 500; color: #FFFFFF;
+          font-family: var(--font-display); font-size: 48px; font-weight: 500; color: #FFFFFF;
           letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 32px;
         }
         .mkt-closing-btn {
-          background: #533AFE; color: #FFFFFF; font-weight: 600; font-size: 15px;
+          background: #533AFE; color: #FFFFFF; font-weight: 600; font-size: 16px;
           padding: 14px 32px; border-radius: 999px; border: none; cursor: pointer;
           transition: filter 0.2s ease, transform 0.2s ease;
         }
         .mkt-closing-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
         @media (max-width: 600px) {
-          .mkt-closing-heading { font-size: 30px; }
+          .mkt-closing-heading { font-size: 32px; }
         }
 
         @media (max-width: 780px) {

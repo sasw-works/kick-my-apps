@@ -55,12 +55,12 @@ export default function DashboardPage() {
             color: var(--chalk);
           }
           .dash-title { font-size: 24px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 6px; }
-          .dash-sub { color: var(--muted); font-size: 13.5px; margin-bottom: 28px; }
+          .dash-sub { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
           .dash-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
           .dash-card {
             background: var(--ink-2);
             border: 1px solid var(--ink-3);
-            border-radius: 14px;
+            border-radius: 8px;
             padding: 20px;
             text-decoration: none;
             color: inherit;
@@ -71,10 +71,10 @@ export default function DashboardPage() {
           }
           .dash-card:hover { border-color: var(--brand); }
           .dash-card-top { display: flex; align-items: flex-start; justify-content: space-between; }
-          .dash-card-name { font-size: 15px; font-weight: 600; }
+          .dash-card-name { font-size: 16px; font-weight: 600; }
           .dash-card-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
           .dash-score {
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 800;
             letter-spacing: -0.02em;
           }
@@ -82,7 +82,7 @@ export default function DashboardPage() {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 12.5px;
+            font-size: 12px;
             color: var(--muted);
           }
           .dash-empty { text-align: center; padding: 60px 0; color: var(--muted); }
@@ -96,7 +96,7 @@ export default function DashboardPage() {
             background: var(--brand);
             color: #FFFFFF;
             font-weight: 600;
-            font-size: 13.5px;
+            font-size: 14px;
             padding: 10px 18px;
             border-radius: 999px;
             text-decoration: none;

@@ -31,7 +31,7 @@ export default function AppSidebar() {
         .kma-sidebar-nav { display: flex; flex-direction: column; gap: 17px; }
         .kma-sidebar-link {
           display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px;
-          font-size: 14.5px; color: var(--chalk); text-decoration: none; transition: background 0.15s ease;
+          font-size: 14px; color: var(--chalk); text-decoration: none; transition: background 0.15s ease;
         }
         .kma-sidebar-link:hover { background: var(--ink); }
         .kma-sidebar-link-active { background: color-mix(in srgb, var(--brand) 12%, transparent); color: var(--brand); font-weight: 600; }
@@ -43,7 +43,7 @@ export default function AppSidebar() {
         .kma-sidebar-avatar {
           width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
           background: linear-gradient(135deg, var(--brand), #7C6BFF);
-          color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;
+          color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px;
         }
         .kma-sidebar-plan {
           font-size: 11px; font-weight: 600; color: var(--yellow); background: color-mix(in srgb, var(--yellow) 15%, transparent);

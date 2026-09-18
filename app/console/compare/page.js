@@ -128,20 +128,20 @@ export default function ConsoleComparePage() {
           width: 48px; height: 48px; border-radius: 50%; background: color-mix(in srgb, var(--brand) 12%, transparent);
           display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; color: var(--brand);
         }
-        .compare-header h1 { font-family: var(--font-inter), sans-serif; font-size: 30px; font-weight: 800; color: var(--chalk); margin-bottom: 8px; }
-        .compare-header p { font-size: 14.5px; color: var(--muted); }
+        .compare-header h1 { font-family: var(--font-inter), sans-serif; font-size: 32px; font-weight: 800; color: var(--chalk); margin-bottom: 8px; }
+        .compare-header p { font-size: 14px; color: var(--muted); }
         .compare-section-label { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 14px; text-transform: uppercase; }
         .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 48px; }
         .compare-card {
           display: flex; align-items: center; gap: 14px; background: var(--ink-2); border: 2px solid var(--ink-3);
-          border-radius: 14px; padding: 16px; cursor: pointer; transition: border-color 0.15s ease, background 0.15s ease;
+          border-radius: 8px; padding: 16px; cursor: pointer; transition: border-color 0.15s ease, background 0.15s ease;
         }
         .compare-card:hover { border-color: color-mix(in srgb, var(--brand) 40%, var(--ink-3)); }
         .compare-card-selected { border-color: var(--brand); background: color-mix(in srgb, var(--brand) 6%, var(--ink-2)); }
         .compare-card-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
         .compare-recent-row {
           display: flex; align-items: center; gap: 14px; background: var(--ink-2); border: 1px solid var(--ink-3);
-          border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; cursor: pointer; text-decoration: none; color: inherit;
+          border-radius: 8px; padding: 14px 16px; margin-bottom: 10px; cursor: pointer; text-decoration: none; color: inherit;
           transition: border-color 0.15s ease;
         }
         .compare-recent-row:hover { border-color: var(--brand); }
@@ -155,10 +155,10 @@ export default function ConsoleComparePage() {
         }
         .compare-cta-btn {
           background: var(--brand); color: #fff; border: none; border-radius: 999px; padding: 10px 20px;
-          font-size: 13.5px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;
+          font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;
         }
         .compare-cta-btn:disabled { opacity: 0.6; cursor: default; }
-        .compare-error { color: var(--kick); font-size: 13px; text-align: center; margin-top: 12px; }
+        .compare-error { color: var(--kick); font-size: 14px; text-align: center; margin-top: 12px; }
       `}</style>
 
       <div className="compare-header">

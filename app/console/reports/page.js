@@ -196,14 +196,14 @@ export default function ConsoleReportsPage() {
         .reports-tabs { display: flex; gap: 6px; flex-wrap: wrap; flex-shrink: 0; }
         .reports-tab {
           display: flex; align-items: center; justify-content: center; gap: 6px; background: var(--ink-2); border: 1px solid var(--ink-3);
-          border-radius: 999px; padding: 0 14px; font-size: 12.5px; color: var(--muted); cursor: pointer;
+          border-radius: 999px; padding: 0 14px; font-size: 12px; color: var(--muted); cursor: pointer;
           transition: border-color 0.15s ease, background 0.15s ease;
           height: 44px; box-sizing: border-box; min-width: 150px;
         }
         .reports-tab:hover { border-color: var(--brand); }
         .reports-tab-active { background: var(--ink-3); border-color: var(--chalk); color: var(--chalk); font-weight: 600; }
         .reports-tab-count { font-family: var(--font-mono); font-size: 11px; opacity: 0.7; }
-        .reports-table { width: 100%; border-collapse: collapse; background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 14px; overflow: hidden; }
+        .reports-table { width: 100%; border-collapse: collapse; background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 8px; overflow: hidden; }
         .reports-table th {
           text-align: left; font-size: 11px; letter-spacing: 0.06em; color: color-mix(in srgb, var(--muted) 55%, black); font-weight: 600;
           padding: 14px 16px; border-bottom: 1px solid color-mix(in srgb, var(--ink-3) 55%, white); text-transform: uppercase;

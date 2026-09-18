@@ -132,7 +132,7 @@ export default function SupportPage() {
           font-family: var(--font-display); font-size: 90px; font-weight: 700;
           letter-spacing: -0.025em; line-height: 1.08; color: #1A2B3B; margin: 0 0 12px;
         }
-        @media (max-width: 700px) { .support-title { font-size: 42px; } }
+        @media (max-width: 700px) { .support-title { font-size: 48px; } }
         .support-sub {
           font-family: var(--font-inter), sans-serif; font-size: 20px; color: #1A2B3B;
           line-height: 1.5; margin-top: 24px; margin-bottom: 57px;
@@ -142,7 +142,7 @@ export default function SupportPage() {
           background: var(--ink-2); border: none; border-radius: 999px; padding: 16px 28px;
           box-sizing: border-box;
         }
-        .support-search input { flex: 1; border: none; outline: none; background: transparent; font-size: 15px; color: var(--chalk); }
+        .support-search input { flex: 1; border: none; outline: none; background: transparent; font-size: 16px; color: var(--chalk); }
 
         .support-faq-list { margin-bottom: 56px; position: relative; z-index: 1; }
         .support-faq-row { border-bottom: 1px solid var(--ink-3); }
@@ -162,16 +162,16 @@ export default function SupportPage() {
         .support-faq-toggle-open { background: #533AFE; transform: rotate(180deg); }
         .support-faq-a-wrap { display: grid; transition: grid-template-rows 0.3s ease; overflow: hidden; }
         .support-faq-a-inner { overflow: hidden; }
-        .support-faq-a { font-size: 14.5px; color: var(--muted); line-height: 1.6; padding: 0 4px 22px; }
+        .support-faq-a { font-size: 14px; color: var(--muted); line-height: 1.6; padding: 0 4px 22px; }
 
         .support-contact {
-          text-align: center; background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 16px; padding: 40px;
+          text-align: center; background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 8px; padding: 40px;
         }
-        .support-contact-title { font-size: 19px; font-weight: 500; color: var(--chalk); margin-bottom: 8px; }
-        .support-contact-sub { font-size: 15px; color: var(--muted); margin-bottom: 20px; }
+        .support-contact-title { font-size: 20px; font-weight: 500; color: var(--chalk); margin-bottom: 8px; }
+        .support-contact-sub { font-size: 16px; color: var(--muted); margin-bottom: 20px; }
         .support-contact-btn {
           display: inline-flex; align-items: center; gap: 8px; background: #533AFE; color: #FFFFFF;
-          padding: 12px 24px; border-radius: 999px; font-size: 14.5px; font-weight: 600; text-decoration: none;
+          padding: 12px 24px; border-radius: 999px; font-size: 14px; font-weight: 600; text-decoration: none;
           cursor: pointer; transition: filter 0.2s ease, transform 0.2s ease;
         }
         .support-contact-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }

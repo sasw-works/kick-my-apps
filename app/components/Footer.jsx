@@ -25,7 +25,7 @@ export default function Footer() {
           justify-content: space-between;
           flex-wrap: wrap;
           gap: 12px;
-          font-size: 12.5px;
+          font-size: 12px;
           color: rgba(255,255,255,0.55);
         }
         .kma-footer-legal { display: flex; gap: 24px; }

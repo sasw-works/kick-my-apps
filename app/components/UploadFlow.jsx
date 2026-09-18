@@ -154,7 +154,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           color: var(--chalk);
           font-family: var(--font-body);
           min-height: 100%;
-          border-radius: 12px;
+          border-radius: 8px;
           padding: 0 32px 40px;
           display: flex;
           flex-direction: column;
@@ -201,7 +201,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           margin: 0;
         }
         @media (max-width: 720px) {
-          .hero-title { font-size: 42px; }
+          .hero-title { font-size: 48px; }
         }
         .hero-subtitle {
           font-family: var(--font-inter), sans-serif;
@@ -252,12 +252,12 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           outline: none;
           color: var(--chalk);
           font-family: var(--font-body);
-          font-size: 15px;
+          font-size: 16px;
         }
         .hero-search-pill input::placeholder { color: var(--muted); }
         .kbd-hint {
           font-family: var(--font-mono); font-size: 11px; color: var(--muted);
-          background: var(--ink-3); border: 1px solid var(--ink-3); border-radius: 6px;
+          background: var(--ink-3); border: 1px solid var(--ink-3); border-radius: 4px;
           padding: 3px 7px; flex-shrink: 0;
         }
         .history-link {
@@ -266,7 +266,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           border: none;
           color: var(--muted);
           font-family: var(--font-body);
-          font-size: 12.5px;
+          font-size: 12px;
           text-decoration: underline;
           cursor: pointer;
         }
@@ -299,14 +299,14 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           transition: border-color 0.15s ease, background 0.15s ease;
           position: relative;
         }
-        .upload-pill span { font-size: 15px; color: var(--muted); }
+        .upload-pill span { font-size: 16px; color: var(--muted); }
         .upload-pill:hover { border-color: var(--muted); }
         .dropzone-active { background: var(--ink-3); }
         .upload-pill-tooltip {
           position: absolute; bottom: calc(100% + 12px); left: 50%; transform: translateX(-50%) translateY(6px);
           width: 260px; white-space: normal; text-align: left;
-          background: var(--chalk); color: var(--ink-2); font-size: 12.5px; line-height: 1.5;
-          padding: 12px 14px; border-radius: 10px; box-shadow: 0 10px 24px rgba(20,33,61,0.16);
+          background: var(--chalk); color: var(--ink-2); font-size: 12px; line-height: 1.5;
+          padding: 12px 14px; border-radius: 8px; box-shadow: 0 10px 24px rgba(20,33,61,0.16);
           opacity: 0; pointer-events: none; transition: opacity 0.18s ease, transform 0.18s ease; z-index: 20;
         }
         .upload-pill-tooltip::after {
@@ -401,7 +401,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           gap: 10px;
           background: var(--ink-2);
           border: 1px solid var(--ink-3);
-          border-radius: 10px;
+          border-radius: 8px;
           padding: 12px 14px;
           box-shadow: var(--shadow);
           transition: border-color 0.15s ease;
@@ -412,7 +412,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           border: none;
           outline: none;
           color: var(--chalk);
-          font-size: 13.5px;
+          font-size: 14px;
           width: 100%;
         }
         .url-input-wrap input::placeholder { color: var(--muted); }
@@ -424,7 +424,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           right: 0;
           background: var(--ink-2);
           border: 1px solid var(--ink-3);
-          border-radius: 10px;
+          border-radius: 8px;
           overflow: hidden;
           z-index: 20;
           box-shadow: none;
@@ -446,14 +446,14 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         .suggestion-icon {
           width: 32px;
           height: 32px;
-          border-radius: 7px;
+          border-radius: 4px;
           background: var(--ink-3);
           flex-shrink: 0;
           object-fit: cover;
         }
         .suggestion-text { min-width: 0; }
         .suggestion-name {
-          font-size: 13px;
+          font-size: 14px;
           color: var(--chalk);
           font-weight: 600;
           white-space: nowrap;
@@ -461,7 +461,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           text-overflow: ellipsis;
         }
         .suggestion-dev {
-          font-size: 11.5px;
+          font-size: 12px;
           color: var(--muted);
           white-space: nowrap;
           overflow: hidden;
