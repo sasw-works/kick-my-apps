@@ -34,12 +34,12 @@ export default function ScanDetailPage() {
     >
       <div className="max-w-[1240px] mx-auto">
         {loading ? (
-          <div style={{ textAlign: "center", color: "var(--muted)", padding: "60px 0" }}>
+          <div style={{ textAlign: "center", color: "var(--muted)", padding: "64px 0" }}>
             <Loader2 size={22} style={{ margin: "0 auto 8px", animation: "spin 0.9s linear infinite" }} />
             Yükleniyor…
           </div>
         ) : error ? (
-          <div style={{ textAlign: "center", color: "var(--kick)", padding: "60px 0" }}>{error}</div>
+          <div style={{ textAlign: "center", color: "var(--kick)", padding: "64px 0" }}>{error}</div>
         ) : scan ? (
           <HealthReport
             data={scan.result_json}

@@ -155,7 +155,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           font-family: var(--font-body);
           min-height: 100%;
           border-radius: 8px;
-          padding: 0 32px 40px;
+          padding: 0 32px 48px;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -209,7 +209,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           color: #1A2B3B;
           line-height: 1.5;
           margin-top: 24px;
-          margin-bottom: 53px;
+          margin-bottom: 48px;
           margin-left: auto;
           margin-right: auto;
           width: 100%;
@@ -227,8 +227,8 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 10px;
-          margin-bottom: 20px;
+          gap: 12px;
+          margin-bottom: 24px;
         }
         .hero-search-anchor { position: relative; }
         .hero-search-pill {
@@ -241,7 +241,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           background: var(--ink-2);
           border: none;
           border-radius: 999px;
-          padding: 16px 28px;
+          padding: 16px 32px;
           transition: border-color 0.15s ease;
         }
         .hero-search-pill:focus-within { border-color: var(--brand); }
@@ -258,10 +258,10 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         .kbd-hint {
           font-family: var(--font-mono); font-size: 11px; color: var(--muted);
           background: var(--ink-3); border: 1px solid var(--ink-3); border-radius: 4px;
-          padding: 3px 7px; flex-shrink: 0;
+          padding: 4px 8px; flex-shrink: 0;
         }
         .history-link {
-          margin-top: 10px;
+          margin-top: 12px;
           background: transparent;
           border: none;
           color: var(--muted);
@@ -288,7 +288,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 15px;
+          gap: 16px;
           flex-shrink: 0;
           white-space: nowrap;
           background: var(--ink-2);
@@ -306,7 +306,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           position: absolute; bottom: calc(100% + 12px); left: 50%; transform: translateX(-50%) translateY(6px);
           width: 260px; white-space: normal; text-align: left;
           background: var(--chalk); color: var(--ink-2); font-size: 12px; line-height: 1.5;
-          padding: 12px 14px; border-radius: 8px; box-shadow: 0 10px 24px rgba(20,33,61,0.16);
+          padding: 12px 16px; border-radius: 8px; box-shadow: 0 10px 24px rgba(20,33,61,0.16);
           opacity: 0; pointer-events: none; transition: opacity 0.18s ease, transform 0.18s ease; z-index: 20;
         }
         .upload-pill-tooltip::after {
@@ -351,7 +351,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         .thumb-row {
           display: flex;
           flex-wrap: wrap;
-          gap: 10px;
+          gap: 12px;
         }
         .thumb {
           position: relative;
@@ -398,11 +398,11 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         .url-input-wrap {
           display: flex;
           align-items: center;
-          gap: 10px;
+          gap: 12px;
           background: var(--ink-2);
           border: 1px solid var(--ink-3);
           border-radius: 8px;
-          padding: 12px 14px;
+          padding: 12px 16px;
           box-shadow: var(--shadow);
           transition: border-color 0.15s ease;
         }
@@ -433,8 +433,8 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           width: 100%;
           display: flex;
           align-items: center;
-          gap: 10px;
-          padding: 9px 12px;
+          gap: 12px;
+          padding: 8px 12px;
           background: transparent;
           border: none;
           border-bottom: 1px solid var(--ink-3);

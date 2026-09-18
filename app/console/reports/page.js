@@ -185,18 +185,18 @@ export default function ConsoleReportsPage() {
   return (
     <main className="reports-page">
       <style>{`
-        .reports-page { padding: 32px 40px 120px; max-width: 1240px; margin: 0 auto; }
+        .reports-page { padding: 32px 48px 120px; max-width: 1240px; margin: 0 auto; }
         .reports-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 24px; }
         .reports-search {
-          flex: 1; max-width: 640px; display: flex; align-items: center; gap: 10px;
-          background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 999px; padding: 0 18px;
+          flex: 1; max-width: 640px; display: flex; align-items: center; gap: 12px;
+          background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 999px; padding: 0 16px;
           height: 44px; box-sizing: border-box;
         }
         .reports-search input { flex: 1; border: none; outline: none; background: transparent; font-size: 14px; color: var(--chalk); }
-        .reports-tabs { display: flex; gap: 6px; flex-wrap: wrap; flex-shrink: 0; }
+        .reports-tabs { display: flex; gap: 8px; flex-wrap: wrap; flex-shrink: 0; }
         .reports-tab {
-          display: flex; align-items: center; justify-content: center; gap: 6px; background: var(--ink-2); border: 1px solid var(--ink-3);
-          border-radius: 999px; padding: 0 14px; font-size: 12px; color: var(--muted); cursor: pointer;
+          display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--ink-2); border: 1px solid var(--ink-3);
+          border-radius: 999px; padding: 0 16px; font-size: 12px; color: var(--muted); cursor: pointer;
           transition: border-color 0.15s ease, background 0.15s ease;
           height: 44px; box-sizing: border-box; min-width: 150px;
         }
@@ -206,10 +206,10 @@ export default function ConsoleReportsPage() {
         .reports-table { width: 100%; border-collapse: collapse; background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 8px; overflow: hidden; }
         .reports-table th {
           text-align: left; font-size: 11px; letter-spacing: 0.06em; color: color-mix(in srgb, var(--muted) 55%, black); font-weight: 600;
-          padding: 14px 16px; border-bottom: 1px solid color-mix(in srgb, var(--ink-3) 55%, white); text-transform: uppercase;
+          padding: 16px 16px; border-bottom: 1px solid color-mix(in srgb, var(--ink-3) 55%, white); text-transform: uppercase;
           height: 65px; box-sizing: border-box; background: color-mix(in srgb, var(--ink-3) 90%, white);
         }
-        .reports-table td { padding: 14px 16px; border-bottom: 1px solid color-mix(in srgb, var(--ink-3) 55%, white); font-size: 14px; color: var(--chalk); vertical-align: middle; height: 65px; box-sizing: border-box; }
+        .reports-table td { padding: 16px 16px; border-bottom: 1px solid color-mix(in srgb, var(--ink-3) 55%, white); font-size: 14px; color: var(--chalk); vertical-align: middle; height: 65px; box-sizing: border-box; }
         .reports-col-center, th.reports-col-center, td.reports-col-center { text-align: center; }
         .reports-table tr:last-child td { border-bottom: none; }
         .reports-table tr { transition: background 0.1s ease; }
@@ -219,12 +219,12 @@ export default function ConsoleReportsPage() {
         .reports-row-name-clickable { cursor: pointer; width: fit-content; }
         .reports-row-title { font-weight: 600; }
         .reports-row-subtitle { font-size: 12px; color: var(--muted); margin-top: 2px; }
-        .reports-type-tag { display: inline-flex; align-items: center; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; width: fit-content; }
+        .reports-type-tag { display: inline-flex; align-items: center; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 999px; width: fit-content; }
         .reports-type-individual { background: var(--ink-3); color: var(--muted); }
         .reports-type-comparison { background: color-mix(in srgb, var(--brand) 15%, transparent); color: var(--brand); }
-        .reports-empty { text-align: center; padding: 80px 20px; color: var(--muted); }
+        .reports-empty { text-align: center; padding: 96px 24px; color: var(--muted); }
         .reports-checkbox { width: 16px; height: 16px; cursor: pointer; accent-color: var(--brand); }
-        .reports-row-actions { display: flex; align-items: center; justify-content: center; gap: 6px; opacity: 0; transition: opacity 0.12s ease; }
+        .reports-row-actions { display: flex; align-items: center; justify-content: center; gap: 8px; opacity: 0; transition: opacity 0.12s ease; }
         .reports-table tbody tr:hover .reports-row-actions { opacity: 1; }
         .reports-action-btn {
           width: 30px; height: 30px; border-radius: 8px; border: none; background: var(--ink-3);
@@ -235,8 +235,8 @@ export default function ConsoleReportsPage() {
         .reports-action-btn-danger:hover { background: color-mix(in srgb, var(--kick) 18%, transparent); color: var(--kick); }
         .reports-selection-bar {
           position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
-          background: #14151A; color: #fff; border-radius: 999px; padding: 12px 12px 12px 20px;
-          display: flex; align-items: center; gap: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 50;
+          background: #14151A; color: #fff; border-radius: 999px; padding: 12px 12px 12px 24px;
+          display: flex; align-items: center; gap: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 50;
         }
         .reports-selection-count {
           display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600;

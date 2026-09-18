@@ -53,21 +53,21 @@ export default function HistoryList({ onBack, onCompare, preselectId, appNameFil
           font-family: var(--font-body);
           min-height: 100%;
           border-radius: 8px;
-          padding: 28px 32px;
+          padding: 32px 32px;
         }
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
-        .history-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+        .history-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
         .history-title { font-family: var(--font-display); font-size: 24px; font-weight: 600; letter-spacing: -0.01em; }
         .back-btn {
-          display: flex; align-items: center; gap: 6px;
+          display: flex; align-items: center; gap: 8px;
           background: var(--ink-2); border: 1px solid var(--ink-3); color: var(--chalk);
-          font-size: 14px; padding: 8px 14px; border-radius: 8px; cursor: pointer;
+          font-size: 14px; padding: 8px 16px; border-radius: 8px; cursor: pointer;
         }
         .compare-btn {
           display: flex; align-items: center; gap: 8px;
           background: var(--brand); color: var(--ink); font-weight: 700; font-size: 14px;
-          padding: 10px 18px; border-radius: 8px; border: none; cursor: pointer;
+          padding: 12px 16px; border-radius: 8px; border: none; cursor: pointer;
           transition: transform 0.15s ease;
         }
         .compare-btn:not(:disabled):hover { transform: translateY(-2px); }
@@ -75,7 +75,7 @@ export default function HistoryList({ onBack, onCompare, preselectId, appNameFil
 
         .scan-list { display: flex; flex-direction: column; gap: 8px; }
         .scan-row {
-          display: flex; align-items: center; gap: 14px;
+          display: flex; align-items: center; gap: 16px;
           background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 8px;
           padding: 12px 16px; cursor: pointer; transition: border-color 0.15s ease, box-shadow 0.15s ease;
           box-shadow: var(--shadow);
@@ -101,8 +101,8 @@ export default function HistoryList({ onBack, onCompare, preselectId, appNameFil
         }
         .scan-view-btn:hover { border-color: var(--kick); }
 
-        .empty-state { color: var(--muted); font-size: 14px; text-align: center; padding: 40px 0; }
-        .hint { font-size: 12px; color: var(--muted); margin-bottom: 14px; }
+        .empty-state { color: var(--muted); font-size: 14px; text-align: center; padding: 48px 0; }
+        .hint { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
         .spin { animation: hist-spin 0.9s linear infinite; }
         @keyframes hist-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
@@ -117,7 +117,7 @@ export default function HistoryList({ onBack, onCompare, preselectId, appNameFil
         }
         .sticky-compare-hint { font-size: 14px; color: var(--muted); }
         @media (max-width: 560px) {
-          .sticky-compare-inner { flex-direction: column; align-items: stretch; gap: 10px; }
+          .sticky-compare-inner { flex-direction: column; align-items: stretch; gap: 12px; }
           .sticky-compare-hint { text-align: center; }
         }
       `}</style>

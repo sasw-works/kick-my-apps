@@ -27,12 +27,12 @@ function buildDigestHtml({ appName, analytics }) {
     .reverse()
     .map(
       (r) =>
-        `<tr><td style="padding:4px 8px;color:#697386;font-size: 14px;">${r.star}★</td><td style="padding:4px 8px;font-size: 14px;">${r.count} yorum</td></tr>`
+        `<tr><td style="padding: 4px 8px;color:#697386;font-size: 14px;">${r.star}★</td><td style="padding: 4px 8px;font-size: 14px;">${r.count} yorum</td></tr>`
     )
     .join("");
 
   const negativeBlock = analytics.mostHelpfulNegative
-    ? `<p style="font-size: 14px;color:#1A1F36;background:#F6F8FA;padding:12px;border-radius: 8px;">
+    ? `<p style="font-size: 14px;color:#1A1F36;background:#F6F8FA;padding: 12px;border-radius: 8px;">
          <strong>En çok oy alan olumsuz yorum:</strong><br/>
          ${(analytics.mostHelpfulNegative.content || "").slice(0, 220)}
        </p>`
@@ -44,12 +44,12 @@ function buildDigestHtml({ appName, analytics }) {
       <p style="color:#697386;font-size: 14px;">Son ${analytics.totalReviews} yorum üzerinden, ortalama <strong>${analytics.avgRating}</strong> ${stars}</p>
       <table>${distributionRows}</table>
       ${negativeBlock}
-      <p style="margin-top:20px;">
-        <a href="https://kick-my-apps.vercel.app" style="background:#F5433A;color:#fff;padding:10px 18px;border-radius: 999px;text-decoration:none;font-size: 14px;">
+      <p style="margin-top: 24px;">
+        <a href="https://kick-my-apps.vercel.app" style="background:#F5433A;color:#fff;padding: 12px 16px;border-radius: 999px;text-decoration:none;font-size: 14px;">
           Tam Analizi Gör
         </a>
       </p>
-      <p style="color:#9AA2B1;font-size: 11px;margin-top:24px;">Bu e-postayı Kick My Apps üzerinden bu uygulamayı takip ettiğin için alıyorsun.</p>
+      <p style="color:#9AA2B1;font-size: 11px;margin-top: 24px;">Bu e-postayı Kick My Apps üzerinden bu uygulamayı takip ettiğin için alıyorsun.</p>
     </div>
   `;
 }

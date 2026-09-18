@@ -54,14 +54,14 @@ export default function DashboardPage() {
             font-family: var(--font-inter), sans-serif;
             color: var(--chalk);
           }
-          .dash-title { font-size: 24px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 6px; }
-          .dash-sub { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
-          .dash-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+          .dash-title { font-size: 24px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 8px; }
+          .dash-sub { color: var(--muted); font-size: 14px; margin-bottom: 32px; }
+          .dash-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
           .dash-card {
             background: var(--ink-2);
             border: 1px solid var(--ink-3);
             border-radius: 8px;
-            padding: 20px;
+            padding: 24px;
             text-decoration: none;
             color: inherit;
             display: flex;
@@ -85,19 +85,19 @@ export default function DashboardPage() {
             font-size: 12px;
             color: var(--muted);
           }
-          .dash-empty { text-align: center; padding: 60px 0; color: var(--muted); }
+          .dash-empty { text-align: center; padding: 64px 0; color: var(--muted); }
           .spin { animation: dash-spin 0.9s linear infinite; }
           @keyframes dash-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
           .dash-cta {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             margin-top: 12px;
             background: var(--brand);
             color: #FFFFFF;
             font-weight: 600;
             font-size: 14px;
-            padding: 10px 18px;
+            padding: 12px 16px;
             border-radius: 999px;
             text-decoration: none;
           }

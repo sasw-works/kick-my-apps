@@ -669,10 +669,10 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 18px 28px;
+          padding: 16px 32px;
           border-bottom: 1px solid var(--ink-3);
         }
-        .kma-queried-app { display: flex; align-items: center; gap: 10px; }
+        .kma-queried-app { display: flex; align-items: center; gap: 12px; }
         .kma-queried-app-icon { width: 28px; height: 28px; border-radius: 8px; object-fit: cover; border: 1px solid var(--ink-3); }
         .kma-queried-app-fallback {
           width: 28px; height: 28px; border-radius: 8px; background: var(--brand); color: #fff;
@@ -680,10 +680,10 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         }
         .kma-queried-app-name { font-family: var(--font-display); font-size: 16px; font-weight: 600; color: var(--chalk); }
         .app-picker {
-          display: flex; align-items: center; gap: 6px;
+          display: flex; align-items: center; gap: 8px;
           font-family: var(--font-mono); font-size: 14px; color: var(--muted);
           background: var(--ink-2); border: 1px solid var(--ink-3);
-          padding: 7px 12px; border-radius: 8px;
+          padding: 8px 12px; border-radius: 8px;
         }
         .kma-close-btn {
           width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--ink-3);
@@ -692,24 +692,24 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         }
         .kma-close-btn:hover { background: var(--ink-3); border-color: var(--brand); color: var(--brand); }
 
-        .kma-main { padding: 24px 28px 32px; display: flex; flex-direction: column; gap: 32px; }
+        .kma-main { padding: 24px 32px 32px; display: flex; flex-direction: column; gap: 32px; }
 
         .upload-panel {
           background: var(--ink-2);
           border: 1px solid var(--ink-3);
           border-radius: 8px;
-          padding: 20px 22px;
+          padding: 24px 24px;
           display: flex;
           align-items: center;
           gap: 12px;
           flex-wrap: wrap;
           box-shadow: var(--shadow);
         }
-        .upload-slot-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .upload-slot-group { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
         .upload-slot {
           display: inline-flex; align-items: center; gap: 8px; width: fit-content;
           background: transparent; border: 1px solid var(--ink-3); border-radius: 999px;
-          padding: 8px 14px; font-size: 12px; color: var(--muted);
+          padding: 8px 16px; font-size: 12px; color: var(--muted);
         }
         .upload-slot strong { color: var(--chalk); font-weight: 600; }
         .kma-toolbar-btn {
@@ -727,7 +727,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         .kma-toolbar-card {
           display: flex; align-items: center; gap: 12px; background: var(--ink-2); border: 1px solid var(--ink-3);
-          border-radius: 8px; padding: 24px; margin-bottom: 20px; flex-wrap: wrap;
+          border-radius: 8px; padding: 24px; margin-bottom: 24px; flex-wrap: wrap;
         }
         .kma-toolbar-app { display: flex; align-items: center; gap: 12px; }
         .kma-toolbar-app-icon { width: 46px; height: 46px; border-radius: 8px; object-fit: cover; border: 1px solid var(--ink-3); }
@@ -738,7 +738,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .kma-toolbar-app-name { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--chalk); }
         .kma-toolbar-app-date { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
-        .summary-badge-list { display: flex; flex-direction: column; gap: 14px; }
+        .summary-badge-list { display: flex; flex-direction: column; gap: 16px; }
         .summary-badge-row { display: flex; align-items: center; gap: 12px; }
         .summary-badge {
           width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
@@ -746,14 +746,14 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         }
         .summary-badge-title { font-size: 14px; font-weight: 400; color: var(--chalk); }
 
-        .priority-action-row-v2 { display: flex; align-items: center; gap: 12px; padding: 10px 0; }
+        .priority-action-row-v2 { display: flex; align-items: center; gap: 12px; padding: 12px 0; }
         .priority-action-num-v2 {
           width: 26px; height: 26px; border-radius: 8px; background: var(--ink-3); color: var(--chalk);
           font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
         .priority-action-title-v2 { font-size: 14px; font-weight: 400; color: var(--chalk); }
 
-        .impact-row-v2 { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 6px 0; }
+        .impact-row-v2 { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 0; }
         .impact-label-v2 { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--chalk); }
         .impact-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--brand); flex-shrink: 0; }
         .impact-pill { font-size: 12px; font-weight: 400; padding: 4px 12px; border-radius: 999px; white-space: nowrap; }
@@ -770,7 +770,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .waveform-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
         @media (max-width: 800px) { .waveform-grid { grid-template-columns: 1fr; } }
 
-        .stackbar-list { display: flex; flex-direction: column; gap: 22px; }
+        .stackbar-list { display: flex; flex-direction: column; gap: 24px; }
         .stackbar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
         .stackbar-label { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; color: var(--chalk); }
         .stackbar-counts { font-size: 11px; font-family: var(--font-mono); color: var(--muted); }
@@ -781,7 +781,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           transition: width 0.6s ease;
         }
         .ai-summary-text { font-size: 14px; line-height: 1.65; color: var(--chalk); }
-        .priority-actions-list { display: flex; flex-direction: column; gap: 10px; }
+        .priority-actions-list { display: flex; flex-direction: column; gap: 12px; }
         .priority-action-row { display: flex; align-items: center; gap: 8px; }
         .priority-action-num {
           width: 18px; height: 18px; border-radius: 50%; background: var(--ink-3); color: var(--chalk);
@@ -790,17 +790,17 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .priority-action-title { font-size: 12px; color: var(--chalk); flex: 1; line-height: 1.4; }
         .priority-action-tag { font-size: 12px; font-weight: 400; padding: 2px 8px; border-radius: 999px; flex-shrink: 0; white-space: nowrap; }
         .impact-list { display: flex; flex-direction: column; gap: 12px; }
-        .impact-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+        .impact-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
         .impact-label { font-size: 12px; color: var(--muted); }
         .impact-value { font-size: 14px; font-weight: 700; white-space: nowrap; }
-        .impact-disclaimer { font-size: 12px; color: var(--muted); margin-top: 14px; line-height: 1.5; }
+        .impact-disclaimer { font-size: 12px; color: var(--muted); margin-top: 16px; line-height: 1.5; }
         .lens-score-row { display: flex; gap: 16px; flex-wrap: wrap; }
         .lens-score-item {
           flex: 1; min-width: 90px; text-align: center; background: var(--ink);
-          border-radius: 8px; padding: 18px 10px;
+          border-radius: 8px; padding: 16px 12px;
         }
         .lens-score-num { font-family: var(--font-display); font-size: 32px; font-weight: 700; line-height: 1; }
-        .lens-score-label { font-size: 12px; font-weight: 600; letter-spacing: 0.05em; color: var(--muted); margin-top: 6px; }
+        .lens-score-label { font-size: 12px; font-weight: 600; letter-spacing: 0.05em; color: var(--muted); margin-top: 8px; }
 
         .top-grid { display: grid; grid-template-columns: 330px 0.85fr 1.15fr; gap: 32px; }
         @media (max-width: 900px) {
@@ -814,19 +814,19 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .dial-panel .dial-wrap { align-self: center; display: flex; flex-direction: column; align-items: center; }
         .dial-caption { font-size: 12px; color: var(--muted); text-align: center; margin-top: 4px; }
 
-        .hist-header { margin-bottom: 10px; }
+        .hist-header { margin-bottom: 12px; }
         .hist-bignum {
           font-family: var(--font-display); font-size: 32px; font-weight: 700; letter-spacing: -0.02em;
-          color: var(--chalk); display: flex; align-items: baseline; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;
+          color: var(--chalk); display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;
         }
         .hist-delta { font-family: var(--font-mono); font-size: 12px; font-weight: 600; }
 
         .summary-list { display: flex; flex-direction: column; gap: 8px; }
-        .summary-row { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+        .summary-row { display: flex; align-items: center; gap: 12px; font-size: 14px; }
         .summary-count { font-family: var(--font-mono); font-weight: 700; width: 20px; }
 
         .shot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
-        .shot-frame { background: var(--ink); border: 1px solid var(--ink-3); border-radius: 8px; padding: 10px; }
+        .shot-frame { background: var(--ink); border: 1px solid var(--ink-3); border-radius: 8px; padding: 12px; }
         .shot-index { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-bottom: 8px; }
         .shot-img-wrap { position: relative; }
         .shot-img-wrap img { width: 100%; display: block; border-radius: 4px; }
@@ -836,7 +836,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .shot-highlight-label {
           position: absolute; bottom: calc(100% + 4px); left: -2px;
           white-space: normal; word-break: break-word; max-width: 220px;
-          font-size: 12px; font-weight: 600; line-height: 1.35; color: #fff; padding: 3px 6px; border-radius: 4px;
+          font-size: 12px; font-weight: 600; line-height: 1.35; color: #fff; padding: 4px 8px; border-radius: 4px;
           font-family: var(--font-mono); z-index: 2;
         }
 
@@ -844,24 +844,24 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .lens-name { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
         .lens-bar { display: flex; height: 6px; border-radius: 4px; overflow: hidden; background: var(--ink-3); margin-bottom: 8px; }
         .lens-seg { height: 100%; }
-        .lens-count { display: flex; gap: 10px; flex-wrap: wrap; font-family: var(--font-mono); font-size: 12px; }
+        .lens-count { display: flex; gap: 12px; flex-wrap: wrap; font-family: var(--font-mono); font-size: 12px; }
 
-        .qw-list { display: flex; flex-direction: column; gap: 10px; }
-        .qw-row { background: var(--ink); border-radius: 8px; padding: 12px 14px; }
-        .qw-top { display: flex; align-items: center; gap: 10px; }
+        .qw-list { display: flex; flex-direction: column; gap: 12px; }
+        .qw-row { background: var(--ink); border-radius: 8px; padding: 12px 16px; }
+        .qw-top { display: flex; align-items: center; gap: 12px; }
         .qw-title { font-size: 14px; font-weight: 600; }
-        .qw-tags { display: flex; gap: 6px; margin-bottom: 18px; }
+        .qw-tags { display: flex; gap: 8px; margin-bottom: 16px; }
         .qw-impact-bad { color: var(--kick); }
         .qw-impact-warn { color: var(--yellow); }
         .qw-effort { color: var(--teal); }
         .qw-suggestion { font-size: 12px; color: var(--muted); margin: 0; line-height: 1.5; }
 
-        .finding-list { display: flex; flex-direction: column; gap: 10px; }
+        .finding-list { display: flex; flex-direction: column; gap: 12px; }
         .bulgular-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-        .finding-filter-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+        .finding-filter-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
         .finding-filter-tab {
-          display: flex; align-items: center; gap: 6px; background: var(--ink-2); border: 1px solid var(--ink-3);
-          border-radius: 999px; padding: 6px 14px; font-size: 12px; color: var(--muted); cursor: pointer;
+          display: flex; align-items: center; gap: 8px; background: var(--ink-2); border: 1px solid var(--ink-3);
+          border-radius: 999px; padding: 8px 16px; font-size: 12px; color: var(--muted); cursor: pointer;
           transition: border-color 0.15s ease, background 0.15s ease;
         }
         .finding-filter-tab:hover { border-color: var(--brand); }
@@ -871,33 +871,33 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .lens-group { margin-bottom: 32px; }
         .lens-group:last-child { margin-bottom: 0; }
         .lens-group-title { font-family: var(--font-display); font-size: 16px; letter-spacing: 0; font-weight: 600; color: var(--chalk); margin-bottom: 4px; }
-        .lens-group-caption { font-size: 12px; color: var(--muted); margin-bottom: 20px; }
+        .lens-group-caption { font-size: 12px; color: var(--muted); margin-bottom: 24px; }
         .finding-row {
           background: var(--ink-2);
           border-radius: 8px;
-          padding: 14px 16px;
+          padding: 16px 16px;
           box-shadow: var(--shadow);
         }
-        .finding-row-top { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+        .finding-row-top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
         .finding-title { font-size: 14px; font-weight: 600; flex: 1; }
         .finding-status-pill {
           display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 400;
-          padding: 4px 12px; border-radius: 999px; white-space: nowrap; margin-bottom: 18px;
+          padding: 4px 12px; border-radius: 999px; white-space: nowrap; margin-bottom: 16px;
         }
         .finding-shot-ref {
           font-family: var(--font-mono); font-size: 12px; color: var(--muted);
-          background: var(--ink-3); padding: 2px 7px; border-radius: 999px;
+          background: var(--ink-3); padding: 2px 8px; border-radius: 999px;
         }
         .finding-text { font-size: 14px; color: var(--muted); line-height: 1.5; margin: 0; }
         .finding-suggestion {
           display: flex; align-items: flex-start; gap: 8px;
-          background: #FFFFFF; border-radius: 4px; padding: 8px 10px;
+          background: #FFFFFF; border-radius: 4px; padding: 8px 12px;
           font-size: 12px; color: #4B5563; line-height: 1.4;
-          margin: 18px 0 0 0;
+          margin: 16px 0 0 0;
         }
         .finding-suggestion {
           display: flex; align-items: flex-start; gap: 8px;
-          background: #FFFFFF; border-radius: 4px; padding: 9px 10px;
+          background: #FFFFFF; border-radius: 4px; padding: 8px 12px;
           font-size: 12px; color: #4B5563; line-height: 1.4;
         }
         .finding-suggestion span { flex: 1; }
@@ -910,19 +910,19 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         }
         .finding-code-lang {
           font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em;
-          color: #8a8f9c; padding: 6px 10px 0;
+          color: #8a8f9c; padding: 8px 12px 0;
         }
-        .finding-code pre { margin: 0; padding: 4px 10px 10px; overflow-x: auto; }
+        .finding-code pre { margin: 0; padding: 4px 12px 12px; overflow-x: auto; }
         .finding-code code { font-family: var(--font-mono); font-size: 12px; color: #f5f3ee; white-space: pre; }
 
-        .review-pair-grid { display: grid; grid-template-columns: 1fr 1fr; column-gap: 32px; row-gap: 20px; align-items: center; }
+        .review-pair-grid { display: grid; grid-template-columns: 1fr 1fr; column-gap: 32px; row-gap: 24px; align-items: center; }
         .review-pair-cell { display: flex; align-items: center; }
-        .review-extra { margin-top: 14px; }
-        .review-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
-        .review-meta { display: flex; align-items: baseline; gap: 14px; margin-bottom: 14px; }
+        .review-extra { margin-top: 16px; }
+        .review-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .review-meta { display: flex; align-items: baseline; gap: 16px; margin-bottom: 16px; }
         .review-count { font-family: var(--font-display); font-size: 32px; font-weight: 500; letter-spacing: -0.01em; }
         .review-rating { font-family: var(--font-mono); color: var(--yellow); font-size: 14px; }
-        .complaint-row { display: flex; align-items: center; gap: 10px; margin-bottom: 30px; width: 100%; }
+        .complaint-row { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; width: 100%; }
         .review-pair-cell .complaint-row { margin-bottom: 0; }
         .complaint-label { font-size: 12px; width: 150px; color: var(--chalk); flex-shrink: 0; }
         .complaint-track { flex: 1; height: 6px; background: var(--ink-3); border-radius: 4px; overflow: hidden; }
@@ -931,48 +931,48 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
 
         .review-subtitle {
           font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em;
-          color: var(--muted); margin: 66px 0 33px;
+          color: var(--muted); margin: 64px 0 32px;
         }
 
         .helpful-negative {
-          margin-top: 16px; background: var(--ink); border-radius: 8px; padding: 12px 14px;
+          margin-top: 16px; background: var(--ink); border-radius: 8px; padding: 12px 16px;
         }
         .helpful-negative-label {
-          font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 6px;
+          font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 8px;
         }
-        .helpful-negative-stars { color: var(--yellow); font-size: 14px; margin-bottom: 6px; }
+        .helpful-negative-stars { color: var(--yellow); font-size: 14px; margin-bottom: 8px; }
         .helpful-negative-text { font-size: 12px; color: var(--chalk); line-height: 1.5; margin: 0; }
 
-        .version-trend { margin-top: 66px; }
-        .version-trend .helpful-negative-label { margin-bottom: 33px; }
+        .version-trend { margin-top: 64px; }
+        .version-trend .helpful-negative-label { margin-bottom: 32px; }
         .version-trend-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
         .version-chip {
-          display: flex; align-items: center; gap: 6px; background: var(--ink-3);
-          border-radius: 999px; padding: 5px 11px;
+          display: flex; align-items: center; gap: 8px; background: var(--ink-3);
+          border-radius: 999px; padding: 4px 12px;
         }
         .version-chip-num { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
         .version-chip-avg { font-family: var(--font-mono); font-size: 12px; font-weight: 700; }
 
-        .roadmap-list { display: flex; flex-direction: column; gap: 30px; }
-        .roadmap-item { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--chalk); }
+        .roadmap-list { display: flex; flex-direction: column; gap: 32px; }
+        .roadmap-item { display: flex; align-items: center; gap: 12px; font-size: 12px; color: var(--chalk); }
 
-        .aso-meta { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-bottom: 14px; display: flex; gap: 4px; flex-wrap: wrap; }
+        .aso-meta { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-bottom: 16px; display: flex; gap: 4px; flex-wrap: wrap; }
         .aso-row { margin-bottom: 12px; }
-        .aso-label { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 3px; }
+        .aso-label { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 4px; }
         .aso-text { font-size: 14px; color: var(--chalk); line-height: 1.5; }
-        .aso-suggestions { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
-        .aso-suggestion-row { display: flex; align-items: flex-start; gap: 8px; background: var(--ink); border-radius: 4px; padding: 8px 10px; font-size: 12px; color: var(--muted); }
+        .aso-suggestions { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+        .aso-suggestion-row { display: flex; align-items: flex-start; gap: 8px; background: var(--ink); border-radius: 4px; padding: 8px 12px; font-size: 12px; color: var(--muted); }
 
         .risk-disclaimer { font-size: 12px; color: var(--muted); margin-bottom: 12px; font-style: italic; }
         .risk-list { display: flex; flex-direction: column; gap: 8px; }
-        .risk-row { display: flex; gap: 10px; background: var(--ink); border-radius: 4px; padding: 10px 12px; }
+        .risk-row { display: flex; gap: 12px; background: var(--ink); border-radius: 4px; padding: 12px 12px; }
         .risk-issue { font-size: 14px; color: var(--chalk); font-weight: 600; margin-bottom: 2px; }
         .risk-guideline { font-size: 12px; color: var(--muted); font-family: var(--font-mono); }
 
         .subscribe-panel {
           display: flex;
           align-items: center;
-          gap: 14px;
+          gap: 16px;
           flex-wrap: wrap;
         }
         .subscribe-icon {
@@ -985,24 +985,24 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .subscribe-form-row { display: flex; gap: 8px; }
         .subscribe-input {
           background: var(--ink); border: 1px solid var(--ink-3); border-radius: 999px;
-          padding: 9px 14px; font-size: 14px; color: var(--chalk); outline: none; width: 200px;
+          padding: 8px 16px; font-size: 14px; color: var(--chalk); outline: none; width: 200px;
         }
         .subscribe-btn {
           background: var(--brand); color: #FFFFFF; font-weight: 600; font-size: 14px;
-          padding: 9px 16px; border-radius: 999px; border: none; cursor: pointer; white-space: nowrap;
+          padding: 8px 16px; border-radius: 999px; border: none; cursor: pointer; white-space: nowrap;
         }
         .subscribe-btn:disabled { opacity: 0.6; cursor: default; }
         .subscribe-done { font-size: 14px; color: var(--teal); font-weight: 600; }
-        .subscribe-error { width: 100%; font-size: 12px; color: var(--kick); margin-top: 6px; }
+        .subscribe-error { width: 100%; font-size: 12px; color: var(--kick); margin-top: 8px; }
 
         .soon-row {
           display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
           font-size: 12px; color: var(--muted); padding-top: 4px;
         }
         .soon-label { font-family: var(--font-mono); letter-spacing: 0.1em; font-size: 12px; margin-right: 4px; }
-        .soon-item { display: inline-flex; align-items: center; gap: 5px; }
-        .soon-dot { margin-left: 6px; opacity: 0.6; }
-        .soon-badge { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; color: var(--muted); border: 1px solid var(--ink-3); padding: 2px 6px; border-radius: 4px; }
+        .soon-item { display: inline-flex; align-items: center; gap: 4px; }
+        .soon-dot { margin-left: 8px; opacity: 0.6; }
+        .soon-badge { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; color: var(--muted); border: 1px solid var(--ink-3); padding: 2px 8px; border-radius: 4px; }
       `}</style>
 
       <div className="kma-main">
@@ -1048,7 +1048,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
             style={{
               display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
               background: "var(--brand)", border: "1px solid var(--brand)", borderRadius: 999,
-              padding: "0 14px", fontSize: 12.5, fontWeight: 600, color: "#fff", height: 44, boxSizing: "border-box", minWidth: 125,
+              padding: "0 16px", fontSize: 12.5, fontWeight: 600, color: "#fff", height: 44, boxSizing: "border-box", minWidth: 125,
             }}
           >
             {onReset ? (

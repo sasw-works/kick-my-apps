@@ -156,8 +156,8 @@ export default function Header() {
           position: sticky;
           top: 0;
           z-index: 160;
-          padding: 24px 40px 110px;
-          margin-bottom: -110px;
+          padding: 24px 48px 110px;
+          margin-bottom: 2px;
           pointer-events: none;
           background: transparent;
         }
@@ -194,11 +194,11 @@ export default function Header() {
         .kma-header-nav {
           display: flex;
           align-items: center;
-          gap: 34px;
-          margin-right: 34px;
+          gap: 32px;
+          margin-right: 32px;
         }
         .kma-header-navitem {
-          display: flex; align-items: center; gap: 6px;
+          display: flex; align-items: center; gap: 8px;
           font-size: 16px;
           font-weight: 500;
           color: var(--chalk);
@@ -254,7 +254,7 @@ export default function Header() {
         .kma-header-right {
           display: flex;
           align-items: center;
-          gap: 20px;
+          gap: 24px;
           white-space: nowrap;
         }
         .kma-header-history {
@@ -269,7 +269,7 @@ export default function Header() {
           color: #FFFFFF;
           font-size: 14px;
           font-weight: 600;
-          padding: 11px 22px;
+          padding: 12px 24px;
           border-radius: 999px;
           border: none;
           cursor: pointer;
@@ -292,7 +292,7 @@ export default function Header() {
         .kma-navdrop-panel {
           position: fixed; transform: translateX(-50%) translateY(-8px); opacity: 0;
           background: var(--ink-2);
-          border-radius: 4px; padding: 30px;
+          border-radius: 4px; padding: 32px;
           z-index: 200; display: flex; gap: 8px;
           transition: opacity 0.18s ease, transform 0.18s ease;
           pointer-events: none;
@@ -300,13 +300,13 @@ export default function Header() {
         .kma-navdrop-panel-visible {
           opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto;
         }
-        .kma-navdrop-col { display: flex; flex-direction: column; gap: 11px; flex: 1; min-width: 200px; }
+        .kma-navdrop-col { display: flex; flex-direction: column; gap: 12px; flex: 1; min-width: 200px; }
         .kma-navdrop-col-label {
           font-size: 11px; font-weight: 700; letter-spacing: 0.07em; color: var(--muted);
-          text-transform: uppercase; padding: 6px 12px 10px;
+          text-transform: uppercase; padding: 8px 12px 12px;
         }
         .kma-navdrop-item {
-          position: relative; display: flex; flex-direction: column; padding: 10px 12px 16px; border-radius: 8px;
+          position: relative; display: flex; flex-direction: column; padding: 12px 12px 16px; border-radius: 8px;
           transition: background 0.15s ease;
         }
         .kma-navdrop-item-title { font-size: 14px; font-weight: 600; color: var(--chalk); transition: color 0.15s ease; }
@@ -318,7 +318,7 @@ export default function Header() {
           transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .kma-navdrop-item:hover::after { transform: scaleX(1); }
-        .kma-navdrop-item-desc { font-size: 12px; color: var(--muted); margin-top: 1px; }
+        .kma-navdrop-item-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
       `}</style>
     </div>
   );

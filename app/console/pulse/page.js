@@ -46,20 +46,20 @@ export default function ConsolePulsePage() {
   return (
     <main className="pulse-page">
       <style>{`
-        .pulse-page { padding: 32px 40px 120px; max-width: 1240px; margin: 0 auto; }
-        .pulse-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin-bottom: 28px; flex-wrap: wrap; }
-        .pulse-title { font-size: 24px; font-weight: 700; font-family: var(--font-display); color: var(--chalk); margin-bottom: 6px; }
+        .pulse-page { padding: 32px 48px 120px; max-width: 1240px; margin: 0 auto; }
+        .pulse-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 32px; flex-wrap: wrap; }
+        .pulse-title { font-size: 24px; font-weight: 700; font-family: var(--font-display); color: var(--chalk); margin-bottom: 8px; }
         .pulse-subtitle { font-size: 14px; color: var(--muted); max-width: 520px; line-height: 1.5; }
         .pulse-add-btn {
           display: flex; align-items: center; gap: 8px; background: var(--brand); color: #fff;
-          border: none; border-radius: 999px; padding: 12px 20px; font-size: 14px; font-weight: 600; cursor: pointer;
+          border: none; border-radius: 999px; padding: 12px 24px; font-size: 14px; font-weight: 600; cursor: pointer;
           white-space: nowrap;
         }
 
         .pulse-list { display: flex; flex-direction: column; gap: 12px; }
         .pulse-card {
-          background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 8px; padding: 20px 22px;
-          display: flex; align-items: center; gap: 18px;
+          background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 8px; padding: 24px 24px;
+          display: flex; align-items: center; gap: 16px;
         }
         .pulse-card-paused { opacity: 0.55; }
         .pulse-avatar {
@@ -67,7 +67,7 @@ export default function ConsolePulsePage() {
           display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
         .pulse-card-main { flex: 1; min-width: 0; }
-        .pulse-card-name-row { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+        .pulse-card-name-row { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
         .pulse-card-name { font-size: 16px; font-weight: 600; color: var(--chalk); }
         .pulse-status-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
         .pulse-status-active { background: var(--teal); }
@@ -84,8 +84,8 @@ export default function ConsolePulsePage() {
         .pulse-sentiment-flat { color: var(--muted); }
 
         .pulse-alert {
-          display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--kick);
-          background: color-mix(in srgb, var(--kick) 12%, transparent); padding: 4px 10px; border-radius: 999px; white-space: nowrap;
+          display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--kick);
+          background: color-mix(in srgb, var(--kick) 12%, transparent); padding: 4px 12px; border-radius: 999px; white-space: nowrap;
         }
 
         .pulse-more-btn {

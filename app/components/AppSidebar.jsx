@@ -26,18 +26,18 @@ export default function AppSidebar() {
           font-family: var(--font-inter), sans-serif;
           position: fixed; top: 0; left: 0; overflow-y: auto; z-index: 40;
         }
-        .kma-sidebar-logo { display: flex; align-items: center; gap: 8px; padding: 0 8px; margin-bottom: 28px; }
-        .kma-sidebar-section { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: var(--muted); padding: 0 8px; margin-bottom: 10px; }
-        .kma-sidebar-nav { display: flex; flex-direction: column; gap: 17px; }
+        .kma-sidebar-logo { display: flex; align-items: center; gap: 8px; padding: 0 8px; margin-bottom: 32px; }
+        .kma-sidebar-section { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: var(--muted); padding: 0 8px; margin-bottom: 12px; }
+        .kma-sidebar-nav { display: flex; flex-direction: column; gap: 16px; }
         .kma-sidebar-link {
-          display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px;
+          display: flex; align-items: center; gap: 12px; padding: 12px 12px; border-radius: 8px;
           font-size: 14px; color: var(--chalk); text-decoration: none; transition: background 0.15s ease;
         }
         .kma-sidebar-link:hover { background: var(--ink); }
         .kma-sidebar-link-active { background: color-mix(in srgb, var(--brand) 12%, transparent); color: var(--brand); font-weight: 600; }
         .kma-sidebar-spacer { flex: 1; }
         .kma-sidebar-user {
-          display: flex; align-items: center; gap: 10px; padding: 12px 8px 0;
+          display: flex; align-items: center; gap: 12px; padding: 12px 8px 0;
           border-top: 1px solid var(--ink-3); margin-top: 12px;
         }
         .kma-sidebar-avatar {
@@ -47,7 +47,7 @@ export default function AppSidebar() {
         }
         .kma-sidebar-plan {
           font-size: 11px; font-weight: 600; color: var(--yellow); background: color-mix(in srgb, var(--yellow) 15%, transparent);
-          padding: 1px 8px; border-radius: 999px; width: fit-content; margin-top: 2px;
+          padding: 2px 8px; border-radius: 999px; width: fit-content; margin-top: 2px;
         }
       `}</style>
 
