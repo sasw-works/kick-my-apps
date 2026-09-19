@@ -454,6 +454,50 @@ export default function MarketingSections() {
           flex: 0 0 440px; scroll-snap-align: start;
         }
         @media (max-width: 700px) { .mkt-grid-4 > * { flex-basis: 82vw; } }
+        .mkt-alt-row {
+          display: grid; grid-template-columns: 1fr 1fr; gap: 96px; align-items: center;
+          margin-bottom: 96px;
+        }
+        .mkt-alt-row-rev .mkt-alt-text { order: 2; }
+        .mkt-alt-row-rev .mkt-alt-visual { order: 1; }
+        @media (max-width: 900px) {
+          .mkt-alt-row { grid-template-columns: 1fr; gap: 32px; margin-bottom: 64px; }
+          .mkt-alt-row-rev .mkt-alt-text { order: 1; }
+          .mkt-alt-row-rev .mkt-alt-visual { order: 2; }
+        }
+        .mkt-alt-eyebrow {
+          display: inline-block; font-family: var(--font-mono), ui-monospace, monospace;
+          font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+          background: var(--ink-3); padding: 4px 12px; border-radius: 4px; margin-bottom: 24px;
+        }
+        .mkt-alt-title { font-size: 32px; font-weight: 700; color: var(--chalk); letter-spacing: -0.02em; line-height: 1.15; margin: 0 0 16px; }
+        .mkt-alt-desc { font-size: 16px; color: var(--muted); line-height: 1.6; margin: 0; max-width: 460px; }
+
+        .mkt-mock-panel {
+          background: var(--ink); border: 1px solid var(--ink-3); border-radius: 8px; padding: 24px;
+        }
+        .mkt-mock-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+        .mkt-mock-title { font-size: 14px; font-weight: 600; color: var(--chalk); }
+        .mkt-mock-chips { display: flex; gap: 4px; }
+        .mkt-mock-chip { font-size: 11px; color: var(--muted); background: var(--ink-3); padding: 4px 8px; border-radius: 999px; }
+        .mkt-mock-chip-on { background: var(--chalk); color: var(--ink-2); }
+        .mkt-mock-find { border-radius: 8px; padding: 16px; margin-bottom: 8px; }
+        .mkt-mock-sev { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 999px; margin-bottom: 8px; }
+        .mkt-mock-find-title { font-size: 14px; font-weight: 600; color: var(--chalk); }
+        .mkt-mock-find-desc { font-size: 12px; color: var(--muted); line-height: 1.5; margin-top: 4px; }
+        .mkt-mock-qw { background: var(--ink-2); border-radius: 8px; padding: 16px; margin-bottom: 8px; }
+        .mkt-mock-qw-tags { display: flex; gap: 4px; margin-bottom: 8px; }
+        .mkt-mock-cmp { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .mkt-mock-cmp-label { font-size: 11px; color: var(--muted); width: 96px; flex-shrink: 0; }
+        .mkt-mock-cmp-bars { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+        .mkt-mock-cmp-bar { height: 8px; background: var(--ink-2); border-radius: 999px; overflow: hidden; }
+        .mkt-mock-cmp-bar > div { height: 100%; border-radius: 999px; }
+        .mkt-mock-cmp-nums { font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; flex-shrink: 0; }
+        .mkt-mock-legend { display: flex; gap: 16px; font-size: 11px; color: var(--muted); margin-top: 16px; }
+        .mkt-mock-legend span { display: flex; align-items: center; gap: 4px; }
+        .mkt-mock-legend i { width: 8px; height: 8px; border-radius: 999px; display: block; }
+        .mkt-mock-axis { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-top: 8px; }
+
         .mkt-secoda-card {
           background: #F4F2EF; border-radius: 8px; padding: 32px;
           display: flex; flex-direction: column;
@@ -994,48 +1038,121 @@ export default function MarketingSections() {
         </div>
       </div>
 
-      {/* 13 categories + Quick Wins + Weekly digest + Compare, merged */}
-      <div className="mkt-reveal mkt-fullbleed">
+      {/* Alternating feature rows */}
+      <div className="mkt-reveal">
         <div className="mkt-section-title">Deep, but never messy</div>
-        <div className="mkt-section-sub">13 categories of findings, prioritized by impact, and tracked with weekly digests and competitor comparisons.</div>
-        <div
-          className="mkt-grid-4"
-          ref={cardsRef}
-          onMouseDown={onCardsDragStart}
-          onMouseMove={onCardsDragMove}
-          onMouseUp={endCardsDrag}
-          onMouseLeave={endCardsDrag}
-        >
-          {/* Card 1 */}
-          <div className="mkt-secoda-card mkt-lift">
-            <div className="mkt-secoda-eyebrow">Smart prioritization</div>
-            <div className="mkt-secoda-title mkt-secoda-title-lg">Enrich your findings with meaningful context</div>
-            <div className="mkt-secoda-desc">Organizes and enriches every finding so your reports stay precise, useful and truly actionable.</div>
-            <div className="mkt-secoda-mock"><img src="/blocks/block-1.svg" alt="" className="mkt-block-img" /></div>
-          </div>
+        <div className="mkt-section-sub">13 categories of findings, prioritized by impact, tracked over time.</div>
 
-          {/* Card 2 */}
-          <div className="mkt-secoda-card mkt-lift">
-            <div className="mkt-secoda-eyebrow">Full coverage</div>
-            <div className="mkt-secoda-title mkt-secoda-title-lg">13 categories across four analysis lenses</div>
-            <div className="mkt-secoda-desc">Every finding maps to a UI, UX, Accessibility or Product lens, so nothing ever slips through.</div>
-            <div className="mkt-secoda-mock"><img src="/blocks/block-2.svg" alt="" className="mkt-block-img mkt-block-img-d1" /></div>
+        {/* Row 1 — text left, visual right */}
+        <div className="mkt-alt-row">
+          <div className="mkt-alt-text">
+            <span className="mkt-alt-eyebrow">Findings</span>
+            <h3 className="mkt-alt-title">See every issue in context</h3>
+            <p className="mkt-alt-desc">Every finding maps to a UI, UX, Accessibility or Product lens, with a clear severity and a concrete suggestion for what to change.</p>
           </div>
-
-          {/* Card 3 */}
-          <div className="mkt-secoda-card mkt-lift">
-            <div className="mkt-secoda-eyebrow">Side by side</div>
-            <div className="mkt-secoda-title mkt-secoda-title-lg">Compare your app with a competitor</div>
-            <div className="mkt-secoda-desc">Put two reports side by side to see where you lead, where you lag, and what to fix first.</div>
-            <div className="mkt-secoda-mock"><img src="/blocks/block-3.svg" alt="" className="mkt-block-img mkt-block-img-d2" /></div>
+          <div className="mkt-alt-visual">
+            <div className="mkt-mock-panel">
+              <div className="mkt-mock-head">
+                <span className="mkt-mock-title">Findings</span>
+                <span className="mkt-mock-chips">
+                  <span className="mkt-mock-chip mkt-mock-chip-on">All 12</span>
+                  <span className="mkt-mock-chip">Critical 3</span>
+                </span>
+              </div>
+              {[
+                { t: "CTA button contrast", s: "Critical", c: "var(--kick)", d: "Primary CTA fails WCAG AA against the onboarding background." },
+                { t: "Onboarding is 7 screens", s: "Warning", c: "var(--yellow)", d: "Long first-run flow increases drop-off before activation." },
+                { t: "Empty states are clear", s: "Healthy", c: "var(--teal)", d: "Each empty view explains what to do next." },
+              ].map((f) => (
+                <div className="mkt-mock-find" key={f.t} style={{ background: `color-mix(in srgb, ${f.c} 8%, var(--ink-2))` }}>
+                  <span className="mkt-mock-sev" style={{ color: f.c, background: `color-mix(in srgb, ${f.c} 16%, transparent)` }}>{f.s}</span>
+                  <div className="mkt-mock-find-title">{f.t}</div>
+                  <div className="mkt-mock-find-desc">{f.d}</div>
+                </div>
+              ))}
+            </div>
           </div>
+        </div>
 
-          {/* Card 4 */}
-          <div className="mkt-secoda-card mkt-lift">
-            <div className="mkt-secoda-eyebrow">Always on</div>
-            <div className="mkt-secoda-title mkt-secoda-title-lg">Weekly digests keep you in the loop</div>
-            <div className="mkt-secoda-desc">A summary of your app&rsquo;s new reviews lands in your inbox every week, fully automatically.</div>
-            <div className="mkt-secoda-mock"><img src="/blocks/block-4.svg" alt="" className="mkt-block-img mkt-block-img-d3" /></div>
+        {/* Row 2 — visual left, text right */}
+        <div className="mkt-alt-row mkt-alt-row-rev">
+          <div className="mkt-alt-text">
+            <span className="mkt-alt-eyebrow">Prioritization</span>
+            <h3 className="mkt-alt-title">Know what to fix first</h3>
+            <p className="mkt-alt-desc">We pair impact with implementation effort, so the quick wins rise to the top instead of getting buried in a long list.</p>
+          </div>
+          <div className="mkt-alt-visual">
+            <div className="mkt-mock-panel">
+              <div className="mkt-mock-head"><span className="mkt-mock-title">Quick wins</span></div>
+              {[
+                { t: "Raise CTA contrast ratio", i: "High impact", e: "Low effort" },
+                { t: "Trim onboarding to 4 screens", i: "High impact", e: "Medium effort" },
+                { t: "Add labels to icon-only buttons", i: "Medium impact", e: "Low effort" },
+              ].map((q) => (
+                <div className="mkt-mock-qw" key={q.t}>
+                  <div className="mkt-mock-qw-tags">
+                    <span className="mkt-mock-sev" style={{ color: "var(--brand)", background: "color-mix(in srgb, var(--brand) 14%, transparent)" }}>{q.i}</span>
+                    <span className="mkt-mock-sev" style={{ color: "var(--muted)", background: "var(--ink-3)" }}>{q.e}</span>
+                  </div>
+                  <div className="mkt-mock-find-title">{q.t}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Row 3 — text left, visual right */}
+        <div className="mkt-alt-row">
+          <div className="mkt-alt-text">
+            <span className="mkt-alt-eyebrow">Benchmarking</span>
+            <h3 className="mkt-alt-title">Compare with a competitor</h3>
+            <p className="mkt-alt-desc">Put two reports side by side and see exactly where you lead, where you lag, and which issues you both share.</p>
+          </div>
+          <div className="mkt-alt-visual">
+            <div className="mkt-mock-panel">
+              <div className="mkt-mock-head"><span className="mkt-mock-title">Lens scores</span></div>
+              {[
+                { l: "User Interface", a: 82, b: 64 },
+                { l: "User Experience", a: 71, b: 78 },
+                { l: "Accessibility", a: 58, b: 45 },
+                { l: "Product", a: 88, b: 60 },
+              ].map((r) => (
+                <div className="mkt-mock-cmp" key={r.l}>
+                  <span className="mkt-mock-cmp-label">{r.l}</span>
+                  <div className="mkt-mock-cmp-bars">
+                    <div className="mkt-mock-cmp-bar"><div style={{ width: `${r.a}%`, background: "var(--brand)" }} /></div>
+                    <div className="mkt-mock-cmp-bar"><div style={{ width: `${r.b}%`, background: "var(--ink-3)" }} /></div>
+                  </div>
+                  <span className="mkt-mock-cmp-nums">{r.a} / {r.b}</span>
+                </div>
+              ))}
+              <div className="mkt-mock-legend">
+                <span><i style={{ background: "var(--brand)" }} /> You</span>
+                <span><i style={{ background: "var(--ink-3)" }} /> Competitor</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Row 4 — visual left, text right */}
+        <div className="mkt-alt-row mkt-alt-row-rev">
+          <div className="mkt-alt-text">
+            <span className="mkt-alt-eyebrow">Monitoring</span>
+            <h3 className="mkt-alt-title">Watch your score move</h3>
+            <p className="mkt-alt-desc">Run an analysis whenever you ship, and see whether the changes actually moved your health score in the right direction.</p>
+          </div>
+          <div className="mkt-alt-visual">
+            <div className="mkt-mock-panel">
+              <div className="mkt-mock-head">
+                <span className="mkt-mock-title">Health score trend</span>
+                <span className="mkt-mock-sev" style={{ color: "var(--teal)", background: "color-mix(in srgb, var(--teal) 14%, transparent)" }}>+14</span>
+              </div>
+              <svg viewBox="0 0 300 110" width="100%" height="110" preserveAspectRatio="none" style={{ marginTop: 8 }}>
+                <polyline points="0,86 60,78 120,82 180,52 240,38 300,24" fill="none" stroke="var(--teal)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                <circle cx="300" cy="24" r="5" fill="var(--teal)" />
+              </svg>
+              <div className="mkt-mock-axis"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span></div>
+            </div>
           </div>
         </div>
       </div>
