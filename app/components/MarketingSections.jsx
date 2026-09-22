@@ -121,11 +121,11 @@ const FAQ = [
   },
   {
     q: "How fresh are the reviews?",
-    a: "We pull them from the App Store in real time on every analysis — no caching, so you always see the latest reviews.",
+    a: "We pull them from the App Store in real time on every analysis, with no caching, so you always see the latest reviews.",
   },
   {
     q: "Can I compare against competitor apps?",
-    a: "Yes — you can compare any two scans side by side, including your own app against a competitor.",
+    a: "Yes, you can compare any two scans side by side, including your own app against a competitor.",
   },
   {
     q: "How are findings prioritized?",

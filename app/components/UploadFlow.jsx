@@ -622,7 +622,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         <span className="hero-sub-line">
           Enter your app name or upload screenshots to uncover UI issues, usability problems, and quick wins
         </span>{" "}
-        <span className="hero-sub-line">— powered by AI, so you can ship a better product, faster.</span>
+        <span className="hero-sub-line">powered by AI, so you can ship a better product, faster.</span>
       </p>
 
       <div className="hero-input-row">
@@ -700,7 +700,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
             {files.length > 0 ? `${files.length} screenshots selected` : dark ? "Upload screens" : "Upload UI screens"}
           </span>
           <div className="upload-pill-tooltip">
-            Optionally add up to 12 image screenshots (PNG, JPG, WEBP, etc. — not design files like Figma) so we can spot UX, UI, and product-level issues in your design and suggest improvements.
+            Optionally add up to 12 image screenshots (PNG, JPG, WEBP, etc., not design files like Figma) so we can spot UX, UI, and product-level issues in your design and suggest improvements.
           </div>
         </label>
 

@@ -231,7 +231,7 @@ export default function FeaturesSection() {
                 <CenterText
                   title="Real App Store data"
                   lines={[
-                    "Not guesswork — we analyze real, publicly available App Store",
+                    "Not guesswork: we analyze real, publicly available App Store",
                     "reviews directly and honestly.",
                   ]}
                 />
@@ -262,7 +262,7 @@ export default function FeaturesSection() {
                 <CenterText
                   title="Always fresh"
                   lines={[
-                    "No caching, ever — every single analysis pulls the freshest",
+                    "No caching, ever: every single analysis pulls the freshest",
                     "reviews straight from the source.",
                   ]}
                 />

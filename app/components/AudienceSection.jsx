@@ -23,7 +23,7 @@ function Icon({ pieces, dots, dotColor }) {
 const CARDS = [
   {
     title: "UX and UI Designers",
-    body: "Catch usability friction and inconsistent patterns before they ship, backed by evidence from real screenshots.",
+    body: "Catch usability friction and inconsistent patterns before they ship, backed by real screenshots.",
     dotColor: "#95d3ff",
     dots: [
       [32, 32],
@@ -79,7 +79,7 @@ const CARDS = [
   },
   {
     title: "Developers",
-    body: "Skip the guesswork — every finding ships with a concrete, code-level fix ready to implement.",
+    body: "Skip the guesswork: every finding ships with a concrete, code-level fix ready to implement.",
     dotColor: "#a2cead",
     dots: [
       [40, 40],
@@ -147,7 +147,7 @@ export default function AudienceSection() {
       <div className="au-headline">
         <h2 className="au-title">One platform, every role on your team</h2>
         <p className="au-sub">
-          From designers to developers, everyone gets the exact feedback they need — in a format they can act on.
+          From designers to developers, everyone gets the exact feedback they need, in a format they can act on.
         </p>
       </div>
       <div className="au-cards">
