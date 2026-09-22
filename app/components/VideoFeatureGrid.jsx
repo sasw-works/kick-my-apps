@@ -65,9 +65,9 @@ export default function VideoFeatureGrid() {
         .mkt-grid-dark-spacer-sm { flex-basis: 0px; }
         .mkt-grid-dark-cell {
           position: relative; overflow: hidden; flex: 0 0 300px; width: 300px; height: 250px;
-          border-left: 1px solid rgba(255,255,255,0.5); box-sizing: border-box;
+          border-left: 1px solid #363C4B; box-sizing: border-box;
         }
-        .mkt-grid-dark-row:not(:first-child) .mkt-grid-dark-cell { border-top: 1px solid rgba(255,255,255,0.5); }
+        .mkt-grid-dark-row:not(:first-child) .mkt-grid-dark-cell { border-top: 1px solid #363C4B; }
         .mkt-grid-dark-fill {
           position: absolute; inset: 0; background: var(--cell-fill);
           background-size: cover; background-position: center;
@@ -94,7 +94,7 @@ export default function VideoFeatureGrid() {
           .mkt-grid-dark-title { display: none; }
           .mkt-grid-dark-spacer { display: none; }
           .mkt-grid-dark-cell {
-            flex: none; width: auto; height: 220px; border: 1px solid rgba(255,255,255,0.5);
+            flex: none; width: auto; height: 220px; border: 1px solid #363C4B;
           }
         }
       `}</style>
