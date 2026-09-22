@@ -378,8 +378,6 @@ export default function MarketingSections() {
         .mkt-reveal-d2 { transition-delay: 0.16s; }
         .mkt-reveal-d3 { transition-delay: 0.24s; }
         .mkt-reveal-d4 { transition-delay: 0.32s; }
-        .mkt-section-title { font-size: 32px; font-weight: 500; letter-spacing: -0.02em; color: var(--chalk); text-align: center; margin-bottom: 12px; }
-        .mkt-section-sub { font-size: 16px; font-family: var(--font-body); color: var(--muted); text-align: center; max-width: 480px; margin: 0 auto 48px; }
         .mkt-title-card {
           background: var(--ink);
           border-radius: 8px;

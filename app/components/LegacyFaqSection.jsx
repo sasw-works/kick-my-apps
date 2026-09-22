@@ -54,9 +54,10 @@ export default function LegacyFaqSection() {
   return (
     <div className="mkt-reveal">
       <style>{`
-        .mkt-section-title { font-size: 32px; font-weight: 500; letter-spacing: -0.02em; color: var(--chalk); text-align: center; margin-bottom: 12px; }
-        .mkt-section-sub { font-size: 16px; font-family: var(--font-body); color: var(--muted); text-align: center; max-width: 480px; margin: 0 auto 48px; }
-        .faq-eyebrow { font-size: 16px; font-family: var(--font-body); color: var(--muted); text-align: center; margin-bottom: 8px; }
+        /* Headline matches every other KMA Dark section: 42/57.6 title, 18/28 sub below it. */
+        .faq-headline { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; margin-top: 150px; margin-bottom: 48px; }
+        .mkt-section-title { margin: 0; font-size: 42px; line-height: 57.6px; font-weight: 400; color: #ffffff; }
+        .mkt-section-sub { margin: 0; font-size: var(--fs-18); line-height: 28px; font-weight: 400; color: #dedede; }
         .faq-list { max-width: 720px; margin: 0 auto 48px; border-top: 1px solid var(--ink-3); }
         .faq-row { border-bottom: 1px solid var(--ink-3); }
         .faq-q {
@@ -92,9 +93,10 @@ export default function LegacyFaqSection() {
         }
         .faq-support-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
       `}</style>
-      <div className="faq-eyebrow" style={{ marginTop: 150 }}>We&apos;re happy to answer your questions</div>
-      <div className="mkt-section-title">Frequently asked questions</div>
-      <div className="mkt-section-sub">&nbsp;</div>
+      <div className="faq-headline">
+        <h2 className="mkt-section-title">Frequently asked questions</h2>
+        <p className="mkt-section-sub">We&apos;re happy to answer your questions</p>
+      </div>
       <div className="faq-list">
         {FAQ.map((f) => (
           <FaqItem key={f.q} q={f.q} a={f.a} />

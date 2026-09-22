@@ -42,7 +42,7 @@ export default function VideoFeatureGrid() {
           margin-left: -50vw; margin-right: -50vw; padding: 0 48px; box-sizing: border-box;
         }
         .mkt-grid-dark-wrap {
-          background: #030B25; padding: 0 0 0 48px;
+          background: #030B25; padding: 0 0 0 48px; margin-top: 90px;
           position: relative; overflow: hidden;
         }
         .mkt-grid-dark-video {
