@@ -10,7 +10,7 @@ import FeaturesSection from "./FeaturesSection";
 import AudienceSection from "./AudienceSection";
 import PricingSection from "./PricingSection";
 import VideoFeatureGrid from "./VideoFeatureGrid";
-import FaqSection from "./FaqSection";
+import LegacyFaqSection from "./LegacyFaqSection";
 import MarketingSections from "./MarketingSections";
 
 export default function AppFlow({ showMarketing = true, handoffToConsole = false }) {
@@ -176,7 +176,7 @@ export default function AppFlow({ showMarketing = true, handoffToConsole = false
               <AudienceSection />
               <PricingSection />
               <VideoFeatureGrid />
-              <FaqSection />
+              <LegacyFaqSection />
               <MarketingSections />
             </>
           )}
