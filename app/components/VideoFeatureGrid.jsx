@@ -49,9 +49,6 @@ export default function VideoFeatureGrid() {
           position: absolute; inset: 0; width: 100%; height: 100%;
           object-fit: cover; object-position: center bottom; z-index: 0; transform: scaleX(-1); opacity: 0.5;
         }
-        .mkt-grid-dark-video-overlay {
-          z-index: 1; opacity: 0.1969; transform: scaleX(-1);
-        }
         .mkt-grid-dark-inner {
           max-width: 1500px; margin-left: auto; margin-right: 0; overflow-x: auto;
           border-top: 1px solid rgba(255,255,255,0.5); border-bottom: 1px solid rgba(255,255,255,0.5);
@@ -106,9 +103,6 @@ export default function VideoFeatureGrid() {
       <div className="mkt-fullbleed mkt-grid-dark-wrap">
         <video className="mkt-grid-dark-video" autoPlay loop muted playsInline>
           <source src="/dark-grid-bg.mp4" type="video/mp4" />
-        </video>
-        <video className="mkt-grid-dark-video mkt-grid-dark-video-overlay" autoPlay loop muted playsInline>
-          <source src="/dark-grid-bg-overlay.mp4" type="video/mp4" />
         </video>
         <div className="mkt-grid-dark-inner">
           <div className="mkt-grid-dark-row">
