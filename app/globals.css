@@ -16,7 +16,7 @@
 
   /* KMA Dark (Figma 4071:2) */
   --kma-dark-ink: #1e1e1e;
-  --blue-100: #2b59ff;
+  --blue-100: #533afe; /* brand accent — matches the FAQ section's purple (was #2b59ff blue) */
   --glass-bg: rgba(38, 53, 64, 0.5);
   --glass-border: #395c77;
   --glass-blur: 15px; /* Figma background blur 30 = CSS blur 15px */
