@@ -1,5 +1,4 @@
-// Figma "Dashboard" 4155:192 — 1170x700 white card + blurred 5-colour light underneath.
-// The white card is a placeholder: the new dashboard screenshot will be dropped into it later.
+// Figma "Dashboard" 4155:192 — 1170x700 card + blurred 5-colour light underneath.
 export default function DashboardSection() {
   return (
     <section className="kma-dashboard" aria-label="Dashboard preview">
@@ -32,12 +31,23 @@ export default function DashboardSection() {
         .kma-dashboard-card {
           position: absolute;
           inset: 0;
-          background: #ffffff;
+          background: #17181F;
           border-radius: 8px;
+          overflow: hidden;
+        }
+        .kma-dashboard-card img {
+          display: block;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: top center;
         }
       `}</style>
       <div className="kma-dashboard-shadow" aria-hidden="true" />
-      <div className="kma-dashboard-card" />
+      <div className="kma-dashboard-card">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/dark/dashboard/dashboard.svg" alt="Kick My Apps dashboard preview" />
+      </div>
     </section>
   );
 }
