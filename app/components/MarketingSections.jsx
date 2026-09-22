@@ -303,25 +303,6 @@ function FreshIcon({ size = 36 }) {
   );
 }
 
-function FaqItem({ q, a }) {
-  const [open, setOpen] = React.useState(false);
-  return (
-    <div className="faq-row">
-      <button className="faq-q" onClick={() => setOpen(!open)}>
-        <span>{q}</span>
-        <span className={`faq-toggle ${open ? "faq-toggle-open" : ""}`}>
-          {open ? <X size={22} color="#FFFFFF" /> : <Plus size={22} color="var(--muted)" />}
-        </span>
-      </button>
-      <div className={`faq-a-wrap ${open ? "faq-a-wrap-open" : ""}`}>
-        <div className="faq-a-inner">
-          <div className="faq-a">{a}</div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function MarketingSections() {
   const carouselRef = useRef(null);
   const dragState = useRef({ isDown: false, startX: 0, scrollStart: 0, moved: false });
@@ -932,64 +913,6 @@ export default function MarketingSections() {
             </div>
           ))}
         </div>
-        </div>
-      </div>
-
-      {/* Pricing */}
-      <div className="mkt-pricing mkt-reveal">
-        <div className="mkt-pricing-header">
-          <div className="mkt-section-title">Choose your plan</div>
-          <div className="mkt-section-sub">Start free, upgrade when you need more. Cancel anytime.</div>
-        </div>
-        <div className="mkt-pricing-grid">
-          {PRICING_PLANS.map((plan) => (
-            <div key={plan.tier} className={`mkt-pricing-card ${plan.highlighted ? "mkt-pricing-card-highlighted" : ""}`}>
-              {plan.highlighted && <div className="mkt-pricing-badge">MOST POPULAR</div>}
-              <div className="mkt-pricing-tier-row">
-                <div className="mkt-pricing-tier">{plan.tier}</div>
-                {plan.highlighted && (
-                  <div className="mkt-billing-toggle">
-                    <button
-                      className={`mkt-billing-toggle-btn ${billingCycle === "monthly" ? "mkt-billing-toggle-btn-active" : ""}`}
-                      onClick={() => setBillingCycle("monthly")}
-                    >
-                      Monthly
-                    </button>
-                    <button
-                      className={`mkt-billing-toggle-btn ${billingCycle === "annual" ? "mkt-billing-toggle-btn-active" : ""}`}
-                      onClick={() => setBillingCycle("annual")}
-                    >
-                      Annual <span className="mkt-billing-save">SAVE 20%</span>
-                    </button>
-                  </div>
-                )}
-              </div>
-              <div className="mkt-pricing-price-row">
-                <span className="mkt-pricing-price">
-                  {plan.highlighted ? (billingCycle === "annual" ? plan.priceAnnual : plan.priceMonthly) : plan.price}
-                </span>
-                {plan.priceSuffix && <span className="mkt-pricing-price-suffix">{plan.priceSuffix}</span>}
-              </div>
-              <div className="mkt-pricing-note">
-                {plan.highlighted ? (billingCycle === "annual" ? plan.priceAnnualNote : plan.priceMonthlyNote) : plan.priceNote}
-              </div>
-              <div className="mkt-pricing-desc">{plan.desc}</div>
-              <div className="mkt-pricing-divider" />
-              <div className="mkt-pricing-features">
-                {plan.features.map((f, i) => (
-                  <div className="mkt-pricing-feature-row" key={i}>
-                    {f.included ? (
-                      <CheckCircle2 size={16} color="var(--teal)" />
-                    ) : (
-                      <XCircle size={16} color="var(--ink-3)" />
-                    )}
-                    <span style={{ color: f.included ? "var(--chalk)" : "var(--muted)", fontWeight: f.bold ? 700 : 400 }}>{f.text}</span>
-                  </div>
-                ))}
-              </div>
-              <button className={`mkt-pricing-cta ${plan.highlighted ? "mkt-pricing-cta-brand" : ""}`}>{plan.cta}</button>
-            </div>
-          ))}
         </div>
       </div>
 
