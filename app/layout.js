@@ -6,6 +6,9 @@ const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
+  // opsz axis: the 90px headline picks the Inter Display cut (opsz 32). Everything else stays pinned
+  // to the default optical size via `font-optical-sizing: none` in globals.css.
+  axes: ["opsz"],
 });
 
 export const metadata = {

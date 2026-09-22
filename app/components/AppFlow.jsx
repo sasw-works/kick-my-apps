@@ -4,6 +4,13 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import UploadFlow from "./UploadFlow";
 import HealthReport from "./HealthReport";
+import DashboardSection from "./DashboardSection";
+import CustomersSection from "./CustomersSection";
+import FeaturesSection from "./FeaturesSection";
+import AudienceSection from "./AudienceSection";
+import PricingSection from "./PricingSection";
+import FeatureGridSection from "./FeatureGridSection";
+import FaqSection from "./FaqSection";
 import MarketingSections from "./MarketingSections";
 
 export default function AppFlow({ showMarketing = true, handoffToConsole = false }) {
@@ -160,8 +167,19 @@ export default function AppFlow({ showMarketing = true, handoffToConsole = false
       `}</style>
       {stage === "upload" ? (
         <>
-          <UploadFlow onAnalyze={handleAnalyze} analyzing={analyzing} errorMessage={errorMessage} showBackground={showMarketing} />
-          {showMarketing && <MarketingSections />}
+          <UploadFlow onAnalyze={handleAnalyze} analyzing={analyzing} errorMessage={errorMessage} variant={showMarketing ? "dark" : "default"} />
+          {showMarketing && (
+            <>
+              <DashboardSection />
+              <CustomersSection />
+              <FeaturesSection />
+              <AudienceSection />
+              <PricingSection />
+              <FeatureGridSection />
+              <FaqSection />
+              <MarketingSections />
+            </>
+          )}
         </>
       ) : (
         <HealthReport

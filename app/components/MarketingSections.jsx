@@ -806,8 +806,6 @@ export default function MarketingSections() {
         }
         .mkt-carousel-arrow:hover { border-color: var(--brand); }
 
-        .faq-eyebrow { font-size: 16px; font-family: var(--font-body); color: var(--muted); text-align: center; margin-bottom: 8px; }
-
         .mkt-pricing { margin-top: 150px; width: calc(100% + 150px); max-width: 1150px; margin-left: 2px; margin-right: 2px; }
         @media (max-width: 1100px) {
           .mkt-pricing { width: 100%; max-width: 100%; margin-left: 0; margin-right: 0; }
@@ -860,185 +858,34 @@ export default function MarketingSections() {
         }
         .mkt-pricing-cta:hover { filter: brightness(1.08); transform: translateY(-1px); }
         .mkt-pricing-cta-brand { background: var(--chalk); color: #fff; }
-        .faq-list { max-width: 720px; margin: 0 auto 48px; border-top: 1px solid var(--ink-3); }
-        .faq-row { border-bottom: 1px solid var(--ink-3); }
-        .faq-q {
-          width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 24px;
-          background: none; border: none; cursor: pointer; padding: 24px 4px;
-          font-size: 20px; font-weight: 500; color: var(--chalk); text-align: left;
-          transition: color 0.2s ease;
-        }
-        .faq-q:hover { color: var(--brand); }
-        .faq-toggle {
-          width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
-          display: flex; align-items: center; justify-content: center;
-          background: var(--ink-3); transition: background 0.2s ease, transform 0.3s ease;
-        }
-        .faq-toggle-open { background: #533AFE; transform: rotate(180deg); }
-        .faq-a-wrap {
-          display: grid;
-          grid-template-rows: 0fr;
-          transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .faq-a-wrap-open { grid-template-rows: 1fr; }
-        .faq-a-inner { overflow: hidden; }
-        .faq-a {
-          font-size: 16px; font-family: var(--font-body); color: var(--muted); line-height: 1.7; padding: 0 4px 24px; max-width: 560px;
-          opacity: 0; transform: translateY(-6px);
-          transition: opacity 0.3s ease 0.05s, transform 0.3s ease 0.05s;
-        }
-        .faq-a-wrap-open .faq-a { opacity: 1; transform: translateY(0); }
-        .faq-support-btn {
-          display: block; margin: 0 auto; background: #533AFE; color: #FFFFFF;
-          font-weight: 600; font-size: 16px; padding: 12px 32px; border-radius: 999px; border: none; cursor: pointer;
-          transition: filter 0.2s ease, transform 0.2s ease;
-        }
-        .faq-support-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
-
+        /* Figma "Footer" 4161:1144 — the CTA banner half; the copyright/links row below it
+           is the sitewide <Footer/> that AppFlow already renders right after this component. */
         .mkt-closing-cta {
-          background: #000000; padding: 100px 48px; margin-top: 96px;
+          background: #18181b; padding: 100px 24px 80px; margin-top: 90px;
           display: flex; flex-direction: column; align-items: center; text-align: center;
         }
-        .mkt-closing-logo { margin-bottom: 48px; }
+        .mkt-closing-logo { margin-bottom: 47px; }
         .mkt-closing-heading {
-          font-family: var(--font-display); font-size: 48px; font-weight: 500; color: #FFFFFF;
-          letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 32px;
+          font-family: var(--font-inter), sans-serif; font-size: 42px; font-weight: 400; color: #ffffff;
+          line-height: 57.6px; margin-bottom: 48px;
         }
         .mkt-closing-btn {
-          background: #533AFE; color: #FFFFFF; font-weight: 600; font-size: 16px;
-          padding: 16px 32px; border-radius: 999px; border: none; cursor: pointer;
+          width: 206px; height: 55px;
+          background: var(--blue-100); color: #FFFFFF; font-weight: 500; font-size: 19.8px;
+          border-radius: 50px; border: none; cursor: pointer;
+          font-family: var(--font-inter), sans-serif;
           transition: filter 0.2s ease, transform 0.2s ease;
         }
         .mkt-closing-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
         @media (max-width: 600px) {
           .mkt-closing-heading { font-size: 32px; }
+          .mkt-closing-cta { padding: 64px 24px 56px; }
         }
 
         @media (max-width: 780px) {
           .mkt-grid-2, .mkt-showcase, .mkt-grid-4 { grid-template-columns: 1fr; }
         }
       `}</style>
-
-      {/* Report preview */}
-      <div>
-        <div className="mkt-title-card">
-          <div className="mkt-section-title" style={{ marginBottom: 8 }}>See the real report</div>
-          <div className="mkt-section-sub" style={{ marginBottom: 0 }}>Your screenshots and reviews turn into one clear health report.</div>
-        </div>
-        <div className="mkt-browser-frame">
-          <div className="mkt-browser-topbar">
-            <div className="mkt-browser-dots">
-              <span style={{ background: "#FF5F57" }} />
-              <span style={{ background: "#FFBD2E" }} />
-              <span style={{ background: "#28C840" }} />
-            </div>
-            <div className="mkt-browser-url">kickmyapps.com/report</div>
-          </div>
-          <div className="mkt-preview-card">
-            <img src="/kma-console-preview.png" alt="Kick My Apps console" className="mkt-preview-full-img" />
-          </div>
-        </div>
-      </div>
-
-      {/* App Store data + Always fresh */}
-      <div className="mkt-reveal">
-        <div className="mkt-section-title">Everything your reviews are telling you</div>
-        <div className="mkt-section-sub">Screenshot analysis and real user reviews meet in the same report.</div>
-        <div className="mkt-grid-2">
-          <div className="mkt-halo mkt-halo-pink">
-            <div className="mkt-feature-card mkt-feature-card-floating">
-              <div className="mkt-feature-icon" style={{ background: "transparent", width: 99, height: 99 }}><AppStoreDataIcon size={99} /></div>
-              <div className="mkt-feature-title">Real App Store data</div>
-              <div className="mkt-feature-desc" style={{ marginBottom: 43 }}>Not guesswork — we analyze real, publicly available App Store reviews directly and honestly.</div>
-              <div className="mkt-priority-row" style={{ justifyContent: "center", gap: 8 }}>
-                <span className="mkt-live-dot" />
-                <span style={{ fontSize: 12.5, color: "var(--muted)" }}>★★★★☆ · 1,240 reviews analyzed</span>
-              </div>
-              <div className="mkt-rating-dist">
-                {[
-                  { star: 5, pct: 62 },
-                  { star: 4, pct: 21 },
-                  { star: 3, pct: 9 },
-                  { star: 2, pct: 5 },
-                  { star: 1, pct: 3 },
-                ].map((r) => (
-                  <div className="mkt-rating-dist-row" key={r.star}>
-                    <span className="mkt-rating-dist-label">{r.star}★</span>
-                    <div className="mkt-rating-dist-bar">
-                      <div className="mkt-rating-dist-fill" style={{ width: `${r.pct}%` }} />
-                    </div>
-                    <span className="mkt-rating-dist-pct">{r.pct}%</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="mkt-halo mkt-halo-mint">
-            <div className="mkt-feature-card mkt-feature-card-floating">
-              <div className="mkt-feature-icon" style={{ background: "transparent", width: 99, height: 99 }}><FreshIcon size={99} /></div>
-              <div className="mkt-feature-title">Always fresh</div>
-              <div className="mkt-feature-desc" style={{ marginBottom: 43 }}>No caching, ever — every single analysis pulls the freshest reviews straight from the source.</div>
-              <div className="mkt-ticker">
-                <div className="mkt-ticker-track">
-                  {[...SAMPLE_REVIEWS, ...SAMPLE_REVIEWS].map((r, i) => (
-                    <div className="mkt-review-card" key={i}>
-                      <div className="mkt-review-stars">{"★".repeat(r.stars)}{"☆".repeat(5 - r.stars)}</div>
-                      <div className="mkt-review-title">{r.title}</div>
-                      <div className="mkt-review-body">{r.body} — {r.who}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* 13 categories + Quick Wins + Weekly digest + Compare, merged */}
-      <div className="mkt-reveal mkt-fullbleed">
-        <div className="mkt-section-title">Deep, but never messy</div>
-        <div className="mkt-section-sub">13 categories of findings, prioritized by impact, and tracked with weekly digests and competitor comparisons.</div>
-        <div
-          className="mkt-grid-4"
-          ref={cardsRef}
-          onMouseDown={onCardsDragStart}
-          onMouseMove={onCardsDragMove}
-          onMouseUp={endCardsDrag}
-          onMouseLeave={endCardsDrag}
-        >
-          {/* Card 1 */}
-          <div className="mkt-secoda-card mkt-lift">
-            <div className="mkt-secoda-eyebrow">Smart prioritization</div>
-            <div className="mkt-secoda-title mkt-secoda-title-lg">Enrich your findings with meaningful context</div>
-            <div className="mkt-secoda-desc">Organizes and enriches every finding so your reports stay precise, useful and truly actionable.</div>
-            <div className="mkt-secoda-mock"><img src="/blocks/block-1.svg" alt="" className="mkt-block-img" /></div>
-          </div>
-
-          {/* Card 2 */}
-          <div className="mkt-secoda-card mkt-lift">
-            <div className="mkt-secoda-eyebrow">Full coverage</div>
-            <div className="mkt-secoda-title mkt-secoda-title-lg">13 categories across four analysis lenses</div>
-            <div className="mkt-secoda-desc">Every finding maps to a UI, UX, Accessibility or Product lens, so nothing ever slips through.</div>
-            <div className="mkt-secoda-mock"><img src="/blocks/block-2.svg" alt="" className="mkt-block-img mkt-block-img-d1" /></div>
-          </div>
-
-          {/* Card 3 */}
-          <div className="mkt-secoda-card mkt-lift">
-            <div className="mkt-secoda-eyebrow">Side by side</div>
-            <div className="mkt-secoda-title mkt-secoda-title-lg">Compare your app with a competitor</div>
-            <div className="mkt-secoda-desc">Put two reports side by side to see where you lead, where you lag, and what to fix first.</div>
-            <div className="mkt-secoda-mock"><img src="/blocks/block-3.svg" alt="" className="mkt-block-img mkt-block-img-d2" /></div>
-          </div>
-
-          {/* Card 4 */}
-          <div className="mkt-secoda-card mkt-lift">
-            <div className="mkt-secoda-eyebrow">Always on</div>
-            <div className="mkt-secoda-title mkt-secoda-title-lg">Weekly digests keep you in the loop</div>
-            <div className="mkt-secoda-desc">A summary of your app&rsquo;s new reviews lands in your inbox every week, fully automatically.</div>
-            <div className="mkt-secoda-mock"><img src="/blocks/block-4.svg" alt="" className="mkt-block-img mkt-block-img-d3" /></div>
-          </div>
-        </div>
-      </div>
 
       {/* All features — dark grid */}
       <div className="mkt-fullbleed mkt-grid-dark-wrap">
@@ -1146,23 +993,10 @@ export default function MarketingSections() {
         </div>
       </div>
 
-      {/* FAQ */}
-      <div className="mkt-reveal">
-        <div className="faq-eyebrow" style={{ marginTop: 150 }}>We're happy to answer your questions</div>
-        <div className="mkt-section-title">Frequently asked questions</div>
-        <div className="mkt-section-sub">&nbsp;</div>
-        <div className="faq-list">
-          {FAQ.map((f) => (
-            <FaqItem key={f.q} q={f.q} a={f.a} />
-          ))}
-        </div>
-        <Link href="/support" className="faq-support-btn" style={{ textDecoration: "none", display: "block", width: "fit-content" }}>Support Page</Link>
-      </div>
-
       {/* Closing CTA */}
       <div className="mkt-fullbleed mkt-closing-cta mkt-reveal">
-        <div className="mkt-closing-logo"><FooterLogo size={140} /></div>
-        <div className="mkt-closing-heading">Ready to see<br />what's hurting your app?</div>
+        <div className="mkt-closing-logo"><FooterLogo size={200} /></div>
+        <div className="mkt-closing-heading">Ready to see<br />what&apos;s hurting your app?</div>
         <button
           className="mkt-closing-btn"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}

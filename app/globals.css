@@ -13,9 +13,29 @@
   --shadow: none;
   --background: var(--ink);
   --foreground: var(--chalk);
+
+  /* KMA Dark (Figma 4071:2) */
+  --kma-dark-ink: #1e1e1e;
+  --blue-100: #2b59ff;
+  --glass-bg: rgba(38, 53, 64, 0.5);
+  --glass-border: #395c77;
+  --glass-blur: 15px; /* Figma background blur 30 = CSS blur 15px */
+
+  /* Figma values that fall OUTSIDE the token scales
+     (font 11/12/14/16/20/24/32/48/90, space 2/4/8/12/16/24/32/48/64/96).
+     Kept exact for now; snapping them later is a one-line change each. */
+  --fs-18: 18px;   /* header nav + Sign in */
+  --gap-75: 75px;  /* hero text block -> search row */
+  --pad-42: 42px;  /* hero search/upload pill inline padding */
+  --radius-16: 16px; /* Features cards */
+
+  /* Figma body letter-spacing. With unhinted (real-browser) advances Google's Inter lands within ~1px of
+     Figma's own text widths (73, 90, 88, 160, 145, 1106) at exactly this value, so no compensation is needed. */
+  --ls-body: -0.2px;
 }
 
-html.dark {
+html.dark,
+.kma-dark {
   --ink: #14151A;
   --ink-2: #1C1E26;
   --ink-3: #2A2C36;
@@ -28,6 +48,39 @@ html.dark {
   --shadow: none;
 }
 
+/* Home route only, until every section is migrated to the new design. */
+.kma-dark {
+  --ink: var(--kma-dark-ink);
+  --chalk: #ffffff;
+  --muted: #a1a1aa;
+  --background: var(--ink);
+  --foreground: var(--chalk);
+
+  position: relative;
+  isolation: isolate;
+  overflow-x: clip; /* clip (not hidden) so the sticky header keeps working */
+  min-height: 100vh;
+  background: var(--ink);
+  color: var(--chalk);
+}
+body:has(> .kma-dark) {
+  background: var(--kma-dark-ink);
+  color: #ffffff;
+}
+
+/* Figma 4157:177 "Div [absolute]" — 1728x1558 radial light, centred, top of page */
+.kma-glow {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1728px;
+  height: 1558px;
+  transform: translateX(-50%);
+  background: url("/dark/hero-glow.svg") no-repeat center top / 1728px 1558px;
+  pointer-events: none;
+  z-index: -1;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -37,6 +90,7 @@ body {
   background: var(--ink);
   color: var(--chalk);
   font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+  font-optical-sizing: none; /* keep body text on opsz 14 (unchanged look); headings opt in with auto */
   transition: background 0.2s ease, color 0.2s ease;
   overflow-x: hidden;
 }

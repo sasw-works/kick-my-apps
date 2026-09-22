@@ -4,7 +4,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import LogoMark from "./LogoMark";
-import { ChevronDown } from "lucide-react";
 
 const FEATURE_GROUPS = [
   {
@@ -68,11 +67,11 @@ const RESOURCES_GROUPS = [
 function NavDropdown({ label, groups, open, onEnter, onLeave }) {
   const anchorRef = useRef(null);
   const [coords, setCoords] = useState(null);
-  const [mounted, setMounted] = useState(false);
+  const [portalRoot, setPortalRoot] = useState(null); // inside .kma-dark when present, so the panel gets the dark tokens
   const [rendered, setRendered] = useState(false); // DOM'da mı (animasyon çıkışı için)
   const [visible, setVisible] = useState(false); // animasyon durumu
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => setPortalRoot(anchorRef.current?.closest(".kma-dark") || document.body), []);
 
   useEffect(() => {
     let hideTimer;
@@ -94,14 +93,16 @@ function NavDropdown({ label, groups, open, onEnter, onLeave }) {
     <div className="kma-navdrop" ref={anchorRef} onMouseEnter={onEnter} onMouseLeave={onLeave}>
       <span className="kma-header-navitem kma-header-navitem-clickable">
         {label}
-        <ChevronDown size={14} className={`kma-navdrop-chevron ${open ? "kma-navdrop-chevron-open" : ""}`} />
+        <span className={`kma-navdrop-chevron ${open ? "kma-navdrop-chevron-open" : ""}`} aria-hidden="true">
+          <img src="/dark/header-arrow.svg" alt="" width={12.2632} height={9.56178} />
+        </span>
       </span>
-      {mounted && rendered &&
+      {portalRoot && rendered &&
         createPortal(
           <div className={`kma-navdrop-backdrop ${visible ? "kma-navdrop-backdrop-visible" : ""}`} />,
-          document.body
+          portalRoot
         )}
-      {mounted && rendered && coords &&
+      {portalRoot && rendered && coords &&
         createPortal(
           <div
             className={`kma-navdrop-panel ${visible ? "kma-navdrop-panel-visible" : ""}`}
@@ -121,14 +122,14 @@ function NavDropdown({ label, groups, open, onEnter, onLeave }) {
               </div>
             ))}
           </div>,
-          document.body
+          portalRoot
         )}
     </div>
   );
 }
 
 export default function Header() {
-  const [openMenu, setOpenMenu] = useState(null); // "features" | "usecases" | null
+  const [openMenu, setOpenMenu] = useState(null); // "features" | "usecases" | "resources" | null
   const closeTimer = useRef(null);
 
   const openWithDelay = (key) => {
@@ -152,12 +153,13 @@ export default function Header() {
   return (
     <div className="kma-header-wrap">
       <style>{`
+        /* Figma "Header" 4071:585 — 1170x100, sits 50px from the top of the page. */
         .kma-header-wrap {
           position: sticky;
           top: 0;
           z-index: 160;
-          padding: 24px 48px 110px;
-          margin-bottom: 2px;
+          padding: 50px 24px 64px;
+          margin-bottom: -64px; /* the 64px is only room for the blur fade; hero starts 150px below the header */
           pointer-events: none;
           background: transparent;
         }
@@ -169,17 +171,17 @@ export default function Header() {
           mask-image: linear-gradient(to bottom, black 0%, black 20%, transparent 100%);
           pointer-events: none;
         }
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
         .kma-header-inner {
           position: relative;
           z-index: 1;
           pointer-events: auto;
-          max-width: 1400px;
+          max-width: 1170px;
+          height: 100px;
           margin: 0 auto;
           display: flex;
           align-items: center;
-          gap: 8px;
+          justify-content: space-between;
           font-family: var(--font-inter), sans-serif;
         }
         .kma-header-logo {
@@ -190,86 +192,70 @@ export default function Header() {
           text-decoration: none;
           cursor: pointer;
         }
-        .kma-header-spacer { flex: 1; }
+
+        /* right: 721px = navigation 471 + action 250 */
+        .kma-header-right {
+          display: flex;
+          align-items: center;
+          width: 721px;
+          flex-shrink: 0;
+        }
         .kma-header-nav {
           display: flex;
           align-items: center;
-          gap: 32px;
-          margin-right: 32px;
+          gap: 48px;
+          flex: 1 1 0;
+          min-width: 0;
         }
+        .kma-navdrop { position: relative; flex: 1 1 0; display: flex; justify-content: center; min-width: 0; }
         .kma-header-navitem {
-          display: flex; align-items: center; gap: 8px;
-          font-size: 16px;
-          font-weight: 500;
+          display: flex; align-items: center; justify-content: center; gap: 12px;
+          font-size: var(--fs-18);
+          font-weight: 400;
+          line-height: 32px;
+          letter-spacing: var(--ls-body);
           color: var(--chalk);
           user-select: none;
           white-space: nowrap;
         }
         .kma-header-navitem-clickable { cursor: pointer; }
+        /* arrow: 11.571 x 8.87 box, the 12.26 x 9.56 asset overflows it exactly as in Figma */
         .kma-navdrop-chevron {
-          color: var(--muted); transition: transform 0.25s ease, color 0.2s ease;
+          position: relative; display: block; flex-shrink: 0;
+          width: 11.571px; height: 8.87px;
+          transition: transform 0.25s ease;
         }
-        .kma-navdrop-chevron-open { transform: rotate(180deg); color: #533AFE; }
-        .kma-navdrop { position: relative; }
-      `}</style>
+        .kma-navdrop-chevron img { position: absolute; top: 0; left: -0.346px; display: block; max-width: none; filter: invert(1); } /* asset is white: darken it on light pages */
+        .kma-dark .kma-navdrop-chevron img { filter: none; }
+        .kma-navdrop-chevron-open { transform: rotate(180deg); }
 
-      <div className="kma-header-blur-bg" />
-      <div className="kma-header-inner">
-        <Link href="/" className="kma-header-logo">
-          <LogoMark size={86} />
-        </Link>
-
-        <div className="kma-header-spacer" />
-
-        <nav className="kma-header-nav">
-          <NavDropdown
-            label="Features"
-            groups={FEATURE_GROUPS}
-            open={openMenu === "features"}
-            onEnter={() => openWithDelay("features")}
-            onLeave={closeWithDelay}
-          />
-          <NavDropdown
-            label="Use Cases"
-            groups={USE_CASE_GROUPS}
-            open={openMenu === "usecases"}
-            onEnter={() => openWithDelay("usecases")}
-            onLeave={closeWithDelay}
-          />
-          <NavDropdown
-            label="Resources"
-            groups={RESOURCES_GROUPS}
-            open={openMenu === "resources"}
-            onEnter={() => openWithDelay("resources")}
-            onLeave={closeWithDelay}
-          />
-        </nav>
-
-        <div className="kma-header-right">
-          <button className="kma-header-signin">Sign in</button>
-        </div>
-      </div>
-
-      <style>{`
-        .kma-header-right {
+        .kma-header-action {
           display: flex;
           align-items: center;
-          gap: 24px;
+          justify-content: flex-end;
+          gap: 16px;
+          width: 250px;
+          flex-shrink: 0;
           white-space: nowrap;
         }
-        .kma-header-history {
-          font-size: 14px;
-          font-weight: 500;
-          color: var(--chalk);
-          text-decoration: none;
-          white-space: nowrap;
+        /* Theme toggle only exists in the dark design (the asset is a dark glass circle). */
+        .kma-header-theme {
+          display: none;
+          padding: 0; border: none; background: transparent;
+          width: 56px; height: 56px; flex-shrink: 0;
+          cursor: pointer;
         }
+        .kma-dark .kma-header-theme { display: block; }
+        .kma-header-theme img { display: block; }
         .kma-header-signin {
-          background: #533AFE;
+          display: flex; align-items: center; justify-content: center;
+          width: 138px; height: 56px;
+          background: var(--blue-100);
           color: #FFFFFF;
-          font-size: 14px;
-          font-weight: 600;
-          padding: 12px 24px;
+          font-family: var(--font-inter), sans-serif;
+          font-size: var(--fs-18);
+          font-weight: 400;
+          letter-spacing: var(--ls-body);
           border-radius: 999px;
           border: none;
           cursor: pointer;
@@ -278,8 +264,20 @@ export default function Header() {
         }
         .kma-header-signin:hover { filter: brightness(1.08); transform: translateY(-1px); }
 
-        @media (max-width: 900px) {
+        @media (max-width: 1240px) {
+          .kma-header-right { width: auto; }
+          .kma-header-nav { flex: 0 0 auto; margin-right: 32px; gap: 32px; }
+          .kma-navdrop { flex: 0 0 auto; }
+          .kma-header-action { width: auto; }
+          .kma-header-logo svg { width: 300px; height: auto; }
+        }
+        @media (max-width: 1000px) {
           .kma-header-nav { display: none; }
+          .kma-header-logo svg { width: 240px; }
+        }
+        @media (max-width: 600px) {
+          .kma-header-logo svg { width: 190px; }
+          .kma-dark .kma-header-theme { display: none; }
         }
 
         .kma-navdrop-backdrop {
@@ -320,6 +318,46 @@ export default function Header() {
         .kma-navdrop-item:hover::after { transform: scaleX(1); }
         .kma-navdrop-item-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
       `}</style>
+
+      <div className="kma-header-blur-bg" />
+      <div className="kma-header-inner">
+        <Link href="/" className="kma-header-logo" aria-label="Kick my apps">
+          <LogoMark size={100} color="currentColor" />
+        </Link>
+
+        <div className="kma-header-right">
+          <nav className="kma-header-nav">
+            <NavDropdown
+              label="Features"
+              groups={FEATURE_GROUPS}
+              open={openMenu === "features"}
+              onEnter={() => openWithDelay("features")}
+              onLeave={closeWithDelay}
+            />
+            <NavDropdown
+              label="Use Cases"
+              groups={USE_CASE_GROUPS}
+              open={openMenu === "usecases"}
+              onEnter={() => openWithDelay("usecases")}
+              onLeave={closeWithDelay}
+            />
+            <NavDropdown
+              label="Resources"
+              groups={RESOURCES_GROUPS}
+              open={openMenu === "resources"}
+              onEnter={() => openWithDelay("resources")}
+              onLeave={closeWithDelay}
+            />
+          </nav>
+
+          <div className="kma-header-action">
+            <button type="button" className="kma-header-theme" aria-label="Toggle theme">
+              <img src="/dark/header-theme-toggle.svg" alt="" width={56} height={56} />
+            </button>
+            <button type="button" className="kma-header-signin">Sign in</button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

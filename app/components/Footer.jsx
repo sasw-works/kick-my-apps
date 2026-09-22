@@ -11,24 +11,26 @@ export default function Footer() {
   return (
     <footer className="kma-footer">
       <style>{`
+        /* Figma "Footer" 4161:1144 — the copyright/links row beneath the closing CTA banner. */
         .kma-footer {
-          background: #000000;
+          background: #18181b;
           font-family: var(--font-inter), sans-serif;
-          border-top: 1px solid rgba(255,255,255,0.12);
-          padding: 24px;
+          border-top: 1px solid #484848;
+          padding: 40px 24px;
         }
         .kma-footer-inner {
-          max-width: 1100px;
+          max-width: 1170px;
           margin: 0 auto;
           display: flex;
           align-items: center;
           justify-content: space-between;
           flex-wrap: wrap;
           gap: 12px;
-          font-size: 12px;
-          color: rgba(255,255,255,0.55);
+          font-size: var(--fs-18);
+          line-height: 28px;
+          color: #dedede;
         }
-        .kma-footer-legal { display: flex; gap: 24px; }
+        .kma-footer-legal { display: flex; gap: 40px; }
         .kma-footer-legal a { color: inherit; text-decoration: none; cursor: pointer; }
         .kma-footer-legal a:hover { color: rgba(255,255,255,0.85); }
       `}</style>

@@ -17,7 +17,8 @@ function UploadIcon({ size = 20, color = "#222B45" }) {
   );
 }
 
-export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewHistory, showBackground = true }) {
+export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewHistory, variant = "default" }) {
+  const dark = variant === "dark"; // "dark" = KMA Dark hero from Figma (home); "default" = legacy look (console)
   const [files, setFiles] = useState([]);
   const [query, setQuery] = useState("");
   const [selectedApp, setSelectedApp] = useState(null); // { name, storeUrl, icon, developer }
@@ -142,7 +143,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
   };
 
   return (
-    <div className="upload-root">
+    <div className={`upload-root${dark ? " upload-root-dark" : ""}`}>
       <style>{`
         .upload-root {
           --font-display: var(--font-inter), sans-serif;
@@ -162,32 +163,10 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         }
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-        .hero-bg-wrap {
-          position: absolute;
-          top: -100px;
-          left: 50%;
-          width: 100vw;
-          margin-left: -50vw;
-          height: 900px;
-          max-height: 100vh;
-          overflow: hidden;
-          pointer-events: none;
-          z-index: 0;
-          -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 55%, transparent 100%);
-          mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 55%, transparent 100%);
+        .hero-title-line { white-space: nowrap; }
+        @media (max-width: 720px) {
+          .hero-title-line { white-space: normal; } /* 19 chars at 48px is wider than a phone */
         }
-        .blob {
-          position: absolute;
-          border-radius: 50%;
-          filter: blur(90px);
-          opacity: 0.45;
-          pointer-events: none;
-        }
-        .blob-1 { width: 102vw; height: 102vw; max-width: 1140px; max-height: 1140px; background: #C9E86A; top: -60px; left: 24%; }
-        .blob-2 { width: 102vw; height: 102vw; max-width: 1140px; max-height: 1140px; background: #6FC6F5; top: 120px; right: 12%; }
-        .blob-3 { width: 75vw; height: 75vw; max-width: 810px; max-height: 810px; background: #7EE6C4; top: 60px; left: 28%; }
-        .blob-4 { width: 55vw; height: 55vw; max-width: 600px; max-height: 600px; background: #FDE788; top: -20px; left: 6%; }
-        .blob-5 { width: 60vw; height: 60vw; max-width: 640px; max-height: 640px; background: #B9A6F5; top: 220px; right: -4%; }
 
         .upload-hero { text-align: center; margin-top: 150px; margin-bottom: 0; max-width: 1170px; position: relative; z-index: 1; }
 
@@ -348,6 +327,166 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           .submit-circle { width: 72px; height: 72px; }
         }
 
+
+        /* ---- KMA Dark hero (Figma 4087:51): home only, see variant="dark" ---- */
+        .upload-root.upload-root-dark { background: transparent; padding-bottom: 0; }
+        .upload-root-dark .upload-card { margin-top: 24px; }
+        .upload-root-dark .upload-card:empty { display: none; }
+        /* Figma "Hero" 4087:51 — 1170 wide, title starts 150px below the header */
+        .upload-root-dark .upload-hero { text-align: center; margin-top: 150px; margin-bottom: 0; width: 100%; max-width: 1170px; position: relative; z-index: 1; }
+
+        /* 4086:44 — 90/85, -0.02em, gradient text (171.73deg #fff -> #71717a) */
+        .upload-root-dark .hero-title {
+          font-family: var(--font-display);
+          font-size: 90px;
+          font-weight: 500;
+          font-optical-sizing: auto; /* opsz clamps to 32 = Inter Display, the closest cut to Neue Haas Display */
+          letter-spacing: -0.0333em; /* -3px at 90px: lands the lines at Figma's 728 / 530px */
+          line-height: 0.9444;
+          /* background-clip:text only paints inside the box; the 85px line box is shorter than the glyphs,
+             so extend the paint area and cancel it with a negative margin (layout stays 2 x 85 = 170). */
+          padding: 0.12em 0;
+          margin: -0.12em 0;
+          /* stops pulled in by 0.12em * |cos(171.73deg)| so the ramp equals Figma's over the original 170px box */
+          background: linear-gradient(171.73deg, #ffffff 0.1188em, #71717a calc(100% - 0.1188em));
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          color: transparent;
+        }
+        @media (max-width: 720px) {
+          .upload-root-dark .hero-title { font-size: 48px; }
+        }
+        @media (max-width: 720px) {
+          .upload-root-dark .hero-title { font-size: 48px; }
+        }
+        /* 4086:45 — 20/32, -0.2px, #a1a1aa; 32 below the title, 75 above the search row */
+        .upload-root-dark .hero-subtitle {
+          font-family: var(--font-inter), sans-serif;
+          font-size: 20px;
+          font-weight: 400;
+          color: var(--muted);
+          line-height: 32px;
+          letter-spacing: var(--ls-body);
+          margin: 32px auto var(--gap-75);
+          width: 100%;
+          max-width: 1170px;
+          text-align: center;
+          position: relative;
+          z-index: 1;
+        }
+        .upload-root-dark .hero-subtitle .hero-sub-line { display: block; }
+        @media (max-width: 1240px) {
+          .upload-root-dark .hero-subtitle .hero-sub-line { display: inline; }
+        }
+
+        /* 4085:21 — search (fill) + upload (271) + cta (92), gap 16 */
+        .upload-root-dark .hero-input-row {
+          position: relative;
+          z-index: 5;
+          width: 100%;
+          max-width: 1170px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 16px;
+          margin-bottom: 0;
+        }
+        .upload-root-dark .hero-search-anchor { position: relative; flex: 1 1 0; min-width: 0; }
+
+        /* 4071:660 / 4085:17 — glass pill: #263540 @50%, 1px #395c77, blur, h92 */
+        .upload-root-dark .hero-search-pill,
+        .upload-root-dark .upload-pill {
+          box-sizing: border-box;
+          height: 92px;
+          display: flex;
+          align-items: center;
+          gap: 24px;
+          padding: 0 calc(var(--pad-42) - 1px); /* Figma strokes are inside: content starts at exactly 42px */
+          background: var(--glass-bg);
+          border: 1px solid var(--glass-border);
+          border-radius: 999px;
+          -webkit-backdrop-filter: blur(var(--glass-blur));
+          backdrop-filter: blur(var(--glass-blur));
+          transition: border-color 0.15s ease, background 0.15s ease;
+        }
+        .upload-root-dark .hero-search-pill { width: 100%; }
+        .upload-root-dark .hero-search-pill:focus-within { border-color: var(--blue-100); }
+        .upload-root-dark .hero-icon { flex-shrink: 0; display: block; }
+        .upload-root-dark .hero-search-pill input {
+          flex: 1;
+          min-width: 0;
+          background: transparent;
+          border: none;
+          outline: none;
+          padding: 0; /* UA default 1px 2px shifted the text 2px off the Figma position */
+          color: var(--chalk);
+          font-family: var(--font-body);
+          font-size: 20px;
+          line-height: 32px;
+          letter-spacing: var(--ls-body);
+        }
+        .upload-root-dark .hero-search-pill input::placeholder { color: var(--chalk); opacity: 1; }
+
+        .upload-root-dark .upload-pill {
+          width: 271px;
+          flex-shrink: 0;
+          white-space: nowrap;
+          cursor: pointer;
+          position: relative;
+        }
+        .upload-root-dark .upload-pill-icon { width: 18px; height: 18px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+        .upload-root-dark .upload-pill-icon img { display: block; flex-shrink: 0; }
+        .upload-root-dark .upload-pill-label { font-size: 20px; line-height: 32px; letter-spacing: var(--ls-body); color: var(--chalk); }
+        .upload-root-dark .upload-pill:hover { border-color: var(--muted); }
+        .upload-root-dark .dropzone-active { background: var(--ink-3); }
+        .upload-root-dark .upload-pill-tooltip {
+          position: absolute; bottom: calc(100% + 12px); left: 50%; transform: translateX(-50%) translateY(6px);
+          width: 260px; white-space: normal; text-align: left;
+          background: var(--chalk); color: var(--ink-2); font-size: 12px; line-height: 1.5;
+          padding: 12px 16px; border-radius: 8px; box-shadow: 0 10px 24px rgba(20,33,61,0.16);
+          opacity: 0; pointer-events: none; transition: opacity 0.18s ease, transform 0.18s ease; z-index: 20;
+        }
+        .upload-root-dark .upload-pill-tooltip::after {
+          content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+          border: 6px solid transparent; border-top-color: var(--chalk);
+        }
+        .upload-root-dark .upload-pill:hover .upload-pill-tooltip { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* 4074:17 — 92px blue circle + arrow (Figma asset); disabled = 40%, analyzing = spinner overlay */
+        .upload-root-dark .submit-circle {
+          position: relative;
+          width: 92px;
+          height: 92px;
+          padding: 0;
+          border: none;
+          border-radius: 50%;
+          background: transparent;
+          flex-shrink: 0;
+          display: block;
+          cursor: pointer;
+          transition: transform 0.15s ease, opacity 0.15s ease;
+        }
+        .upload-root-dark .submit-circle img { display: block; }
+        .upload-root-dark .submit-circle:not(:disabled):hover { transform: translateY(-2px); }
+        .upload-root-dark .submit-circle:disabled { opacity: 0.4; cursor: not-allowed; }
+        .upload-root-dark .submit-circle.submit-circle-analyzing,
+        .upload-root-dark .submit-circle.submit-circle-analyzing:disabled { opacity: 1; cursor: default; }
+        .upload-root-dark .submit-spinner {
+          position: absolute; inset: 0; border-radius: 50%;
+          display: flex; align-items: center; justify-content: center;
+          background: var(--blue-100);
+        }
+
+        @media (max-width: 780px) {
+          .upload-root-dark .hero-input-row { flex-wrap: wrap; }
+          .upload-root-dark .hero-search-anchor { flex: 1 1 100%; }
+          .upload-root-dark .hero-search-pill,
+        .upload-root-dark .upload-pill { padding: 0 24px; }
+          .upload-root-dark .upload-pill { flex: 1; width: auto; }
+        }
+
+
         .thumb-row {
           display: flex;
           flex-wrap: wrap;
@@ -472,37 +611,33 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         @keyframes kma-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
       `}</style>
 
-      {showBackground && (
-        <div className="hero-bg-wrap">
-          <div className="blob blob-1" />
-          <div className="blob blob-2" />
-          <div className="blob blob-3" />
-          <div className="blob blob-4" />
-          <div className="blob blob-5" />
-        </div>
-      )}
-
       <div className="upload-hero">
         <h1 className="hero-title">
-          <span style={{ whiteSpace: "nowrap" }}>Uncover what really</span>
+          <span className="hero-title-line">Uncover what really</span>
           <br />
           hurts your app
         </h1>
       </div>
       <p className="hero-subtitle">
-        Enter your app and - or upload screenshots to uncover UI issues, usability problems, and
-        opportunities for improvement with AI so you can make smarter decisions and build a
-        better product
+        <span className="hero-sub-line">
+          Enter your app and - or upload screenshots to uncover UI issues, usability problems, and opportunities for improvement
+        </span>{" "}
+        <span className="hero-sub-line">with AI so you can make smarter decisions and build a better product</span>
       </p>
 
       <div className="hero-input-row">
         <div className="hero-search-anchor">
           <div className="hero-search-pill">
-            <Search size={18} color="var(--muted)" />
+            {dark ? (
+              <img className="hero-icon" src="/dark/hero-icon-search.svg" alt="" width={18.0408} height={18} />
+            ) : (
+              <Search size={18} color="var(--muted)" />
+            )}
             <input
               ref={searchInputRef}
               type="text"
-              placeholder="Search any app…"
+              aria-label="Search any app"
+              placeholder={dark ? "Search any app..." : "Search any app…"}
               value={query}
               onChange={(e) => handleQueryChange(e.target.value)}
               onFocus={() => suggestions.length > 0 && setShowDropdown(true)}
@@ -510,7 +645,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
             />
             {searching && <Loader2 size={16} className="spin" color="var(--muted)" />}
             {selectedApp && !searching && <Check size={17} color="var(--teal)" />}
-            {!query && !searching && <kbd className="kbd-hint">⌘K</kbd>}
+            {!dark && !query && !searching && <kbd className="kbd-hint">⌘K</kbd>}
           </div>
 
           {showDropdown && suggestions.length > 0 && (
@@ -554,9 +689,15 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
             style={{ display: "none" }}
             onChange={(e) => addFiles(e.target.files)}
           />
-          <UploadIcon size={14} color="var(--muted)" />
-          <span style={{ color: files.length > 0 ? "var(--chalk)" : "var(--muted)" }}>
-            {files.length > 0 ? `${files.length} screenshots selected` : "Upload UI screens"}
+          {dark ? (
+            <span className="upload-pill-icon">
+              <img src="/dark/hero-icon-upload.svg" alt="" width={19.41} height={19.41} />
+            </span>
+          ) : (
+            <UploadIcon size={14} color="var(--muted)" />
+          )}
+          <span className="upload-pill-label" style={dark ? undefined : { color: files.length > 0 ? "var(--chalk)" : "var(--muted)" }}>
+            {files.length > 0 ? `${files.length} screenshots selected` : dark ? "Upload screens" : "Upload UI screens"}
           </span>
           <div className="upload-pill-tooltip">
             Optionally add up to 12 image screenshots (PNG, JPG, WEBP, etc. — not design files like Figma) so we can spot UX, UI, and product-level issues in your design and suggest improvements.
@@ -564,7 +705,20 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         </label>
 
         <button className={`submit-circle ${analyzing ? "submit-circle-analyzing" : ""}`} disabled={!canAnalyze} onClick={handleAnalyze} aria-label="Analiz Et">
-          {analyzing ? <Loader2 size={20} className="spin" color="#FFFFFF" /> : <ArrowRight size={20} />}
+          {dark ? (
+            <>
+              <img src="/dark/hero-cta.svg" alt="" width={92} height={92} />
+              {analyzing && (
+                <span className="submit-spinner">
+                  <Loader2 size={20} className="spin" color="#FFFFFF" />
+                </span>
+              )}
+            </>
+          ) : analyzing ? (
+            <Loader2 size={20} className="spin" color="#FFFFFF" />
+          ) : (
+            <ArrowRight size={20} />
+          )}
         </button>
       </div>
 
