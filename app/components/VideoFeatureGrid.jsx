@@ -51,7 +51,6 @@ export default function VideoFeatureGrid() {
         }
         .mkt-grid-dark-inner {
           max-width: 1500px; margin-left: auto; margin-right: 0; overflow-x: auto;
-          border-top: 1px solid rgba(255,255,255,0.5); border-bottom: 1px solid rgba(255,255,255,0.5);
           position: relative; z-index: 2;
         }
         .mkt-grid-dark-row {
