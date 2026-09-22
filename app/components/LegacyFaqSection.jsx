@@ -87,8 +87,10 @@ export default function LegacyFaqSection() {
         }
         .faq-a-wrap-open .faq-a { opacity: 1; transform: translateY(0); }
         .faq-support-btn {
-          display: block; margin: 0 auto; background: #533AFE; color: #FFFFFF;
-          font-weight: 600; font-size: 16px; padding: 12px 32px; border-radius: 999px; border: none; cursor: pointer;
+          display: flex; align-items: center; justify-content: center;
+          width: fit-content; height: 56px; margin: 0 auto;
+          background: #533AFE; color: #FFFFFF;
+          font-weight: 600; font-size: 16px; padding: 0 32px; border-radius: 999px; border: none; cursor: pointer;
           transition: filter 0.2s ease, transform 0.2s ease;
         }
         .faq-support-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
@@ -102,7 +104,7 @@ export default function LegacyFaqSection() {
           <FaqItem key={f.q} q={f.q} a={f.a} />
         ))}
       </div>
-      <Link href="/support" className="faq-support-btn" style={{ textDecoration: "none", display: "block", width: "fit-content" }}>
+      <Link href="/support" className="faq-support-btn" style={{ textDecoration: "none" }}>
         Support Page
       </Link>
     </div>

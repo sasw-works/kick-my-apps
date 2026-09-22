@@ -789,7 +789,7 @@ export default function MarketingSections() {
           line-height: 57.6px; margin-bottom: 48px;
         }
         .mkt-closing-btn {
-          width: 206px; height: 55px;
+          width: 206px; height: 56px;
           background: var(--blue-100); color: #FFFFFF; font-weight: 500; font-size: 19.8px;
           border-radius: 50px; border: none; cursor: pointer;
           font-family: var(--font-inter), sans-serif;

@@ -165,7 +165,7 @@ export default function PricingSection() {
         .pr-cta-wrap { margin-top: 32px; }
         .pr-cta {
           width: 100%;
-          height: 55px;
+          height: 56px;
           border-radius: 114px;
           font-family: var(--font-inter), sans-serif;
           font-size: 16px;
