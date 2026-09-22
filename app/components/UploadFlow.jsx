@@ -620,9 +620,9 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
       </div>
       <p className="hero-subtitle">
         <span className="hero-sub-line">
-          Enter your app and - or upload screenshots to uncover UI issues, usability problems, and opportunities for improvement
+          Enter your app name or upload screenshots to uncover UI issues, usability problems, and quick wins
         </span>{" "}
-        <span className="hero-sub-line">with AI so you can make smarter decisions and build a better product</span>
+        <span className="hero-sub-line">— powered by AI, so you can ship a better product, faster.</span>
       </p>
 
       <div className="hero-input-row">

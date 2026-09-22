@@ -23,7 +23,7 @@ function Icon({ pieces, dots, dotColor }) {
 const CARDS = [
   {
     title: "UX and UI Designers",
-    body: "Identify issues, misconfigurations, lack of  resources, and failed",
+    body: "Catch usability friction and inconsistent patterns before they ship, backed by evidence from real screenshots.",
     dotColor: "#95d3ff",
     dots: [
       [32, 32],
@@ -44,7 +44,7 @@ const CARDS = [
   },
   {
     title: "Product Owners",
-    body: "Identify issues, misconfigurations, lack of  resources, and failed",
+    body: "Turn scattered store reviews into a prioritized roadmap, ranked by real impact on your score.",
     dotColor: "#f4af88",
     dots: [
       [41, 32],
@@ -61,7 +61,7 @@ const CARDS = [
   },
   {
     title: "VoC Teams",
-    body: "Identify issues, misconfigurations, lack of  resources, and failed",
+    body: "Track every App Store and Play Store review in one place, and hear what customers are really saying.",
     dotColor: null,
     dots: [],
     pieces: [
@@ -79,7 +79,7 @@ const CARDS = [
   },
   {
     title: "Developers",
-    body: "Identify issues, misconfigurations, lack of  resources, and failed",
+    body: "Skip the guesswork — every finding ships with a concrete, code-level fix ready to implement.",
     dotColor: "#a2cead",
     dots: [
       [40, 40],
@@ -145,11 +145,9 @@ export default function AudienceSection() {
         }
       `}</style>
       <div className="au-headline">
-        <h2 className="au-title">A platform to benefit the entire team</h2>
+        <h2 className="au-title">One platform, every role on your team</h2>
         <p className="au-sub">
-          Enter your app and - or upload screenshots to uncover UI issues, usability problems, and opportunities for improvement
-          <br />
-          with AI so you can make smarter decisions and build a better product
+          From designers to developers, everyone gets the exact feedback they need — in a format they can act on.
         </p>
       </div>
       <div className="au-cards">

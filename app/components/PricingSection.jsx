@@ -206,11 +206,9 @@ export default function PricingSection() {
         }
       `}</style>
       <div className="pr-headline">
-        <h2 className="pr-title">A platform to benefit the entire team</h2>
+        <h2 className="pr-title">Simple pricing, real answers</h2>
         <p className="pr-sub">
-          Enter your app and - or upload screenshots to uncover UI issues, usability problems, and opportunities for improvement
-          <br />
-          with AI so you can make smarter decisions and build a better product
+          Start free and see what&apos;s hurting your app today. Upgrade whenever you need deeper, more frequent insight.
         </p>
       </div>
 
