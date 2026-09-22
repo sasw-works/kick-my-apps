@@ -130,6 +130,8 @@ function NavDropdown({ label, groups, open, onEnter, onLeave }) {
 
 export default function Header() {
   const [openMenu, setOpenMenu] = useState(null); // "features" | "usecases" | "resources" | null
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileSection, setMobileSection] = useState(null);
   const closeTimer = useRef(null);
 
   const openWithDelay = (key) => {
@@ -149,6 +151,24 @@ export default function Header() {
       if (closeTimer.current) clearTimeout(closeTimer.current);
     };
   }, []);
+
+  // Auto-close the mobile menu if the viewport grows past the breakpoint where it's used.
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth > 1000) {
+        setMobileOpen(false);
+        setMobileSection(null);
+      }
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  const MOBILE_GROUPS = [
+    { key: "features", label: "Features", groups: FEATURE_GROUPS },
+    { key: "usecases", label: "Use Cases", groups: USE_CASE_GROUPS },
+    { key: "resources", label: "Resources", groups: RESOURCES_GROUPS },
+  ];
 
   return (
     <div className="kma-header-wrap">
@@ -260,6 +280,7 @@ export default function Header() {
           border: none;
           cursor: pointer;
           white-space: nowrap;
+          flex-shrink: 0;
           transition: filter 0.2s ease, transform 0.2s ease;
         }
         .kma-header-signin:hover { filter: brightness(1.08); transform: translateY(-1px); }
@@ -271,13 +292,72 @@ export default function Header() {
           .kma-header-action { width: auto; }
           .kma-header-logo svg { width: 300px; height: auto; }
         }
+        .kma-mobile-toggle {
+          display: none;
+          padding: 0; border: none; background: transparent;
+          width: 44px; height: 44px; flex-shrink: 0;
+          position: relative; cursor: pointer;
+        }
+        .kma-mobile-toggle span, .kma-mobile-toggle span::before, .kma-mobile-toggle span::after {
+          position: absolute; left: 50%; width: 22px; height: 2px; border-radius: 1px;
+          background: var(--chalk); transform: translateX(-50%);
+          transition: transform 0.25s ease, opacity 0.2s ease, top 0.25s ease;
+        }
+        .kma-mobile-toggle span { top: 50%; margin-top: -1px; }
+        .kma-mobile-toggle span::before { content: ""; top: -8px; }
+        .kma-mobile-toggle span::after { content: ""; top: 8px; }
+        .kma-mobile-toggle-open span { background: transparent; }
+        .kma-mobile-toggle-open span::before { top: 0; transform: translateX(-50%) rotate(45deg); }
+        .kma-mobile-toggle-open span::after { top: 0; transform: translateX(-50%) rotate(-45deg); }
+
+        .kma-mobile-panel {
+          position: fixed; left: 0; right: 0; top: 150px; bottom: 0;
+          z-index: 155; background: var(--ink-2); overflow-y: auto;
+          padding: 8px 24px 32px;
+          opacity: 0; transform: translateY(-8px); pointer-events: none;
+          transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .kma-mobile-panel-open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        .kma-mobile-group { border-bottom: 1px solid var(--ink-3); }
+        .kma-mobile-group-head {
+          width: 100%; display: flex; align-items: center; justify-content: space-between;
+          background: none; border: none; cursor: pointer; padding: 20px 4px;
+          font-family: var(--font-inter), sans-serif; font-size: 20px; font-weight: 400; color: var(--chalk);
+        }
+        .kma-mobile-group-chevron { transition: transform 0.2s ease; color: var(--muted); }
+        .kma-mobile-group-open .kma-mobile-group-chevron { transform: rotate(180deg); }
+        .kma-mobile-group-body {
+          display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease;
+        }
+        .kma-mobile-group-open .kma-mobile-group-body { grid-template-rows: 1fr; }
+        .kma-mobile-group-body-inner { overflow: hidden; }
+        .kma-mobile-item { padding: 12px 4px 16px 12px; }
+        .kma-mobile-item-title { font-size: 15px; font-weight: 600; color: var(--chalk); }
+        .kma-mobile-item-desc { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
         @media (max-width: 1000px) {
           .kma-header-nav { display: none; }
-          .kma-header-logo svg { width: 240px; }
+          .kma-header-logo svg { width: 280px; }
+          .kma-mobile-toggle { display: block; }
+        }
+        @media (min-width: 1001px) {
+          .kma-mobile-panel, .kma-mobile-toggle { display: none !important; }
         }
         @media (max-width: 600px) {
-          .kma-header-logo svg { width: 190px; }
+          .kma-header-logo svg { width: 230px; }
           .kma-dark .kma-header-theme { display: none; }
+          .kma-header-action { gap: 8px; }
+          .kma-header-signin { width: auto; padding: 0 20px; }
+        }
+        @media (max-width: 400px) {
+          .kma-header-wrap { padding-left: 12px; padding-right: 12px; }
+          .kma-header-logo svg { width: 200px; }
+          .kma-header-action { gap: 6px; }
+          .kma-header-signin { padding: 0 16px; }
+          .kma-mobile-toggle { width: 40px; height: 40px; }
+        }
+        @media (max-width: 340px) {
+          .kma-header-logo svg { width: 170px; }
         }
 
         .kma-navdrop-backdrop {
@@ -351,12 +431,56 @@ export default function Header() {
           </nav>
 
           <div className="kma-header-action">
+            <button
+              type="button"
+              className={`kma-mobile-toggle ${mobileOpen ? "kma-mobile-toggle-open" : ""}`}
+              aria-label="Toggle menu"
+              aria-expanded={mobileOpen}
+              onClick={() => setMobileOpen((v) => !v)}
+            >
+              <span />
+            </button>
             <button type="button" className="kma-header-theme" aria-label="Toggle theme">
               <img src="/dark/header-theme-toggle.svg" alt="" width={56} height={56} />
             </button>
             <button type="button" className="kma-header-signin">Sign in</button>
           </div>
         </div>
+      </div>
+
+      <div className={`kma-mobile-panel ${mobileOpen ? "kma-mobile-panel-open" : ""}`}>
+        {MOBILE_GROUPS.map((section) => {
+          const open = mobileSection === section.key;
+          return (
+            <div className={`kma-mobile-group ${open ? "kma-mobile-group-open" : ""}`} key={section.key}>
+              <button
+                type="button"
+                className="kma-mobile-group-head"
+                aria-expanded={open}
+                onClick={() => setMobileSection(open ? null : section.key)}
+              >
+                {section.label}
+                <svg className="kma-mobile-group-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M4 6L8 10L12 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+              <div className="kma-mobile-group-body">
+                <div className="kma-mobile-group-body-inner">
+                  {section.groups.map((group) => (
+                    <div key={group.label}>
+                      {group.items.map((item) => (
+                        <div className="kma-mobile-item" key={item.title}>
+                          <div className="kma-mobile-item-title">{item.title}</div>
+                          <div className="kma-mobile-item-desc">{item.desc}</div>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

@@ -90,7 +90,9 @@ export default function LegacyFaqSection() {
           display: flex; align-items: center; justify-content: center;
           width: fit-content; height: 56px; margin: 0 auto;
           background: #533AFE; color: #FFFFFF;
-          font-weight: 600; font-size: 16px; padding: 0 32px; border-radius: 999px; border: none; cursor: pointer;
+          font-family: var(--font-inter), sans-serif;
+          font-weight: 400; font-size: var(--fs-18); letter-spacing: var(--ls-body);
+          padding: 0 32px; border-radius: 999px; border: none; cursor: pointer;
           transition: filter 0.2s ease, transform 0.2s ease;
         }
         .faq-support-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }

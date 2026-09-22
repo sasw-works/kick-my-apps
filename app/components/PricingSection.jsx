@@ -168,8 +168,9 @@ export default function PricingSection() {
           height: 56px;
           border-radius: 114px;
           font-family: var(--font-inter), sans-serif;
-          font-size: 16px;
-          font-weight: 500;
+          font-size: var(--fs-18);
+          font-weight: 400;
+          letter-spacing: var(--ls-body);
           line-height: 24px;
           color: #ffffff;
           cursor: pointer;

@@ -790,7 +790,7 @@ export default function MarketingSections() {
         }
         .mkt-closing-btn {
           width: 206px; height: 56px;
-          background: var(--blue-100); color: #FFFFFF; font-weight: 500; font-size: 19.8px;
+          background: var(--blue-100); color: #FFFFFF; font-weight: 400; font-size: var(--fs-18); letter-spacing: var(--ls-body);
           border-radius: 50px; border: none; cursor: pointer;
           font-family: var(--font-inter), sans-serif;
           transition: filter 0.2s ease, transform 0.2s ease;
