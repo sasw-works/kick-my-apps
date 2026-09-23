@@ -4,67 +4,52 @@
 // Monthly/Yearly prices are placeholders until real billing is wired up.
 
 import { useState } from "react";
+import { X } from "lucide-react";
 
 // Prices are placeholders until real billing is wired up.
+// Every plan shares the same feature rows (so all three cards stay the same height and
+// checkmarks line up); each plan just marks a row active/inactive, or overrides its label
+// with a plan-specific value (e.g. report counts).
+const FEATURES = [
+  { key: "ai", label: "AI reports per month", starter: "2 AI reports / month", professional: "10 AI reports / month", enterprise: "Unlimited AI reports" },
+  { key: "compare", label: "Comparison reports per month", starter: "1 comparison report / month", professional: "3 comparison reports / month", enterprise: "Unlimited comparison reports" },
+  { key: "share", label: "Share reports via link", starter: true, professional: true, enterprise: true },
+  { key: "pulse", label: "Pulse monitoring", starter: "Pulse alerts", professional: "2 Pulse monitors", enterprise: "Unlimited Pulse monitors" },
+  { key: "pdf", label: "PDF export", starter: true, professional: true, enterprise: true },
+  { key: "priority", label: "Priority support (24h response)", starter: false, professional: true, enterprise: true },
+  { key: "sso", label: "SSO authentication", starter: false, professional: false, enterprise: true },
+  { key: "slack", label: "Slack & Teams integration", starter: false, professional: false, enterprise: true },
+  { key: "api", label: "API access & data export", starter: false, professional: false, enterprise: true },
+  { key: "seats", label: "Unlimited seats", starter: false, professional: false, enterprise: true },
+];
+
 const PLANS = [
   {
     tag: "Starter",
+    key: "starter",
     monthly: { price: "€0", duration: "Free forever" },
     yearly: { price: "€0", duration: "Free forever" },
     desc: "For curious founders and designers testing the value of feedback intelligence.",
-    features: [
-      "2 AI reports per month",
-      "1 comparison report per month",
-      "Share reports via link",
-      "Pulse alerts",
-      "PDF export",
-      "Email support (48h response)",
-    ],
     cta: "Get started free",
     ctaStyle: "glass",
     highlight: false,
   },
   {
     tag: "Professional",
+    key: "professional",
     monthly: { price: "€12", duration: "/ month" },
-    yearly: { price: "€8", duration: "/ month", note: "billed €96 annually" },
+    yearly: { price: "€8", duration: "/ month", note: "billed €96 annually · 2 months free vs. monthly" },
     desc: "For PMs, UX leads, and founders who need continuous competitive intelligence.",
-    features: {
-      monthly: [
-        "10 AI reports per month",
-        "3 comparison reports per month",
-        "Share reports via link",
-        "2 Pulse monitors",
-        "PDF export",
-        "Priority email support (24h response)",
-      ],
-      yearly: [
-        "10 AI reports per month",
-        "3 comparison reports per month",
-        "Share reports via link",
-        "2 Pulse monitors",
-        "PDF export",
-        "Priority email support (24h response)",
-        "2 months free vs. monthly billing",
-      ],
-    },
     cta: "Upgrade to Pro",
     ctaStyle: "solid",
     highlight: true,
   },
   {
     tag: "Enterprise",
+    key: "enterprise",
     monthly: { price: "Custom", duration: null },
     yearly: { price: "Custom", duration: null },
     desc: "For teams and organizations that need custom limits, SSO, and integrations.",
-    features: [
-      "Everything in Pro, unlimited",
-      "Unlimited seats",
-      "SSO authentication",
-      "Slack & Teams integration",
-      "API access & data export",
-      "Dedicated support",
-    ],
     cta: "Contact us",
     ctaStyle: "glass",
     highlight: false,
@@ -173,6 +158,8 @@ export default function PricingSection() {
         .pr-sep { margin: 32px 0 0; border: none; border-top: 1px solid #4d4d51; }
         .pr-list { list-style: none; margin: 20px 0 0; padding: 0; display: flex; flex-direction: column; gap: 20px; width: 100%; }
         .pr-list li { display: flex; align-items: center; gap: 16px; font-size: 16px; line-height: 24px; color: rgba(222, 222, 222, 0.6); white-space: nowrap; }
+        .pr-list-inactive { color: rgba(222, 222, 222, 0.3) !important; }
+        .pr-x { flex-shrink: 0; display: block; color: rgba(222, 222, 222, 0.25); }
         .pr-check { display: block; flex-shrink: 0; }
         .pr-cta-wrap { margin-top: 32px; }
         .pr-cta {
@@ -237,7 +224,6 @@ export default function PricingSection() {
       <div className="pr-cards">
         {PLANS.map((p) => {
           const cycle = yearly ? p.yearly : p.monthly;
-          const features = Array.isArray(p.features) ? p.features : p.features[yearly ? "yearly" : "monthly"];
           return (
             <div className={`pr-card${p.highlight ? " pr-card-highlight" : ""}`} key={p.tag}>
               <span className="pr-tag">{p.tag}</span>
@@ -249,12 +235,17 @@ export default function PricingSection() {
               <p className="pr-desc">{p.desc}</p>
               <hr className="pr-sep" />
               <ul className="pr-list">
-                {features.map((f) => (
-                  <li key={f}>
-                    <Check />
-                    <span>{f}</span>
-                  </li>
-                ))}
+                {FEATURES.map((f) => {
+                  const value = f[p.key];
+                  const active = Boolean(value);
+                  const text = typeof value === "string" ? value : f.label;
+                  return (
+                    <li key={f.key} className={active ? "" : "pr-list-inactive"}>
+                      {active ? <Check /> : <X className="pr-x" size={20} />}
+                      <span>{text}</span>
+                    </li>
+                  );
+                })}
               </ul>
               <div className="pr-cta-wrap">
                 <button type="button" className={`pr-cta pr-cta-${p.ctaStyle}`}>
