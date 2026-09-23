@@ -1011,7 +1011,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
             <ToolbarAppIcon name={appLabel} storeUrl={storeUrl} />
             <div>
               <div className="kma-toolbar-app-name">{appLabel}</div>
-              <div className="kma-toolbar-app-date">{reportDateLabel}</div>
+              <div className="kma-toolbar-app-date" suppressHydrationWarning>{reportDateLabel}</div>
             </div>
           </div>
           <div style={{ flex: 1 }} />
