@@ -106,10 +106,15 @@ export default function SupportPage() {
         }
         .support-search {
           width: 100%; height: 75px; margin: 0 auto; display: flex; align-items: center; gap: 12px;
-          background: var(--ink-2); border: none; border-radius: 999px; padding: 16px 32px;
+          background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 999px; padding: 16px 32px;
           box-sizing: border-box;
+          -webkit-backdrop-filter: blur(var(--glass-blur));
+          backdrop-filter: blur(var(--glass-blur));
+          transition: border-color 0.15s ease;
         }
+        .support-search:focus-within { border-color: var(--blue-100); }
         .support-search input { flex: 1; border: none; outline: none; background: transparent; font-size: 16px; color: var(--chalk); }
+        .support-search input::placeholder { color: var(--chalk); opacity: 0.7; }
 
         .support-faq-list { margin-bottom: 64px; position: relative; z-index: 1; }
         .support-faq-row { border-bottom: 1px solid var(--ink-3); }
