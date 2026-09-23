@@ -193,7 +193,7 @@ export default function ConsoleReportsPage() {
         .reports-search {
           flex: 1; max-width: 640px; display: flex; align-items: center; gap: 12px;
           background: #141414; border: 1px solid var(--ink-3); border-radius: 999px; padding: 0 16px;
-          height: 44px; box-sizing: border-box;
+          height: 49px; box-sizing: border-box;
         }
         .reports-search input { flex: 1; border: none; outline: none; background: transparent; font-size: 14px; color: var(--chalk); }
         .reports-tabs { display: flex; gap: 8px; flex-wrap: wrap; flex-shrink: 0; }
@@ -201,7 +201,7 @@ export default function ConsoleReportsPage() {
           display: flex; align-items: center; justify-content: center; gap: 8px; background: #141414; border: 1px solid var(--ink-3);
           border-radius: 999px; padding: 0 16px; font-size: 12px; color: var(--muted); cursor: pointer;
           transition: border-color 0.15s ease, background 0.15s ease;
-          height: 44px; box-sizing: border-box; min-width: 150px;
+          height: 49px; box-sizing: border-box; min-width: 150px;
         }
         .reports-tab:hover { border-color: var(--brand); }
         .reports-tab-active { background: var(--ink-3); border-color: var(--chalk); color: var(--chalk); font-weight: 600; }
