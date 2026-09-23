@@ -176,7 +176,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           font-weight: 700;
           letter-spacing: -0.025em;
           line-height: 1.08;
-          color: #1A2B3B;
+          color: var(--chalk);
           margin: 0;
         }
         @media (max-width: 720px) {
@@ -185,7 +185,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         .hero-subtitle {
           font-family: var(--font-inter), sans-serif;
           font-size: 20px;
-          color: #1A2B3B;
+          color: var(--chalk);
           line-height: 1.5;
           margin-top: 24px;
           margin-bottom: 48px;
@@ -302,7 +302,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           display: flex;
           align-items: center;
           justify-content: center;
-          background: #1A2B3B;
+          background: var(--chalk);
           color: var(--ink);
           border: none;
           cursor: pointer;
