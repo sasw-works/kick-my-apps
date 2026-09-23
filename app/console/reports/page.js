@@ -204,7 +204,9 @@ export default function ConsoleReportsPage() {
           height: 49px; box-sizing: border-box; min-width: 150px;
         }
         .reports-tab:hover { border-color: var(--brand); }
-        .reports-tab-active { background: var(--ink-3); border-color: var(--chalk); color: var(--chalk); font-weight: 600; }
+        .reports-tab:focus { outline: none; }
+        .reports-tab:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+        .reports-tab-active { background: var(--ink-3); border-color: var(--brand); color: var(--chalk); font-weight: 600; }
         .reports-tab-count { font-family: var(--font-mono); font-size: 11px; opacity: 0.7; }
         .reports-table { width: 100%; border-collapse: collapse; background: #141414; border: 1px solid var(--ink-3); border-radius: 8px; overflow: hidden; }
         .reports-table th {
