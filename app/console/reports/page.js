@@ -226,7 +226,19 @@ export default function ConsoleReportsPage() {
         .reports-type-individual { background: var(--ink-3); color: var(--muted); }
         .reports-type-comparison { background: color-mix(in srgb, var(--brand) 15%, transparent); color: var(--brand); }
         .reports-empty { text-align: center; padding: 96px 24px; color: var(--muted); }
-        .reports-checkbox { width: 16px; height: 16px; cursor: pointer; accent-color: var(--brand); }
+        .reports-checkbox {
+          appearance: none; -webkit-appearance: none;
+          width: 16px; height: 16px; border-radius: 4px; cursor: pointer;
+          background: #141414; border: 1px solid var(--ink-3);
+          display: inline-flex; align-items: center; justify-content: center;
+          transition: background 0.12s ease, border-color 0.12s ease;
+        }
+        .reports-checkbox:hover { border-color: var(--brand); }
+        .reports-checkbox:checked {
+          background: var(--brand); border-color: var(--brand);
+          background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'><path d='M3.5 8.5L6.5 11.5L12.5 4.5' stroke='white' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+          background-repeat: no-repeat; background-position: center;
+        }
         .reports-row-actions { display: flex; align-items: center; justify-content: center; gap: 8px; opacity: 0; transition: opacity 0.12s ease; }
         .reports-table tbody tr:hover .reports-row-actions { opacity: 1; }
         .reports-action-btn {
