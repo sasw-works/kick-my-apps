@@ -1,16 +1,16 @@
 "use client";
 
 // Figma "cards" (Pricing) 4159:769 — headline (same duplicated copy as Audience) + toggle + 3 cards.
-// Figma only specifies the "Yearly" price set; the toggle is wired for visual state only until
-// monthly prices are provided.
+// Monthly/Yearly prices are placeholders until real billing is wired up.
 
 import { useState } from "react";
 
+// Prices are placeholders until real billing is wired up.
 const PLANS = [
   {
     tag: "Starter",
-    price: "€0",
-    duration: "Free forever",
+    monthly: { price: "€0", duration: "Free forever" },
+    yearly: { price: "€0", duration: "Free forever" },
     desc: "For curious founders and designers testing the value of feedback intelligence.",
     features: [
       "2 AI reports per month",
@@ -26,25 +26,36 @@ const PLANS = [
   },
   {
     tag: "Professional",
-    price: "€12",
-    duration: "/ month",
+    monthly: { price: "€12", duration: "/ month" },
+    yearly: { price: "€8", duration: "/ month", note: "billed €96 annually" },
     desc: "For PMs, UX leads, and founders who need continuous competitive intelligence.",
-    features: [
-      "10 AI reports per month",
-      "3 comparison reports per month",
-      "Share reports via link",
-      "2 Pulse monitors",
-      "PDF export",
-      "Priority email support (24h response)",
-    ],
+    features: {
+      monthly: [
+        "10 AI reports per month",
+        "3 comparison reports per month",
+        "Share reports via link",
+        "2 Pulse monitors",
+        "PDF export",
+        "Priority email support (24h response)",
+      ],
+      yearly: [
+        "10 AI reports per month",
+        "3 comparison reports per month",
+        "Share reports via link",
+        "2 Pulse monitors",
+        "PDF export",
+        "Priority email support (24h response)",
+        "2 months free vs. monthly billing",
+      ],
+    },
     cta: "Upgrade to Pro",
     ctaStyle: "solid",
     highlight: true,
   },
   {
     tag: "Enterprise",
-    price: "Custom",
-    duration: null,
+    monthly: { price: "Custom", duration: null },
+    yearly: { price: "Custom", duration: null },
     desc: "For teams and organizations that need custom limits, SSO, and integrations.",
     features: [
       "Everything in Pro, unlimited",
@@ -157,6 +168,7 @@ export default function PricingSection() {
         .pr-price-row { display: flex; align-items: flex-end; gap: 8px; height: 66px; margin-top: 24px; }
         .pr-price { font-size: 60px; line-height: 66px; font-weight: 500; letter-spacing: 1px; color: #dedede; white-space: nowrap; }
         .pr-duration { padding-bottom: 6px; font-size: 16px; line-height: 24px; color: rgba(222, 222, 222, 0.6); white-space: nowrap; }
+        .pr-note { margin: 4px 0 0; font-size: 13px; color: rgba(222, 222, 222, 0.45); }
         .pr-desc { margin: 10px 0 0; padding: 0 10px; font-size: 16px; line-height: 24px; color: rgba(222, 222, 222, 0.6); }
         .pr-sep { margin: 32px 0 0; border: none; border-top: 1px solid #4d4d51; }
         .pr-list { list-style: none; margin: 20px 0 0; padding: 0; display: flex; flex-direction: column; gap: 20px; width: 100%; }
@@ -218,35 +230,40 @@ export default function PricingSection() {
           Monthly
         </button>
         <button type="button" className="pr-tab-btn" onClick={() => setYearly(true)}>
-          Yearly - Save 30%
+          Yearly - Save 33%
         </button>
       </div>
 
       <div className="pr-cards">
-        {PLANS.map((p) => (
-          <div className={`pr-card${p.highlight ? " pr-card-highlight" : ""}`} key={p.tag}>
-            <span className="pr-tag">{p.tag}</span>
-            <div className="pr-price-row">
-              <span className="pr-price">{p.price}</span>
-              {p.duration && <span className="pr-duration">{p.duration}</span>}
+        {PLANS.map((p) => {
+          const cycle = yearly ? p.yearly : p.monthly;
+          const features = Array.isArray(p.features) ? p.features : p.features[yearly ? "yearly" : "monthly"];
+          return (
+            <div className={`pr-card${p.highlight ? " pr-card-highlight" : ""}`} key={p.tag}>
+              <span className="pr-tag">{p.tag}</span>
+              <div className="pr-price-row">
+                <span className="pr-price">{cycle.price}</span>
+                {cycle.duration && <span className="pr-duration">{cycle.duration}</span>}
+              </div>
+              {cycle.note && <p className="pr-note">{cycle.note}</p>}
+              <p className="pr-desc">{p.desc}</p>
+              <hr className="pr-sep" />
+              <ul className="pr-list">
+                {features.map((f) => (
+                  <li key={f}>
+                    <Check />
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="pr-cta-wrap">
+                <button type="button" className={`pr-cta pr-cta-${p.ctaStyle}`}>
+                  {p.cta}
+                </button>
+              </div>
             </div>
-            <p className="pr-desc">{p.desc}</p>
-            <hr className="pr-sep" />
-            <ul className="pr-list">
-              {p.features.map((f) => (
-                <li key={f}>
-                  <Check />
-                  <span>{f}</span>
-                </li>
-              ))}
-            </ul>
-            <div className="pr-cta-wrap">
-              <button type="button" className={`pr-cta pr-cta-${p.ctaStyle}`}>
-                {p.cta}
-              </button>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );
