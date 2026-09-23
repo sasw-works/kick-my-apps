@@ -185,7 +185,7 @@ export default function ConsoleReportsPage() {
   return (
     <main className="reports-page">
       <style>{`
-        .reports-page { padding: 32px 48px 120px; max-width: 1240px; margin: 0 auto; }
+        .reports-page { padding: 48px 48px 120px; max-width: 1240px; margin: 0 auto; }
         .reports-header { text-align: left; margin-bottom: 32px; }
         .reports-header h1 { margin: 0; font-family: var(--font-inter), sans-serif; font-size: 42px; line-height: 57.6px; font-weight: 400; color: #ffffff; }
         .reports-header p { margin: 0; font-size: var(--fs-18); line-height: 28px; font-weight: 400; color: #dedede; }
