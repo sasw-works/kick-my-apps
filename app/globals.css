@@ -58,7 +58,8 @@ html.dark,
 
   position: relative;
   isolation: isolate;
-  overflow-x: clip; /* clip (not hidden) so the sticky header keeps working */
+  overflow: clip; /* clip (not hidden) so the sticky header keeps working; clips .kma-glow's
+    fixed 1558px height so it can't stretch the page taller than its actual content (e.g. Cookie Policy) */
   min-height: 100vh;
   background: var(--ink);
   color: var(--chalk);

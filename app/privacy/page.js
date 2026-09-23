@@ -9,10 +9,6 @@ export default function PrivacyPage() {
       <div className="legal-title">Privacy Policy</div>
       <div className="legal-updated">Last updated: August 19, 2026</div>
 
-      <div className="legal-disclaimer">
-        This is a draft template provided for convenience and has not been reviewed by a lawyer. Please have qualified legal counsel review and customize this policy before relying on it as your official, binding policy.
-      </div>
-
       <div className="legal-section">
         <div className="legal-h2">1. Overview</div>
         <p className="legal-p">

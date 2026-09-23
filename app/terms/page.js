@@ -9,10 +9,6 @@ export default function TermsPage() {
       <div className="legal-title">Terms of Service</div>
       <div className="legal-updated">Last updated: August 19, 2026</div>
 
-      <div className="legal-disclaimer">
-        This is a draft template provided for convenience and has not been reviewed by a lawyer. Please have qualified legal counsel review and customize these terms before relying on them as your official, binding agreement.
-      </div>
-
       <div className="legal-section">
         <div className="legal-h2">1. Acceptance of Terms</div>
         <p className="legal-p">

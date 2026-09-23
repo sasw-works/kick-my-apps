@@ -9,10 +9,6 @@ export default function CookiesPage() {
       <div className="legal-title">Cookie Policy</div>
       <div className="legal-updated">Last updated: August 19, 2026</div>
 
-      <div className="legal-disclaimer">
-        This is a draft template provided for convenience and has not been reviewed by a lawyer. Please have qualified legal counsel review and customize this policy, and verify it matches your actual cookie usage, before relying on it as official.
-      </div>
-
       <div className="legal-section">
         <div className="legal-h2">1. What Are Cookies</div>
         <p className="legal-p">
