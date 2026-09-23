@@ -9,17 +9,14 @@ import { X } from "lucide-react";
 // Prices are placeholders until real billing is wired up.
 // Every plan shares the same feature rows (so all three cards stay the same height and
 // checkmarks line up); each plan just marks a row active/inactive, or overrides its label
-// with a plan-specific value (e.g. report counts).
+// with a plan-specific value (e.g. report counts). Kept short, and only lists features that
+// actually exist today (no SSO / API / Slack yet).
 const FEATURES = [
   { key: "ai", label: "AI reports per month", starter: "2 AI reports / month", professional: "10 AI reports / month", enterprise: "Unlimited AI reports" },
   { key: "compare", label: "Comparison reports per month", starter: "1 comparison report / month", professional: "3 comparison reports / month", enterprise: "Unlimited comparison reports" },
-  { key: "share", label: "Share reports via link", starter: true, professional: true, enterprise: true },
   { key: "pulse", label: "Pulse monitoring", starter: "Pulse alerts", professional: "2 Pulse monitors", enterprise: "Unlimited Pulse monitors" },
-  { key: "pdf", label: "PDF export", starter: true, professional: true, enterprise: true },
+  { key: "share", label: "Report sharing & PDF export", starter: true, professional: true, enterprise: true },
   { key: "priority", label: "Priority support (24h response)", starter: false, professional: true, enterprise: true },
-  { key: "sso", label: "SSO authentication", starter: false, professional: false, enterprise: true },
-  { key: "slack", label: "Slack & Teams integration", starter: false, professional: false, enterprise: true },
-  { key: "api", label: "API access & data export", starter: false, professional: false, enterprise: true },
   { key: "seats", label: "Unlimited seats", starter: false, professional: false, enterprise: true },
 ];
 
@@ -49,7 +46,7 @@ const PLANS = [
     key: "enterprise",
     monthly: { price: "Custom", duration: null },
     yearly: { price: "Custom", duration: null },
-    desc: "For teams and organizations that need custom limits, SSO, and integrations.",
+    desc: "For teams that need custom limits, unlimited seats, and dedicated support.",
     cta: "Contact us",
     ctaStyle: "glass",
     highlight: false,
