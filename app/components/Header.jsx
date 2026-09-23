@@ -344,20 +344,23 @@ export default function Header() {
           .kma-mobile-panel, .kma-mobile-toggle { display: none !important; }
         }
         @media (max-width: 600px) {
-          .kma-header-logo svg { width: 230px; }
+          .kma-header-logo svg { width: 260px; }
           .kma-dark .kma-header-theme { display: none; }
           .kma-header-action { gap: 8px; }
           .kma-header-signin { width: auto; padding: 0 20px; }
         }
         @media (max-width: 400px) {
           .kma-header-wrap { padding-left: 12px; padding-right: 12px; }
-          .kma-header-logo svg { width: 200px; }
+          .kma-header-logo svg { width: 220px; }
           .kma-header-action { gap: 6px; }
           .kma-header-signin { padding: 0 16px; }
           .kma-mobile-toggle { width: 40px; height: 40px; }
         }
         @media (max-width: 340px) {
-          .kma-header-logo svg { width: 170px; }
+          .kma-header-logo svg { width: 190px; }
+        }
+        @media (max-width: 330px) {
+          .kma-header-logo svg { width: 165px; }
         }
 
         .kma-navdrop-backdrop {
