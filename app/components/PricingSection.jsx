@@ -38,7 +38,7 @@ const PLANS = [
     tag: "Professional",
     key: "professional",
     monthly: { price: "€12", duration: "/ month" },
-    yearly: { price: "€8", duration: "/ month", note: "billed €96 annually · 2 months free vs. monthly" },
+    yearly: { price: "€8", duration: "/ month" },
     desc: "For PMs, UX leads, and founders who need continuous competitive intelligence.",
     cta: "Upgrade to Pro",
     ctaStyle: "solid",
@@ -153,7 +153,6 @@ export default function PricingSection() {
         .pr-price-row { display: flex; align-items: flex-end; gap: 8px; height: 66px; margin-top: 24px; }
         .pr-price { font-size: 60px; line-height: 66px; font-weight: 500; letter-spacing: 1px; color: #dedede; white-space: nowrap; }
         .pr-duration { padding-bottom: 6px; font-size: 16px; line-height: 24px; color: rgba(222, 222, 222, 0.6); white-space: nowrap; }
-        .pr-note { margin: 4px 0 0; font-size: 13px; color: rgba(222, 222, 222, 0.45); }
         .pr-desc { margin: 10px 0 0; padding: 0 10px; font-size: 16px; line-height: 24px; color: rgba(222, 222, 222, 0.6); }
         .pr-sep { margin: 32px 0 0; border: none; border-top: 1px solid #4d4d51; }
         .pr-list { list-style: none; margin: 20px 0 0; padding: 0; display: flex; flex-direction: column; gap: 20px; width: 100%; }
@@ -231,7 +230,6 @@ export default function PricingSection() {
                 <span className="pr-price">{cycle.price}</span>
                 {cycle.duration && <span className="pr-duration">{cycle.duration}</span>}
               </div>
-              {cycle.note && <p className="pr-note">{cycle.note}</p>}
               <p className="pr-desc">{p.desc}</p>
               <hr className="pr-sep" />
               <ul className="pr-list">
