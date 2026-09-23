@@ -52,7 +52,7 @@ export default function AppSidebar() {
       `}</style>
 
       <div className="kma-sidebar-logo">
-        <LogoMark size={67} color="currentColor" />
+        <LogoMark size={72} color="currentColor" />
       </div>
 
       <nav className="kma-sidebar-nav">
