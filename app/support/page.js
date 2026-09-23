@@ -130,11 +130,11 @@ export default function SupportPage() {
         .support-hero { text-align: center; margin-bottom: 48px; position: relative; z-index: 1; }
         .support-title {
           font-family: var(--font-display); font-size: 90px; font-weight: 700;
-          letter-spacing: -0.025em; line-height: 1.08; color: #1A2B3B; margin: 0 0 12px;
+          letter-spacing: -0.025em; line-height: 1.08; color: var(--chalk); margin: 0 0 12px;
         }
         @media (max-width: 700px) { .support-title { font-size: 48px; } }
         .support-sub {
-          font-family: var(--font-inter), sans-serif; font-size: 20px; color: #1A2B3B;
+          font-family: var(--font-inter), sans-serif; font-size: 20px; color: var(--chalk);
           line-height: 1.5; margin-top: 24px; margin-bottom: 64px;
         }
         .support-search {
