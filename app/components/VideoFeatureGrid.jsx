@@ -37,13 +37,11 @@ export default function VideoFeatureGrid() {
   return (
     <>
       <style>{`
-        .mkt-fullbleed {
-          width: 100vw; position: relative; left: 50%; right: 50%;
-          margin-left: -50vw; margin-right: -50vw; padding: 0 48px; box-sizing: border-box;
-        }
         .mkt-grid-dark-wrap {
+          width: 100vw; position: relative; left: 50%; right: 50%;
+          margin-left: -50vw; margin-right: -50vw; box-sizing: border-box;
           background: #030B25; padding: 0 0 0 48px; margin-top: 90px;
-          position: relative; overflow: hidden;
+          overflow: hidden;
         }
         .mkt-grid-dark-video {
           position: absolute; inset: 0; width: 100%; height: 100%;
@@ -99,7 +97,7 @@ export default function VideoFeatureGrid() {
         }
       `}</style>
 
-      <div className="mkt-fullbleed mkt-grid-dark-wrap">
+      <div className="mkt-grid-dark-wrap">
         <video className="mkt-grid-dark-video" autoPlay loop muted playsInline>
           <source src="/dark-grid-bg.mp4" type="video/mp4" />
         </video>

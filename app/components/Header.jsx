@@ -372,7 +372,7 @@ export default function Header() {
         .kma-navdrop-backdrop-visible { opacity: 1; }
         .kma-navdrop-panel {
           position: fixed; transform: translateX(-50%) translateY(-8px); opacity: 0;
-          background: var(--ink-2);
+          background: #141414;
           border-radius: 4px; padding: 32px;
           z-index: 200; display: flex; gap: 8px;
           transition: opacity 0.18s ease, transform 0.18s ease;

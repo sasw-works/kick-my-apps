@@ -561,7 +561,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           top: calc(100% + 4px);
           left: 0;
           right: 0;
-          background: var(--ink-2);
+          background: #141414;
           border: 1px solid var(--ink-3);
           border-radius: 8px;
           overflow: hidden;

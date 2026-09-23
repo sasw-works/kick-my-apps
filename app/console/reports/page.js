@@ -186,16 +186,19 @@ export default function ConsoleReportsPage() {
     <main className="reports-page">
       <style>{`
         .reports-page { padding: 32px 48px 120px; max-width: 1240px; margin: 0 auto; }
+        .reports-header { text-align: left; margin-bottom: 32px; }
+        .reports-header h1 { margin: 0; font-family: var(--font-inter), sans-serif; font-size: 42px; line-height: 57.6px; font-weight: 400; color: #ffffff; }
+        .reports-header p { margin: 0; font-size: var(--fs-18); line-height: 28px; font-weight: 400; color: #dedede; }
         .reports-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 24px; }
         .reports-search {
           flex: 1; max-width: 640px; display: flex; align-items: center; gap: 12px;
-          background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 999px; padding: 0 16px;
+          background: #141414; border: 1px solid var(--ink-3); border-radius: 999px; padding: 0 16px;
           height: 44px; box-sizing: border-box;
         }
         .reports-search input { flex: 1; border: none; outline: none; background: transparent; font-size: 14px; color: var(--chalk); }
         .reports-tabs { display: flex; gap: 8px; flex-wrap: wrap; flex-shrink: 0; }
         .reports-tab {
-          display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--ink-2); border: 1px solid var(--ink-3);
+          display: flex; align-items: center; justify-content: center; gap: 8px; background: #141414; border: 1px solid var(--ink-3);
           border-radius: 999px; padding: 0 16px; font-size: 12px; color: var(--muted); cursor: pointer;
           transition: border-color 0.15s ease, background 0.15s ease;
           height: 44px; box-sizing: border-box; min-width: 150px;
@@ -203,13 +206,13 @@ export default function ConsoleReportsPage() {
         .reports-tab:hover { border-color: var(--brand); }
         .reports-tab-active { background: var(--ink-3); border-color: var(--chalk); color: var(--chalk); font-weight: 600; }
         .reports-tab-count { font-family: var(--font-mono); font-size: 11px; opacity: 0.7; }
-        .reports-table { width: 100%; border-collapse: collapse; background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 8px; overflow: hidden; }
+        .reports-table { width: 100%; border-collapse: collapse; background: #141414; border: 1px solid var(--ink-3); border-radius: 8px; overflow: hidden; }
         .reports-table th {
           text-align: left; font-size: 11px; letter-spacing: 0.06em; color: color-mix(in srgb, var(--muted) 55%, black); font-weight: 600;
-          padding: 16px 16px; border-bottom: 1px solid color-mix(in srgb, var(--ink-3) 55%, white); text-transform: uppercase;
-          height: 65px; box-sizing: border-box; background: color-mix(in srgb, var(--ink-3) 90%, white);
+          padding: 16px 16px; border-bottom: 1px solid var(--ink-3); text-transform: uppercase;
+          height: 65px; box-sizing: border-box; background: #0d0d0d;
         }
-        .reports-table td { padding: 16px 16px; border-bottom: 1px solid color-mix(in srgb, var(--ink-3) 55%, white); font-size: 14px; color: var(--chalk); vertical-align: middle; height: 65px; box-sizing: border-box; }
+        .reports-table td { padding: 16px 16px; border-bottom: 1px solid var(--ink-3); font-size: 14px; color: var(--chalk); vertical-align: middle; height: 65px; box-sizing: border-box; }
         .reports-col-center, th.reports-col-center, td.reports-col-center { text-align: center; }
         .reports-table tr:last-child td { border-bottom: none; }
         .reports-table tr { transition: background 0.1s ease; }
@@ -253,6 +256,11 @@ export default function ConsoleReportsPage() {
         }
         .reports-selection-btn:hover { background: rgba(255,255,255,0.12); }
       `}</style>
+
+      <div className="reports-header">
+        <h1>Reports</h1>
+        <p>Browse, search, and manage every report you&apos;ve generated.</p>
+      </div>
 
       <div className="reports-toolbar">
         <div className="reports-search">
