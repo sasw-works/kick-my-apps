@@ -20,8 +20,8 @@ export default function AppSidebar() {
     <aside className="kma-sidebar">
       <style>{`
         .kma-sidebar {
-          width: 260px; flex-shrink: 0; height: 100vh;
-          background: var(--ink-2); border-right: 1px solid var(--ink-3);
+          width: 290px; flex-shrink: 0; height: 100vh;
+          background: #141414; border-right: 1px solid var(--ink-3);
           display: flex; flex-direction: column; padding: 24px 16px;
           font-family: var(--font-inter), sans-serif;
           position: fixed; top: 0; left: 0; overflow-y: auto; z-index: 40;
