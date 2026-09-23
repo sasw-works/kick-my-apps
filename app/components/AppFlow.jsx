@@ -167,7 +167,7 @@ export default function AppFlow({ showMarketing = true, handoffToConsole = false
       `}</style>
       {stage === "upload" ? (
         <>
-          <UploadFlow onAnalyze={handleAnalyze} analyzing={analyzing} errorMessage={errorMessage} variant={showMarketing ? "dark" : "default"} />
+          <UploadFlow onAnalyze={handleAnalyze} analyzing={analyzing} errorMessage={errorMessage} variant="dark" />
           {showMarketing && (
             <>
               <DashboardSection />
