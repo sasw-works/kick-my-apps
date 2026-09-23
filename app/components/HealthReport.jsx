@@ -256,17 +256,20 @@ function HealthDial({ score = 58, size = 220, delta = null }) {
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
       {ticks}
-      <text x={cx} y={cy - (delta !== null ? 4 : 0)} textAnchor="middle" dominantBaseline="middle" style={{ fontFamily: "var(--font-display)", fontSize: 46, fontWeight: 500, letterSpacing: "-0.02em", fill: "var(--chalk)" }}>
+      <text x={cx} y={cy + (delta !== null ? -23 : -14)} textAnchor="middle" dominantBaseline="middle" style={{ fontFamily: "var(--font-display)", fontSize: 46, fontWeight: 500, letterSpacing: "-0.02em", fill: "var(--chalk)" }}>
         {score}
       </text>
       {delta !== null && (
-        <text x={cx} y={cy + 22} textAnchor="middle" style={{ fontFamily: "var(--font-mono)", fontSize: 13, fontWeight: 600, fill: deltaColor }}>
+        <text x={cx} y={cy + 11} textAnchor="middle" dominantBaseline="middle" style={{ fontFamily: "var(--font-mono)", fontSize: 13, fontWeight: 600, fill: deltaColor }}>
           {delta > 0 ? "+" : ""}
           {delta}
         </text>
       )}
-      <text x={cx} y={cy + (delta !== null ? 44 : 30)} textAnchor="middle" style={{ fontFamily: "var(--font-mono)", fontSize: 10.5, letterSpacing: "0.14em", fill: "var(--muted)" }}>
-        APP HEALTH SCORE
+      <text x={cx} y={cy + (delta !== null ? 27 : 18)} textAnchor="middle" dominantBaseline="middle" style={{ fontFamily: "var(--font-mono)", fontSize: 10.5, letterSpacing: "0.14em", fill: "var(--muted)" }}>
+        APP HEALTH
+      </text>
+      <text x={cx} y={cy + (delta !== null ? 41 : 32)} textAnchor="middle" dominantBaseline="middle" style={{ fontFamily: "var(--font-mono)", fontSize: 10.5, letterSpacing: "0.14em", fill: "var(--muted)" }}>
+        SCORE
       </text>
     </svg>
   );
@@ -660,7 +663,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
           color: var(--chalk);
           font-family: var(--font-body);
           min-height: 100%;
-          border-radius: 8px;
+          border-radius: 16px;
           overflow: hidden;
         }
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
@@ -697,7 +700,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .upload-panel {
           background: #141414;
           border: 1px solid var(--ink-3);
-          border-radius: 8px;
+          border-radius: 16px;
           padding: 24px 24px;
           display: flex;
           align-items: center;
@@ -720,14 +723,14 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .kma-toolbar-btn:hover { transform: translateY(-2px); }
         .kma-toolbar-btn:active { transform: translateY(0); }
 
-        .panel { background: #141414; border: 1px solid var(--ink-3); border-radius: 8px; padding: 24px; box-shadow: var(--shadow); }
+        .panel { background: #141414; border: 1px solid var(--ink-3); border-radius: 16px; padding: 24px; box-shadow: var(--shadow); }
         .panel-title { font-family: var(--font-display); font-size: 16px; letter-spacing: 0; font-weight: 600; color: var(--chalk); margin-bottom: 4px; }
         .panel-subtitle { font-size: 12px; color: var(--muted); margin-bottom: 32px; }
         .panel-divider { height: 1px; background: var(--ink-3); margin-bottom: 16px; }
 
         .kma-toolbar-card {
           display: flex; align-items: center; gap: 12px; background: #141414; border: 1px solid var(--ink-3);
-          border-radius: 8px; padding: 24px; margin-bottom: 24px; flex-wrap: wrap;
+          border-radius: 16px; padding: 24px; margin-bottom: 24px; flex-wrap: wrap;
         }
         .kma-toolbar-app { display: flex; align-items: center; gap: 12px; }
         .kma-toolbar-app-icon { width: 46px; height: 46px; border-radius: 8px; object-fit: cover; border: 1px solid var(--ink-3); }
@@ -797,7 +800,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .lens-score-row { display: flex; gap: 16px; flex-wrap: wrap; }
         .lens-score-item {
           flex: 1; min-width: 90px; text-align: center; background: var(--ink);
-          border-radius: 8px; padding: 16px 12px;
+          border-radius: 16px; padding: 16px 12px;
         }
         .lens-score-num { font-family: var(--font-display); font-size: 32px; font-weight: 700; line-height: 1; }
         .lens-score-label { font-size: 12px; font-weight: 600; letter-spacing: 0.05em; color: var(--muted); margin-top: 8px; }
@@ -826,7 +829,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .summary-count { font-family: var(--font-mono); font-weight: 700; width: 20px; }
 
         .shot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
-        .shot-frame { background: var(--ink); border: 1px solid var(--ink-3); border-radius: 8px; padding: 12px; }
+        .shot-frame { background: var(--ink); border: 1px solid var(--ink-3); border-radius: 16px; padding: 12px; }
         .shot-index { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-bottom: 8px; }
         .shot-img-wrap { position: relative; }
         .shot-img-wrap img { width: 100%; display: block; border-radius: 4px; }
@@ -847,7 +850,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .lens-count { display: flex; gap: 12px; flex-wrap: wrap; font-family: var(--font-mono); font-size: 12px; }
 
         .qw-list { display: flex; flex-direction: column; gap: 12px; }
-        .qw-row { background: var(--ink); border-radius: 8px; padding: 12px 16px; }
+        .qw-row { background: var(--ink); border-radius: 16px; padding: 12px 16px; }
         .qw-top { display: flex; align-items: center; gap: 12px; }
         .qw-title { font-size: 14px; font-weight: 600; }
         .qw-tags { display: flex; gap: 8px; margin-bottom: 16px; }
@@ -874,7 +877,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         .lens-group-caption { font-size: 12px; color: var(--muted); margin-bottom: 24px; }
         .finding-row {
           background: #141414;
-          border-radius: 8px;
+          border-radius: 16px;
           padding: 16px 16px;
           box-shadow: var(--shadow);
         }
@@ -935,7 +938,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Uygulaman", o
         }
 
         .helpful-negative {
-          margin-top: 16px; background: var(--ink); border-radius: 8px; padding: 12px 16px;
+          margin-top: 16px; background: var(--ink); border-radius: 16px; padding: 12px 16px;
         }
         .helpful-negative-label {
           font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 8px;
