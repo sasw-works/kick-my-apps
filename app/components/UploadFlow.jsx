@@ -338,7 +338,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         /* Figma "Hero" 4087:51 — 1170 wide, title starts 150px below the header */
         .upload-root-dark .upload-hero { text-align: center; margin-top: 150px; margin-bottom: 0; width: 100%; max-width: 1170px; position: relative; z-index: 1; }
 
-        /* 4086:44 — 90/85, -0.02em, gradient text (171.73deg #fff -> #71717a) */
+        /* 4086:44 — 90/85, -0.02em. Light mode: solid #1A2B3B. Dark mode: gradient text (below). */
         .upload-root-dark .hero-title {
           font-family: var(--font-display);
           font-size: 90px;
@@ -346,21 +346,19 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           font-optical-sizing: auto; /* opsz clamps to 32 = Inter Display, the closest cut to Neue Haas Display */
           letter-spacing: -0.0333em; /* -3px at 90px: lands the lines at Figma's 728 / 530px */
           line-height: 0.9444;
-          /* background-clip:text only paints inside the box; the 85px line box is shorter than the glyphs,
-             so extend the paint area and cancel it with a negative margin (layout stays 2 x 85 = 170). */
           padding: 0.12em 0;
           margin: -0.12em 0;
-          /* stops pulled in by 0.12em * |cos(171.73deg)| so the ramp equals Figma's over the original 170px box */
-          background: linear-gradient(171.73deg, #1A2B3B 0.1188em, #6b7280 calc(100% - 0.1188em)); /* light-mode default */
+          color: #1A2B3B;
+        }
+        .kma-dark .upload-root-dark .hero-title {
+          /* background-clip:text only paints inside the box; the 85px line box is shorter than the glyphs,
+             so extend the paint area and cancel it with a negative margin (layout stays 2 x 85 = 170).
+             stops pulled in by 0.12em * |cos(171.73deg)| so the ramp equals Figma's over the original 170px box */
+          background: linear-gradient(171.73deg, #ffffff 0.1188em, #71717a calc(100% - 0.1188em));
           -webkit-background-clip: text;
           background-clip: text;
           -webkit-text-fill-color: transparent;
           color: transparent;
-        }
-        .kma-dark .upload-root-dark .hero-title {
-          background: linear-gradient(171.73deg, #ffffff 0.1188em, #71717a calc(100% - 0.1188em));
-          -webkit-background-clip: text;
-          background-clip: text;
         }
         @media (max-width: 720px) {
           .upload-root-dark .hero-title { font-size: 48px; }
