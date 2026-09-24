@@ -410,11 +410,15 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           gap: 24px;
           padding: 0 calc(var(--pad-42) - 1px); /* Figma strokes are inside: content starts at exactly 42px */
           background: var(--glass-bg);
-          border: 1px solid var(--glass-border);
+          border: 1px solid transparent;
           border-radius: 999px;
           -webkit-backdrop-filter: blur(var(--glass-blur));
           backdrop-filter: blur(var(--glass-blur));
           transition: border-color 0.15s ease, background 0.15s ease;
+        }
+        .kma-dark .upload-root-dark .hero-search-pill,
+        .kma-dark .upload-root-dark .upload-pill {
+          border-color: var(--glass-border);
         }
         .upload-root-dark .hero-search-pill { width: 100%; }
         .upload-root-dark .hero-search-pill:focus-within { border-color: var(--blue-100); }
@@ -667,10 +671,10 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
       <div className="hero-input-row">
         <div className="hero-search-anchor">
           <div className="hero-search-pill">
-            {dark ? (
+            {theme === "dark" ? (
               <img className="hero-icon" src="/dark/hero-icon-search.svg" alt="" width={18.0408} height={18} />
             ) : (
-              <Search size={18} color="var(--muted)" />
+              <Search size={18} color="var(--chalk)" className="hero-icon" />
             )}
             <input
               ref={searchInputRef}
@@ -728,12 +732,12 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
             style={{ display: "none" }}
             onChange={(e) => addFiles(e.target.files)}
           />
-          {dark ? (
+          {theme === "dark" ? (
             <span className="upload-pill-icon">
               <img src="/dark/hero-icon-upload.svg" alt="" width={19.41} height={19.41} />
             </span>
           ) : (
-            <UploadIcon size={14} color="var(--muted)" />
+            <UploadIcon size={18} color="var(--chalk)" />
           )}
           <span className="upload-pill-label" style={dark ? undefined : { color: files.length > 0 ? "var(--chalk)" : "var(--muted)" }}>
             {files.length > 0 ? `${files.length} screenshots selected` : dark ? "Upload screens" : "Upload UI screens"}
