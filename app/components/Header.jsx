@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import LogoMark from "./LogoMark";
 import { useTheme } from "./ThemeProvider";
+import { Moon } from "lucide-react";
 
 const FEATURE_GROUPS = [
   {
@@ -260,14 +261,18 @@ export default function Header() {
           flex-shrink: 0;
           white-space: nowrap;
         }
-        /* Theme toggle — visible in both light and dark; the glass-dark circle reads fine on either. */
+        /* Theme toggle. Dark mode: existing glass-dark circle (sun icon baked into the asset).
+           Light mode: plain white circle + gray border, with a Moon icon (shows the mode you'd switch TO). */
         .kma-header-theme {
-          display: block;
+          display: flex; align-items: center; justify-content: center;
           padding: 0; border: none; background: transparent;
-          width: 56px; height: 56px; flex-shrink: 0;
+          width: 56px; height: 56px; flex-shrink: 0; border-radius: 50%;
           cursor: pointer;
         }
         .kma-header-theme img { display: block; }
+        .kma-header-theme-light {
+          background: #ffffff; border: 1px solid #D1D9E0; color: #1A2B3B;
+        }
         .kma-header-signin {
           display: flex; align-items: center; justify-content: center;
           width: 138px; height: 56px;
@@ -449,8 +454,17 @@ export default function Header() {
             >
               <span />
             </button>
-            <button type="button" className="kma-header-theme" aria-label="Toggle theme" onClick={toggleTheme}>
-              <img src="/dark/header-theme-toggle.svg" alt="" width={56} height={56} />
+            <button
+              type="button"
+              className={`kma-header-theme ${theme === "light" ? "kma-header-theme-light" : ""}`}
+              aria-label="Toggle theme"
+              onClick={toggleTheme}
+            >
+              {theme === "light" ? (
+                <Moon size={22} color="#1A2B3B" />
+              ) : (
+                <img src="/dark/header-theme-toggle.svg" alt="" width={56} height={56} />
+              )}
             </button>
             <button type="button" className="kma-header-signin">Sign in</button>
           </div>
