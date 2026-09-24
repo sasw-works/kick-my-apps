@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { Search, Check, Loader2, X, ArrowRight } from "lucide-react";
+import { useTheme } from "./ThemeProvider";
 
 function UploadIcon({ size = 20, color = "#222B45" }) {
   return (
@@ -19,6 +20,8 @@ function UploadIcon({ size = 20, color = "#222B45" }) {
 
 export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewHistory, variant = "default" }) {
   const dark = variant === "dark"; // "dark" = KMA Dark hero from Figma (home); "default" = legacy look (console)
+  const { theme } = useTheme();
+  const showLightBlobs = dark && theme === "light"; // original pastel hero background, light mode only
   const [files, setFiles] = useState([]);
   const [query, setQuery] = useState("");
   const [selectedApp, setSelectedApp] = useState(null); // { name, storeUrl, icon, developer }
@@ -614,7 +617,40 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
 
         .spin { animation: kma-spin 0.9s linear infinite; }
         @keyframes kma-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* Original light-mode hero background, restored from the pre-redesign site (commit 0d16a60)
+           for the Light/Dark toggle. Dark mode keeps using .kma-glow instead — see ConditionalChrome. */
+        .hero-bg-wrap {
+          position: absolute;
+          top: -100px;
+          left: 50%;
+          width: 100vw;
+          margin-left: -50vw;
+          height: 900px;
+          max-height: 100vh;
+          overflow: hidden;
+          pointer-events: none;
+          z-index: 0;
+          -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 55%, transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 55%, transparent 100%);
+        }
+        .hero-blob { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.45; pointer-events: none; }
+        .hero-blob-1 { width: 102vw; height: 102vw; max-width: 1140px; max-height: 1140px; top: -60px; left: 24%; background: #C9E86A; }
+        .hero-blob-2 { width: 102vw; height: 102vw; max-width: 1140px; max-height: 1140px; top: 120px; right: 12%; background: #6FC6F5; }
+        .hero-blob-3 { width: 75vw; height: 75vw; max-width: 810px; max-height: 810px; top: 60px; left: 28%; background: #7EE6C4; }
+        .hero-blob-4 { width: 55vw; height: 55vw; max-width: 600px; max-height: 600px; top: -20px; left: 6%; background: #FDE788; }
+        .hero-blob-5 { width: 60vw; height: 60vw; max-width: 640px; max-height: 640px; top: 220px; right: -4%; background: #B9A6F5; }
       `}</style>
+
+      {showLightBlobs && (
+        <div className="hero-bg-wrap" aria-hidden="true">
+          <div className="hero-blob hero-blob-1" />
+          <div className="hero-blob hero-blob-2" />
+          <div className="hero-blob hero-blob-3" />
+          <div className="hero-blob hero-blob-4" />
+          <div className="hero-blob hero-blob-5" />
+        </div>
+      )}
 
       <div className="upload-hero">
         <h1 className="hero-title">
