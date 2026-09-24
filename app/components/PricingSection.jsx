@@ -76,8 +76,8 @@ export default function PricingSection() {
           gap: 50px;
         }
         .pr-headline { display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
-        .pr-title { margin: 0; font-size: 42px; line-height: 57.6px; font-weight: 400; color: #ffffff; max-width: 724px; }
-        .pr-sub { margin: 0; font-size: var(--fs-18); line-height: 28px; font-weight: 400; color: #dedede; }
+        .pr-title { margin: 0; font-size: 42px; line-height: 57.6px; font-weight: 400; color: var(--chalk); max-width: 724px; }
+        .pr-sub { margin: 0; font-size: var(--fs-18); line-height: 28px; font-weight: 400; color: var(--muted); }
 
         /* toggle: 400x60 glass pill, 250x48 blue pill slides between the two halves */
         .pr-tab {

@@ -110,8 +110,8 @@ export default function AudienceSection() {
           gap: 50px;
         }
         .au-headline { display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
-        .au-title { margin: 0; font-size: 42px; line-height: 57.6px; font-weight: 400; color: #ffffff; max-width: 724px; }
-        .au-sub { margin: 0; font-size: var(--fs-18); line-height: 28px; font-weight: 400; color: #dedede; }
+        .au-title { margin: 0; font-size: 42px; line-height: 57.6px; font-weight: 400; color: var(--chalk); max-width: 724px; }
+        .au-sub { margin: 0; font-size: var(--fs-18); line-height: 28px; font-weight: 400; color: var(--muted); }
 
         .au-cards { display: flex; align-items: stretch; gap: 17px; width: 100%; }
         .au-card {

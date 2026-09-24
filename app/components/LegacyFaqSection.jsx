@@ -56,8 +56,8 @@ export default function LegacyFaqSection() {
       <style>{`
         /* Headline matches every other KMA Dark section: 42/57.6 title, 18/28 sub below it. */
         .faq-headline { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; margin-top: 150px; margin-bottom: 48px; }
-        .mkt-section-title { margin: 0; font-size: 42px; line-height: 57.6px; font-weight: 400; color: #ffffff; }
-        .mkt-section-sub { margin: 0; font-size: var(--fs-18); line-height: 28px; font-weight: 400; color: #dedede; }
+        .mkt-section-title { margin: 0; font-size: 42px; line-height: 57.6px; font-weight: 400; color: var(--chalk); }
+        .mkt-section-sub { margin: 0; font-size: var(--fs-18); line-height: 28px; font-weight: 400; color: var(--muted); }
         .faq-list { max-width: 720px; margin: 0 auto 48px; border-top: 1px solid var(--ink-3); }
         .faq-row { border-bottom: 1px solid var(--ink-3); }
         .faq-q {
