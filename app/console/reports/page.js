@@ -210,10 +210,11 @@ export default function ConsoleReportsPage() {
         .reports-tab-count { font-family: var(--font-mono); font-size: 11px; opacity: 0.7; }
         .reports-table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--ink-3); border-radius: 8px; overflow: hidden; }
         .reports-table th {
-          text-align: left; font-size: 11px; letter-spacing: 0.06em; color: color-mix(in srgb, var(--muted) 55%, black); font-weight: 600;
+          text-align: left; font-size: 11px; letter-spacing: 0.06em; color: var(--muted); font-weight: 600;
           padding: 16px 16px; border-bottom: 1px solid var(--ink-3); text-transform: uppercase;
-          height: 65px; box-sizing: border-box; background: #0d0d0d;
+          height: 65px; box-sizing: border-box; background: var(--ink-3);
         }
+        .kma-dark .reports-table th { background: #0d0d0d; }
         .reports-table td { padding: 16px 16px; border-bottom: 1px solid var(--ink-3); font-size: 14px; color: var(--chalk); vertical-align: middle; height: 65px; box-sizing: border-box; }
         @media (max-width: 900px) {
           .reports-page { padding: 48px 24px 120px; }
