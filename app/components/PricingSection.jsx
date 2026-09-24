@@ -115,10 +115,15 @@ export default function PricingSection() {
           font-size: 16px;
           font-weight: 500;
           line-height: 24px;
-          color: #ffffff;
+          color: var(--chalk);
           cursor: pointer;
           z-index: 1;
         }
+        /* the sliding thumb sits under whichever tab is active; that one needs white text
+           regardless of theme, the other stays readable against the glass pill. */
+        .pr-tab:not(.pr-tab-yearly) .pr-tab-btn:first-child { color: #ffffff; }
+        .pr-tab.pr-tab-yearly .pr-tab-btn:last-child { color: #ffffff; }
+        .kma-dark .pr-tab-btn { color: #ffffff; }
         .pr-tab-btn:first-child { left: 6px; }
         .pr-tab-btn:last-child { left: 200px; }
 
@@ -130,8 +135,8 @@ export default function PricingSection() {
           flex-direction: column;
           gap: 10px;
           padding: 32px;
-          background: #1e1e1e;
-          border: 1px solid #484848;
+          background: var(--surface);
+          border: 1px solid var(--ink-3);
           border-radius: 24px;
           box-sizing: border-box;
         }
@@ -139,23 +144,23 @@ export default function PricingSection() {
         .pr-tag {
           align-self: flex-start;
           padding: 16px 24px;
-          background: #262626;
-          border: 1px solid #484848;
+          background: var(--ink-2);
+          border: 1px solid var(--ink-3);
           border-radius: 999px;
           font-size: 14px;
           line-height: 14px;
-          color: #d8d8d8;
+          color: var(--muted);
           white-space: nowrap;
         }
         .pr-price-row { display: flex; align-items: flex-end; gap: 8px; height: 66px; margin-top: 24px; }
-        .pr-price { font-size: 60px; line-height: 66px; font-weight: 500; letter-spacing: 1px; color: #dedede; white-space: nowrap; }
-        .pr-duration { padding-bottom: 6px; font-size: 16px; line-height: 24px; color: rgba(222, 222, 222, 0.6); white-space: nowrap; }
-        .pr-desc { margin: 10px 0 0; padding: 0 10px; font-size: 16px; line-height: 24px; color: rgba(222, 222, 222, 0.6); }
-        .pr-sep { margin: 32px 0 0; border: none; border-top: 1px solid #4d4d51; }
+        .pr-price { font-size: 60px; line-height: 66px; font-weight: 500; letter-spacing: 1px; color: var(--chalk); white-space: nowrap; }
+        .pr-duration { padding-bottom: 6px; font-size: 16px; line-height: 24px; color: var(--muted); white-space: nowrap; }
+        .pr-desc { margin: 10px 0 0; padding: 0 10px; font-size: 16px; line-height: 24px; color: var(--muted); }
+        .pr-sep { margin: 32px 0 0; border: none; border-top: 1px solid var(--ink-3); }
         .pr-list { list-style: none; margin: 20px 0 0; padding: 0; display: flex; flex-direction: column; gap: 20px; width: 100%; }
-        .pr-list li { display: flex; align-items: center; gap: 16px; font-size: 16px; line-height: 24px; color: rgba(222, 222, 222, 0.6); white-space: nowrap; }
-        .pr-list-inactive { color: rgba(222, 222, 222, 0.3) !important; }
-        .pr-x { flex-shrink: 0; display: block; color: rgba(222, 222, 222, 0.25); }
+        .pr-list li { display: flex; align-items: center; gap: 16px; font-size: 16px; line-height: 24px; color: var(--muted); white-space: nowrap; }
+        .pr-list-inactive { color: color-mix(in srgb, var(--muted) 55%, transparent) !important; }
+        .pr-x { flex-shrink: 0; display: block; color: color-mix(in srgb, var(--muted) 45%, transparent); }
         .pr-check { display: block; flex-shrink: 0; }
         .pr-cta-wrap { margin-top: 32px; }
         .pr-cta {
@@ -167,7 +172,6 @@ export default function PricingSection() {
           font-weight: 400;
           letter-spacing: var(--ls-body);
           line-height: 24px;
-          color: #ffffff;
           cursor: pointer;
           transition: filter 0.2s ease, transform 0.2s ease;
         }
@@ -177,8 +181,9 @@ export default function PricingSection() {
           border: 1px solid var(--glass-border);
           -webkit-backdrop-filter: blur(var(--glass-blur));
           backdrop-filter: blur(var(--glass-blur));
+          color: var(--chalk);
         }
-        .pr-cta-solid { background: var(--blue-100); border: none; }
+        .pr-cta-solid { background: var(--blue-100); border: none; color: #ffffff; }
         .pr-cta-solid:hover { filter: brightness(1.08); }
 
         @media (max-width: 1040px) {
