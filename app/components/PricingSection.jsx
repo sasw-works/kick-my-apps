@@ -92,10 +92,10 @@ export default function PricingSection() {
         }
         .pr-tab-thumb {
           position: absolute;
-          top: 6.4px;
+          top: 6px;
           left: 6px;
           width: 194px;
-          height: 47.2px;
+          height: 48px;
           border-radius: 114px;
           background: var(--blue-100);
           transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -121,11 +121,11 @@ export default function PricingSection() {
         }
         /* the sliding thumb sits under whichever tab is active; that one needs white text
            regardless of theme, the other stays readable against the glass pill. */
-        .pr-tab:not(.pr-tab-yearly) .pr-tab-btn:first-child { color: #ffffff; }
-        .pr-tab.pr-tab-yearly .pr-tab-btn:last-child { color: #ffffff; }
+        .pr-tab:not(.pr-tab-yearly) .pr-tab-btn:first-of-type { color: #ffffff; }
+        .pr-tab.pr-tab-yearly .pr-tab-btn:last-of-type { color: #ffffff; }
         .kma-dark .pr-tab-btn { color: #ffffff; }
-        .pr-tab-btn:first-child { left: 6px; }
-        .pr-tab-btn:last-child { left: 200px; }
+        .pr-tab-btn:first-of-type { left: 6px; }
+        .pr-tab-btn:last-of-type { left: 200px; }
 
         .pr-cards { display: flex; align-items: stretch; gap: 32px; width: 100%; }
         .pr-card {
@@ -200,7 +200,7 @@ export default function PricingSection() {
           .pr-tab { width: 100%; max-width: 400px; }
           .pr-tab-thumb, .pr-tab-btn { width: calc(50% - 6px); }
           .pr-tab.pr-tab-yearly .pr-tab-thumb { transform: translateX(calc(100% + 0.5px)); }
-          .pr-tab-btn:last-child { left: auto; right: 6px; }
+          .pr-tab-btn:last-of-type { left: auto; right: 6px; }
           .pr-cards { flex-direction: column; }
           .pr-card { flex: 1 1 auto; }
         }
