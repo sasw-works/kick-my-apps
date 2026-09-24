@@ -11,20 +11,22 @@ export default function DashboardSection() {
           aspect-ratio: 1170 / 700;
           margin: 150px auto 0;
         }
-        /* 4155:193 — 996x426 at (87, 260.19), blur 50, 5 stops @ 25% */
+        /* 4155:193 — sized to bleed past the card's own edges (Figma's box sat fully inside the
+           card, so it never showed through the opaque card on top of it); opacity boosted for
+           the dark page background too. */
         .kma-dashboard-shadow {
           position: absolute;
-          left: 7.436%;
-          top: 37.170%;
-          width: 85.128%;
-          height: 60.857%;
-          filter: blur(50px);
+          left: -8%;
+          top: 10%;
+          width: 116%;
+          height: 100%;
+          filter: blur(60px);
           background-image: linear-gradient(90deg,
-            rgba(68, 255, 154, 0.25) 0.54765%,
-            rgba(68, 176, 255, 0.25) 22.864%,
-            rgba(139, 68, 255, 0.25) 48.357%,
-            rgba(255, 102, 68, 0.25) 73.33%,
-            rgba(235, 255, 112, 0.25) 99.343%);
+            rgba(68, 255, 154, 0.6) 0.54765%,
+            rgba(68, 176, 255, 0.6) 22.864%,
+            rgba(139, 68, 255, 0.6) 48.357%,
+            rgba(255, 102, 68, 0.6) 73.33%,
+            rgba(235, 255, 112, 0.6) 99.343%);
           pointer-events: none;
         }
         /* 4155:194 */
