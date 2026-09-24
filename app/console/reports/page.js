@@ -187,18 +187,18 @@ export default function ConsoleReportsPage() {
       <style>{`
         .reports-page { padding: 48px 48px 120px; max-width: 1240px; margin: 0 auto; }
         .reports-header { text-align: left; margin-bottom: 32px; }
-        .reports-header h1 { margin: 0; font-family: var(--font-inter), sans-serif; font-size: 42px; line-height: 57.6px; font-weight: 400; color: #ffffff; }
-        .reports-header p { margin: 0; font-size: var(--fs-18); line-height: 28px; font-weight: 400; color: #dedede; }
+        .reports-header h1 { margin: 0; font-family: var(--font-inter), sans-serif; font-size: 42px; line-height: 57.6px; font-weight: 400; color: var(--chalk); }
+        .reports-header p { margin: 0; font-size: var(--fs-18); line-height: 28px; font-weight: 400; color: var(--muted); }
         .reports-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 24px; }
         .reports-search {
           flex: 1; max-width: 640px; display: flex; align-items: center; gap: 12px;
-          background: #141414; border: 1px solid var(--ink-3); border-radius: 999px; padding: 0 16px;
+          background: var(--surface); border: 1px solid var(--ink-3); border-radius: 999px; padding: 0 16px;
           height: 49px; box-sizing: border-box;
         }
         .reports-search input { flex: 1; border: none; outline: none; background: transparent; font-size: 14px; color: var(--chalk); }
         .reports-tabs { display: flex; gap: 8px; flex-wrap: wrap; flex-shrink: 0; }
         .reports-tab {
-          display: flex; align-items: center; justify-content: center; gap: 8px; background: #141414; border: 1px solid var(--ink-3);
+          display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--surface); border: 1px solid var(--ink-3);
           border-radius: 999px; padding: 0 16px; font-size: 12px; color: var(--muted); cursor: pointer;
           transition: border-color 0.15s ease, background 0.15s ease;
           height: 49px; box-sizing: border-box; min-width: 150px;
@@ -208,13 +208,20 @@ export default function ConsoleReportsPage() {
         .reports-tab:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
         .reports-tab-active { background: var(--ink-3); border-color: var(--brand); color: var(--chalk); font-weight: 600; }
         .reports-tab-count { font-family: var(--font-mono); font-size: 11px; opacity: 0.7; }
-        .reports-table { width: 100%; border-collapse: collapse; background: #141414; border: 1px solid var(--ink-3); border-radius: 8px; overflow: hidden; }
+        .reports-table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--ink-3); border-radius: 8px; overflow: hidden; }
         .reports-table th {
           text-align: left; font-size: 11px; letter-spacing: 0.06em; color: color-mix(in srgb, var(--muted) 55%, black); font-weight: 600;
           padding: 16px 16px; border-bottom: 1px solid var(--ink-3); text-transform: uppercase;
           height: 65px; box-sizing: border-box; background: #0d0d0d;
         }
         .reports-table td { padding: 16px 16px; border-bottom: 1px solid var(--ink-3); font-size: 14px; color: var(--chalk); vertical-align: middle; height: 65px; box-sizing: border-box; }
+        @media (max-width: 900px) {
+          .reports-page { padding: 48px 24px 120px; }
+          .reports-toolbar { flex-wrap: wrap; }
+          .reports-search { max-width: none; flex: 1 1 100%; }
+          .reports-tabs { flex: 1 1 100%; }
+          .reports-tab { flex: 1 1 0; min-width: 0; }
+        }
         .reports-col-center, th.reports-col-center, td.reports-col-center { text-align: center; }
         .reports-table tr:last-child td { border-bottom: none; }
         .reports-table tr { transition: background 0.1s ease; }
@@ -231,7 +238,7 @@ export default function ConsoleReportsPage() {
         .reports-checkbox {
           appearance: none; -webkit-appearance: none;
           width: 16px; height: 16px; border-radius: 4px; cursor: pointer;
-          background: #141414; border: 1px solid var(--ink-3);
+          background: var(--surface); border: 1px solid var(--ink-3);
           display: inline-flex; align-items: center; justify-content: center;
           transition: background 0.12s ease, border-color 0.12s ease;
         }

@@ -348,11 +348,16 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           padding: 0.12em 0;
           margin: -0.12em 0;
           /* stops pulled in by 0.12em * |cos(171.73deg)| so the ramp equals Figma's over the original 170px box */
-          background: linear-gradient(171.73deg, #ffffff 0.1188em, #71717a calc(100% - 0.1188em));
+          background: linear-gradient(171.73deg, #1a1f36 0.1188em, #6b7280 calc(100% - 0.1188em)); /* light-mode default */
           -webkit-background-clip: text;
           background-clip: text;
           -webkit-text-fill-color: transparent;
           color: transparent;
+        }
+        .kma-dark .upload-root-dark .hero-title {
+          background: linear-gradient(171.73deg, #ffffff 0.1188em, #71717a calc(100% - 0.1188em));
+          -webkit-background-clip: text;
+          background-clip: text;
         }
         @media (max-width: 720px) {
           .upload-root-dark .hero-title { font-size: 48px; }
@@ -561,7 +566,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           top: calc(100% + 4px);
           left: 0;
           right: 0;
-          background: #141414;
+          background: var(--surface);
           border: 1px solid var(--ink-3);
           border-radius: 8px;
           overflow: hidden;

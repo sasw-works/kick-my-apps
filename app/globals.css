@@ -4,6 +4,7 @@
   --ink: #F6F8FA;
   --ink-2: #FFFFFF;
   --ink-3: #E3E8EF;
+  --surface: #FFFFFF; /* box/card background that's ALSO #141414 in dark mode — see html.dark below */
   --chalk: #1A1F36;
   --muted: #697386;
   --kick: #F5433A;
@@ -17,8 +18,8 @@
   /* KMA Dark (Figma 4071:2) */
   --kma-dark-ink: #1e1e1e;
   --blue-100: #533afe; /* brand accent — matches the FAQ section's purple (was #2b59ff blue) */
-  --glass-bg: rgba(38, 53, 64, 0.5);
-  --glass-border: #395c77;
+  --glass-bg: rgba(255, 255, 255, 0.6); /* light-mode glass pill; dark value lives in html.dark below */
+  --glass-border: #C7CFDB;
   --glass-blur: 15px; /* Figma background blur 30 = CSS blur 15px */
 
   /* Figma values that fall OUTSIDE the token scales
@@ -46,6 +47,9 @@ html.dark,
   --yellow: #FFC93C;
   --teal: #2DD4BF;
   --shadow: none;
+  --surface: #141414;
+  --glass-bg: rgba(38, 53, 64, 0.5);
+  --glass-border: #395c77;
 }
 
 /* Home route only, until every section is migrated to the new design. */

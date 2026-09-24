@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import LogoMark from "./LogoMark";
+import { useTheme } from "./ThemeProvider";
 
 const FEATURE_GROUPS = [
   {
@@ -129,6 +130,7 @@ function NavDropdown({ label, groups, open, onEnter, onLeave }) {
 }
 
 export default function Header() {
+  const { theme, toggleTheme } = useTheme();
   const [openMenu, setOpenMenu] = useState(null); // "features" | "usecases" | "resources" | null
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileSection, setMobileSection] = useState(null);
@@ -258,14 +260,13 @@ export default function Header() {
           flex-shrink: 0;
           white-space: nowrap;
         }
-        /* Theme toggle only exists in the dark design (the asset is a dark glass circle). */
+        /* Theme toggle — visible in both light and dark; the glass-dark circle reads fine on either. */
         .kma-header-theme {
-          display: none;
+          display: block;
           padding: 0; border: none; background: transparent;
           width: 56px; height: 56px; flex-shrink: 0;
           cursor: pointer;
         }
-        .kma-dark .kma-header-theme { display: block; }
         .kma-header-theme img { display: block; }
         .kma-header-signin {
           display: flex; align-items: center; justify-content: center;
@@ -334,6 +335,11 @@ export default function Header() {
         .kma-mobile-item { padding: 12px 4px 16px 12px; }
         .kma-mobile-item-title { font-size: 15px; font-weight: 600; color: var(--chalk); }
         .kma-mobile-item-desc { font-size: 13px; color: var(--muted); margin-top: 2px; }
+        .kma-mobile-theme-row {
+          width: 100%; text-align: left; padding: 20px 4px; margin-top: 8px;
+          background: none; border: none; cursor: pointer;
+          font-family: var(--font-inter), sans-serif; font-size: 16px; font-weight: 500; color: var(--chalk);
+        }
 
         @media (max-width: 1000px) {
           .kma-header-nav { display: none; }
@@ -345,7 +351,7 @@ export default function Header() {
         }
         @media (max-width: 600px) {
           .kma-header-logo svg { width: 260px; }
-          .kma-dark .kma-header-theme { display: none; }
+          .kma-header-theme { display: none; }
           .kma-header-action { gap: 8px; }
           .kma-header-signin { width: auto; padding: 0 20px; }
         }
@@ -372,7 +378,7 @@ export default function Header() {
         .kma-navdrop-backdrop-visible { opacity: 1; }
         .kma-navdrop-panel {
           position: fixed; transform: translateX(-50%) translateY(-8px); opacity: 0;
-          background: #141414;
+          background: var(--surface);
           border-radius: 4px; padding: 32px;
           z-index: 200; display: flex; gap: 8px;
           transition: opacity 0.18s ease, transform 0.18s ease;
@@ -443,7 +449,7 @@ export default function Header() {
             >
               <span />
             </button>
-            <button type="button" className="kma-header-theme" aria-label="Toggle theme">
+            <button type="button" className="kma-header-theme" aria-label="Toggle theme" onClick={toggleTheme}>
               <img src="/dark/header-theme-toggle.svg" alt="" width={56} height={56} />
             </button>
             <button type="button" className="kma-header-signin">Sign in</button>
@@ -484,6 +490,9 @@ export default function Header() {
             </div>
           );
         })}
+        <button type="button" className="kma-mobile-theme-row" onClick={toggleTheme}>
+          {theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
+        </button>
       </div>
     </div>
   );
