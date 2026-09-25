@@ -1,5 +1,11 @@
-// Figma "Dashboard" 4155:192 — 1170x700 card + blurred 5-colour light underneath.
+"use client";
+
+// Figma "Dashboard" — dark 4220:4947, light 4221:5279. 1170x700 card + blurred glow underneath.
+import { useTheme } from "./ThemeProvider";
+
 export default function DashboardSection() {
+  const { theme } = useTheme();
+  const light = theme === "light";
   return (
     <section className="kma-dashboard" aria-label="Dashboard preview">
       <style>{`
@@ -31,7 +37,7 @@ export default function DashboardSection() {
         .kma-dashboard-card {
           position: absolute;
           inset: 0;
-          background: #17181F;
+          background: ${light ? "#EFF1F4" : "#17181F"};
           border-radius: 8px;
           overflow: hidden;
         }
@@ -46,7 +52,10 @@ export default function DashboardSection() {
       <div className="kma-dashboard-shadow" aria-hidden="true" />
       <div className="kma-dashboard-card">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/dark/dashboard/dashboard.svg" alt="Kick My Apps dashboard preview" />
+        <img
+          src={light ? "/light/dashboard/dashboard.svg" : "/dark/dashboard/dashboard.svg"}
+          alt="Kick My Apps dashboard preview"
+        />
       </div>
     </section>
   );
