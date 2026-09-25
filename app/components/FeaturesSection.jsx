@@ -438,6 +438,9 @@ export default function FeaturesSection() {
               <div className="kf-illus">
                 <div className="kf-abs" style={{ left: "calc(50% - 0.34px)", top: 146, width: 341.33, height: 180, transform: "translateX(-50%)" }}>
                   <Box inset="2.14px 0" clip>
+                    {light && (
+                      <div className="kf-abs" style={{ left: "15.97%", top: "9.88%", width: "67.96%", height: "20.56%", background: "#e3e6eb", borderRadius: "12px 12px 0 0" }} />
+                    )}
                     <Box inset="12.68px 37.5px 11.93px 37.59px" clip>
                       <div className="kf-abs kf-clip" style={{ left: 0, top: 0, width: 266.24, height: 151.11 }}>
                         <div className="kf-abs" style={{ left: "calc(50% - 0.01px)", top: "50%", width: 267.414, height: 151.11, transform: "translate(-50%,-50%)" }}>
