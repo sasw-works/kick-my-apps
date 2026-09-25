@@ -153,6 +153,7 @@ export default function PricingSection() {
           color: var(--muted);
           white-space: nowrap;
         }
+        .kma-dark .pr-tag { background: var(--ink); }
         .pr-price-row { display: flex; align-items: flex-end; gap: 8px; height: 66px; margin-top: 24px; }
         .pr-price { font-size: 60px; line-height: 66px; font-weight: 500; letter-spacing: 1px; color: var(--chalk); white-space: nowrap; }
         .pr-duration { padding-bottom: 6px; font-size: 16px; line-height: 24px; color: var(--muted); white-space: nowrap; }
