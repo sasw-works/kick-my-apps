@@ -92,8 +92,8 @@ export default function PricingSection() {
         }
         .pr-tab-thumb {
           position: absolute;
-          top: 6px;
-          left: 6px;
+          top: 5px;
+          left: 5px;
           width: 194px;
           height: 48px;
           border-radius: 114px;
@@ -124,8 +124,8 @@ export default function PricingSection() {
         .pr-tab:not(.pr-tab-yearly) .pr-tab-btn:first-of-type { color: #ffffff; }
         .pr-tab.pr-tab-yearly .pr-tab-btn:last-of-type { color: #ffffff; }
         .kma-dark .pr-tab-btn { color: #ffffff; }
-        .pr-tab-btn:first-of-type { left: 6px; }
-        .pr-tab-btn:last-of-type { left: 200px; }
+        .pr-tab-btn:first-of-type { left: 5px; }
+        .pr-tab-btn:last-of-type { left: 199px; }
 
         .pr-cards { display: flex; align-items: stretch; gap: 32px; width: 100%; }
         .pr-card {
@@ -200,9 +200,9 @@ export default function PricingSection() {
           .pr-title { font-size: 32px; line-height: 1.25; }
           .pr-sub { white-space: normal; }
           .pr-tab { width: 100%; max-width: 400px; }
-          .pr-tab-thumb, .pr-tab-btn { width: calc(50% - 6px); }
+          .pr-tab-thumb, .pr-tab-btn { width: calc(50% - 5px); }
           .pr-tab.pr-tab-yearly .pr-tab-thumb { transform: translateX(calc(100% + 0.5px)); }
-          .pr-tab-btn:last-of-type { left: auto; right: 6px; }
+          .pr-tab-btn:last-of-type { left: auto; right: 5px; }
           .pr-cards { flex-direction: column; }
           .pr-card { flex: 1 1 auto; }
         }
