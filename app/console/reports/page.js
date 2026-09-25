@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Search, FileText, Loader2, Eye, Download, Trash2, X } from "lucide-react";
+import { Search, Loader2, Eye, Download, Trash2, X } from "lucide-react";
 
 function AppIcon({ name, size = 40, iconUrl, storeUrl }) {
   const [fetchedUrl, setFetchedUrl] = useState(null);
@@ -312,7 +312,6 @@ export default function ConsoleReportsPage() {
         </div>
       ) : rows.length === 0 ? (
         <div className="reports-empty">
-          <FileText size={28} color="var(--ink-3)" style={{ marginBottom: 10 }} />
           <div>Henüz bir sorgulama yapmadın.</div>
         </div>
       ) : (
