@@ -3,8 +3,9 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, ClipboardList, GitCompare, Radio } from "lucide-react";
+import { LayoutDashboard, ClipboardList, GitCompare, Radio, Moon, Sun } from "lucide-react";
 import LogoMark from "./LogoMark";
+import { useTheme } from "./ThemeProvider";
 
 const NAV_ITEMS = [
   { href: "/console", label: "Dashboard", icon: LayoutDashboard },
@@ -15,6 +16,7 @@ const NAV_ITEMS = [
 
 export default function AppSidebar() {
   const pathname = usePathname();
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <aside className="kma-sidebar">
@@ -49,6 +51,12 @@ export default function AppSidebar() {
           font-size: 11px; font-weight: 600; color: var(--yellow); background: color-mix(in srgb, var(--yellow) 15%, transparent);
           padding: 2px 8px; border-radius: 999px; width: fit-content; margin-top: 2px;
         }
+        .kma-sidebar-theme {
+          margin-left: auto; flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%;
+          display: flex; align-items: center; justify-content: center; cursor: pointer;
+          background: var(--glass-bg); border: 1px solid var(--glass-border);
+        }
+        .kma-sidebar-theme-light { background: var(--blue-100); border: none; }
       `}</style>
 
       <div className="kma-sidebar-logo">
@@ -76,6 +84,14 @@ export default function AppSidebar() {
           <div style={{ fontSize: 13.5, fontWeight: 600, color: "var(--chalk)" }}>Kullanıcı</div>
           <div className="kma-sidebar-plan">Ultimate</div>
         </div>
+        <button
+          type="button"
+          className={`kma-sidebar-theme ${theme === "light" ? "kma-sidebar-theme-light" : ""}`}
+          aria-label="Toggle theme"
+          onClick={toggleTheme}
+        >
+          {theme === "light" ? <Moon size={16} color="#ffffff" /> : <Sun size={16} color="var(--chalk)" />}
+        </button>
       </div>
     </aside>
   );
