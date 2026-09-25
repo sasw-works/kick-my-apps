@@ -341,7 +341,7 @@ export default function FeaturesSection() {
                       <Box inset="156.23px 178.7px 21.97px 28.03px" clip>
                         <Box inset="0" clip>
                           {light ? (
-                            <div className="kf-abs" style={{ inset: 0, background: "#F9F9F9", borderRadius: 16, boxShadow: "0 20px 30px -5px rgba(32,56,85,0.16)" }} />
+                            <div className="kf-abs" style={{ inset: 0, background: "#F9F9F9", borderRadius: 16, boxShadow: "0 20px 30px -5px rgba(32,56,85,0.05)" }} />
                           ) : (
                             <>
                               <Box inset="0.81% 0.2%"><Fill src="s1-cfg1-card.svg" /></Box>
@@ -360,7 +360,7 @@ export default function FeaturesSection() {
                       <Box inset="37.64px 32.37px 140.57px 188.78px" clip>
                         <Box inset="0" clip>
                           {light ? (
-                            <div className="kf-abs" style={{ inset: 0, background: "#F9F9F9", borderRadius: 16, boxShadow: "0 20px 30px -5px rgba(32,56,85,0.16)" }} />
+                            <div className="kf-abs" style={{ inset: 0, background: "#F9F9F9", borderRadius: 16, boxShadow: "0 20px 30px -5px rgba(32,56,85,0.05)" }} />
                           ) : (
                             <>
                               <Box inset="1.53% 0.12% 0.08% 0.3%"><Fill src="s1-cfg2-card.svg" /></Box>
