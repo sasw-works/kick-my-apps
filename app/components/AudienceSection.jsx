@@ -2,6 +2,10 @@
 // Card body text is kept verbatim from Figma, including its truncated template string
 // ("...lack of  resources, and failed") — to be swapped for real copy later.
 
+"use client";
+
+import { useTheme } from "./ThemeProvider";
+
 const A = "/dark/audience/";
 
 function Icon({ pieces, dots, dotColor }) {
@@ -97,6 +101,11 @@ const CARDS = [
 ];
 
 export default function AudienceSection() {
+  const { theme } = useTheme();
+  const light = theme === "light";
+  const c = light
+    ? { cardBg: "#eff1f4", cardBorder: "transparent", iconBg: "#f7f8fa", iconBorder: "#e3e8f0", title: "#1a2b3b", body: "#757e90" }
+    : { cardBg: "#262626", cardBorder: "#484848", iconBg: "#303030", iconBorder: "#606060", title: "#ffffff", body: "#a1a1a1" };
   return (
     <section className="kma-audience" aria-label="Who it's for">
       <style>{`
@@ -121,17 +130,17 @@ export default function AudienceSection() {
           flex-direction: column;
           gap: 32px;
           padding: 28px;
-          background: #262626;
-          border: 1px solid #484848;
+          background: ${c.cardBg};
+          border: 1px solid ${c.cardBorder};
           border-radius: 12px;
           box-sizing: border-box;
         }
-        .au-icon { position: relative; flex-shrink: 0; width: 60px; height: 60px; background: #303030; border: 1px solid #606060; border-radius: 10px; box-sizing: border-box; }
+        .au-icon { position: relative; flex-shrink: 0; width: 60px; height: 60px; background: ${c.iconBg}; border: 1px solid ${c.iconBorder}; border-radius: 10px; box-sizing: border-box; }
         .au-icon-piece { position: absolute; overflow: hidden; }
         .au-icon-piece img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
         .au-icon-dot { position: absolute; width: 5px; height: 5px; border-radius: 1px; }
-        .au-card-title { font-size: 18px; line-height: 20px; font-weight: 400; color: #ffffff; }
-        .au-card-body { margin-top: 16px; font-size: 16px; line-height: 24px; font-weight: 400; color: #a1a1a1; }
+        .au-card-title { font-size: 18px; line-height: 20px; font-weight: 400; color: ${c.title}; }
+        .au-card-body { margin-top: 16px; font-size: 16px; line-height: 24px; font-weight: 400; color: ${c.body}; }
 
         @media (max-width: 900px) {
           .au-cards { flex-wrap: wrap; }
