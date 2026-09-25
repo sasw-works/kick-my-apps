@@ -96,13 +96,13 @@ function GroupIcon({ inset, group, pad, src, light }) {
   );
 }
 
-function Headline({ title, subLines, subColor, subLh, subH, gapBelow, light }) {
+function Headline({ title, subLines, subColor, subLh, subH, gapBelow, light, pill = "Convention over Configuration" }) {
   return (
     <div className="kf-headline" style={{ marginBottom: gapBelow }}>
       <div className="kf-pill">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={(light ? "/light/features/" : "/dark/features/") + "s1-link-icon.svg"} alt="" width={14} height={15} />
-        <span>Convention over Configuration</span>
+        <span>{pill}</span>
       </div>
       <h2 className="kf-h2">{title}</h2>
       <p className={`kf-sub${subH ? " kf-sub-fixed" : ""}`} style={{ color: subColor, lineHeight: `${subLh}px`, height: subH }}>
@@ -396,6 +396,7 @@ export default function FeaturesSection() {
         <div className="kf-sec2" style={{ display: "flex", flexDirection: "column" }}>
           <Headline
             light={light}
+            pill="Signal over Noise"
             title="Deep, but never messy"
             subLines={[
               "Discover findings across 13 key categories, prioritized by impact and continuously tracked through",

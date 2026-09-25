@@ -56,7 +56,7 @@ export default function AppSidebar() {
           display: flex; align-items: center; justify-content: center; cursor: pointer;
           background: var(--glass-bg); border: 1px solid var(--glass-border);
         }
-        .kma-sidebar-theme-light { background: var(--blue-100); border: none; }
+        .kma-sidebar-theme-light { background: #ffffff; border: none; }
       `}</style>
 
       <div className="kma-sidebar-logo">
@@ -90,7 +90,7 @@ export default function AppSidebar() {
           aria-label="Toggle theme"
           onClick={toggleTheme}
         >
-          {theme === "light" ? <Moon size={16} color="#ffffff" /> : <Sun size={16} color="var(--chalk)" />}
+          {theme === "light" ? <Moon size={16} color="#1A2B3B" /> : <Sun size={16} color="var(--chalk)" />}
         </button>
       </div>
     </aside>

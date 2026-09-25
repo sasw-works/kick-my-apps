@@ -271,7 +271,7 @@ export default function Header() {
         }
         .kma-header-theme img { display: block; }
         .kma-header-theme-light {
-          background: var(--blue-100); border: none; color: #FFFFFF;
+          background: #ffffff; border: none; color: #1A2B3B;
         }
         .kma-header-signin {
           display: flex; align-items: center; justify-content: center;
@@ -461,7 +461,7 @@ export default function Header() {
               onClick={toggleTheme}
             >
               {theme === "light" ? (
-                <Moon size={22} color="#ffffff" />
+                <Moon size={22} color="#1A2B3B" />
               ) : (
                 <img src="/dark/header-theme-toggle.svg" alt="" width={56} height={56} />
               )}
