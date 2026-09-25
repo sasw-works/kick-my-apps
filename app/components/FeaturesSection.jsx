@@ -417,7 +417,9 @@ export default function FeaturesSection() {
                     <Box inset="14.08px 13.8px 111.94px 13.52px" clip style={{ opacity: 0.5 }}><Fill src="s2-build-b.svg" light={light} /></Box>
                     {light ? (
                       <>
-                        <Box inset="61px 3.45px 61.47px 3.38px" clip><Fill src="s2-build-c-detail.svg" light /></Box>
+                        <Box inset="61px 3.45px 61.47px 3.38px" clip>
+                          <div className="kf-abs" style={{ inset: 0, background: "#F9F9F9", borderRadius: 16, boxShadow: "0 20px 30px -5px rgba(32,56,85,0.05)" }} />
+                        </Box>
                         <Box inset="42.29% 87.28% 42.96% 5.07%"><Fill src="s2-b2-icon-bg.svg" light /></Box>
                         <Box inset="46.46% 89.69% 47.12% 7.47%"><Fill src="s2-b2-icon-glyph.svg" light /></Box>
                         <Box inset="46.89% 73.24% 47.56% 15.8%"><Fill src="s2-b2-label.svg" light /></Box>
@@ -437,7 +439,7 @@ export default function FeaturesSection() {
             <div className="kf-card" style={{ width: 462, height: 350 }}>
               <div className="kf-illus">
                 {light ? (
-                  <div className="kf-abs" style={{ left: "calc(50% - 0.34px)", top: 113.4, width: 341.33, height: 212.57, transform: "translateX(-50%)" }}>
+                  <div className="kf-abs" style={{ left: "calc(50% - 0.34px)", top: 138, width: 341.33, height: 212.57, transform: "translateX(-50%)" }}>
                     <Fill src="s2-digest-composite.svg" light />
                   </div>
                 ) : (
