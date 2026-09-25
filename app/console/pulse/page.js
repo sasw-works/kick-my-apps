@@ -47,7 +47,7 @@ export default function ConsolePulsePage() {
     <main className="pulse-page">
       <style>{`
         .pulse-page { padding: 48px 48px 120px; max-width: 1240px; margin: 0 auto; }
-        .pulse-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 32px; flex-wrap: wrap; }
+        .pulse-header { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 32px; flex-wrap: wrap; }
         .pulse-title { margin: 0; font-family: var(--font-inter), sans-serif; font-size: 42px; line-height: 57.6px; font-weight: 400; color: var(--chalk); }
         .pulse-subtitle { margin: 0; font-size: var(--fs-18); line-height: 28px; font-weight: 400; color: var(--muted); max-width: 560px; }
         .pulse-add-btn {
