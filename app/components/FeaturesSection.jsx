@@ -412,23 +412,17 @@ export default function FeaturesSection() {
               <LeftText title="Compare your app with a competitor" body="Put two reports side by side to see where you lead, where you lag, and what to fix first." />
               <div className="kf-illus">
                 <div className="kf-abs" style={{ left: "calc(50% + 0.16px)", top: 146, width: 341.33, height: 180, transform: "translateX(-50%)" }}>
-                  <Box inset="1.25px 0 1.26px 0" clip>
-                    <Box inset="110.5px 13.8px 15.52px 13.52px" clip style={{ opacity: 0.5 }}><Fill src="s2-build-a.svg" light={light} /></Box>
-                    <Box inset="14.08px 13.8px 111.94px 13.52px" clip style={{ opacity: 0.5 }}><Fill src="s2-build-b.svg" light={light} /></Box>
-                    {light ? (
-                      <>
-                        <Box inset="61px 3.45px 61.47px 3.38px" clip><Fill src="s2-build-c-detail.svg" light /></Box>
-                        <Box inset="42.29% 87.28% 42.96% 5.07%"><Fill src="s2-b2-icon-bg.svg" light /></Box>
-                        <Box inset="46.46% 89.69% 47.12% 7.47%"><Fill src="s2-b2-icon-glyph.svg" light /></Box>
-                        <Box inset="46.89% 73.24% 47.56% 15.8%"><Fill src="s2-b2-label.svg" light /></Box>
-                        <Box inset="43.54% 46.84% 51.82% 41.47%"><Fill src="s2-b2-created.svg" light /></Box>
-                        <Box inset="51.99% 41% 44.21% 41.47%"><Fill src="s2-b2-progress.svg" light /></Box>
-                        <Box inset="45.03% 4.96% 45.69% 80.64%"><Fill src="s2-b2-badge.svg" light /></Box>
-                      </>
-                    ) : (
+                  {light ? (
+                    <Box inset="1.25px 0 1.26px 0" clip>
+                      <Fill src="s2-compare-composite.png" light />
+                    </Box>
+                  ) : (
+                    <Box inset="1.25px 0 1.26px 0" clip>
+                      <Box inset="110.5px 13.8px 15.52px 13.52px" clip style={{ opacity: 0.5 }}><Fill src="s2-build-a.svg" /></Box>
+                      <Box inset="14.08px 13.8px 111.94px 13.52px" clip style={{ opacity: 0.5 }}><Fill src="s2-build-b.svg" /></Box>
                       <Box inset="61px 3.45px 61.47px 3.38px" clip><Fill src="s2-build-c.svg" /></Box>
-                    )}
-                  </Box>
+                    </Box>
+                  )}
                 </div>
               </div>
             </div>
@@ -437,18 +431,23 @@ export default function FeaturesSection() {
             <div className="kf-card" style={{ width: 462, height: 350 }}>
               <div className="kf-illus">
                 <div className="kf-abs" style={{ left: "calc(50% - 0.34px)", top: 146, width: 341.33, height: 180, transform: "translateX(-50%)" }}>
-                  <Box inset="2.14px 0" clip>
-                    {light && (
-                      <div className="kf-abs" style={{ left: "15.97%", top: "9.88%", width: "67.96%", height: "20.56%", background: "#e3e6eb", borderRadius: "12px 12px 0 0" }} />
-                    )}
-                    <Box inset="12.68px 37.5px 11.93px 37.59px" clip>
-                      <div className="kf-abs kf-clip" style={{ left: 0, top: 0, width: 266.24, height: 151.11 }}>
-                        <div className="kf-abs" style={{ left: "calc(50% - 0.01px)", top: "50%", width: 267.414, height: 151.11, transform: "translate(-50%,-50%)" }}>
-                          <Fill src="s2-digest.svg" light={light} />
-                        </div>
+                  {light ? (
+                    <Box inset="2.14px 0" clip>
+                      <div className="kf-abs" style={{ left: 0, top: 0, width: "100%", height: "100%" }}>
+                        <Fill src="s2-digest-composite.png" light />
                       </div>
                     </Box>
-                  </Box>
+                  ) : (
+                    <Box inset="2.14px 0" clip>
+                      <Box inset="12.68px 37.5px 11.93px 37.59px" clip>
+                        <div className="kf-abs kf-clip" style={{ left: 0, top: 0, width: 266.24, height: 151.11 }}>
+                          <div className="kf-abs" style={{ left: "calc(50% - 0.01px)", top: "50%", width: 267.414, height: 151.11, transform: "translate(-50%,-50%)" }}>
+                            <Fill src="s2-digest.svg" />
+                          </div>
+                        </div>
+                      </Box>
+                    </Box>
+                  )}
                 </div>
               </div>
               <LeftText title="Weekly digests keep you in the loop" body="A summary of your app’s new reviews lands in your inbox every week, fully automatically." />
@@ -458,22 +457,28 @@ export default function FeaturesSection() {
             <div className="kf-card" style={{ width: 459, height: 350 }}>
               <div className="kf-illus">
                 <div className="kf-abs" style={{ left: "calc(50% + 0.16px)", top: 146, width: 341.32, height: 180, transform: "translateX(-50%)" }}>
-                  <Box inset="2.14px 0" clip>
-                    <Box inset="5.91px 88.79px 6.4px 88.7px" clip><Fill src="s2-code-ring.svg" light={light} /></Box>
-                    <Box inset="-0.42px -3.02px -24.18px -3.8px" clip><Fill src="s2-code-bg.svg" light={light} /></Box>
-                    <AppIcon light={light} inset="32.1px 126.26px 94.43px 167.28px" fillW={47.78} v="1.54% 2.69% 2.07% 0.92%" glyph="16.33% 15.8% 16.86% 14.04%"
-                      names={light ? { fill: "s2-ic1-fill.svg", glyph: "s2-ic1-glyph.png" } : { fill: "s2-ic1-fill.svg", line: "s2-ic1-line.svg", glyph: "s2-ic1-glyph.png" }} />
-                    <AppIcon light={light} inset="83.63px 181.6px 42.9px 111.93px" fillW={47.79} v="1.62% 2.55% 1.99% 1.06%" glyph="19.61% 20.54% 19.98% 19.06%"
-                      names={light ? { fill: "s2-ic2-fill.svg", glyph: "s2-ic2-glyph.png" } : { fill: "s2-ic2-fill.svg", line: "s2-ic2-line.svg", glyph: "s2-ic2-glyph.png" }} />
-                    <AppIcon light={light} inset="93.77px 112.75px 32.76px 180.79px" fillW={47.78} v="1.39% 1.93% 2.23% 1.68%" glyph="19.38% 19.92% 20.22% 19.68%"
-                      names={light ? { fill: "s2-ic3-fill.svg", glyph: "s2-ic3-glyph.png" } : { fill: "s2-ic3-fill.svg", line: "s2-ic3-line.svg", glyph: "s2-ic3-glyph.png" }} />
-                    <GroupIcon light={light} inset="63.79px 276.51px 92.61px 44.34px" group="2.17% 6.39% 6.39% 2.18%" pad="-2.45% -2.31%" src="s2-group-a.svg" />
-                    <GroupIcon light={light} inset="155.86px 177.65px 0.53px 143.2px" group="2.17% 6.39% 6.39% 2.18%" pad="-2.45% -2.31%" src={light ? "s2-group-b1.svg" : "s2-group-b.svg"} />
-                    <GroupIcon light={light} inset="114.47px 42.48px 41.92px 278.37px" group="2.17% 6.39% 6.39% 2.18%" pad="-2.45% -2.31%" src={light ? "s2-group-b2.svg" : "s2-group-b.svg"} />
-                    <GroupIcon light={light} inset="28.3px 58.42px 115.79px 252.18px" group="1.33% 3.24% 3.99% 2.09%" pad="-1.41% -1.45%" src="s2-group-c.svg" />
-                    <GroupIcon light={light} inset="124.6px 253.59px 19.5px 57.01px" group="3.57% 3.97% 1.75% 1.35%" pad="-1.41% -1.45%" src="s2-group-d.svg" />
-                    <GroupIcon light={light} inset="15.63px 213.87px 128.47px 96.73px" group="1.35% 2.7% 3.97% 2.62%" pad="-1.41% -1.45%" src="s2-group-e.svg" />
-                  </Box>
+                  {light ? (
+                    <Box inset="2.14px 0" clip>
+                      <Fill src="s2-findfix-composite.png" light />
+                    </Box>
+                  ) : (
+                    <Box inset="2.14px 0" clip>
+                      <Box inset="5.91px 88.79px 6.4px 88.7px" clip><Fill src="s2-code-ring.svg" /></Box>
+                      <Box inset="-0.42px -3.02px -24.18px -3.8px" clip><Fill src="s2-code-bg.svg" /></Box>
+                      <AppIcon inset="32.1px 126.26px 94.43px 167.28px" fillW={47.78} v="1.54% 2.69% 2.07% 0.92%" glyph="16.33% 15.8% 16.86% 14.04%"
+                        names={{ fill: "s2-ic1-fill.svg", line: "s2-ic1-line.svg", glyph: "s2-ic1-glyph.png" }} />
+                      <AppIcon inset="83.63px 181.6px 42.9px 111.93px" fillW={47.79} v="1.62% 2.55% 1.99% 1.06%" glyph="19.61% 20.54% 19.98% 19.06%"
+                        names={{ fill: "s2-ic2-fill.svg", line: "s2-ic2-line.svg", glyph: "s2-ic2-glyph.png" }} />
+                      <AppIcon inset="93.77px 112.75px 32.76px 180.79px" fillW={47.78} v="1.39% 1.93% 2.23% 1.68%" glyph="19.38% 19.92% 20.22% 19.68%"
+                        names={{ fill: "s2-ic3-fill.svg", line: "s2-ic3-line.svg", glyph: "s2-ic3-glyph.png" }} />
+                      <GroupIcon inset="63.79px 276.51px 92.61px 44.34px" group="2.17% 6.39% 6.39% 2.18%" pad="-2.45% -2.31%" src="s2-group-a.svg" />
+                      <GroupIcon inset="155.86px 177.65px 0.53px 143.2px" group="2.17% 6.39% 6.39% 2.18%" pad="-2.45% -2.31%" src="s2-group-b.svg" />
+                      <GroupIcon inset="114.47px 42.48px 41.92px 278.37px" group="2.17% 6.39% 6.39% 2.18%" pad="-2.45% -2.31%" src="s2-group-b.svg" />
+                      <GroupIcon inset="28.3px 58.42px 115.79px 252.18px" group="1.33% 3.24% 3.99% 2.09%" pad="-1.41% -1.45%" src="s2-group-c.svg" />
+                      <GroupIcon inset="124.6px 253.59px 19.5px 57.01px" group="3.57% 3.97% 1.75% 1.35%" pad="-1.41% -1.45%" src="s2-group-d.svg" />
+                      <GroupIcon inset="15.63px 213.87px 128.47px 96.73px" group="1.35% 2.7% 3.97% 2.62%" pad="-1.41% -1.45%" src="s2-group-e.svg" />
+                    </Box>
+                  )}
                 </div>
               </div>
               <LeftText title="From finding to fix, in code" body="Key findings come with code fixes, from feedback straight to implementation." />
