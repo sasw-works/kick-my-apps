@@ -8,7 +8,9 @@ export async function fetchAppStoreReviews(storeUrl) {
   const country = countryMatch ? countryMatch[1] : "us";
 
   const rssUrl = `https://itunes.apple.com/${country}/rss/customerreviews/id=${appId}/sortby=mostrecent/json`;
-  const res = await fetch(rssUrl);
+  const res = await fetch(rssUrl, {
+    headers: { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36" },
+  });
   if (!res.ok) return null;
 
   const data = await res.json();
