@@ -338,8 +338,8 @@ export default function FeaturesSection() {
                         </div>
                       </Box>
                       {/* "5 hours ago" row */}
-                      <Box inset="156.23px 178.7px 21.97px 28.03px" clip>
-                        <Box inset="0" clip>
+                      <Box inset="156.23px 178.7px 21.97px 28.03px">
+                        <Box inset="0">
                           {light ? (
                             <div className="kf-abs" style={{ inset: 0, background: "#F9F9F9", borderRadius: 16, boxShadow: "0 20px 30px -5px rgba(32,56,85,0.05)" }} />
                           ) : (
@@ -357,8 +357,8 @@ export default function FeaturesSection() {
                         </Box>
                       </Box>
                       {/* "2 mins ago" row */}
-                      <Box inset="37.64px 32.37px 140.57px 188.78px" clip>
-                        <Box inset="0" clip>
+                      <Box inset="37.64px 32.37px 140.57px 188.78px">
+                        <Box inset="0">
                           {light ? (
                             <div className="kf-abs" style={{ inset: 0, background: "#F9F9F9", borderRadius: 16, boxShadow: "0 20px 30px -5px rgba(32,56,85,0.05)" }} />
                           ) : (
