@@ -7,15 +7,32 @@ export async function fetchAppStoreReviews(storeUrl) {
   const countryMatch = storeUrl.match(/apps\.apple\.com\/([a-z]{2})\//i);
   const country = countryMatch ? countryMatch[1] : "us";
 
-  const rssUrl = `https://itunes.apple.com/${country}/rss/customerreviews/id=${appId}/sortby=mostrecent/json`;
-  const res = await fetch(rssUrl, {
-    headers: { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36" },
-  });
-  if (!res.ok) return null;
+  const headers = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+  };
 
-  const data = await res.json();
-  const entries = data?.feed?.entry;
-  if (!entries || !Array.isArray(entries)) return null;
+  async function fetchFeed(cc, attempt = 0) {
+    const rssUrl = `https://itunes.apple.com/${cc}/rss/customerreviews/id=${appId}/sortby=mostrecent/json`;
+    const res = await fetch(rssUrl, { headers });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const entries = data?.feed?.entry;
+    if (entries && Array.isArray(entries)) return entries;
+    // Apple's RSS API occasionally rate-limits/throttles a request and returns an
+    // empty-but-200 feed; one short-delayed retry clears this most of the time.
+    if (attempt === 0) {
+      await new Promise((r) => setTimeout(r, 600));
+      return fetchFeed(cc, 1);
+    }
+    return null;
+  }
+
+  // Apple's RSS review feed is inconsistently populated per country — some apps have
+  // plenty of reviews in the US feed but none in e.g. the TR feed. Try the app's own
+  // store country first, then fall back to "us" (almost always populated) if empty.
+  let entries = await fetchFeed(country);
+  if (!entries && country !== "us") entries = await fetchFeed("us");
+  if (!entries) return null;
 
   return entries
     .filter((e) => e.content?.label)
