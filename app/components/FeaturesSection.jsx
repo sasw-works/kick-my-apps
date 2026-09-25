@@ -142,7 +142,7 @@ export default function FeaturesSection() {
   // every color that differs between the two Figma frames, in one place
   const c = light
     ? {
-        pageBg: "#ffffff",
+        pageBg: "var(--ink)",
         pillBg: "#f7f8fa", pillBorder: "#e3e8f0", pillText: "#1a2b3b",
         h2: "#1a2b3b", sub: "#1a2b3b",
         cardBg: "#eff1f4", cardBorder: "transparent",
