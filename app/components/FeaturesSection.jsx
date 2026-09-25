@@ -340,11 +340,15 @@ export default function FeaturesSection() {
                       {/* "5 hours ago" row */}
                       <Box inset="156.23px 178.7px 21.97px 28.03px" clip>
                         <Box inset="0" clip>
-                          <Box inset="0.81% 0.2%"><Fill src="s1-cfg1-card.svg" light={light} /></Box>
-                          {!light && (
-                            <Box inset="0.68% 0.17% 0.94% 0.22%">
-                              <div className="kf-abs" style={{ inset: "-0.81% -0.14%" }}><Fill src="s1-cfg1-card-outline.svg" /></div>
-                            </Box>
+                          {light ? (
+                            <div className="kf-abs" style={{ inset: 0, background: "#F9F9F9", borderRadius: 16, boxShadow: "0 20px 30px -5px rgba(32,56,85,0.05)" }} />
+                          ) : (
+                            <>
+                              <Box inset="0.81% 0.2%"><Fill src="s1-cfg1-card.svg" /></Box>
+                              <Box inset="0.68% 0.17% 0.94% 0.22%">
+                                <div className="kf-abs" style={{ inset: "-0.81% -0.14%" }}><Fill src="s1-cfg1-card-outline.svg" /></div>
+                              </Box>
+                            </>
                           )}
                           <Txt inset="20.59% 44.56% 47.66% 6.84%" color={c.label}>/etc/config/my_config.yaml</Txt>
                           <Txt inset="49.45% 75.35% 18.8% 6.07%" size={13} color={c.muted}>5 hours ago</Txt>
@@ -355,11 +359,15 @@ export default function FeaturesSection() {
                       {/* "2 mins ago" row */}
                       <Box inset="37.64px 32.37px 140.57px 188.78px" clip>
                         <Box inset="0" clip>
-                          <Box inset="1.53% 0.12% 0.08% 0.3%"><Fill src="s1-cfg2-card.svg" light={light} /></Box>
-                          {!light && (
-                            <Box inset="0.81% 0.21%">
-                              <div className="kf-abs" style={{ inset: "-0.8% -0.15%" }}><Fill src="s1-cfg2-card-outline.svg" /></div>
-                            </Box>
+                          {light ? (
+                            <div className="kf-abs" style={{ inset: 0, background: "#F9F9F9", borderRadius: 16, boxShadow: "0 20px 30px -5px rgba(32,56,85,0.05)" }} />
+                          ) : (
+                            <>
+                              <Box inset="1.53% 0.12% 0.08% 0.3%"><Fill src="s1-cfg2-card.svg" /></Box>
+                              <Box inset="0.81% 0.21%">
+                                <div className="kf-abs" style={{ inset: "-0.8% -0.15%" }}><Fill src="s1-cfg2-card-outline.svg" /></div>
+                              </Box>
+                            </>
                           )}
                           <div className="kf-abs" style={{ left: "84.03%", right: "5.41%", top: "calc(50% + 0.42px)", aspectRatio: "1 / 1", transform: "translateY(-50%)" }}>
                             <Fill src="s1-cfg2-avatar.svg" light={light} />
@@ -408,7 +416,15 @@ export default function FeaturesSection() {
                     <Box inset="110.5px 13.8px 15.52px 13.52px" clip style={{ opacity: 0.5 }}><Fill src="s2-build-a.svg" light={light} /></Box>
                     <Box inset="14.08px 13.8px 111.94px 13.52px" clip style={{ opacity: 0.5 }}><Fill src="s2-build-b.svg" light={light} /></Box>
                     {light ? (
-                      <Box inset="61px 3.45px 61.47px 3.38px" clip><Fill src="s2-build-c-detail.svg" light /></Box>
+                      <>
+                        <Box inset="61px 3.45px 61.47px 3.38px" clip><Fill src="s2-build-c-detail.svg" light /></Box>
+                        <Box inset="42.29% 87.28% 42.96% 5.07%"><Fill src="s2-b2-icon-bg.svg" light /></Box>
+                        <Box inset="46.46% 89.69% 47.12% 7.47%"><Fill src="s2-b2-icon-glyph.svg" light /></Box>
+                        <Box inset="46.89% 73.24% 47.56% 15.8%"><Fill src="s2-b2-label.svg" light /></Box>
+                        <Box inset="43.54% 46.84% 51.82% 41.47%"><Fill src="s2-b2-created.svg" light /></Box>
+                        <Box inset="51.99% 41% 44.21% 41.47%"><Fill src="s2-b2-progress.svg" light /></Box>
+                        <Box inset="45.03% 4.96% 45.69% 80.64%"><Fill src="s2-b2-badge.svg" light /></Box>
+                      </>
                     ) : (
                       <Box inset="61px 3.45px 61.47px 3.38px" clip><Fill src="s2-build-c.svg" /></Box>
                     )}
