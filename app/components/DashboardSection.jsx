@@ -14,7 +14,7 @@ export default function DashboardSection() {
           position: relative;
           width: 100%;
           max-width: 1170px;
-          aspect-ratio: 1170 / 700;
+          aspect-ratio: 1600 / 978;
           margin: 150px auto 0;
         }
         /* 4155:193 — 996x426 at (87, 260.19), blur 50, 5 stops @ 25% */
