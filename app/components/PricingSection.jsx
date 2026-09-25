@@ -140,6 +140,7 @@ export default function PricingSection() {
           border-radius: 24px;
           box-sizing: border-box;
         }
+        .kma-dark .pr-card { background: var(--ink); }
         .pr-card-highlight { border-color: #6fd3fe; }
         .pr-tag {
           align-self: flex-start;
