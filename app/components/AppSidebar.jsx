@@ -81,7 +81,7 @@ export default function AppSidebar() {
       <div className="kma-sidebar-user">
         <div className="kma-sidebar-avatar">K</div>
         <div>
-          <div style={{ fontSize: 13.5, fontWeight: 600, color: "var(--chalk)" }}>Kullanıcı</div>
+          <div style={{ fontSize: 13.5, fontWeight: 600, color: "var(--chalk)" }}>User</div>
           <div className="kma-sidebar-plan">Ultimate</div>
         </div>
         <button

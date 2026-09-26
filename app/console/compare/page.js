@@ -96,8 +96,8 @@ export default function ConsoleComparePage() {
     try {
       const res = await fetch(`/api/history/compare?ids=${selected.join(",")}`);
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Karşılaştırma verisi alınamadı.");
-      if (!data.scans || data.scans.length !== 2) throw new Error("İki tarama da bulunamadı.");
+      if (!res.ok) throw new Error(data.error || "Could not retrieve comparison data.");
+      if (!data.scans || data.scans.length !== 2) throw new Error("Both scans could not be found.");
 
       const saveRes = await fetch("/api/history/compare", {
         method: "POST",
@@ -110,7 +110,7 @@ export default function ConsoleComparePage() {
         }),
       });
       const saveData = await saveRes.json();
-      if (!saveRes.ok) throw new Error(saveData.error || "Karşılaştırma kaydedilemedi.");
+      if (!saveRes.ok) throw new Error(saveData.error || "Could not save the comparison.");
 
       router.push(`/console/compare/${saveData.id}`);
     } catch (err) {
@@ -170,7 +170,7 @@ export default function ConsoleComparePage() {
         <>
           <div className="compare-section-label">Your Reports ({scans.length})</div>
           {scans.length === 0 ? (
-            <div className="compare-empty">Henüz bir sorgulama yapmadın.</div>
+            <div className="compare-empty">You haven't run any queries yet.</div>
           ) : (
             <div className="compare-grid">
               {scans.map((s) => {
@@ -184,7 +184,7 @@ export default function ConsoleComparePage() {
                     <AppIcon name={s.app_name} iconUrl={s.icon_url} storeUrl={s.store_url} />
                     <div>
                       <div style={{ fontWeight: 600, fontSize: 14.5 }}>{s.app_name}</div>
-                      <div className="compare-card-meta">{new Date(s.created_at).toLocaleDateString("tr-TR")}</div>
+                      <div className="compare-card-meta">{new Date(s.created_at).toLocaleDateString("en-US")}</div>
                     </div>
                   </div>
                 );
@@ -209,7 +209,7 @@ export default function ConsoleComparePage() {
                     <div style={{ fontWeight: 600, fontSize: 14 }}>
                       {c.app_name_a} vs {c.app_name_b}
                     </div>
-                    <div className="compare-card-meta">{new Date(c.created_at).toLocaleDateString("tr-TR")}</div>
+                    <div className="compare-card-meta">{new Date(c.created_at).toLocaleDateString("en-US")}</div>
                   </div>
                 </a>
               ))}
@@ -222,10 +222,10 @@ export default function ConsoleComparePage() {
 
       {selected.length > 0 && (
         <div className="compare-cta-bar">
-          <span style={{ fontSize: 13.5 }}>{selected.length}/2 seçildi</span>
+          <span style={{ fontSize: 13.5 }}>{selected.length}/2 selected</span>
           <button className="compare-cta-btn" onClick={handleCompare} disabled={selected.length !== 2 || creating}>
             {creating ? <Loader2 size={14} className="spin" /> : <ArrowLeftRight size={14} />}
-            {creating ? "Hazırlanıyor…" : "Karşılaştır"}
+            {creating ? "Preparing…" : "Compare"}
           </button>
         </div>
       )}

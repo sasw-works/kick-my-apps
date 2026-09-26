@@ -1,4 +1,4 @@
-// Her bulgu kategorisini bir "lens"e (bakış açısına) eşler.
+// Maps every finding category to a "lens" (perspective).
 const CATEGORY_TO_LENS = {
   contrast: "UI",
   typography: "UI",
@@ -11,18 +11,18 @@ const CATEGORY_TO_LENS = {
   loading: "UX",
   copy: "UX",
 
-  accessibility: "Erişilebilirlik",
+  accessibility: "Accessibility",
 
-  conversion: "Ürün",
-  trust: "Ürün",
-  permissions: "Ürün",
+  conversion: "Product",
+  trust: "Product",
+  permissions: "Product",
 };
 
-const LENS_ORDER = ["UI", "UX", "Erişilebilirlik", "Ürün"];
+const LENS_ORDER = ["UI", "UX", "Accessibility", "Product"];
 
-// Bulgu listesinden lens başına 0-100 skor hesaplar.
-// Bir lense hiç bulgu düşmediyse null döner (veri yok, "değerlendirilmedi" anlamında,
-// uydurma bir skor göstermemek için).
+// Computes a 0-100 score per lens from the findings list.
+// Returns null if no findings fall under a lens (no data, meaning "not evaluated",
+// so we don't show a made-up score).
 export function computeLensScores(findings) {
   if (!Array.isArray(findings) || findings.length === 0) return null;
 

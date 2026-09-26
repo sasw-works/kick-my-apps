@@ -22,13 +22,13 @@ export async function POST(req) {
     const { email, appName, storeUrl } = await req.json();
 
     if (!email || !EMAIL_RE.test(email)) {
-      return Response.json({ error: "Geçerli bir e-posta adresi gir." }, { status: 400 });
+      return Response.json({ error: "Enter a valid email address." }, { status: 400 });
     }
     if (!appName || !storeUrl) {
-      return Response.json({ error: "appName ve storeUrl gerekli." }, { status: 400 });
+      return Response.json({ error: "appName and storeUrl are required." }, { status: 400 });
     }
 
-    // Aynı e-posta + aynı uygulama için tekrar kayıt olmasın.
+    // Don't let the same email + same app subscribe twice.
     const { rows: existing } = await sql`
       SELECT id FROM subscriptions WHERE email = ${email} AND app_name = ${appName} LIMIT 1;
     `;
@@ -44,6 +44,6 @@ export async function POST(req) {
     return Response.json({ ok: true });
   } catch (err) {
     console.error(err);
-    return Response.json({ error: "Kayıt oluşturulamadı: " + err.message }, { status: 500 });
+    return Response.json({ error: "Could not create subscription: " + err.message }, { status: 500 });
   }
 }

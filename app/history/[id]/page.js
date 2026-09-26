@@ -17,7 +17,7 @@ export default function ScanDetailPage() {
       try {
         const res = await fetch(`/api/history?id=${params.id}`);
         const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Tarama alınamadı.");
+        if (!res.ok) throw new Error(data.error || "Could not retrieve scan.");
         setScan(data.scan);
       } catch (err) {
         setError(err.message);
@@ -36,7 +36,7 @@ export default function ScanDetailPage() {
         {loading ? (
           <div style={{ textAlign: "center", color: "var(--muted)", padding: "64px 0" }}>
             <Loader2 size={22} style={{ margin: "0 auto 8px", animation: "spin 0.9s linear infinite" }} />
-            Yükleniyor…
+            Loading…
           </div>
         ) : error ? (
           <div style={{ textAlign: "center", color: "var(--kick)", padding: "64px 0" }}>{error}</div>

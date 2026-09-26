@@ -48,7 +48,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
       const bitmap = await createImageBitmap(file);
       let { width, height } = bitmap;
       if (width <= maxDim && height <= maxDim && file.size < 1.2 * 1024 * 1024) {
-        // Zaten yeterince küçük, dokunma.
+        // Already small enough, don't touch.
         return file;
       }
       const scale = Math.min(1, maxDim / Math.max(width, height));
@@ -88,7 +88,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
     setFiles((prev) => prev.filter((_, i) => i !== idx));
   };
 
-  // Yazarken 3+ karakterden sonra, kısa bir gecikmeyle öneri ara.
+  // While typing, after 3+ characters, search for suggestions with a short delay.
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
 
@@ -132,7 +132,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
   const handleQueryChange = (val) => {
     setQuery(val);
     if (selectedApp && val !== selectedApp.name) {
-      setSelectedApp(null); // önceki seçim artık geçerli değil
+      setSelectedApp(null); // previous selection is no longer valid
     }
   };
 
@@ -747,7 +747,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           </div>
         </label>
 
-        <button className={`submit-circle ${analyzing ? "submit-circle-analyzing" : ""}`} disabled={!canAnalyze} onClick={handleAnalyze} aria-label="Analiz Et">
+        <button className={`submit-circle ${analyzing ? "submit-circle-analyzing" : ""}`} disabled={!canAnalyze} onClick={handleAnalyze} aria-label="Analyze">
           {dark ? (
             <>
               <img src="/dark/hero-cta.svg" alt="" width={92} height={92} />

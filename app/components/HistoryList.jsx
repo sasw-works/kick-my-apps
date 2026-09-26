@@ -21,7 +21,7 @@ export default function HistoryList({ onBack, onCompare, preselectId, appNameFil
       try {
         const res = await fetch("/api/history?all=true");
         const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Geçmiş alınamadı.");
+        if (!res.ok) throw new Error(data.error || "Could not retrieve history.");
         const all = data.scans || [];
         setScans(appNameFilter ? all.filter((s) => s.app_name === appNameFilter) : all);
       } catch (err) {
@@ -35,7 +35,7 @@ export default function HistoryList({ onBack, onCompare, preselectId, appNameFil
   const toggleSelect = (id) => {
     setSelected((prev) => {
       if (prev.includes(id)) return prev.filter((x) => x !== id);
-      if (prev.length >= 2) return [prev[1], id]; // en fazla 2 seçim, en eskisini düş
+      if (prev.length >= 2) return [prev[1], id]; // max 2 selections, drop the oldest
       return [...prev, id];
     });
   };
@@ -123,28 +123,28 @@ export default function HistoryList({ onBack, onCompare, preselectId, appNameFil
       `}</style>
 
       <div className="history-header">
-        <div className="history-title">{appNameFilter ? `${appNameFilter} — Geçmiş` : "Geçmiş Analizlerim"}</div>
+        <div className="history-title">{appNameFilter ? `${appNameFilter} — History` : "My Analysis History"}</div>
         <button className="back-btn" onClick={onBack}>
           <ArrowLeft size={15} />
-          Geri
+          Back
         </button>
       </div>
 
       <div className="hint">
         {preselectId
-          ? "Mevcut taraman seçili — şimdi karşılaştırmak istediğin ikinci taramayı (örn. rakibinin) seç."
-          : "Karşılaştırmak için en fazla 2 tarama seç."}
+          ? "Your current scan is selected — now pick the second scan you want to compare (e.g. a competitor's)."
+          : "Select up to 2 scans to compare."}
       </div>
 
       {loading ? (
         <div className="empty-state">
           <Loader2 size={20} className="spin" style={{ margin: "0 auto 8px" }} />
-          Yükleniyor…
+          Loading…
         </div>
       ) : error ? (
         <div className="empty-state" style={{ color: "var(--kick)" }}>{error}</div>
       ) : scans.length === 0 ? (
-        <div className="empty-state">Henüz hiç analiz yapılmamış.</div>
+        <div className="empty-state">No analyses have been run yet.</div>
       ) : (
         <>
           <div className="scan-list" style={{ paddingBottom: 90 }}>
@@ -163,17 +163,17 @@ export default function HistoryList({ onBack, onCompare, preselectId, appNameFil
                   <div className="scan-info">
                     <div className="scan-name">{s.app_name}</div>
                     <div className="scan-date">
-                      {new Date(s.created_at).toLocaleString("tr-TR")}
+                      {new Date(s.created_at).toLocaleString("en-US")}
                     </div>
                   </div>
                   <div className="scan-counts">
-                    {s.bad_count} kritik · {s.warn_count} dikkat · {s.good_count} sorunsuz
+                    {s.bad_count} critical · {s.warn_count} attention · {s.good_count} good
                   </div>
                   <Link
                     href={`/history/${s.id}`}
                     className="scan-view-btn"
                     onClick={(e) => e.stopPropagation()}
-                    aria-label="Detayı gör"
+                    aria-label="View details"
                   >
                     <Eye size={16} color="var(--muted)" strokeWidth={2} />
                   </Link>
@@ -185,7 +185,7 @@ export default function HistoryList({ onBack, onCompare, preselectId, appNameFil
           <div className="sticky-compare-bar">
             <div className="sticky-compare-inner">
               <span className="sticky-compare-hint">
-                {selected.length === 2 ? "2 tarama seçildi" : `${selected.length}/2 tarama seçildi`}
+                {selected.length === 2 ? "2 scans selected" : `${selected.length}/2 scans selected`}
               </span>
               <button
                 className="compare-btn"
@@ -193,7 +193,7 @@ export default function HistoryList({ onBack, onCompare, preselectId, appNameFil
                 onClick={() => onCompare(selected)}
               >
                 <GitCompare size={16} />
-                Karşılaştır
+                Compare
               </button>
             </div>
           </div>

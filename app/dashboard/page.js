@@ -13,12 +13,12 @@ const STATUS_COLOR = (score) => {
 function timeAgo(dateStr) {
   const diff = Date.now() - new Date(dateStr).getTime();
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  if (days === 0) return "bugün";
-  if (days === 1) return "dün";
-  if (days < 7) return `${days} gün önce`;
+  if (days === 0) return "today";
+  if (days === 1) return "yesterday";
+  if (days < 7) return `${days} days ago`;
   const weeks = Math.floor(days / 7);
-  if (weeks < 5) return `${weeks} hafta önce`;
-  return new Date(dateStr).toLocaleDateString("tr-TR");
+  if (weeks < 5) return `${weeks} weeks ago`;
+  return new Date(dateStr).toLocaleDateString("en-US");
 }
 
 export default function DashboardPage() {
@@ -31,7 +31,7 @@ export default function DashboardPage() {
       try {
         const res = await fetch("/api/history?apps=true");
         const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Panel verisi alınamadı.");
+        if (!res.ok) throw new Error(data.error || "Could not retrieve dashboard data.");
         setApps(data.apps || []);
       } catch (err) {
         setError(err.message);
@@ -103,22 +103,22 @@ export default function DashboardPage() {
           }
         `}</style>
 
-        <div className="dash-title">Uygulamalarım</div>
-        <div className="dash-sub">Takip ettiğin tüm uygulamaların en son sağlık skoru, tek bakışta.</div>
+        <div className="dash-title">My Apps</div>
+        <div className="dash-sub">The latest health score for every app you track, at a glance.</div>
 
         {loading ? (
           <div className="dash-empty">
             <Loader2 size={22} className="spin" style={{ margin: "0 auto 8px" }} />
-            Yükleniyor…
+            Loading…
           </div>
         ) : error ? (
           <div className="dash-empty" style={{ color: "var(--kick)" }}>{error}</div>
         ) : apps.length === 0 ? (
           <div className="dash-empty">
-            Henüz takip edilen bir uygulama yok.
+            No apps are being tracked yet.
             <br />
             <Link href="/" className="dash-cta">
-              İlk Analizini Yap
+              Run Your First Analysis
               <ArrowRight size={14} />
             </Link>
           </div>
@@ -129,14 +129,14 @@ export default function DashboardPage() {
                 <div className="dash-card-top">
                   <div>
                     <div className="dash-card-name">{app.app_name}</div>
-                    <div className="dash-card-meta">{app.scan_count} tarama · son {timeAgo(app.created_at)}</div>
+                    <div className="dash-card-meta">{app.scan_count} scans · last {timeAgo(app.created_at)}</div>
                   </div>
                   <div className="dash-score" style={{ color: STATUS_COLOR(app.health_score) }}>
                     {app.health_score}
                   </div>
                 </div>
                 <div className="dash-card-bottom">
-                  <span>{app.bad_count} kritik · {app.warn_count} dikkat · {app.good_count} sorunsuz</span>
+                  <span>{app.bad_count} critical · {app.warn_count} attention · {app.good_count} good</span>
                   <ArrowRight size={14} />
                 </div>
               </Link>

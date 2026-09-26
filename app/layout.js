@@ -20,7 +20,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="tr" className={`h-full antialiased ${inter.variable}`}>
+    <html lang="en" className={`h-full antialiased ${inter.variable}`}>
       <body className="antialiased">
         <ThemeProvider>
           <ConditionalChrome>{children}</ConditionalChrome>

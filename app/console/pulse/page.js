@@ -8,7 +8,7 @@ const SAMPLE_MONITORS = [
     name: "Wallet Pro",
     color: "#F5433A",
     status: "active",
-    lastChecked: "2 saat önce",
+    lastChecked: "2 hours ago",
     newReviews: 14,
     sentimentDelta: 6,
     alert: null,
@@ -17,16 +17,16 @@ const SAMPLE_MONITORS = [
     name: "ShopEasy",
     color: "#7CB342",
     status: "active",
-    lastChecked: "5 saat önce",
+    lastChecked: "5 hours ago",
     newReviews: 3,
     sentimentDelta: -12,
-    alert: "Duyarlılık bu hafta %12 düştü",
+    alert: "Sentiment dropped 12% this week",
   },
   {
     name: "MetroBank",
     color: "#29B6F6",
     status: "active",
-    lastChecked: "1 gün önce",
+    lastChecked: "1 day ago",
     newReviews: 22,
     sentimentDelta: 2,
     alert: null,
@@ -35,7 +35,7 @@ const SAMPLE_MONITORS = [
     name: "TransitGo",
     color: "#7E57C2",
     status: "paused",
-    lastChecked: "4 gün önce",
+    lastChecked: "4 days ago",
     newReviews: 0,
     sentimentDelta: 0,
     alert: null,
@@ -126,13 +126,13 @@ export default function ConsolePulsePage() {
                 )}
               </div>
               <div className="pulse-card-meta">
-                {m.status === "active" ? `Son kontrol: ${m.lastChecked}` : "Duraklatıldı"}
+                {m.status === "active" ? `Last checked: ${m.lastChecked}` : "Paused"}
               </div>
             </div>
 
             <div className="pulse-stat">
               <div className="pulse-stat-num">{m.newReviews}</div>
-              <div className="pulse-stat-label">Yeni yorum</div>
+              <div className="pulse-stat-label">New review</div>
             </div>
 
             <div className={`pulse-sentiment ${m.sentimentDelta > 0 ? "pulse-sentiment-up" : m.sentimentDelta < 0 ? "pulse-sentiment-down" : "pulse-sentiment-flat"}`}>

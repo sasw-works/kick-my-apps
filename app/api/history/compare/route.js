@@ -20,7 +20,7 @@ export async function POST(req) {
     await ensureTable();
     const { scanIdA, scanIdB, appNameA, appNameB } = await req.json();
     if (!scanIdA || !scanIdB) {
-      return Response.json({ error: "scanIdA ve scanIdB gerekli." }, { status: 400 });
+      return Response.json({ error: "scanIdA and scanIdB are required." }, { status: 400 });
     }
     const { rows } = await sql`
       INSERT INTO comparisons (scan_id_a, scan_id_b, app_name_a, app_name_b)
@@ -30,7 +30,7 @@ export async function POST(req) {
     return Response.json({ ok: true, id: rows[0]?.id });
   } catch (err) {
     console.error(err);
-    return Response.json({ error: "Karşılaştırma kaydedilemedi: " + err.message }, { status: 500 });
+    return Response.json({ error: "Could not save comparison: " + err.message }, { status: 500 });
   }
 }
 
@@ -40,13 +40,13 @@ export async function DELETE(req) {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
     if (!id) {
-      return Response.json({ error: "id gerekli." }, { status: 400 });
+      return Response.json({ error: "id is required." }, { status: 400 });
     }
     await sql`DELETE FROM comparisons WHERE id = ${id};`;
     return Response.json({ ok: true });
   } catch (err) {
     console.error(err);
-    return Response.json({ error: "Silinemedi: " + err.message }, { status: 500 });
+    return Response.json({ error: "Could not delete: " + err.message }, { status: 500 });
   }
 }
 
@@ -76,7 +76,7 @@ export async function GET(req) {
         SELECT scan_id_a, scan_id_b FROM comparisons WHERE id = ${comparisonId} LIMIT 1;
       `;
       if (rows.length === 0) {
-        return Response.json({ error: "Karşılaştırma bulunamadı." }, { status: 404 });
+        return Response.json({ error: "Comparison not found." }, { status: 404 });
       }
       const ids = [rows[0].scan_id_a, rows[0].scan_id_b];
       const { rows: scans } = await sql`
@@ -94,7 +94,7 @@ export async function GET(req) {
       .filter((n) => Number.isInteger(n));
 
     if (ids.length === 0) {
-      return Response.json({ error: "ids gerekli." }, { status: 400 });
+      return Response.json({ error: "ids are required." }, { status: 400 });
     }
 
     const { rows } = await sql`
@@ -107,6 +107,6 @@ export async function GET(req) {
     return Response.json({ scans: rows });
   } catch (err) {
     console.error(err);
-    return Response.json({ error: "Karşılaştırma verisi alınamadı: " + err.message }, { status: 500 });
+    return Response.json({ error: "Could not retrieve comparison data: " + err.message }, { status: 500 });
   }
 }

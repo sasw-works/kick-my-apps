@@ -17,7 +17,7 @@ async function ensureTable() {
       created_at TIMESTAMPTZ DEFAULT now()
     );
   `;
-  // Daha önce oluşturulmuş tabloda eksik sütunlar varsa ekle (eski kurulumlar için güvenli göç).
+  // Add any missing columns on an already-created table (safe migration for older setups).
   await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS result_json JSONB;`;
   await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS store_url TEXT;`;
   await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS icon_url TEXT;`;
@@ -29,7 +29,7 @@ export async function POST(req) {
     const { appName, healthScore, badCount, warnCount, goodCount, resultJson, storeUrl } = await req.json();
 
     if (!appName || typeof healthScore !== "number") {
-      return Response.json({ error: "appName ve healthScore gerekli." }, { status: 400 });
+      return Response.json({ error: "appName and healthScore are required." }, { status: 400 });
     }
 
     const normalized = appName.trim();
@@ -53,7 +53,7 @@ export async function POST(req) {
     return Response.json({ ok: true, id: rows[0]?.id });
   } catch (err) {
     console.error(err);
-    return Response.json({ error: "Geçmiş kaydedilemedi: " + err.message }, { status: 500 });
+    return Response.json({ error: "Could not save history: " + err.message }, { status: 500 });
   }
 }
 
@@ -63,13 +63,13 @@ export async function DELETE(req) {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
     if (!id) {
-      return Response.json({ error: "id gerekli." }, { status: 400 });
+      return Response.json({ error: "id is required." }, { status: 400 });
     }
     await sql`DELETE FROM scans WHERE id = ${id};`;
     return Response.json({ ok: true });
   } catch (err) {
     console.error(err);
-    return Response.json({ error: "Silinemedi: " + err.message }, { status: 500 });
+    return Response.json({ error: "Could not delete: " + err.message }, { status: 500 });
   }
 }
 
@@ -90,13 +90,13 @@ export async function GET(req) {
         LIMIT 1;
       `;
       if (rows.length === 0) {
-        return Response.json({ error: "Tarama bulunamadı." }, { status: 404 });
+        return Response.json({ error: "Scan not found." }, { status: 404 });
       }
       return Response.json({ scan: rows[0] });
     }
 
     if (apps) {
-      // Portfolio panosu: her uygulamanın en son taraması + toplam tarama sayısı.
+      // Portfolio dashboard: each app's latest scan + total scan count.
       const { rows: latest } = await sql`
         SELECT DISTINCT ON (app_name) app_name, health_score, bad_count, warn_count, good_count, created_at
         FROM scans
@@ -115,7 +115,7 @@ export async function GET(req) {
     }
 
     if (all) {
-      // Karşılaştırma ekranı ve Reports sekmesi için: tüm uygulamalardaki taramaların özet listesi.
+      // For the comparison screen and Reports tab: a summary list of scans across all apps.
       const { rows: scanRows } = await sql`
         SELECT id, app_name, health_score, bad_count, warn_count, good_count, store_url, icon_url, created_at,
                (result_json -> 'reviewSummary' ->> 'totalReviews')::int AS review_count
@@ -149,7 +149,7 @@ export async function GET(req) {
     }
 
     if (!appName) {
-      return Response.json({ error: "appName gerekli." }, { status: 400 });
+      return Response.json({ error: "appName is required." }, { status: 400 });
     }
 
     const { rows } = await sql`
@@ -163,7 +163,7 @@ export async function GET(req) {
     return Response.json({ scans: rows });
   } catch (err) {
     console.error(err);
-    return Response.json({ error: "Geçmiş getirilemedi: " + err.message }, { status: 500 });
+    return Response.json({ error: "Could not retrieve history: " + err.message }, { status: 500 });
   }
 }
 

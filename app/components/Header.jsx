@@ -70,7 +70,7 @@ function NavDropdown({ label, groups, open, onEnter, onLeave }) {
   const anchorRef = useRef(null);
   const [coords, setCoords] = useState(null);
   const [portalRoot, setPortalRoot] = useState(null); // inside .kma-dark when present, so the panel gets the dark tokens
-  const [rendered, setRendered] = useState(false); // DOM'da mı (animasyon çıkışı için)
+  const [rendered, setRendered] = useState(false); // mounted in the DOM (for exit animation)
   const [visible, setVisible] = useState(false); // animasyon durumu
 
   useEffect(() => setPortalRoot(anchorRef.current?.closest(".kma-dark") || document.body), []);

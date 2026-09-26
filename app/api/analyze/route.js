@@ -3,84 +3,93 @@ import { computeLensScores } from "../../lib/lensScores";
 
 export const runtime = "nodejs";
 
-const SCHEMA_INSTRUCTIONS = `Sen deneyimli bir mobil UX denetçisisin. Sana verilen ekran görüntülerini ve/veya
-kullanıcı yorumlarını ve/veya mağaza listeleme metnini DERİNLEMESİNE analiz et ve SADECE aşağıdaki JSON
-şemasında bir cevap döndür. Başka hiçbir açıklama, markdown işareti veya ön/art metin ekleme.
+const SCHEMA_INSTRUCTIONS = `You are an experienced mobile UX auditor. Deeply analyze the screenshots and/or
+user reviews and/or store listing text you are given, and return ONLY a response in the following JSON
+schema. Do not add any other explanation, markdown markers, or leading/trailing text.
+
+IMPORTANT: Write every piece of text you generate in English, no matter what language the input
+screenshots, user reviews, or store listing are in. The user reviews you are given may be in Turkish,
+German, or any other language -- read and understand them in their original language, but ALL of your
+own output (aiSummary, every finding's title/finding/suggestion, topComplaints, roadmap, asoReview
+feedback, approvalRisks) must be written in English. Never respond in Turkish or any language other
+than English.
 
 {
-  "healthScore": <0-100 arası tam sayı, genel sağlık skoru>,
-  "aiSummary": "<Uygulamanın genel sağlık durumunu, en büyük 1-2 sorunu ve bunlar düzeltilirse ulaşılabilecek yaklaşık skoru 2-3 cümlede özetleyen, samimi ama profesyonel bir metin. Kesin/iddialı sayısal vaatlerde bulunma, 'yaklaşık', 'muhtemelen' gibi ifadeler kullan.>,
+  "healthScore": <integer 0-100, overall health score>,
+  "aiSummary": "<A warm but professional 2-3 sentence summary of the app's overall health, the top 1-2 issues, and roughly what score could be reached if they're fixed. Don't make firm/confident numeric promises; use words like 'roughly', 'likely'.>,
   "findings": [
     {
-      "key": "<onboarding|cta|contrast|typography|accessibility|permissions|conversion|navigation|empty_states|consistency|loading|copy|trust içinden biri>",
-      "title": "<Türkçe kısa başlık>",
+      "key": "<one of onboarding|cta|contrast|typography|accessibility|permissions|conversion|navigation|empty_states|consistency|loading|copy|trust>",
+      "title": "<short English title>",
       "status": "<good|warn|bad>",
-      "finding": "<gözlemi 1-2 cümlede somut şekilde açıkla, hangi ekranda ne gördüğünü belirt>",
-      "suggestion": "<somut, uygulanabilir bir öneri>",
-      "screenshotIndex": <bu bulgunun dayandığı ekran görüntüsünün sırası, 1'den başlar; ekran görüntüsüne dayanmıyorsa null>,
-      "boundingBox": { "x": <sol kenardan % olarak, 0-100>, "y": <üst kenardan % olarak, 0-100>, "width": <genişlik %, 0-100>, "height": <yükseklik %, 0-100> } veya null (sadece screenshotIndex doluysa ve sorunun ekrandaki yerini makul bir güvenle tahmin edebiliyorsan doldur),
-      "codeSnippet": { "language": "<css|swift|kotlin>", "code": "<kısa, örnek/başlangıç niteliğinde kod>" } veya null
+      "finding": "<explain the observation concretely in 1-2 sentences, stating what you saw on which screen>",
+      "suggestion": "<a concrete, actionable suggestion>",
+      "screenshotIndex": <the 1-based index of the screenshot this finding is based on; null if not based on a screenshot>,
+      "boundingBox": { "x": <% from the left edge, 0-100>, "y": <% from the top edge, 0-100>, "width": <% width, 0-100>, "height": <% height, 0-100> } or null (fill in only if screenshotIndex is set and you can estimate the issue's location on screen with reasonable confidence),
+      "codeSnippet": { "language": "<css|swift|kotlin>", "code": "<a short, illustrative/starter code snippet>" } or null
     }
   ],
   "reviewSummary": {
-    "topComplaints": [{ "label": "<kısa şikayet başlığı>", "pct": <0-100 arası tahmini yüzde> }],
-    "roadmap": ["<öncelik sırasına göre 3-4 aksiyon önerisi>"]
+    "topComplaints": [{ "label": "<short complaint title>", "pct": <estimated percentage, 0-100> }],
+    "roadmap": ["<3-4 action suggestions in priority order>"]
   },
   "asoReview": {
-    "titleFeedback": "<başlığın netliği/anahtar kelime kullanımı hakkında 1-2 cümle>",
-    "descriptionFeedback": "<açıklama metninin yapısı/netliği hakkında 1-2 cümle>",
-    "suggestions": ["<1-3 somut ASO önerisi>"]
+    "titleFeedback": "<1-2 sentences on the title's clarity/keyword usage>",
+    "descriptionFeedback": "<1-2 sentences on the description text's structure/clarity>",
+    "suggestions": ["<1-3 concrete ASO suggestions>"]
   },
   "approvalRisks": [
-    { "issue": "<gözlemlenen somut risk>", "guideline": "<ilgili Apple/Google inceleme kuralı kategorisi, örn. 'Eksiksizlik' veya 'Yanıltıcı İçerik'>", "severity": "<high|medium>" }
+    { "issue": "<a concrete observed risk>", "guideline": "<the relevant Apple/Google review guideline category, e.g. 'Completeness' or 'Misleading Content'>", "severity": "<high|medium>" }
   ]
 }
 
-Kategori rehberi (ekran görüntüsü verildiyse hepsini değerlendirmeye çalış):
-- onboarding: ilk kullanım akışının uzunluğu/karmaşıklığı
-- cta: birincil aksiyon butonlarının görünürlüğü ve netliği
-- contrast: metin/arka plan renk kontrastı (WCAG mantığıyla)
-- typography: başlık/gövde/etiket hiyerarşisinin netliği
-- accessibility: dokunma alanı boyutları, okunabilirlik
-- permissions: istenen izinlerin sayısı ve zamanlaması (varsa)
-- conversion (ürün/iş bakışı — Product Owner gözüyle): ödeme/kayıt akışındaki sürtünme noktaları,
-  değer önerisinin ilk ekranlarda net olup olmadığı, eksik/zayıf yerleştirilmiş CTA'lar, üst satışa
-  (upsell/premium) dair bir fırsat görülüp görülmediği, önemli bir özelliğin gözden kaçacak kadar
-  gizli/görünmez konumlandırılmış olması
-- navigation: alt/üst navigasyonun netliği, kullanıcının kaybolma riski
-- empty_states: boş/hata durumlarının kullanıcıya yol gösterip göstermediği
-- consistency (tasarım sistemi sağlığı): ekranlar arası boşluk/spacing skalasının tutarlılığı, aynı işlevi
-  gören butonların farklı stillerde olup olmadığı, ikon setinin tek bir tarzda olup olmadığı, renk
-  paletinin sınırlı ve tekrar eden bir sistem mi yoksa rastgele mi kullanıldığı, kart/bileşen
-  tasarımlarının birbirini tekrar edip etmediği
-- loading: yükleme/bekleme anlarında geri bildirim olup olmadığı
-- copy: buton ve yönlendirme metinlerinin netliği/tutarlılığı
-- trust (ürün/iş bakışı): güven sinyalleri (değerlendirme, güvenlik rozeti, sosyal kanıt) varlığı ve
-  bunların kullanıcı motivasyonunu artıracak şekilde yerleştirilip yerleştirilmediği
+Category guide (if screenshots were provided, try to evaluate all of them):
+- onboarding: length/complexity of the first-use flow
+- cta: visibility and clarity of primary action buttons
+- contrast: text/background color contrast (WCAG-style)
+- typography: clarity of the heading/body/label hierarchy
+- accessibility: touch target sizes, readability
+- permissions: number and timing of requested permissions (if any)
+- conversion (product/business perspective — through a Product Owner's eyes): friction points in the
+  checkout/signup flow, whether the value proposition is clear in the first screens, missing/poorly
+  placed CTAs, whether there's a visible upsell/premium opportunity, whether an important feature is
+  hidden/positioned so it's easy to miss
+- navigation: clarity of the bottom/top navigation, risk of the user getting lost
+- empty_states: whether empty/error states guide the user
+- consistency (design-system health): consistency of the spacing scale across screens, whether buttons
+  serving the same function use different styles, whether the icon set follows a single style, whether
+  the color palette is a limited, repeating system or used randomly, whether card/component designs
+  repeat each other
+- loading: whether there's feedback during loading/waiting moments
+- copy: clarity/consistency of button and guidance text
+- trust (product/business perspective): presence of trust signals (ratings, security badges, social
+  proof) and whether they're placed in a way that boosts user motivation
 
-Kurallar:
-- Ekran görüntüsü verilmediyse görsel kategoriler hakkında tahmin YAPMA, findings listesine ekleme.
-- Yorum verisi verilmediyse reviewSummary alanını null yap.
-- Mağaza listeleme metni (başlık/açıklama) verilmediyse asoReview alanını null yap.
-- En az 5, en fazla 11 finding döndür — verilen görsel sayısına göre gerçekçi ol, uydurma detay ekleme.
-- Skorları abartma; gerçekten gördüğün sorunlara göre dürüst bir değerlendirme yap.
-- Aynı ekran görüntüsünden birden fazla farklı kategori bulgusu çıkarabilirsin.
-- conversion/trust/permissions bulgularında iş etkisine değin (ör. "bu sürtünme kullanıcıyı kayıt
-  akışının ortasında kaybettirebilir") ama asla uydurma yüzde/rakam verme — sadece gözleme dayan.
-- consistency bulgularında en az iki farklı ekranı karşılaştırarak somut bir tutarsızlık örneği ver
-  (ör. "1. ekrandaki buton köşe yarıçapı 4. ekrandakinden farklı").
-- codeSnippet SADECE kontrast, dokunma alanı boyutu, boşluk/spacing gibi gerçekten kısa bir kod
-  parçasıyla örneklenebilecek bulgular için doldur (onboarding akışı gibi kod-dışı konularda null bırak).
-  Kod her zaman GENEL/ÖRNEK bir başlangıç noktasıdır, kullanıcının gerçek koduna erişimin yok — bunu
-  varsayma, sadece "böyle bir yaklaşım dene" niteliğinde kısa bir örnek ver.
-- boundingBox tahminin YAKLAŞIK olmalı; emin değilsen null bırak, uydurma koordinat verme.
-- approvalRisks: Bu uygulama ZATEN yayında, yani "ilk onay" riski değil — Apple/Google HER güncellemede
-  yeniden inceleme yapıyor ve mevcut uygulamaları da sonradan işaretleyip kaldırabiliyor. Bu yüzden
-  bunları "bir sonraki güncellemede veya rastgele bir denetimde sorun çıkarabilecek" sinyaller olarak
-  çerçevele. SADECE ekran görüntülerinde gerçekten gördüğün somut, görsel kanıta dayalı riskleri listele
-  (ör. placeholder/lorem ipsum metin, boş/kırık görünen ekran, yarım kalmış özellik, yanıltıcı abartılı
-  iddialar). Yorumlarda çökme/hata şikayeti yoğunsa bunu da bir risk olarak ekleyebilirsin.
-  Hiçbir somut kanıt yoksa boş dizi döndür — riski UYDURMA.`;
+Rules:
+- If no screenshots were given, do NOT guess about visual categories — don't add them to the findings list.
+- If no review data was given, set the reviewSummary field to null.
+- If no store listing text (title/description) was given, set the asoReview field to null.
+- Return at least 5, at most 11 findings — be realistic based on the number of images given, don't invent detail.
+- Don't inflate scores; give an honest assessment based on the issues you actually see.
+- You may extract more than one different-category finding from the same screenshot.
+- For conversion/trust/permissions findings, address the business impact (e.g. "this friction could lose
+  the user midway through signup") but never give a made-up percentage/number — base it on observation only.
+- For consistency findings, compare at least two different screens to give a concrete example of an
+  inconsistency (e.g. "the button corner radius on screen 1 differs from screen 4").
+- Only fill in codeSnippet for findings that can genuinely be illustrated with a short code snippet, like
+  contrast, touch target size, or spacing (leave null for non-code topics like an onboarding flow).
+  The code is always a GENERIC/EXAMPLE starting point — you don't have access to the user's actual code —
+  don't assume otherwise, just give a short example along the lines of "try an approach like this."
+- Your boundingBox estimate should be APPROXIMATE; if unsure, leave it null rather than inventing coordinates.
+- approvalRisks: this app is ALREADY live, so this isn't "initial approval" risk — Apple/Google re-review
+  on EVERY update and can flag or remove existing apps later too. So frame these as signals that "could
+  cause an issue at the next update or a random review." List ONLY concrete, visual-evidence-based risks
+  you actually see in the screenshots (e.g. placeholder/lorem ipsum text, an empty/broken-looking screen,
+  a half-finished feature, misleading exaggerated claims). If reviews mention a lot of crash/error
+  complaints, you can add that as a risk too.
+  If there's no concrete evidence, return an empty array — don't invent a risk.
+- Final reminder: regardless of the language of the reviews or any other input, every string you write
+  in the response (titles, findings, suggestions, summaries, labels) must be in English.`;
 
 async function callGeminiModel(model, parts) {
   const res = await fetch(
@@ -109,7 +118,7 @@ async function analyzeWithGemini({ images, reviews, listing }) {
   const parts = [{ text: SCHEMA_INSTRUCTIONS }];
 
   images.forEach((img, i) => {
-    parts.push({ text: `Ekran görüntüsü #${i + 1}:` });
+    parts.push({ text: `Screenshot #${i + 1}:` });
     parts.push({ inline_data: { mime_type: img.mediaType, data: img.base64 } });
   });
 
@@ -118,16 +127,16 @@ async function analyzeWithGemini({ images, reviews, listing }) {
       .map((r) => `[${r.rating}★${r.version ? ` v${r.version}` : ""}] ${r.title}: ${r.content}`)
       .join("\n---\n")
       .slice(0, 12000);
-    parts.push({ text: `Kullanıcı yorumları (App Store):\n${reviewText}` });
+    parts.push({ text: `User reviews (App Store):\n${reviewText}` });
   }
 
   if (listing) {
     parts.push({
-      text: `Mağaza listeleme bilgisi:\nBaşlık: ${listing.trackName}\nKategori: ${listing.genre}\nAçıklama:\n${(listing.description || "").slice(0, 4000)}`,
+      text: `Store listing info:\nTitle: ${listing.trackName}\nCategory: ${listing.genre}\nDescription:\n${(listing.description || "").slice(0, 4000)}`,
     });
   }
 
-  // Ana model + yoğunluk anında düşülecek yedek model.
+  // Primary model + a fallback to fall back to under load.
   const modelsToTry = ["gemini-3.6-flash", "gemini-3.5-flash-lite"];
   const maxAttemptsPerModel = 2;
 
@@ -145,21 +154,21 @@ async function analyzeWithGemini({ images, reviews, listing }) {
           return JSON.parse(cleaned);
         } catch (parseErr) {
           throw new Error(
-            `Model cevabı bozuk/eksik JSON döndürdü (muhtemelen yarıda kesildi): ${parseErr.message}`
+            `Model returned malformed/incomplete JSON (likely cut off mid-response): ${parseErr.message}`
           );
         }
       }
 
       const errText = await res.text();
-      lastError = new Error(`Gemini API hatası: ${res.status} ${errText}`);
+      lastError = new Error(`Gemini API error: ${res.status} ${errText}`);
 
-      // 503 (yoğunluk) ve 429 (rate limit) geçici hatalardır — kısa bekleyip tekrar dene.
+      // 503 (overloaded) and 429 (rate limit) are transient errors — wait briefly and retry.
       if (res.status === 503 || res.status === 429) {
         await sleep(attempt * 800);
         continue;
       }
 
-      // Başka türde bir hata (400, 403, 404 vb.) tekrar denemekle düzelmez, sıradaki modele geç.
+      // Any other kind of error (400, 403, 404, etc.) won't be fixed by retrying — move to the next model.
       break;
     }
   }
@@ -171,7 +180,7 @@ export async function POST(req) {
   try {
     if (!process.env.GEMINI_API_KEY) {
       return Response.json(
-        { error: "Sunucuda GEMINI_API_KEY tanımlı değil. Vercel proje ayarlarından ekle." },
+        { error: "GEMINI_API_KEY is not defined on the server. Add it from the Vercel project settings." },
         { status: 500 }
       );
     }
@@ -206,7 +215,7 @@ export async function POST(req) {
       return Response.json(
         {
           error:
-            "Analiz için en az bir ekran görüntüsü veya geçerli bir App Store linki gerekiyor (Play Store linkleri henüz desteklenmiyor).",
+            "Analysis needs at least one screenshot or a valid App Store link (Play Store links are not yet supported).",
         },
         { status: 400 }
       );
@@ -222,7 +231,7 @@ export async function POST(req) {
       result.reviewSummary.totalReviews = reviews.length;
       result.reviewSummary.avgRating = Math.round(avgRating * 10) / 10;
       result.reviewSummary.sampleNote =
-        "En son " + reviews.length + " yorum örneklendi (Apple RSS feed limiti)";
+        "The " + reviews.length + " most recent reviews were sampled (Apple RSS feed limit)";
       result.reviewSummary.ratingDistribution = analytics.ratingDistribution;
       result.reviewSummary.mostHelpfulNegative = analytics.mostHelpfulNegative;
       result.reviewSummary.versionTrend = analytics.versionTrend;
@@ -241,7 +250,7 @@ export async function POST(req) {
   } catch (err) {
     console.error(err);
     return Response.json(
-      { error: "Analiz sırasında bir hata oluştu: " + (err.message || "bilinmeyen hata") },
+      { error: "An error occurred during analysis: " + (err.message || "unknown error") },
       { status: 500 }
     );
   }

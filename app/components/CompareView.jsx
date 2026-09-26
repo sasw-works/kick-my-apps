@@ -26,9 +26,9 @@ import {
 } from "lucide-react";
 
 const STATUS_META = {
-  good: { color: "var(--teal)", Icon: CheckCircle2, label: "Sorunsuz", rank: 0 },
-  warn: { color: "var(--yellow)", Icon: AlertTriangle, label: "Dikkat", rank: 1 },
-  bad: { color: "var(--kick)", Icon: XCircle, label: "Kritik", rank: 2 },
+  good: { color: "var(--teal)", Icon: CheckCircle2, label: "Good", rank: 0 },
+  warn: { color: "var(--yellow)", Icon: AlertTriangle, label: "Attention", rank: 1 },
+  bad: { color: "var(--kick)", Icon: XCircle, label: "Critical", rank: 2 },
 };
 
 const ICON_MAP = {
@@ -50,10 +50,10 @@ const ICON_MAP = {
 const LENS_MAP = {
   cta: "UI", contrast: "UI", typography: "UI", consistency: "UI",
   onboarding: "UX", navigation: "UX", empty_states: "UX", loading: "UX", copy: "UX",
-  accessibility: "Erişilebilirlik",
-  permissions: "Ürün", conversion: "Ürün", trust: "Ürün",
+  accessibility: "Accessibility",
+  permissions: "Product", conversion: "Product", trust: "Product",
 };
-const LENS_ORDER = ["UI", "UX", "Erişilebilirlik", "Ürün"];
+const LENS_ORDER = ["UI", "UX", "Accessibility", "Product"];
 
 const SCORE_COLOR = (score) => (score >= 75 ? "var(--teal)" : score >= 50 ? "var(--yellow)" : "var(--kick)");
 
@@ -70,7 +70,7 @@ function lensSummaryFor(findings) {
     if (items.length === 0) return { lens, total: 0 };
     const badCount = items.filter((f) => f.status === "bad").length;
     const warnCount = items.filter((f) => f.status === "warn").length;
-    // Basit bir "mercek skoru": good=2, warn=1, bad=0 puan, ortalaması alınır.
+    // A simple "lens score": good=2, warn=1, bad=0 points, averaged.
     const points = items.reduce((sum, f) => sum + (f.status === "good" ? 2 : f.status === "warn" ? 1 : 0), 0);
     const avg = points / (items.length * 2);
     return { lens, total: items.length, badCount, warnCount, avg };
@@ -84,9 +84,9 @@ function buildVerdict(a, b, lensA, lensB) {
 
   let text = "";
   if (!stronger) {
-    text = `${a.app_name} ve ${b.app_name} genel skor olarak eşit (${a.health_score}).`;
+    text = `${a.app_name} and ${b.app_name} are tied on overall score (${a.health_score}).`;
   } else {
-    text = `${stronger.app_name}, genel skorda ${weaker.app_name}'e göre ${Math.abs(delta)} puan önde (${stronger.health_score} / ${weaker.health_score}).`;
+    text = `${stronger.app_name} leads ${weaker.app_name} by ${Math.abs(delta)} points on overall score (${stronger.health_score} / ${weaker.health_score}).`;
   }
 
   // Hangi mercekte kim daha iyi
@@ -95,8 +95,8 @@ function buildVerdict(a, b, lensA, lensB) {
     const la = lensA[i];
     const lb = lensB[i];
     if (!la?.total || !lb?.total) return;
-    if (la.avg > lb.avg + 0.15) lensNotes.push(`${a.app_name}, ${lens} konusunda daha güçlü`);
-    else if (lb.avg > la.avg + 0.15) lensNotes.push(`${b.app_name}, ${lens} konusunda daha güçlü`);
+    if (la.avg > lb.avg + 0.15) lensNotes.push(`${a.app_name} is stronger on ${lens}`);
+    else if (lb.avg > la.avg + 0.15) lensNotes.push(`${b.app_name} is stronger on ${lens}`);
   });
 
   return { text, lensNotes };
@@ -226,17 +226,17 @@ export default function CompareView({ scans, onBack }) {
       `}</style>
 
       <div className="cmp-header">
-        <div className="cmp-title">Karşılaştırma</div>
+        <div className="cmp-title">Comparison</div>
         <button className="back-btn" onClick={onBack}>
           <ArrowLeft size={15} />
-          Geri
+          Back
         </button>
       </div>
 
       <div className="cmp-score-grid">
         <div className="cmp-score-card">
           <div className="cmp-score-name">{a.app_name}</div>
-          <div className="cmp-score-date">{new Date(a.created_at).toLocaleDateString("tr-TR")}</div>
+          <div className="cmp-score-date">{new Date(a.created_at).toLocaleDateString("en-US")}</div>
           <div className="cmp-score-value" style={{ color: SCORE_COLOR(a.health_score) }}>
             {a.health_score}
           </div>
@@ -252,7 +252,7 @@ export default function CompareView({ scans, onBack }) {
 
         <div className="cmp-score-card">
           <div className="cmp-score-name">{b.app_name}</div>
-          <div className="cmp-score-date">{new Date(b.created_at).toLocaleDateString("tr-TR")}</div>
+          <div className="cmp-score-date">{new Date(b.created_at).toLocaleDateString("en-US")}</div>
           <div className="cmp-score-value" style={{ color: SCORE_COLOR(b.health_score) }}>
             {b.health_score}
           </div>
@@ -273,8 +273,8 @@ export default function CompareView({ scans, onBack }) {
         </div>
       </div>
 
-      {/* Mercek karşılaştırması */}
-      <div className="cmp-section-title">MERCEK KARŞILAŞTIRMASI</div>
+      {/* Lens comparison */}
+      <div className="cmp-section-title">LENS COMPARISON</div>
       <div className="lens-cmp-grid">
         {LENS_ORDER.map((lens, i) => {
           const la = lensA[i];
@@ -300,10 +300,10 @@ export default function CompareView({ scans, onBack }) {
         })}
       </div>
 
-      {/* Detaylı bulgu karşılaştırması */}
+      {/* Detailed finding comparison */}
       {allKeys.length > 0 && (
         <>
-          <div className="cmp-section-title">BULGU BAZINDA DETAYLI KARŞILAŞTIRMA</div>
+          <div className="cmp-section-title">DETAILED FINDING-BY-FINDING COMPARISON</div>
           {allKeys.map((key) => {
             const fa = findingsAMap[key];
             const fb = findingsBMap[key];
@@ -325,10 +325,10 @@ export default function CompareView({ scans, onBack }) {
         </>
       )}
 
-      {/* Yorum analizi karşılaştırması */}
+      {/* Review analysis comparison */}
       {(reviewA || reviewB) && (
         <>
-          <div className="cmp-section-title">APP STORE YORUM KARŞILAŞTIRMASI</div>
+          <div className="cmp-section-title">APP STORE REVIEW COMPARISON</div>
           <div className="review-cmp-grid">
             {[{ scan: a, review: reviewA }, { scan: b, review: reviewB }].map(({ scan, review }, i) => (
               <div className="review-cmp-card" key={i}>
@@ -337,7 +337,7 @@ export default function CompareView({ scans, onBack }) {
                   <>
                     <div className="review-cmp-stat">
                       <span className="review-cmp-num">★ {review.avgRating}</span>
-                      <span style={{ fontSize: 11.5, color: "var(--muted)" }}>{review.totalReviews} yorum</span>
+                      <span style={{ fontSize: 11.5, color: "var(--muted)" }}>{review.totalReviews} reviews</span>
                     </div>
                     {(review.topComplaints || []).slice(0, 4).map((c) => (
                       <div className="review-cmp-complaint" key={c.label}>
@@ -347,7 +347,7 @@ export default function CompareView({ scans, onBack }) {
                     ))}
                   </>
                 ) : (
-                  <div style={{ fontSize: 12.5, color: "var(--muted)" }}>Yorum verisi yok</div>
+                  <div style={{ fontSize: 12.5, color: "var(--muted)" }}>No review data</div>
                 )}
               </div>
             ))}

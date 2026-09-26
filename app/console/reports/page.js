@@ -157,7 +157,7 @@ export default function ConsoleReportsPage() {
   const selectedRows = rows.filter((r) => selected.has(r.key));
 
   const handleDeleteOne = async (row) => {
-    if (!confirm(`"${row.title}" silinsin mi? Bu işlem geri alınamaz.`)) return;
+    if (!confirm(`Delete "${row.title}"? This action cannot be undone.`)) return;
     await fetch(row.deleteUrl, { method: "DELETE" });
     loadAll();
     setSelected((prev) => {
@@ -169,7 +169,7 @@ export default function ConsoleReportsPage() {
 
   const handleDeleteSelected = async () => {
     if (selectedRows.length === 0) return;
-    if (!confirm(`${selectedRows.length} rapor silinsin mi? Bu işlem geri alınamaz.`)) return;
+    if (!confirm(`Delete ${selectedRows.length} report(s)? This action cannot be undone.`)) return;
     setDeleting(true);
     await Promise.all(selectedRows.map((r) => fetch(r.deleteUrl, { method: "DELETE" })));
     setDeleting(false);
@@ -178,7 +178,7 @@ export default function ConsoleReportsPage() {
   };
 
   const handleDownloadSelected = () => {
-    // Toplu/anlık PDF üretimi henüz yok; her raporu kendi sayfasında (gerçek "PDF İndir" ile) açıyoruz.
+    // Bulk/instant PDF generation doesn't exist yet; we open each report on its own page (with the real "Download PDF" there).
     selectedRows.forEach((r) => window.open(r.href, "_blank"));
   };
 
@@ -312,7 +312,7 @@ export default function ConsoleReportsPage() {
         </div>
       ) : rows.length === 0 ? (
         <div className="reports-empty">
-          <div>Henüz bir sorgulama yapmadın.</div>
+          <div>You haven't run any queries yet.</div>
         </div>
       ) : (
         <table className="reports-table" lang="en">
@@ -363,19 +363,19 @@ export default function ConsoleReportsPage() {
                   )}
                 </td>
                 <td className="reports-col-center">{r.reviewCount ?? "—"}</td>
-                <td className="reports-col-center">{new Date(r.createdAt).toLocaleDateString("tr-TR")}</td>
+                <td className="reports-col-center">{new Date(r.createdAt).toLocaleDateString("en-US")}</td>
                 <td className="reports-col-center">
                   <div className="reports-row-actions">
-                    <button className="reports-action-btn" onClick={() => router.push(r.href)} aria-label="Görüntüle">
+                    <button className="reports-action-btn" onClick={() => router.push(r.href)} aria-label="View">
                       <Eye size={14} />
                     </button>
-                    <button className="reports-action-btn" onClick={() => window.open(r.href, "_blank")} aria-label="İndir">
+                    <button className="reports-action-btn" onClick={() => window.open(r.href, "_blank")} aria-label="Download">
                       <Download size={14} />
                     </button>
                     <button
                       className="reports-action-btn reports-action-btn-danger"
                       onClick={() => handleDeleteOne(r)}
-                      aria-label="Sil"
+                      aria-label="Delete"
                     >
                       <Trash2 size={14} />
                     </button>
@@ -395,13 +395,13 @@ export default function ConsoleReportsPage() {
           </div>
           <div className="reports-selection-divider" />
           <div className="reports-selection-actions">
-            <button className="reports-selection-btn" onClick={handleDownloadSelected} aria-label="İndir">
+            <button className="reports-selection-btn" onClick={handleDownloadSelected} aria-label="Download">
               <Download size={16} />
             </button>
-            <button className="reports-selection-btn" onClick={handleDeleteSelected} disabled={deleting} aria-label="Sil">
+            <button className="reports-selection-btn" onClick={handleDeleteSelected} disabled={deleting} aria-label="Delete">
               <Trash2 size={16} />
             </button>
-            <button className="reports-selection-btn" onClick={clearSelection} aria-label="Kapat">
+            <button className="reports-selection-btn" onClick={clearSelection} aria-label="Close">
               <X size={16} />
             </button>
           </div>

@@ -19,7 +19,7 @@ function HistoryPageContent() {
     try {
       const res = await fetch(`/api/history/compare?ids=${ids.join(",")}`);
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Karşılaştırma verisi alınamadı.");
+      if (!res.ok) throw new Error(data.error || "Could not retrieve comparison data.");
       setCompareScans(data.scans || []);
       setStage("compare");
 

@@ -19,15 +19,15 @@ export default function AppFlow({ showMarketing = true, handoffToConsole = false
   const [analyzing, setAnalyzing] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [reportData, setReportData] = useState(null);
-  const [appLabel, setAppLabel] = useState("Uygulaman");
+  const [appLabel, setAppLabel] = useState("Your App");
   const [history, setHistory] = useState([]);
   const [scanId, setScanId] = useState(null);
   const [scanStoreUrl, setScanStoreUrl] = useState("");
   const [screenshotUrls, setScreenshotUrls] = useState([]);
 
-  // /console tarafında: sessionStorage'da bekleyen bir rapor var mı diye bak, varsa hemen göster.
+  // On the /console side: check sessionStorage for a pending report, and show it immediately if there is one.
   useEffect(() => {
-    if (handoffToConsole) return; // Bu instance handoff YAPAN taraf (anasayfa), alıcı değil.
+    if (handoffToConsole) return; // This instance is the one DOING the handoff (home page), not the receiver.
     try {
       const pending = sessionStorage.getItem("kma-pending-report");
       if (pending) {
@@ -65,8 +65,8 @@ export default function AppFlow({ showMarketing = true, handoffToConsole = false
       } catch {
         throw new Error(
           res.status === 413
-            ? "Yüklenen ekran görüntüleri çok büyük. Lütfen daha az veya daha küçük boyutlu görsellerle tekrar dene."
-            : `Sunucudan beklenmeyen bir yanıt geldi (${res.status}). Lütfen tekrar dene.`
+            ? "The uploaded screenshots are too large. Please try again with fewer or smaller images."
+            : `Got an unexpected response from the server (${res.status}). Please try again.`
         );
       }
 
@@ -111,7 +111,7 @@ export default function AppFlow({ showMarketing = true, handoffToConsole = false
       }
 
       if (handoffToConsole) {
-        // Rapor hazır — sol menülü /console görünümüne devret.
+        // Report ready — hand off to the /console view with the sidebar.
         try {
           sessionStorage.setItem(
             "kma-pending-report",

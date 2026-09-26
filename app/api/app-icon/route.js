@@ -7,7 +7,7 @@ export async function GET(req) {
     const { searchParams } = new URL(req.url);
     const storeUrl = searchParams.get("storeUrl");
     if (!storeUrl) {
-      return Response.json({ error: "storeUrl gerekli." }, { status: 400 });
+      return Response.json({ error: "storeUrl is required." }, { status: 400 });
     }
     const listing = await fetchAppStoreListing(storeUrl);
     return Response.json({ iconUrl: listing?.iconUrl || null });

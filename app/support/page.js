@@ -27,7 +27,7 @@ const SUPPORT_FAQ = [
   },
   {
     q: "Can I export my report as a PDF?",
-    a: "Yes — every report has a 'PDF İndir' button that generates a shareable, downloadable version of your full analysis.",
+    a: "Yes — every report has a 'Download PDF' button that generates a shareable, downloadable version of your full analysis.",
   },
   {
     q: "Can I compare my app against a competitor?",
