@@ -76,7 +76,7 @@ export default function SignInForm({ callbackUrl = "/console", onJoinFree }) {
       <style>{`
         .signin-form { width: 100%; display: flex; flex-direction: column; align-items: center; }
         .signin-title { margin: 0; font-size: 26px; font-weight: 700; color: ${c.title}; text-align: center; }
-        .signin-sub { margin: 10px 0 28px; font-size: 14px; color: ${c.sub}; text-align: center; }
+        .signin-sub { margin: 10px 0 58px; font-size: 14px; color: ${c.sub}; text-align: center; }
         .signin-google {
           width: 100%; height: 52px; display: flex; align-items: center; justify-content: center; gap: 10px;
           background: ${c.card}; border: 1px solid ${c.border}; border-radius: 999px;
@@ -84,20 +84,20 @@ export default function SignInForm({ callbackUrl = "/console", onJoinFree }) {
           transition: background 0.15s ease;
         }
         .signin-google:hover { background: ${light ? "#F6F8FA" : "#1f2029"}; }
-        .signin-divider { display: flex; align-items: center; gap: 16px; width: 100%; margin: 22px 0; }
+        .signin-divider { display: flex; align-items: center; gap: 16px; width: 100%; margin: 50px 0; }
         .signin-divider::before, .signin-divider::after { content: ""; flex: 1; height: 1px; background: ${c.divider}; }
         .signin-divider span { font-size: 11px; font-weight: 600; letter-spacing: 0.04em; color: ${c.sub}; }
         .signin-label { align-self: flex-start; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: ${c.sub}; margin-bottom: 8px; }
         .signin-input {
-          width: 100%; height: 50px; padding: 0 16px; box-sizing: border-box;
-          background: ${c.input}; border: 1px solid ${c.border}; border-radius: 12px;
+          width: 100%; height: 52px; padding: 0 16px; box-sizing: border-box;
+          background: ${c.input}; border: 1px solid ${c.border}; border-radius: 999px;
           font-size: 14.5px; color: ${c.title}; font-family: inherit;
         }
         .signin-input::placeholder { color: ${c.sub}; }
         .signin-input:focus { outline: none; border-color: var(--blue-100); }
         .signin-code-input { text-align: center; font-size: 20px; letter-spacing: 0.3em; font-weight: 600; }
         .signin-submit {
-          width: 100%; height: 50px; margin-top: 16px; display: flex; align-items: center; justify-content: center; gap: 8px;
+          width: 100%; height: 52px; margin-top: 30px; display: flex; align-items: center; justify-content: center; gap: 8px;
           background: ${light ? "#111827" : "#FFFFFF"}; color: ${light ? "#FFFFFF" : "#111827"};
           border: none; border-radius: 999px; font-size: 14.5px; font-weight: 700; cursor: pointer;
         }
@@ -122,7 +122,6 @@ export default function SignInForm({ callbackUrl = "/console", onJoinFree }) {
           <div className="signin-divider"><span>OR</span></div>
 
           <form onSubmit={handleSendCode} style={{ width: "100%" }}>
-            <div className="signin-label">EMAIL</div>
             <input
               type="email"
               className="signin-input"
