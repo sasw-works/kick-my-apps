@@ -19,10 +19,10 @@ export async function fetchAppStoreReviews(storeUrl) {
     const entries = data?.feed?.entry;
     if (entries && Array.isArray(entries)) return entries;
     // Apple's RSS API occasionally rate-limits/throttles a request and returns an
-    // empty-but-200 feed; one short-delayed retry clears this most of the time.
-    if (attempt === 0) {
-      await new Promise((r) => setTimeout(r, 600));
-      return fetchFeed(cc, 1);
+    // empty-but-200 feed; a couple of short-delayed retries clear this most of the time.
+    if (attempt < 2) {
+      await new Promise((r) => setTimeout(r, 500 + attempt * 400));
+      return fetchFeed(cc, attempt + 1);
     }
     return null;
   }
