@@ -48,7 +48,7 @@ export default function SignInModal() {
         }
         .signin-modal-panel {
           position: fixed; top: 0; right: 0; bottom: 0; z-index: 201;
-          width: min(440px, 100vw);
+          width: min(540px, 100vw);
           background: ${c.panel};
           box-shadow: -20px 0 60px rgba(0,0,0,0.25);
           transform: translateX(${isOpen ? "0" : "100%"});
