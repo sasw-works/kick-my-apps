@@ -48,7 +48,7 @@ export default function SignInModal() {
         }
         .signin-modal-panel {
           position: fixed; top: 0; right: 0; bottom: 0; z-index: 201;
-          width: min(640px, 100vw);
+          width: min(690px, 100vw);
           background: ${c.panel};
           box-shadow: -20px 0 60px rgba(0,0,0,0.25);
           transform: translateX(${isOpen ? "0" : "100%"});
@@ -56,17 +56,20 @@ export default function SignInModal() {
           display: flex; flex-direction: column;
           overflow-y: auto;
         }
-        .signin-modal-head { display: flex; align-items: center; justify-content: space-between; padding: 24px; flex-shrink: 0; }
+        .signin-modal-head { display: flex; align-items: center; justify-content: space-between; padding: 24px 75px 0; flex-shrink: 0; }
         .signin-modal-close {
           width: 36px; height: 36px; border-radius: 50%; border: 1px solid ${c.border}; background: transparent;
           display: flex; align-items: center; justify-content: center; cursor: pointer; color: ${c.title};
         }
-        .signin-modal-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px 32px 40px; }
+        .signin-modal-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px 75px 40px; }
         .signin-modal-logo { margin-bottom: 28px; }
-        .signin-modal-legal { padding: 20px 32px; font-size: 12px; color: ${c.sub}; text-align: center; flex-shrink: 0; }
+        .signin-modal-legal { padding: 20px 75px; font-size: 12px; color: ${c.sub}; text-align: center; flex-shrink: 0; }
         .signin-modal-legal a { color: ${c.sub}; text-decoration: underline; }
         @media (max-width: 480px) {
           .signin-modal-panel { width: 100vw; }
+          .signin-modal-head { padding-left: 24px; padding-right: 24px; }
+          .signin-modal-body { padding-left: 24px; padding-right: 24px; }
+          .signin-modal-legal { padding-left: 24px; padding-right: 24px; }
         }
       `}</style>
 
