@@ -188,13 +188,13 @@ export default function FeaturesSection() {
         /* headline: pill 274x47 -> h2 48/63 -> sub */
         .kf-headline { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; width: 100%; }
         .kf-pill {
-          box-sizing: border-box; width: 274px; height: 47px; padding: 16px 24px;
-          display: flex; align-items: flex-start; gap: 10px;
+          box-sizing: border-box; width: fit-content; height: 47px; padding: 16px 24px;
+          display: flex; align-items: center; gap: 10px;
           background: ${c.pillBg}; border-radius: 999px; box-shadow: inset 0 0 0 1px ${c.pillBorder};
           font-size: 14px; line-height: 14px; color: ${c.pillText};
         }
         .kf-pill img { display: block; flex-shrink: 0; }
-        .kf-pill span { display: block; width: 202px; height: 14px; white-space: nowrap; }
+        .kf-pill span { display: block; white-space: nowrap; }
         .kf-h2 { margin: 0; font-size: 48px; line-height: 63px; font-weight: 400; color: ${c.h2}; min-height: 64.8px; }
         .kf-sub { margin: 0; font-size: var(--fs-18); font-weight: 400; white-space: nowrap; }
         .kf-sub-fixed { display: flex; flex-direction: column; justify-content: center; }
@@ -290,10 +290,10 @@ export default function FeaturesSection() {
                   </div>
                 </div>
                 <CenterText
-                  title="Always fresh"
+                  title="13 categories across four analysis lenses"
                   lines={[
-                    "No caching, ever: every single analysis pulls the freshest",
-                    "reviews straight from the source.",
+                    "Every finding maps to a UI, UX, Accessibility or Product lens,",
+                    "so nothing ever slips through.",
                   ]}
                 />
               </div>
@@ -381,10 +381,10 @@ export default function FeaturesSection() {
                   </div>
                 </div>
                 <CenterText
-                  title="13 categories across four analysis lenses"
+                  title="Code-level suggestions"
                   lines={[
-                    "Every finding maps to a UI, UX, Accessibility or Product lens,",
-                    "so nothing ever slips through.",
+                    "Every finding comes with a ready-to-use code snippet, so your",
+                    "team can ship the fix in minutes, not days.",
                   ]}
                 />
               </div>
