@@ -114,27 +114,38 @@ async function callGeminiModel(model, parts) {
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-async function analyzeWithGemini({ images, reviews, listing }) {
-  const parts = [{ text: SCHEMA_INSTRUCTIONS }];
-
-  images.forEach((img, i) => {
-    parts.push({ text: `Screenshot #${i + 1}:` });
-    parts.push({ inline_data: { mime_type: img.mediaType, data: img.base64 } });
-  });
+// Builds the shared prompt pieces (instructions + screenshots + reviews + listing) once,
+// then each provider's function converts them into that provider's own request shape.
+function buildPromptPieces({ images, reviews, listing }) {
+  const textBlocks = [SCHEMA_INSTRUCTIONS];
 
   if (reviews?.length) {
     const reviewText = reviews
       .map((r) => `[${r.rating}★${r.version ? ` v${r.version}` : ""}] ${r.title}: ${r.content}`)
       .join("\n---\n")
       .slice(0, 12000);
-    parts.push({ text: `User reviews (App Store):\n${reviewText}` });
+    textBlocks.push(`User reviews (App Store):\n${reviewText}`);
   }
 
   if (listing) {
-    parts.push({
-      text: `Store listing info:\nTitle: ${listing.trackName}\nCategory: ${listing.genre}\nDescription:\n${(listing.description || "").slice(0, 4000)}`,
-    });
+    textBlocks.push(
+      `Store listing info:\nTitle: ${listing.trackName}\nCategory: ${listing.genre}\nDescription:\n${(listing.description || "").slice(0, 4000)}`
+    );
   }
+
+  return { textBlocks, images };
+}
+
+async function analyzeWithGemini({ images, reviews, listing }) {
+  if (!process.env.GEMINI_API_KEY) throw new Error("GEMINI_API_KEY not set");
+
+  const { textBlocks } = buildPromptPieces({ images, reviews, listing });
+  const parts = [{ text: textBlocks.join("\n\n") }];
+
+  images.forEach((img, i) => {
+    parts.push({ text: `Screenshot #${i + 1}:` });
+    parts.push({ inline_data: { mime_type: img.mediaType, data: img.base64 } });
+  });
 
   // Primary model + a fallback to fall back to under load.
   const modelsToTry = ["gemini-3.6-flash", "gemini-3.5-flash-lite"];
@@ -176,11 +187,109 @@ async function analyzeWithGemini({ images, reviews, listing }) {
   throw lastError;
 }
 
+// Fallback provider: used only if every Gemini attempt above failed (key missing, quota,
+// outage, etc.). OpenRouter aggregates many underlying model providers behind one API/key,
+// so this is a genuinely different failure domain from Google's — not just a second model
+// on the same platform. "openrouter/free" is OpenRouter's own auto-router: it picks among
+// the currently-available free models that support vision + structured JSON output, so we
+// don't have to hardcode one specific free model that might get deprecated or rate-limited.
+async function callOpenRouterModel(model, textPrompt, images) {
+  const content = [{ type: "text", text: textPrompt }];
+  images.forEach((img, i) => {
+    content.push({ type: "text", text: `Screenshot #${i + 1}:` });
+    content.push({ type: "image_url", image_url: { url: `data:${img.mediaType};base64,${img.base64}` } });
+  });
+
+  const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model,
+      messages: [{ role: "user", content }],
+      response_format: { type: "json_object" },
+      max_tokens: 8192,
+    }),
+  });
+  return res;
+}
+
+async function analyzeWithOpenRouter({ images, reviews, listing }) {
+  if (!process.env.OPENROUTER_API_KEY) throw new Error("OPENROUTER_API_KEY not set");
+
+  const { textBlocks } = buildPromptPieces({ images, reviews, listing });
+  const textPrompt = textBlocks.join("\n\n");
+
+  const modelsToTry = ["openrouter/free"];
+  const maxAttemptsPerModel = 2;
+
+  let lastError;
+
+  for (const model of modelsToTry) {
+    for (let attempt = 1; attempt <= maxAttemptsPerModel; attempt++) {
+      const res = await callOpenRouterModel(model, textPrompt, images);
+
+      if (res.ok) {
+        const data = await res.json();
+        const raw = data?.choices?.[0]?.message?.content ?? "{}";
+        const cleaned = raw.replace(/```json|```/g, "").trim();
+        try {
+          return JSON.parse(cleaned);
+        } catch (parseErr) {
+          throw new Error(
+            `OpenRouter model returned malformed/incomplete JSON (likely cut off mid-response): ${parseErr.message}`
+          );
+        }
+      }
+
+      const errText = await res.text();
+      lastError = new Error(`OpenRouter API error: ${res.status} ${errText}`);
+
+      if (res.status === 503 || res.status === 429) {
+        await sleep(attempt * 800);
+        continue;
+      }
+      break;
+    }
+  }
+
+  throw lastError;
+}
+
+// Tries Gemini first (primary, already-proven provider), and only reaches for OpenRouter
+// -- a different provider on a different platform -- if every Gemini attempt failed. This
+// keeps the service answering even during a full Gemini-side outage or an invalid/expired key.
+async function analyzeApp({ images, reviews, listing }) {
+  const hasGemini = !!process.env.GEMINI_API_KEY;
+  const hasOpenRouter = !!process.env.OPENROUTER_API_KEY;
+
+  if (!hasGemini && !hasOpenRouter) {
+    throw new Error("MISSING_KEYS");
+  }
+
+  if (hasGemini) {
+    try {
+      return await analyzeWithGemini({ images, reviews, listing });
+    } catch (geminiErr) {
+      if (!hasOpenRouter) throw geminiErr;
+      console.error("Gemini failed, falling back to OpenRouter:", geminiErr.message);
+      return await analyzeWithOpenRouter({ images, reviews, listing });
+    }
+  }
+
+  return await analyzeWithOpenRouter({ images, reviews, listing });
+}
+
 export async function POST(req) {
   try {
-    if (!process.env.GEMINI_API_KEY) {
+    if (!process.env.GEMINI_API_KEY && !process.env.OPENROUTER_API_KEY) {
       return Response.json(
-        { error: "GEMINI_API_KEY is not defined on the server. Add it from the Vercel project settings." },
+        {
+          error:
+            "Neither GEMINI_API_KEY nor OPENROUTER_API_KEY is defined on the server. Add at least one from the Vercel project settings.",
+        },
         { status: 500 }
       );
     }
@@ -221,7 +330,7 @@ export async function POST(req) {
       );
     }
 
-    const result = await analyzeWithGemini({ images, reviews, listing });
+    const result = await analyzeApp({ images, reviews, listing });
     result.lensScores = computeLensScores(result.findings);
 
     if (reviews?.length && result.reviewSummary) {
