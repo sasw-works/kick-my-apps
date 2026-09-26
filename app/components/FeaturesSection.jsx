@@ -329,7 +329,7 @@ export default function FeaturesSection() {
               <div className="kf-card" style={{ width: 800, height: 402 }}>
                 <div className="kf-illus">
                   <div className="kf-abs" style={{ left: "50%", top: 40, width: 719.95, height: 200, transform: "translateX(-50%)" }}>
-                    <Box inset="-47.5px 60.11px 0 60.09px" clip>
+                    <Box inset="-47.5px 60.11px 0 60.09px">
                       <Box inset="-15.99px -72.11px 114.99px -72.11px" clip>
                         <div className="kf-abs kf-clip" style={{ left: 0, top: 0, width: 624.97, height: 148.5 }}>
                           <div className="kf-abs" style={{ left: "50%", top: "50%", width: 640.671, height: 148.5, transform: "translate(-50%,-50%)" }}>
