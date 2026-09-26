@@ -223,7 +223,9 @@ async function analyzeWithOpenRouter({ images, reviews, listing }) {
   const textPrompt = textBlocks.join("\n\n");
 
   const modelsToTry = ["openrouter/free"];
-  const maxAttemptsPerModel = 2;
+  const maxAttemptsPerModel = 4; // the auto-router picks a different underlying model each call, so
+  // a few extra attempts meaningfully raise the odds of landing on one that actually follows
+  // the JSON+vision instructions, rather than an unrelated model (observed in real testing).
 
   let lastError;
 
@@ -236,12 +238,24 @@ async function analyzeWithOpenRouter({ images, reviews, listing }) {
         const raw = data?.choices?.[0]?.message?.content ?? "{}";
         const cleaned = raw.replace(/```json|```/g, "").trim();
         try {
-          return JSON.parse(cleaned);
+          const parsed = JSON.parse(cleaned);
+          // Sanity check: the auto-router occasionally lands on a model that ignores the
+          // JSON instruction entirely (e.g. a safety/moderation model unrelated to the task).
+          // Treat that the same as a transient failure and retry -- a fresh call may route
+          // to a different, capable model.
+          if (parsed && typeof parsed === "object" && ("healthScore" in parsed || "findings" in parsed)) {
+            return parsed;
+          }
+          lastError = new Error(
+            `OpenRouter model (${data?.model || "unknown"}) returned a JSON response that doesn't match the expected schema`
+          );
         } catch (parseErr) {
-          throw new Error(
-            `OpenRouter model returned malformed/incomplete JSON (likely cut off mid-response): ${parseErr.message}`
+          lastError = new Error(
+            `OpenRouter model returned malformed/incomplete JSON (likely cut off mid-response, or routed to a non-compliant model): ${parseErr.message}`
           );
         }
+        await sleep(attempt * 500);
+        continue;
       }
 
       const errText = await res.text();
