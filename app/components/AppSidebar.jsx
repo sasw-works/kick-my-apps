@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { LayoutDashboard, ClipboardList, GitCompare, Radio, Moon, Sun } from "lucide-react";
 import LogoMark from "./LogoMark";
 import { useTheme } from "./ThemeProvider";
+import { useSession, signOut } from "next-auth/react";
 
 const NAV_ITEMS = [
   { href: "/console", label: "Dashboard", icon: LayoutDashboard },
@@ -17,6 +18,9 @@ const NAV_ITEMS = [
 export default function AppSidebar() {
   const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
+  const { data: session } = useSession();
+  const displayName = session?.user?.name || session?.user?.email?.split("@")[0] || "Guest";
+  const initial = displayName.charAt(0).toUpperCase();
 
   return (
     <aside className="kma-sidebar">
@@ -47,6 +51,8 @@ export default function AppSidebar() {
           background: linear-gradient(135deg, var(--brand), #7C6BFF);
           color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px;
         }
+        .kma-sidebar-avatar-img { width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0; object-fit: cover; }
+        .kma-sidebar-user-info { cursor: pointer; }
         .kma-sidebar-plan {
           font-size: 11px; font-weight: 600; color: var(--yellow); background: color-mix(in srgb, var(--yellow) 15%, transparent);
           padding: 2px 8px; border-radius: 999px; width: fit-content; margin-top: 2px;
@@ -79,10 +85,14 @@ export default function AppSidebar() {
       <div className="kma-sidebar-spacer" />
 
       <div className="kma-sidebar-user">
-        <div className="kma-sidebar-avatar">K</div>
-        <div>
-          <div style={{ fontSize: 13.5, fontWeight: 600, color: "var(--chalk)" }}>User</div>
-          <div className="kma-sidebar-plan">Ultimate</div>
+        {session?.user?.image ? (
+          <img src={session.user.image} alt="" className="kma-sidebar-avatar-img" />
+        ) : (
+          <div className="kma-sidebar-avatar">{initial}</div>
+        )}
+        <div className="kma-sidebar-user-info" onClick={() => session && signOut({ callbackUrl: "/" })} title={session ? "Sign out" : ""}>
+          <div style={{ fontSize: 13.5, fontWeight: 600, color: "var(--chalk)" }}>{displayName}</div>
+          <div className="kma-sidebar-plan">{session ? "Free" : "Not signed in"}</div>
         </div>
         <button
           type="button"

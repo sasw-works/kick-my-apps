@@ -6,6 +6,7 @@ import Link from "next/link";
 import LogoMark from "./LogoMark";
 import { useTheme } from "./ThemeProvider";
 import { Moon } from "lucide-react";
+import { useSession } from "next-auth/react";
 
 const FEATURE_GROUPS = [
   {
@@ -132,6 +133,7 @@ function NavDropdown({ label, groups, open, onEnter, onLeave }) {
 
 export default function Header() {
   const { theme, toggleTheme } = useTheme();
+  const { data: session, status } = useSession();
   const [openMenu, setOpenMenu] = useState(null); // "features" | "usecases" | "resources" | null
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileSection, setMobileSection] = useState(null);
@@ -287,6 +289,7 @@ export default function Header() {
           cursor: pointer;
           white-space: nowrap;
           flex-shrink: 0;
+          text-decoration: none;
           transition: filter 0.2s ease, transform 0.2s ease;
         }
         .kma-header-signin:hover { filter: brightness(1.08); transform: translateY(-1px); }
@@ -466,7 +469,9 @@ export default function Header() {
                 <img src="/dark/header-theme-toggle.svg" alt="" width={56} height={56} />
               )}
             </button>
-            <button type="button" className="kma-header-signin">Sign in</button>
+            <Link href={session ? "/console" : "/signin"} className="kma-header-signin">
+              {status === "loading" ? "" : session ? "Console" : "Sign in"}
+            </Link>
           </div>
         </div>
       </div>

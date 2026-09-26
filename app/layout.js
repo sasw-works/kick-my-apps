@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import ConditionalChrome from "./components/ConditionalChrome";
 import { ThemeProvider } from "./components/ThemeProvider";
+import AuthSessionProvider from "./components/AuthSessionProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -22,9 +23,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`h-full antialiased ${inter.variable}`}>
       <body className="antialiased">
-        <ThemeProvider>
-          <ConditionalChrome>{children}</ConditionalChrome>
-        </ThemeProvider>
+        <AuthSessionProvider>
+          <ThemeProvider>
+            <ConditionalChrome>{children}</ConditionalChrome>
+          </ThemeProvider>
+        </AuthSessionProvider>
       </body>
     </html>
   );
