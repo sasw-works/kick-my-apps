@@ -3,6 +3,8 @@ import "./globals.css";
 import ConditionalChrome from "./components/ConditionalChrome";
 import { ThemeProvider } from "./components/ThemeProvider";
 import AuthSessionProvider from "./components/AuthSessionProvider";
+import { SignInModalProvider } from "./components/SignInModalProvider";
+import SignInModal from "./components/SignInModal";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,7 +27,10 @@ export default function RootLayout({ children }) {
       <body className="antialiased">
         <AuthSessionProvider>
           <ThemeProvider>
-            <ConditionalChrome>{children}</ConditionalChrome>
+            <SignInModalProvider>
+              <ConditionalChrome>{children}</ConditionalChrome>
+              <SignInModal />
+            </SignInModalProvider>
           </ThemeProvider>
         </AuthSessionProvider>
       </body>

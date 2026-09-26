@@ -7,6 +7,7 @@ import LogoMark from "./LogoMark";
 import { useTheme } from "./ThemeProvider";
 import { Moon } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { useSignInModal } from "./SignInModalProvider";
 
 const FEATURE_GROUPS = [
   {
@@ -134,6 +135,7 @@ function NavDropdown({ label, groups, open, onEnter, onLeave }) {
 export default function Header() {
   const { theme, toggleTheme } = useTheme();
   const { data: session, status } = useSession();
+  const { open: openSignIn } = useSignInModal();
   const [openMenu, setOpenMenu] = useState(null); // "features" | "usecases" | "resources" | null
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileSection, setMobileSection] = useState(null);
@@ -469,9 +471,13 @@ export default function Header() {
                 <img src="/dark/header-theme-toggle.svg" alt="" width={56} height={56} />
               )}
             </button>
-            <Link href={session ? "/console" : "/signin"} className="kma-header-signin">
-              {status === "loading" ? "" : session ? "Console" : "Sign in"}
-            </Link>
+            {session ? (
+              <Link href="/console" className="kma-header-signin">
+                {status === "loading" ? "" : "Console"}
+              </Link>
+            ) : (
+              <button type="button" className="kma-header-signin" onClick={openSignIn}>Sign in</button>
+            )}
           </div>
         </div>
       </div>
