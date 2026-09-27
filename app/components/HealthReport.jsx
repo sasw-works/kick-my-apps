@@ -1488,6 +1488,12 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
             </span>
           ))}
         </div>
+
+        {data?._provider && (
+          <div style={{ marginTop: 24, fontSize: 11, color: "var(--muted)", opacity: 0.5, textAlign: "center" }}>
+            Analysis engine: {data._provider}
+          </div>
+        )}
       </div>
     </div>
   );

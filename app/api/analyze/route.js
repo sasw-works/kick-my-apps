@@ -285,15 +285,18 @@ async function analyzeApp({ images, reviews, listing }) {
 
   if (hasGemini) {
     try {
-      return await analyzeWithGemini({ images, reviews, listing });
+      const result = await analyzeWithGemini({ images, reviews, listing });
+      return { result, provider: "gemini" };
     } catch (geminiErr) {
       if (!hasOpenRouter) throw geminiErr;
       console.error("Gemini failed, falling back to OpenRouter:", geminiErr.message);
-      return await analyzeWithOpenRouter({ images, reviews, listing });
+      const result = await analyzeWithOpenRouter({ images, reviews, listing });
+      return { result, provider: "openrouter" };
     }
   }
 
-  return await analyzeWithOpenRouter({ images, reviews, listing });
+  const result = await analyzeWithOpenRouter({ images, reviews, listing });
+  return { result, provider: "openrouter" };
 }
 
 export async function POST(req) {
@@ -344,8 +347,10 @@ export async function POST(req) {
       );
     }
 
-    const result = await analyzeApp({ images, reviews, listing });
+    const { result, provider } = await analyzeApp({ images, reviews, listing });
     result.lensScores = computeLensScores(result.findings);
+    result._provider = provider;
+    console.log(`Analysis via ${provider}: ${result.findings?.length ?? 0} findings, ${images.length} images, ${reviews?.length ?? 0} reviews`);
 
     if (reviews?.length && result.reviewSummary) {
       const avgRating = reviews.reduce((sum, r) => sum + (r.rating || 0), 0) / reviews.length;
