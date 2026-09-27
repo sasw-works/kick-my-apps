@@ -43,6 +43,7 @@ export default function ConsoleReportDetailPage() {
         <HealthReport
           data={scan.result_json}
           appLabel={scan.app_name}
+          onReset={() => router.push("/console")}
           history={[]}
           scanId={scan.id}
           storeUrl={scan.store_url}
