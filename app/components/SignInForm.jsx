@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { signIn } from "next-auth/react";
-import { Mail, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
 
 function GoogleGlyph() {
@@ -99,7 +99,7 @@ export default function SignInForm({ callbackUrl = "/console", onJoinFree }) {
         .signin-code-input { text-align: center; font-size: 20px; letter-spacing: 0.3em; font-weight: 600; }
         .signin-submit {
           width: 100%; height: 52px; margin-top: 30px; display: flex; align-items: center; justify-content: center; gap: 8px;
-          background: ${light ? "#111827" : "#FFFFFF"}; color: ${light ? "#FFFFFF" : "#111827"};
+          background: var(--blue-100); color: #FFFFFF;
           border: none; border-radius: 999px; font-size: 14.5px; font-weight: 700; cursor: pointer;
         }
         .signin-submit:disabled { opacity: 0.6; cursor: default; }
@@ -132,7 +132,7 @@ export default function SignInForm({ callbackUrl = "/console", onJoinFree }) {
               autoFocus
             />
             <button type="submit" className="signin-submit" disabled={loading || !email.trim()}>
-              {loading ? <Loader2 size={18} className="spin" /> : <Mail size={18} />}
+              {loading && <Loader2 size={18} className="spin" />}
               Email me a code
             </button>
           </form>
@@ -141,8 +141,6 @@ export default function SignInForm({ callbackUrl = "/console", onJoinFree }) {
 
           <p className="signin-foot">
             We&apos;ll email you a 6-digit code to sign in instantly.
-            <br />
-            Don&apos;t have an account? <a onClick={onJoinFree}>Join free</a>
           </p>
         </>
       ) : (
