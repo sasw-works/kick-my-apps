@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <main className="min-h-screen px-4 md:px-8">
       <div className="max-w-[1240px] mx-auto">
-        <AppFlow showMarketing={true} handoffToConsole={true} />
+        <AppFlow showMarketing={true} />
       </div>
     </main>
   );

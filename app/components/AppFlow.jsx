@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import UploadFlow from "./UploadFlow";
 import HealthReport from "./HealthReport";
@@ -13,9 +13,9 @@ import VideoFeatureGrid from "./VideoFeatureGrid";
 import LegacyFaqSection from "./LegacyFaqSection";
 import MarketingSections from "./MarketingSections";
 
-export default function AppFlow({ showMarketing = true, handoffToConsole = false }) {
+export default function AppFlow({ showMarketing = true }) {
   const router = useRouter();
-  const [stage, setStage] = useState("upload"); // upload | report
+  const [stage, setStage] = useState("upload"); // upload | report (report is a rare fallback only)
   const [analyzing, setAnalyzing] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [reportData, setReportData] = useState(null);
@@ -24,28 +24,6 @@ export default function AppFlow({ showMarketing = true, handoffToConsole = false
   const [scanId, setScanId] = useState(null);
   const [scanStoreUrl, setScanStoreUrl] = useState("");
   const [screenshotUrls, setScreenshotUrls] = useState([]);
-
-  // On the /console side: check sessionStorage for a pending report, and show it immediately if there is one.
-  useEffect(() => {
-    if (handoffToConsole) return; // This instance is the one DOING the handoff (home page), not the receiver.
-    try {
-      const pending = sessionStorage.getItem("kma-pending-report");
-      if (pending) {
-        const parsed = JSON.parse(pending);
-        setReportData(parsed.reportData);
-        setAppLabel(parsed.appLabel);
-        setHistory(parsed.history || []);
-        setScanId(parsed.scanId ?? null);
-        setScanStoreUrl(parsed.scanStoreUrl || "");
-        setScreenshotUrls(parsed.screenshotUrls || []);
-        setStage("report");
-        sessionStorage.removeItem("kma-pending-report");
-      }
-    } catch {
-      // yoksay
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const handleAnalyze = async (files, storeUrl, appName) => {
     setAnalyzing(true);
@@ -74,14 +52,11 @@ export default function AppFlow({ showMarketing = true, handoffToConsole = false
         throw new Error(data.error || "Analysis failed.");
       }
 
-      const screenshotObjectUrls = files.map((f) => URL.createObjectURL(f));
-
       const badCount = (data.findings || []).filter((f) => f.status === "bad").length;
       const warnCount = (data.findings || []).filter((f) => f.status === "warn").length;
       const goodCount = (data.findings || []).filter((f) => f.status === "good").length;
 
       let savedScanId = null;
-      let savedHistory = [];
       try {
         const saveRes = await fetch("/api/history", {
           method: "POST",
@@ -102,41 +77,23 @@ export default function AppFlow({ showMarketing = true, handoffToConsole = false
         savedScanId = null;
       }
 
-      try {
-        const histRes = await fetch(`/api/history?appName=${encodeURIComponent(appName)}`);
-        const histData = await histRes.json();
-        savedHistory = histData.scans || [];
-      } catch {
-        savedHistory = [];
-      }
-
-      if (handoffToConsole) {
-        // Report ready — hand off to the /console view with the sidebar.
-        try {
-          sessionStorage.setItem(
-            "kma-pending-report",
-            JSON.stringify({
-              reportData: data,
-              appLabel: appName,
-              history: savedHistory,
-              scanId: savedScanId,
-              scanStoreUrl: storeUrl || "",
-              screenshotUrls: screenshotObjectUrls,
-            })
-          );
-        } catch {
-          // yoksay
-        }
-        router.push("/console");
+      // Report ready — always land on its own dedicated page (/console/reports/[id]),
+      // exactly like clicking into a report from the Reports list. Never show it as an
+      // overlay on top of whichever page (home or Dashboard) the query started from.
+      if (savedScanId) {
+        router.push(`/console/reports/${savedScanId}`);
         return;
       }
 
+      // Rare fallback: the scan couldn't be saved (e.g. a database hiccup), so there's no
+      // id to route to. Show the report inline here rather than losing the result entirely.
+      const screenshotObjectUrls = files.map((f) => URL.createObjectURL(f));
       setReportData(data);
       setAppLabel(appName);
       setScanStoreUrl(storeUrl || "");
       setScreenshotUrls(screenshotObjectUrls);
-      setHistory(savedHistory);
-      setScanId(savedScanId);
+      setHistory([]);
+      setScanId(null);
       setStage("report");
     } catch (err) {
       setErrorMessage(err.message || "Something went wrong, want to try again?");
