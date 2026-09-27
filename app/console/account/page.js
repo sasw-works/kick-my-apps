@@ -211,17 +211,17 @@ export default function AccountPage() {
       {/* Learn more */}
       <div className="account-section-label">Learn more</div>
       <div className="account-card account-link-group">
-        <Link href="/support" className="account-link-row">
+        <Link href="/support" target="_blank" rel="noopener noreferrer" className="account-link-row">
           <HelpCircle size={16} color="var(--muted)" />
           <span>FAQ</span>
           <ChevronRight size={16} color="var(--muted)" className="account-link-chevron" />
         </Link>
-        <Link href="/privacy" className="account-link-row">
+        <Link href="/privacy" target="_blank" rel="noopener noreferrer" className="account-link-row">
           <ScrollText size={16} color="var(--muted)" />
           <span>Privacy Policy</span>
           <ChevronRight size={16} color="var(--muted)" className="account-link-chevron" />
         </Link>
-        <Link href="/terms" className="account-link-row">
+        <Link href="/terms" target="_blank" rel="noopener noreferrer" className="account-link-row">
           <FileCheck2 size={16} color="var(--muted)" />
           <span>Terms &amp; Conditions</span>
           <ChevronRight size={16} color="var(--muted)" className="account-link-chevron" />
