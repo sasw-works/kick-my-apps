@@ -95,6 +95,7 @@ export default function SignInForm({ callbackUrl = "/console", onJoinFree }) {
         }
         .signin-input::placeholder { color: ${c.sub}; }
         .signin-input:focus { outline: none; border-color: var(--blue-100); }
+        .signin-input-email { padding-left: 32px; }
         .signin-code-input { text-align: center; font-size: 20px; letter-spacing: 0.3em; font-weight: 600; }
         .signin-submit {
           width: 100%; height: 52px; margin-top: 30px; display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -124,7 +125,7 @@ export default function SignInForm({ callbackUrl = "/console", onJoinFree }) {
           <form onSubmit={handleSendCode} style={{ width: "100%" }}>
             <input
               type="email"
-              className="signin-input"
+              className="signin-input signin-input-email"
               placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
