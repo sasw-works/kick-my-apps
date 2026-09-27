@@ -337,7 +337,7 @@ export async function POST(req) {
       }
     }
 
-    if (images.length === 0 && !reviews) {
+    if (images.length === 0 && !reviews && !listing) {
       return Response.json(
         {
           error:
