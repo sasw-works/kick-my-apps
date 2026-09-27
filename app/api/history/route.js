@@ -1,5 +1,6 @@
 import { sql } from "@vercel/postgres";
 import { fetchAppStoreListing } from "../../lib/reviews";
+import { auth } from "../../../auth";
 
 export const runtime = "nodejs";
 
@@ -21,6 +22,7 @@ async function ensureTable() {
   await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS result_json JSONB;`;
   await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS store_url TEXT;`;
   await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS icon_url TEXT;`;
+  await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS user_email TEXT;`;
 }
 
 export async function POST(req) {
@@ -44,9 +46,14 @@ export async function POST(req) {
       }
     }
 
+    // Anonymous scans (not signed in) are still allowed -- user_email is simply null then,
+    // and won't show up under any account in the admin panel.
+    const session = await auth();
+    const userEmail = session?.user?.email || null;
+
     const { rows } = await sql`
-      INSERT INTO scans (app_name, health_score, bad_count, warn_count, good_count, result_json, store_url, icon_url)
-      VALUES (${normalized}, ${healthScore}, ${badCount ?? 0}, ${warnCount ?? 0}, ${goodCount ?? 0}, ${JSON.stringify(resultJson ?? null)}, ${storeUrl || null}, ${iconUrl})
+      INSERT INTO scans (app_name, health_score, bad_count, warn_count, good_count, result_json, store_url, icon_url, user_email)
+      VALUES (${normalized}, ${healthScore}, ${badCount ?? 0}, ${warnCount ?? 0}, ${goodCount ?? 0}, ${JSON.stringify(resultJson ?? null)}, ${storeUrl || null}, ${iconUrl}, ${userEmail})
       RETURNING id;
     `;
 

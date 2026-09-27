@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, ClipboardList, GitCompare, Radio, Moon, Sun, X } from "lucide-react";
+import { LayoutDashboard, ClipboardList, GitCompare, Radio, Moon, Sun, X, ShieldCheck } from "lucide-react";
 import LogoMark from "./LogoMark";
 import { useTheme } from "./ThemeProvider";
 import { useSession, signOut } from "next-auth/react";
@@ -19,6 +19,9 @@ export default function AppSidebar({ mobileOpen = false, onClose }) {
   const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
   const { data: session } = useSession();
+  const navItems = session?.user?.isAdmin
+    ? [...NAV_ITEMS, { href: "/console/admin", label: "Admin", icon: ShieldCheck }]
+    : NAV_ITEMS;
   const displayName = session?.user?.name || session?.user?.email?.split("@")[0] || "Guest";
   const initial = displayName.charAt(0).toUpperCase();
 
@@ -89,7 +92,7 @@ export default function AppSidebar({ mobileOpen = false, onClose }) {
       </div>
 
       <nav className="kma-sidebar-nav">
-        {NAV_ITEMS.map((item) => {
+        {navItems.map((item) => {
           const Icon = item.icon;
           const active = pathname === item.href;
           return (

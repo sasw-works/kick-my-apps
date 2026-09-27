@@ -3,7 +3,10 @@ import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 import PostgresAdapter from "@auth/pg-adapter";
 import { Pool } from "pg";
+import { sql } from "@vercel/postgres";
 import { verifyEmailCode } from "./app/lib/emailCode";
+import { ensureAuthSchema } from "./app/lib/ensureAuthSchema";
+import { isAdminEmail } from "./app/lib/isAdmin";
 
 // Auth.js's Postgres adapter wants a node-postgres Pool; @vercel/postgres already gives us
 // the connection string via POSTGRES_URL, so we just point a plain pg Pool at the same DB.
@@ -54,6 +57,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.email = user.email;
         token.name = user.name;
         token.picture = user.image;
+        try {
+          await ensureAuthSchema();
+          await sql`UPDATE users SET last_login = now() WHERE id = ${user.id}`;
+        } catch {
+          // non-critical, never block sign-in over this
+        }
       }
       return token;
     },
@@ -63,6 +72,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.email = token.email;
         session.user.name = token.name;
         session.user.image = token.picture;
+        session.user.isAdmin = isAdminEmail(token.email);
       }
       return session;
     },

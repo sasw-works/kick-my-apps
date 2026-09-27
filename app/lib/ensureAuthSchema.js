@@ -17,6 +17,9 @@ export async function ensureAuthSchema() {
       PRIMARY KEY (id)
     )
   `;
+  // Auth.js's canonical schema doesn't track these, but the admin panel needs them.
+  await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ DEFAULT now();`;
+  await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS last_login TIMESTAMPTZ;`;
   await sql`
     CREATE TABLE IF NOT EXISTS accounts (
       id SERIAL,
