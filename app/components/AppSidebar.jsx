@@ -2,11 +2,11 @@
 
 import React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { LayoutDashboard, ClipboardList, GitCompare, Radio, Moon, Sun, X, ShieldCheck } from "lucide-react";
 import LogoMark from "./LogoMark";
 import { useTheme } from "./ThemeProvider";
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 const NAV_ITEMS = [
   { href: "/console", label: "Dashboard", icon: LayoutDashboard },
@@ -17,6 +17,7 @@ const NAV_ITEMS = [
 
 export default function AppSidebar({ mobileOpen = false, onClose }) {
   const pathname = usePathname();
+  const router = useRouter();
   const { theme, toggleTheme } = useTheme();
   const { data: session } = useSession();
   const navItems = session?.user?.isAdmin
@@ -112,7 +113,7 @@ export default function AppSidebar({ mobileOpen = false, onClose }) {
         ) : (
           <div className="kma-sidebar-avatar">{initial}</div>
         )}
-        <div className="kma-sidebar-user-info" onClick={() => session && signOut({ callbackUrl: "/" })} title={session ? "Sign out" : ""}>
+        <div className="kma-sidebar-user-info" onClick={() => session && router.push("/console/account")} title={session ? "Account" : ""}>
           <div style={{ fontSize: 13.5, fontWeight: 600, color: "var(--chalk)" }}>{displayName}</div>
           <div className="kma-sidebar-plan">{session ? "Free" : "Not signed in"}</div>
         </div>
