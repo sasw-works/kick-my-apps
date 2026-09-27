@@ -13,28 +13,28 @@ const FEATURE_GROUPS = [
   {
     label: "Analysis",
     items: [
-      { title: "Screenshot Analysis", desc: "13 categories, 4 lenses" },
-      { title: "ASO / Store Listing Review", desc: "Title, description & keywords" },
-      { title: "Update Risk Check", desc: "Flags risky review signals" },
-      { title: "Visual Annotation", desc: "Findings marked on screenshots" },
+      { title: "Screenshot Analysis", desc: "13 categories, 4 lenses", slug: "screenshot-analysis" },
+      { title: "ASO / Store Listing Review", desc: "Title, description & keywords", slug: "aso-store-listing-review" },
+      { title: "Update Risk Check", desc: "Flags risky review signals", slug: "update-risk-check" },
+      { title: "Visual Annotation", desc: "Findings marked on screenshots", slug: "visual-annotation" },
     ],
   },
   {
     label: "Insights",
     items: [
-      { title: "Real App Store Reviews", desc: "Real, public reviews in real time" },
-      { title: "Quick Wins", desc: "High impact, low effort fixes" },
-      { title: "Code-Level Suggestions", desc: "Sample CSS, Swift, Kotlin" },
-      { title: "History & Trend", desc: "Track your score over time" },
+      { title: "Real App Store Reviews", desc: "Real, public reviews in real time", slug: "real-app-store-reviews" },
+      { title: "Quick Wins", desc: "High impact, low effort fixes", slug: "quick-wins" },
+      { title: "Code-Level Suggestions", desc: "Sample CSS, Swift, Kotlin", slug: "code-level-suggestions" },
+      { title: "History & Trend", desc: "Track your score over time", slug: "history-trend" },
     ],
   },
   {
     label: "Collaboration",
     items: [
-      { title: "Detailed Comparison", desc: "Benchmark competitors" },
-      { title: "My Apps Dashboard", desc: "All tracked apps, one place" },
-      { title: "Weekly Email Digest", desc: "Reviews in your inbox" },
-      { title: "PDF Export", desc: "Share your report instantly" },
+      { title: "Detailed Comparison", desc: "Benchmark competitors", slug: "detailed-comparison" },
+      { title: "My Apps Dashboard", desc: "All tracked apps, one place", slug: "my-apps-dashboard" },
+      { title: "Weekly Email Digest", desc: "Reviews in your inbox", slug: "weekly-email-digest" },
+      { title: "PDF Export", desc: "Share your report instantly", slug: "pdf-export" },
     ],
   },
 ];
@@ -43,9 +43,9 @@ const USE_CASE_GROUPS = [
   {
     label: "Who it's for",
     items: [
-      { title: "Product Managers", desc: "Prioritize the roadmap" },
-      { title: "Indie Developers", desc: "Ship with confidence" },
-      { title: "Designers", desc: "Spot UI/UX issues fast" },
+      { title: "Product Managers", desc: "Prioritize the roadmap", slug: "product-managers" },
+      { title: "Indie Developers", desc: "Ship with confidence", slug: "indie-developers" },
+      { title: "Designers", desc: "Spot UI/UX issues fast", slug: "designers" },
     ],
   },
 ];
@@ -54,21 +54,21 @@ const RESOURCES_GROUPS = [
   {
     label: "Learn",
     items: [
-      { title: "Guides", desc: "ASO and app health playbooks" },
-      { title: "Blog", desc: "Product updates and insights" },
-      { title: "Customer Stories", desc: "How teams use Kick My Apps" },
+      { title: "Guides", desc: "ASO and app health playbooks", slug: "guides" },
+      { title: "Blog", desc: "Product updates and insights", slug: "blog" },
+      { title: "Customer Stories", desc: "How teams use Kick My Apps", slug: "customer-stories" },
     ],
   },
   {
     label: "Support",
     items: [
-      { title: "Help Center", desc: "Answers to common questions" },
-      { title: "Product Updates", desc: "What's new and shipped" },
+      { title: "Help Center", desc: "Answers to common questions", slug: "help-center" },
+      { title: "Product Updates", desc: "What's new and shipped", slug: "product-updates" },
     ],
   },
 ];
 
-function NavDropdown({ label, groups, open, onEnter, onLeave }) {
+function NavDropdown({ label, groups, basePath, open, onEnter, onLeave }) {
   const anchorRef = useRef(null);
   const [coords, setCoords] = useState(null);
   const [portalRoot, setPortalRoot] = useState(null); // inside .kma-dark when present, so the panel gets the dark tokens
@@ -118,10 +118,10 @@ function NavDropdown({ label, groups, open, onEnter, onLeave }) {
               <div className="kma-navdrop-col" key={group.label}>
                 <div className="kma-navdrop-col-label" lang="en">{group.label}</div>
                 {group.items.map((item) => (
-                  <div className="kma-navdrop-item" key={item.title}>
+                  <Link href={`${basePath}/${item.slug}`} className="kma-navdrop-item" key={item.title}>
                     <div className="kma-navdrop-item-title">{item.title}</div>
                     <div className="kma-navdrop-item-desc">{item.desc}</div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             ))}
@@ -172,9 +172,9 @@ export default function Header() {
   }, []);
 
   const MOBILE_GROUPS = [
-    { key: "features", label: "Features", groups: FEATURE_GROUPS },
-    { key: "usecases", label: "Use Cases", groups: USE_CASE_GROUPS },
-    { key: "resources", label: "Resources", groups: RESOURCES_GROUPS },
+    { key: "features", label: "Features", groups: FEATURE_GROUPS, basePath: "/features" },
+    { key: "usecases", label: "Use Cases", groups: USE_CASE_GROUPS, basePath: "/use-cases" },
+    { key: "resources", label: "Resources", groups: RESOURCES_GROUPS, basePath: "/resources" },
   ];
 
   return (
@@ -429,6 +429,7 @@ export default function Header() {
             <NavDropdown
               label="Features"
               groups={FEATURE_GROUPS}
+              basePath="/features"
               open={openMenu === "features"}
               onEnter={() => openWithDelay("features")}
               onLeave={closeWithDelay}
@@ -436,6 +437,7 @@ export default function Header() {
             <NavDropdown
               label="Use Cases"
               groups={USE_CASE_GROUPS}
+              basePath="/use-cases"
               open={openMenu === "usecases"}
               onEnter={() => openWithDelay("usecases")}
               onLeave={closeWithDelay}
@@ -443,6 +445,7 @@ export default function Header() {
             <NavDropdown
               label="Resources"
               groups={RESOURCES_GROUPS}
+              basePath="/resources"
               open={openMenu === "resources"}
               onEnter={() => openWithDelay("resources")}
               onLeave={closeWithDelay}
@@ -503,10 +506,10 @@ export default function Header() {
                   {section.groups.map((group) => (
                     <div key={group.label}>
                       {group.items.map((item) => (
-                        <div className="kma-mobile-item" key={item.title}>
+                        <Link href={`${section.basePath}/${item.slug}`} className="kma-mobile-item" key={item.title} onClick={() => setMobileOpen(false)}>
                           <div className="kma-mobile-item-title">{item.title}</div>
                           <div className="kma-mobile-item-desc">{item.desc}</div>
-                        </div>
+                        </Link>
                       ))}
                     </div>
                   ))}
