@@ -769,6 +769,11 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
         }
         .lens-count-num { font-family: var(--font-display); font-size: 32px; font-weight: 800; color: var(--chalk); }
         .lens-count-label { font-size: 12px; font-weight: 600; letter-spacing: 0.05em; color: var(--muted); margin-top: 4px; }
+        @media (max-width: 480px) {
+          .lens-count-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 0; }
+          .lens-count-item { padding: 0 4px; }
+          .lens-count-item-divided::before { display: none; }
+        }
 
         .waveform-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
         @media (max-width: 800px) { .waveform-grid { grid-template-columns: 1fr; } }
@@ -804,6 +809,10 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
         }
         .lens-score-num { font-family: var(--font-display); font-size: 32px; font-weight: 700; line-height: 1; }
         .lens-score-label { font-size: 12px; font-weight: 600; letter-spacing: 0.05em; color: var(--muted); margin-top: 8px; }
+        @media (max-width: 480px) {
+          .lens-score-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+          .lens-score-item { min-width: 0; }
+        }
 
         .top-grid { display: grid; grid-template-columns: 330px 0.85fr 1.15fr; gap: 32px; }
         @media (max-width: 900px) {
@@ -919,6 +928,9 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
         .finding-code code { font-family: var(--font-mono); font-size: 12px; color: #f5f3ee; white-space: pre; }
 
         .review-pair-grid { display: grid; grid-template-columns: 1fr 1fr; column-gap: 32px; row-gap: 24px; align-items: center; }
+        @media (max-width: 700px) {
+          .review-pair-grid { grid-template-columns: 1fr; row-gap: 16px; }
+        }
         .review-pair-cell { display: flex; align-items: center; }
         .review-extra { margin-top: 16px; }
         .review-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }

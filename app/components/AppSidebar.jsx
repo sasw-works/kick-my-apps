@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, ClipboardList, GitCompare, Radio, Moon, Sun } from "lucide-react";
+import { LayoutDashboard, ClipboardList, GitCompare, Radio, Moon, Sun, X } from "lucide-react";
 import LogoMark from "./LogoMark";
 import { useTheme } from "./ThemeProvider";
 import { useSession, signOut } from "next-auth/react";
@@ -15,7 +15,7 @@ const NAV_ITEMS = [
   { href: "/console/pulse", label: "Pulse", icon: Radio },
 ];
 
-export default function AppSidebar() {
+export default function AppSidebar({ mobileOpen = false, onClose }) {
   const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
   const { data: session } = useSession();
@@ -23,14 +23,30 @@ export default function AppSidebar() {
   const initial = displayName.charAt(0).toUpperCase();
 
   return (
-    <aside className="kma-sidebar">
+    <aside className={`kma-sidebar ${mobileOpen ? "kma-sidebar-mobile-open" : ""}`}>
       <style>{`
         .kma-sidebar {
           width: 290px; flex-shrink: 0; height: 100vh;
           background: var(--surface); border-right: 1px solid var(--ink-3);
           display: flex; flex-direction: column; padding: 24px 16px;
           font-family: var(--font-inter), sans-serif;
-          position: fixed; top: 0; left: 0; overflow-y: auto; z-index: 40;
+          position: fixed; top: 0; left: 0; overflow-y: auto; z-index: 46;
+        }
+        .kma-sidebar-close { display: none; }
+        @media (max-width: 900px) {
+          .kma-sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.25s ease;
+            box-shadow: 20px 0 40px rgba(0,0,0,0.15);
+          }
+          .kma-sidebar-mobile-open { transform: translateX(0); }
+          .kma-sidebar-close {
+            display: flex; align-items: center; justify-content: center;
+            position: absolute; top: 24px; right: 16px;
+            width: 32px; height: 32px; border-radius: 8px; border: none; background: transparent;
+            color: var(--chalk); cursor: pointer; z-index: 1;
+          }
+          .kma-sidebar-close:hover { background: var(--ink); }
         }
         .kma-sidebar-logo { display: flex; align-items: center; gap: 8px; padding: 0 8px; margin-bottom: 32px; }
         .kma-sidebar-section { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: var(--muted); padding: 0 8px; margin-bottom: 12px; }
@@ -67,6 +83,9 @@ export default function AppSidebar() {
 
       <div className="kma-sidebar-logo">
         <LogoMark size={72} color="currentColor" />
+        <button type="button" className="kma-sidebar-close" aria-label="Close menu" onClick={onClose}>
+          <X size={18} />
+        </button>
       </div>
 
       <nav className="kma-sidebar-nav">
@@ -74,7 +93,7 @@ export default function AppSidebar() {
           const Icon = item.icon;
           const active = pathname === item.href;
           return (
-            <Link key={item.href} href={item.href} className={`kma-sidebar-link ${active ? "kma-sidebar-link-active" : ""}`}>
+            <Link key={item.href} href={item.href} className={`kma-sidebar-link ${active ? "kma-sidebar-link-active" : ""}`} onClick={onClose}>
               <Icon size={17} strokeWidth={2} />
               {item.label}
             </Link>

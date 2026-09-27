@@ -208,7 +208,8 @@ export default function ConsoleReportsPage() {
         .reports-tab:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
         .reports-tab-active { background: var(--ink-3); border-color: var(--brand); color: var(--chalk); font-weight: 600; }
         .reports-tab-count { font-family: var(--font-mono); font-size: 11px; opacity: 0.7; }
-        .reports-table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--ink-3); border-radius: 8px; overflow: hidden; }
+        .reports-table-scroll { width: 100%; overflow-x: auto; border: 1px solid var(--ink-3); border-radius: 8px; }
+        .reports-table { width: 100%; min-width: 760px; border-collapse: collapse; background: var(--surface); overflow: hidden; }
         .reports-table th {
           text-align: left; font-size: 11px; letter-spacing: 0.06em; color: var(--muted); font-weight: 600;
           padding: 16px 16px; border-bottom: 1px solid var(--ink-3); text-transform: uppercase;
@@ -315,7 +316,8 @@ export default function ConsoleReportsPage() {
           <div>You haven't run any queries yet.</div>
         </div>
       ) : (
-        <table className="reports-table" lang="en">
+        <div className="reports-table-scroll">
+          <table className="reports-table" lang="en">
           <thead>
             <tr>
               <th style={{ width: 40, paddingLeft: 21 }}>
@@ -384,7 +386,8 @@ export default function ConsoleReportsPage() {
               </tr>
             ))}
           </tbody>
-        </table>
+          </table>
+        </div>
       )}
 
       {selected.size > 0 && (

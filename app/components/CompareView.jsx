@@ -223,6 +223,14 @@ export default function CompareView({ scans, onBack }) {
         .review-cmp-num { font-family: var(--font-display); font-size: 24px; font-weight: 700; }
         .review-cmp-complaint { display: flex; align-items: center; gap: 8px; font-size: 12px; margin-bottom: 8px; }
         .review-cmp-complaint-label { flex: 1; color: var(--muted); }
+
+        @media (max-width: 640px) {
+          .cmp-score-grid { grid-template-columns: 1fr; }
+          .cmp-delta { padding: 8px 0; }
+          .fc-grid { grid-template-columns: 1fr; }
+          .fc-cat-header { grid-column: 1; }
+          .review-cmp-grid { grid-template-columns: 1fr; }
+        }
       `}</style>
 
       <div className="cmp-header">

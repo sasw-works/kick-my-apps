@@ -93,9 +93,20 @@ export default function ConsolePulsePage() {
           color: var(--muted); display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;
         }
 
+        .pulse-card-top, .pulse-card-bottom { display: contents; }
+
         @media (max-width: 900px) {
           .pulse-card { flex-wrap: wrap; }
           .pulse-stat, .pulse-sentiment { min-width: 0; }
+        }
+        @media (max-width: 640px) {
+          .pulse-card { flex-direction: column; align-items: stretch; gap: 12px; }
+          .pulse-card-top { display: flex; align-items: center; gap: 16px; width: 100%; flex-wrap: wrap; }
+          .pulse-card-name-row { flex-wrap: wrap; row-gap: 6px; }
+          .pulse-alert { white-space: normal; flex-basis: 100%; border-radius: 8px; }
+          .pulse-card-bottom { display: flex; align-items: center; gap: 24px; width: 100%; padding-left: 58px; box-sizing: border-box; flex-wrap: wrap; }
+          .pulse-stat { text-align: left; min-width: 0; }
+          .pulse-sentiment { justify-content: flex-start; }
         }
       `}</style>
 
@@ -113,37 +124,40 @@ export default function ConsolePulsePage() {
       <div className="pulse-list">
         {SAMPLE_MONITORS.map((m) => (
           <div className={`pulse-card ${m.status === "paused" ? "pulse-card-paused" : ""}`} key={m.name}>
-            <div className="pulse-avatar" style={{ background: m.color }}>{m.name[0]}</div>
-            <div className="pulse-card-main">
-              <div className="pulse-card-name-row">
-                <span className={`pulse-status-dot ${m.status === "active" ? "pulse-status-active" : "pulse-status-paused"}`} />
-                <span className="pulse-card-name">{m.name}</span>
-                {m.alert && (
-                  <span className="pulse-alert">
-                    <Bell size={11} />
-                    {m.alert}
-                  </span>
-                )}
+            <div className="pulse-card-top">
+              <div className="pulse-avatar" style={{ background: m.color }}>{m.name[0]}</div>
+              <div className="pulse-card-main">
+                <div className="pulse-card-name-row">
+                  <span className={`pulse-status-dot ${m.status === "active" ? "pulse-status-active" : "pulse-status-paused"}`} />
+                  <span className="pulse-card-name">{m.name}</span>
+                  {m.alert && (
+                    <span className="pulse-alert">
+                      <Bell size={11} />
+                      {m.alert}
+                    </span>
+                  )}
+                </div>
+                <div className="pulse-card-meta">
+                  {m.status === "active" ? `Last checked: ${m.lastChecked}` : "Paused"}
+                </div>
               </div>
-              <div className="pulse-card-meta">
-                {m.status === "active" ? `Last checked: ${m.lastChecked}` : "Paused"}
+              <button className="pulse-more-btn" aria-label="More">
+                <MoreHorizontal size={16} />
+              </button>
+            </div>
+
+            <div className="pulse-card-bottom">
+              <div className="pulse-stat">
+                <div className="pulse-stat-num">{m.newReviews}</div>
+                <div className="pulse-stat-label">New review</div>
+              </div>
+
+              <div className={`pulse-sentiment ${m.sentimentDelta > 0 ? "pulse-sentiment-up" : m.sentimentDelta < 0 ? "pulse-sentiment-down" : "pulse-sentiment-flat"}`}>
+                {m.sentimentDelta > 0 && <TrendingUp size={14} />}
+                {m.sentimentDelta < 0 && <TrendingDown size={14} />}
+                {m.sentimentDelta === 0 ? "—" : `${m.sentimentDelta > 0 ? "+" : ""}${m.sentimentDelta}%`}
               </div>
             </div>
-
-            <div className="pulse-stat">
-              <div className="pulse-stat-num">{m.newReviews}</div>
-              <div className="pulse-stat-label">New review</div>
-            </div>
-
-            <div className={`pulse-sentiment ${m.sentimentDelta > 0 ? "pulse-sentiment-up" : m.sentimentDelta < 0 ? "pulse-sentiment-down" : "pulse-sentiment-flat"}`}>
-              {m.sentimentDelta > 0 && <TrendingUp size={14} />}
-              {m.sentimentDelta < 0 && <TrendingDown size={14} />}
-              {m.sentimentDelta === 0 ? "—" : `${m.sentimentDelta > 0 ? "+" : ""}${m.sentimentDelta}%`}
-            </div>
-
-            <button className="pulse-more-btn" aria-label="Daha fazla">
-              <MoreHorizontal size={16} />
-            </button>
           </div>
         ))}
       </div>
