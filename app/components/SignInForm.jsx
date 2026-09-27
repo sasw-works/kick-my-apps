@@ -78,7 +78,7 @@ export default function SignInForm({ callbackUrl = "/console", onJoinFree }) {
         .signin-title { margin: 0; font-size: 26px; font-weight: 700; color: ${c.title}; text-align: center; }
         .signin-sub { margin: 10px 0 58px; font-size: 14px; color: ${c.sub}; text-align: center; }
         .signin-google {
-          width: 100%; height: 52px; display: flex; align-items: center; justify-content: center; gap: 10px;
+          width: 100%; height: 57px; display: flex; align-items: center; justify-content: center; gap: 10px;
           background: ${c.card}; border: 1px solid ${c.border}; border-radius: 999px;
           font-size: 14.5px; font-weight: 600; color: ${c.title}; cursor: pointer;
           transition: background 0.15s ease;
@@ -89,7 +89,7 @@ export default function SignInForm({ callbackUrl = "/console", onJoinFree }) {
         .signin-divider span { font-size: 11px; font-weight: 600; letter-spacing: 0.04em; color: ${c.sub}; }
         .signin-label { align-self: flex-start; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: ${c.sub}; margin-bottom: 8px; }
         .signin-input {
-          width: 100%; height: 52px; padding: 0 16px; box-sizing: border-box;
+          width: 100%; height: 57px; padding: 0 16px; box-sizing: border-box;
           background: ${c.input}; border: 1px solid ${c.border}; border-radius: 999px;
           font-size: 14.5px; color: ${c.title}; font-family: inherit;
         }
@@ -98,11 +98,11 @@ export default function SignInForm({ callbackUrl = "/console", onJoinFree }) {
         .signin-input-email { padding-left: 32px; }
         .signin-code-input { text-align: center; font-size: 20px; letter-spacing: 0.3em; font-weight: 600; }
         .signin-submit {
-          width: 100%; height: 52px; margin-top: 30px; display: flex; align-items: center; justify-content: center; gap: 8px;
+          width: 100%; height: 57px; margin-top: 30px; display: flex; align-items: center; justify-content: center; gap: 8px;
           background: var(--blue-100); color: #FFFFFF;
           border: none; border-radius: 999px; font-size: 14.5px; font-weight: 700; cursor: pointer;
         }
-        .signin-submit:disabled { opacity: 0.6; cursor: default; }
+        .signin-submit:disabled { opacity: 0.4; cursor: not-allowed; }
         .signin-foot { margin-top: 22px; font-size: 12.5px; color: ${c.sub}; text-align: center; line-height: 1.6; }
         .signin-foot a { color: var(--blue-100); font-weight: 600; text-decoration: none; cursor: pointer; }
         .signin-error { width: 100%; margin-top: 12px; padding: 10px 14px; border-radius: 10px; background: color-mix(in srgb, var(--kick) 12%, transparent); color: var(--kick); font-size: 12.5px; }
