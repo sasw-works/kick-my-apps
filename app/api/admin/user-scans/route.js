@@ -1,6 +1,7 @@
 import { sql } from "@vercel/postgres";
 import { auth } from "../../../../auth";
 import { isAdminEmail } from "../../../lib/isAdmin";
+import { ensureScansSchema } from "../../../lib/ensureScansSchema";
 
 export const runtime = "nodejs";
 
@@ -17,6 +18,7 @@ export async function GET(req) {
   }
 
   try {
+    await ensureScansSchema();
     const { rows } = await sql`
       SELECT id, app_name, health_score, bad_count, warn_count, good_count, store_url, icon_url, created_at
       FROM scans

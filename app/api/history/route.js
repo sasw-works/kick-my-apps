@@ -1,33 +1,13 @@
 import { sql } from "@vercel/postgres";
 import { fetchAppStoreListing } from "../../lib/reviews";
 import { auth } from "../../../auth";
+import { ensureScansSchema } from "../../lib/ensureScansSchema";
 
 export const runtime = "nodejs";
 
-async function ensureTable() {
-  await sql`
-    CREATE TABLE IF NOT EXISTS scans (
-      id SERIAL PRIMARY KEY,
-      app_name TEXT NOT NULL,
-      health_score INTEGER NOT NULL,
-      bad_count INTEGER DEFAULT 0,
-      warn_count INTEGER DEFAULT 0,
-      good_count INTEGER DEFAULT 0,
-      result_json JSONB,
-      store_url TEXT,
-      created_at TIMESTAMPTZ DEFAULT now()
-    );
-  `;
-  // Add any missing columns on an already-created table (safe migration for older setups).
-  await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS result_json JSONB;`;
-  await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS store_url TEXT;`;
-  await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS icon_url TEXT;`;
-  await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS user_email TEXT;`;
-}
-
 export async function POST(req) {
   try {
-    await ensureTable();
+    await ensureScansSchema();
     const { appName, healthScore, badCount, warnCount, goodCount, resultJson, storeUrl } = await req.json();
 
     if (!appName || typeof healthScore !== "number") {
@@ -66,7 +46,7 @@ export async function POST(req) {
 
 export async function DELETE(req) {
   try {
-    await ensureTable();
+    await ensureScansSchema();
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
     if (!id) {
@@ -82,7 +62,7 @@ export async function DELETE(req) {
 
 export async function GET(req) {
   try {
-    await ensureTable();
+    await ensureScansSchema();
     const { searchParams } = new URL(req.url);
     const appName = (searchParams.get("appName") || "").trim();
     const all = searchParams.get("all");
