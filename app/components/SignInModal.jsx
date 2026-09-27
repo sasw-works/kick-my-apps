@@ -50,7 +50,7 @@ export default function SignInModal() {
           position: fixed; top: 0; right: 0; bottom: 0; z-index: 201;
           width: min(690px, 100vw);
           background: ${c.panel};
-          box-shadow: -20px 0 60px rgba(0,0,0,0.25);
+          box-shadow: none;
           transform: translateX(${isOpen ? "0" : "100%"});
           transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           display: flex; flex-direction: column;
