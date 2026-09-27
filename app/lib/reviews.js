@@ -1,12 +1,6 @@
 // Apple's public RSS review feed — no auth needed, real data.
 // (Play Store has no equivalent public feed; that's a known v1 gap, see README.)
-export async function fetchAppStoreReviews(storeUrl) {
-  const idMatch = storeUrl.match(/id(\d+)/);
-  if (!idMatch) return null;
-  const appId = idMatch[1];
-  const countryMatch = storeUrl.match(/apps\.apple\.com\/([a-z]{2})\//i);
-  const country = countryMatch ? countryMatch[1] : "us";
-
+async function fetchReviewsFromRss(appId, country) {
   const headers = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
   };
@@ -44,6 +38,58 @@ export async function fetchAppStoreReviews(storeUrl) {
       version: e["im:version"]?.label ?? null,
       helpfulVotes: Number(e["im:voteSum"]?.label ?? 0),
     }));
+}
+
+// Fallback/alternate source: the App Store's own reviews web page embeds real review
+// data (title/body/rating/reviewer) in a "serialized-server-data" JSON blob server-side
+// rendered into the HTML. This is a genuinely different endpoint/system from the RSS
+// JSON feed above -- when Apple's RSS feed is throttled, this page has kept working in
+// testing, so it's tried whenever the RSS attempt above comes back empty.
+async function fetchReviewsFromWebPage(storeUrl) {
+  const url = storeUrl.includes("?") ? `${storeUrl}&see-all=reviews` : `${storeUrl}?see-all=reviews`;
+  const res = await fetch(url, {
+    headers: {
+      "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+    },
+  });
+  if (!res.ok) return null;
+  const html = await res.text();
+
+  const match = html.match(/<script type="application\/json" id="serialized-server-data">([\s\S]*?)<\/script>/);
+  if (!match) return null;
+
+  let items;
+  try {
+    const parsed = JSON.parse(match[1]);
+    items = parsed?.data?.[0]?.data?.shelfMapping?.allProductReviews?.items;
+  } catch {
+    return null;
+  }
+  if (!items || !Array.isArray(items) || items.length === 0) return null;
+
+  return items
+    .map((item) => item.review)
+    .filter((r) => r && r.contents)
+    .map((r) => ({
+      rating: Number(r.rating ?? 0),
+      title: r.title ?? "",
+      content: r.contents ?? "",
+      version: null,
+      helpfulVotes: 0,
+    }));
+}
+
+export async function fetchAppStoreReviews(storeUrl) {
+  const idMatch = storeUrl.match(/id(\d+)/);
+  if (!idMatch) return null;
+  const appId = idMatch[1];
+  const countryMatch = storeUrl.match(/apps\.apple\.com\/([a-z]{2})\//i);
+  const country = countryMatch ? countryMatch[1] : "us";
+
+  const fromRss = await fetchReviewsFromRss(appId, country);
+  if (fromRss) return fromRss;
+
+  return await fetchReviewsFromWebPage(storeUrl);
 }
 
 // Apple's public Lookup API — real store listing metadata (title, description,
