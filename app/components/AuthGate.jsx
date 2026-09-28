@@ -1,18 +1,7 @@
 "use client";
 
 import React from "react";
-import { Sparkles, BarChart3, AlertTriangle, Zap, Code2, MessageSquare, FileDown, ArrowLeft } from "lucide-react";
-
-// Every chip below is something the report really contains -- this screen is a sales pitch, so it
-// must not promise anything the product doesn't do.
-const FEATURES = [
-  { icon: BarChart3, label: "Category scores" },
-  { icon: AlertTriangle, label: "Critical issues" },
-  { icon: Zap, label: "Quick wins" },
-  { icon: Code2, label: "Code suggestions" },
-  { icon: MessageSquare, label: "Review insights" },
-  { icon: FileDown, label: "PDF export" },
-];
+import { Sparkles, ArrowLeft } from "lucide-react";
 
 export default function AuthGate({ appName, onSignUp, onBack }) {
   return (
@@ -28,14 +17,8 @@ export default function AuthGate({ appName, onSignUp, onBack }) {
         .ag-body { margin: 0 auto; max-width: 600px; font-size: 18px; line-height: 1.6; color: var(--muted); }
         .ag-pending { margin: 18px auto 0; font-size: 15px; color: var(--muted); }
         .ag-pending strong { color: var(--chalk); font-weight: 600; }
-        .ag-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin: 36px auto 40px; max-width: 620px; }
-        .ag-chip {
-          display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 999px;
-          background: var(--glass-bg); border: 1px solid var(--glass-border);
-          font-size: 15px; color: var(--chalk);
-        }
-        .ag-chip svg { color: var(--muted); flex-shrink: 0; }
         .ag-cta {
+          margin-top: 44px;
           height: 60px; padding: 0 44px; border: none; border-radius: 999px; cursor: pointer;
           background: var(--blue-100); color: #fff; font-size: 18px; font-weight: 500; font-family: inherit;
           transition: filter 0.2s ease, transform 0.2s ease;
@@ -72,15 +55,6 @@ export default function AuthGate({ appName, onSignUp, onBack }) {
           starts as soon as you&apos;re signed in.
         </p>
       )}
-
-      <div className="ag-chips">
-        {FEATURES.map(({ icon: Icon, label }) => (
-          <span className="ag-chip" key={label}>
-            <Icon size={16} />
-            {label}
-          </span>
-        ))}
-      </div>
 
       <button type="button" className="ag-cta" onClick={onSignUp}>
         Sign up free to generate
