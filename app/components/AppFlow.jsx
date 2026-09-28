@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import UploadFlow from "./UploadFlow";
 import AuthGate from "./AuthGate";
 import { useSignInModal } from "./SignInModalProvider";
+import { reportPath } from "../lib/reportPath";
 import { savePendingQuery, takePendingQuery, clearPendingQuery } from "../lib/pendingQuery";
 import HealthReport from "./HealthReport";
 import DashboardSection from "./DashboardSection";
@@ -109,7 +110,7 @@ export default function AppFlow({ showMarketing = true }) {
       // exactly like clicking into a report from the Reports list. Never show it as an
       // overlay on top of whichever page (home or Dashboard) the query started from.
       if (savedScanId) {
-        router.push(`/console/reports/${savedScanId}`);
+        router.push(reportPath(savedScanId, appName));
         return;
       }
 

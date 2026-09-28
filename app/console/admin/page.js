@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { ChevronDown, ChevronRight, Trash2, Loader2, ShieldOff, FileText } from "lucide-react";
+import { reportPath } from "../../lib/reportPath";
 
 function timeAgo(dateStr) {
   if (!dateStr) return "Never";
@@ -169,7 +170,7 @@ export default function AdminPage() {
                     <div className="admin-scans-empty">No reports from this user yet.</div>
                   ) : (
                     userScans[u.email]?.map((s) => (
-                      <Link href={`/console/reports/${s.id}`} key={s.id} className="admin-scan-row">
+                      <Link href={reportPath(s.id, s.app_name)} key={s.id} className="admin-scan-row">
                         <FileText size={14} color="var(--muted)" />
                         <span className="admin-scan-name">{s.app_name}</span>
                         <span className="admin-scan-score">{s.health_score}</span>

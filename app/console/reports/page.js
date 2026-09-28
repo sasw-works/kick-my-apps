@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Search, Loader2, Eye, Download, Trash2, X } from "lucide-react";
+import { reportPath } from "../../lib/reportPath";
 
 function AppIcon({ name, size = 40, iconUrl, storeUrl }) {
   const [fetchedUrl, setFetchedUrl] = useState(null);
@@ -100,7 +101,7 @@ export default function ConsoleReportsPage() {
     subtitle: null,
     reviewCount: s.review_count,
     createdAt: s.created_at,
-    href: `/console/reports/${s.id}`,
+    href: reportPath(s.id, s.app_name),
     deleteUrl: `/api/history?id=${s.id}`,
     icon: <AppIcon name={s.app_name} iconUrl={s.icon_url} storeUrl={s.store_url} />,
   }));

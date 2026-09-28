@@ -9,6 +9,7 @@ protects user data is *executed*, not just read. They are not part of the Next.j
 | `hardening_test.py` | Sign-in code attempt limit holds under parallel guesses; codes are single-use; send-code and analyze rate limits (including atomicity under concurrency). |
 | `secret_leak_test.py` | A malformed AI key (pasted several times / with newlines) or missing keys never puts a secret or server internals in a response or in the server log; members get a generic message, admins a redacted detail. Needs network (talks to the real providers with obviously fake keys). |
 | `secrets_test.mjs` | Unit test of the key-reading and redaction helpers (no server or database needed: `node tests/integration/secrets_test.mjs`). |
+| `report_path_test.mjs` | Unit test of the readable report URLs (`/console/reports/43-instagram`): slug generation (Turkish letters, accents, symbols, trademark sign, non-Latin names) and id parsing, including hostile input. `node tests/integration/report_path_test.mjs`. |
 | `linking_test.mjs` | Auth.js links a Google login to the account already created by an emailed code (and shows it was rejected before the flag). |
 
 ## Run
