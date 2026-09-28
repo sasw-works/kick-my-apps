@@ -1,36 +1,70 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useLayoutEffect } from "react";
 import { Sparkles, ArrowLeft } from "lucide-react";
 
-// The sign-up screen is a single fixed screen: the header on top, this centred in whatever is left,
-// nothing to scroll. While it's mounted the page scroll is locked and the footer is hidden (they
-// would otherwise push the page taller than the viewport); both come back when it unmounts.
+// The sign-up screen is a single fixed screen: header on top, footer at the bottom, and this
+// centred in whatever is left. Nothing scrolls. While it's mounted the page scroll is locked; that
+// is released when it unmounts.
 //
-// The header takes 150px of flow (see .kma-header-wrap), so the gate is exactly "viewport - 150px".
-// On short screens the content steps down in size instead of overflowing; the wrapper only scrolls
-// as a last resort (e.g. a phone held sideways).
+// Available height = viewport - header (150px; slimmed to 88px on short screens) - footer. The footer's height isn't constant (on a
+// phone its links stack), so it's measured and exposed as --kma-footer-h rather than guessed.
+// The content then steps down in size according to the height it actually has (container queries
+// on the wrapper) instead of the window's: icon shrinks then hides, type tightens, and only on
+// the very smallest screens does the description drop. The wrapper scrolls only as a last resort.
 export default function AuthGate({ appName, onSignUp, onBack }) {
-  useEffect(() => {
+  useLayoutEffect(() => {
     const root = document.documentElement;
+    const footer = document.querySelector(".kma-footer");
     root.classList.add("kma-gate-open");
-    return () => root.classList.remove("kma-gate-open");
+
+    const measure = () => {
+      let h = 0;
+      if (footer) {
+        const cs = getComputedStyle(footer);
+        h = footer.getBoundingClientRect().height + (parseFloat(cs.marginTop) || 0) + (parseFloat(cs.marginBottom) || 0);
+      }
+      root.style.setProperty("--kma-footer-h", `${Math.ceil(h)}px`);
+    };
+    measure();
+    const observer = footer && typeof ResizeObserver !== "undefined" ? new ResizeObserver(measure) : null;
+    if (observer) observer.observe(footer);
+    window.addEventListener("resize", measure);
+
+    return () => {
+      root.classList.remove("kma-gate-open");
+      root.style.removeProperty("--kma-footer-h");
+      if (observer) observer.disconnect();
+      window.removeEventListener("resize", measure);
+    };
   }, []);
 
   return (
     <section className="ag-wrap" aria-labelledby="ag-title">
       <style>{`
         html.kma-gate-open, html.kma-gate-open body { overflow: hidden; }
-        html.kma-gate-open .kma-footer { display: none; }
         html.kma-gate-open main.min-h-screen { min-height: 0 !important; }
 
         .ag-wrap {
           box-sizing: border-box; width: 100%; max-width: 760px; margin: 0 auto;
-          height: calc(100vh - 150px); height: calc(100dvh - 150px);
-          padding: 0 24px 24px;
+          height: calc(100vh - var(--ag-top, 150px) - var(--kma-footer-h, 0px));
+          height: calc(100dvh - var(--ag-top, 150px) - var(--kma-footer-h, 0px));
+          container: ag / size;
+          padding: 0 24px 16px;
           display: flex; flex-direction: column; align-items: center; justify-content: center;
           text-align: center; overflow-y: auto;
         }
+        /* Short screens: give the gate more room by slimming the header (150px -> 88px) -- only while the
+           gate is open. The mobile menu panel is anchored under the header, so it moves up with it. */
+        @media (max-height: 620px) {
+          html.kma-gate-open { --ag-top: 88px; }
+          /* the wrap's bottom padding is only the blur's fade-out room (cancelled by the negative margin, so
+             the net height is 16 + 72 = 88px); shorten it so the fade doesn't wash out the gate's title */
+          html.kma-gate-open .kma-header-wrap { padding-top: 16px; padding-bottom: 20px; margin-bottom: -20px; }
+          html.kma-gate-open .kma-header-inner { height: 72px; }
+          html.kma-gate-open .kma-mobile-panel { top: 88px; }
+        }
+
         .ag-icon {
           flex-shrink: 0; width: 88px; height: 88px; margin: 0 auto 32px; border-radius: 26px;
           display: flex; align-items: center; justify-content: center;
@@ -62,29 +96,38 @@ export default function AuthGate({ appName, onSignUp, onBack }) {
           .ag-body { font-size: 16px; }
           .ag-cta { width: 100%; padding: 0 20px; }
         }
-        /* Shorter screens: same layout, tighter. */
-        @media (max-height: 820px) {
-          .ag-icon { width: 64px; height: 64px; margin-bottom: 22px; border-radius: 20px; }
-          .ag-icon svg { width: 28px; height: 28px; }
+        /* Less room (small screens, or a tall footer): same layout, tighter -- keyed to the gate's own height. */
+        @container ag (max-height: 570px) {
+          .ag-icon { width: 60px; height: 60px; margin-bottom: 18px; border-radius: 18px; }
+          .ag-icon svg { width: 26px; height: 26px; }
           .ag-title { margin-bottom: 12px; }
-          .ag-cta { margin-top: 28px; height: 54px; }
-          .ag-signin { margin-top: 16px; }
-          .ag-back { margin-top: 18px; }
+          .ag-cta { margin-top: 26px; height: 54px; }
+          .ag-signin { margin-top: 14px; }
+          .ag-back { margin-top: 12px; }
         }
-        @media (max-height: 700px) {
+        @container ag (max-height: 470px) {
           .ag-icon { display: none; }
           .ag-title { font-size: 28px; }
           .ag-body { font-size: 15px; line-height: 1.5; }
           .ag-pending { margin-top: 10px; font-size: 14px; }
-          .ag-cta { margin-top: 22px; height: 50px; font-size: 17px; }
+          .ag-cta { margin-top: 20px; height: 50px; font-size: 17px; }
           .ag-signin { margin-top: 12px; font-size: 14px; }
-          .ag-back { margin-top: 10px; }
+          .ag-back { margin-top: 8px; }
         }
-        @media (max-height: 600px) {
+        @container ag (max-height: 380px) {
           .ag-title { font-size: 24px; margin-bottom: 8px; }
           .ag-body { font-size: 14px; }
           .ag-pending { display: none; }
-          .ag-cta { margin-top: 16px; height: 46px; }
+          .ag-cta { margin-top: 14px; height: 46px; }
+        }
+        @container ag (max-height: 260px) {
+          .ag-body { display: none; }
+        }
+        @container ag (max-height: 200px) {
+          .ag-title { font-size: 20px; margin-bottom: 4px; }
+          .ag-cta { margin-top: 10px; height: 42px; font-size: 16px; }
+          .ag-signin { margin-top: 8px; font-size: 13px; }
+          .ag-back { margin-top: 6px; font-size: 13px; }
         }
       `}</style>
 
