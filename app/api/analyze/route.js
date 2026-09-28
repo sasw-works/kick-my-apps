@@ -1,6 +1,7 @@
 import { fetchAppStoreReviews, fetchAppStoreListing, computeReviewAnalytics } from "../../lib/reviews";
 import { computeLensScores } from "../../lib/lensScores";
 import { getCurrentUser, unauthorized } from "../../lib/requireUser";
+import { rateLimit, tooManyRequests } from "../../lib/rateLimit";
 
 export const runtime = "nodejs";
 
@@ -306,6 +307,16 @@ export async function POST(req) {
     // burn AI quota and doesn't even learn how the server is configured.
     const user = await getCurrentUser();
     if (!user) return unauthorized();
+
+    // Abuse guard, not the plan limit (that comes with billing): each analysis spends AI quota, and
+    // sign-up is free and instant. Generous enough that normal use never notices.
+    for (const [key, opts] of [
+      [`analyze:hour:${user.id}`, { limit: 15, windowSeconds: 3600 }],
+      [`analyze:day:${user.id}`, { limit: 40, windowSeconds: 86400 }],
+    ]) {
+      const r = await rateLimit(key, opts);
+      if (!r.allowed) return tooManyRequests(r);
+    }
 
     if (!process.env.GEMINI_API_KEY && !process.env.OPENROUTER_API_KEY) {
       return Response.json(

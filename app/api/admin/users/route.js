@@ -2,6 +2,7 @@ import { sql } from "@vercel/postgres";
 import { auth } from "../../../../auth";
 import { isAdminEmail } from "../../../lib/isAdmin";
 import { ensureScansSchema } from "../../../lib/ensureScansSchema";
+import { deleteUserData } from "../../../lib/deleteUserData";
 
 export const runtime = "nodejs";
 
@@ -56,12 +57,7 @@ export async function DELETE(req) {
       return Response.json({ error: "You can't delete your own admin account." }, { status: 400 });
     }
 
-    // Delete the user's auth records (accounts/sessions cascade via userId) and their scans
-    // (scans are only linked by email, not a foreign key, so that's a separate delete).
-    await sql`DELETE FROM accounts WHERE "userId" = ${userId}`;
-    await sql`DELETE FROM sessions WHERE "userId" = ${userId}`;
-    await sql`DELETE FROM scans WHERE user_email = ${email}`;
-    await sql`DELETE FROM users WHERE id = ${userId}`;
+    await deleteUserData({ id: userId, email });
 
     return Response.json({ ok: true });
   } catch (err) {

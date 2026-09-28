@@ -20,7 +20,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   // row an email-code sign-in already created, if the email matches).
   session: { strategy: "jwt" },
   providers: [
-    Google,
+    // Same person, either way in. Without this, someone who first signed in with an emailed code and
+    // later clicks "Continue with Google" (same address) gets OAuthAccountNotLinked and can't get in.
+    // The flag is only safe because Google verifies addresses -- and the signIn callback below
+    // refuses any Google login whose email isn't verified, so it can't be used to take over an
+    // account by claiming someone else's address.
+    Google({ allowDangerousEmailAccountLinking: true }),
     // "Email me a code": the actual 6-digit code is generated, emailed, and checked by
     // app/lib/emailCode.js (own table, own Resend call) — this provider's only job is to
     // verify the submitted code and hand back/create the matching user record.
@@ -51,6 +56,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     signIn: "/signin",
   },
   callbacks: {
+    async signIn({ account, profile }) {
+      if (account?.provider === "google") return profile?.email_verified === true;
+      return true;
+    },
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;

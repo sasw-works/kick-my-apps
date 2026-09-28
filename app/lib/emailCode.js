@@ -1,3 +1,4 @@
+import { randomInt, timingSafeEqual } from "node:crypto";
 import { sql } from "@vercel/postgres";
 
 const CODE_TTL_MINUTES = 10;
@@ -14,8 +15,16 @@ async function ensureTable() {
   `;
 }
 
+// crypto.randomInt, not Math.random: Math.random's output is predictable from a few observed
+// values, and a sign-in code is a secret.
 function generateCode() {
-  return String(Math.floor(100000 + Math.random() * 900000)); // 6 digits, no leading zero issues
+  return String(randomInt(100000, 1000000)); // 6 digits, never a leading zero
+}
+
+function sameCode(a, b) {
+  const x = Buffer.from(String(a));
+  const y = Buffer.from(String(b));
+  return x.length === y.length && timingSafeEqual(x, y);
 }
 
 // Creates (or replaces) a fresh code for this email and sends it via Resend.
@@ -63,22 +72,24 @@ export async function sendEmailCode(email) {
 
 // Returns true and consumes the code on success. Returns false (without throwing) on any
 // mismatch/expiry/attempt-limit case, so the caller can show a generic "invalid code" message.
+//
+// Each check first *claims an attempt* in a single UPDATE (only while the code is unexpired and
+// under the limit), and only then compares. Checking the counter with a SELECT and bumping it later
+// let a burst of parallel guesses all read "0 attempts used" and each get a free try -- 40 parallel
+// guesses were measured getting 10 attempts through against a limit of 5. Doing it in one statement
+// makes the database serialize them, so at most MAX_ATTEMPTS ever reach the comparison.
 export async function verifyEmailCode(email, submittedCode) {
   await ensureTable();
 
-  const { rows } = await sql`SELECT code, expires_at, attempts FROM email_codes WHERE email = ${email}`;
-  const row = rows[0];
-  if (!row) return false;
+  const { rows } = await sql`
+    UPDATE email_codes SET attempts = attempts + 1
+    WHERE email = ${email} AND attempts < ${MAX_ATTEMPTS} AND expires_at > now()
+    RETURNING code
+  `;
+  if (rows.length === 0) return false;
+  if (!sameCode(rows[0].code, submittedCode)) return false;
 
-  if (row.attempts >= MAX_ATTEMPTS) return false;
-  if (new Date(row.expires_at).getTime() < Date.now()) return false;
-
-  if (row.code !== submittedCode) {
-    await sql`UPDATE email_codes SET attempts = attempts + 1 WHERE email = ${email}`;
-    return false;
-  }
-
-  // one-time use
-  await sql`DELETE FROM email_codes WHERE email = ${email}`;
-  return true;
+  // One-time use, and atomic: if two correct submissions race, only one deletes the row and wins.
+  const { rowCount } = await sql`DELETE FROM email_codes WHERE email = ${email} AND code = ${rows[0].code}`;
+  return rowCount === 1;
 }
