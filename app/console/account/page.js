@@ -41,6 +41,7 @@ export default function AccountPage() {
   const [nameDraft, setNameDraft] = useState("");
   const [savingName, setSavingName] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [pulseUsage, setPulseUsage] = useState(null); // { count, limit } | null while loading
 
   useEffect(() => {
     if (status !== "authenticated") return;
@@ -51,6 +52,17 @@ export default function AccountPage() {
         setUser(d.user);
       })
       .catch((err) => setError(err.message));
+  }, [status]);
+
+  useEffect(() => {
+    if (status !== "authenticated") return;
+    fetch("/api/pulse/monitors")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.error) throw new Error(d.error);
+        setPulseUsage({ count: (d.monitors || []).length, limit: d.limit });
+      })
+      .catch(() => setPulseUsage(null)); // non-critical: the card below just falls back to a dash
   }, [status]);
 
   async function saveName() {
@@ -194,8 +206,21 @@ export default function AccountPage() {
           </div>
           <div className="account-usage-item">
             <div className="account-usage-head"><Radio size={14} color="var(--muted)" />Pulse monitors</div>
-            <div className="account-usage-num"><span className="account-usage-current">2</span> max</div>
-            <div className="account-usage-bar"><div className="account-usage-fill" style={{ width: "40%" }} /></div>
+            <div className="account-usage-num">
+              {pulseUsage ? (
+                <>
+                  <span className="account-usage-current">{pulseUsage.count}</span> / {pulseUsage.limit ?? "∞"}
+                </>
+              ) : (
+                "—"
+              )}
+            </div>
+            <div className="account-usage-bar">
+              <div
+                className="account-usage-fill"
+                style={{ width: pulseUsage && pulseUsage.limit ? `${Math.min(100, (pulseUsage.count / pulseUsage.limit) * 100)}%` : "0%" }}
+              />
+            </div>
           </div>
         </div>
         <div className="account-usage-note">Usage resets monthly. Current billing period started the 1st.</div>

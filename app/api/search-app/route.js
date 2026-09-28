@@ -3,6 +3,9 @@ export const runtime = "nodejs";
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
   const term = (searchParams.get("term") || "").trim();
+  // Optional, defaults to "tr" (the existing behavior for the home-page search box). Pulse passes
+  // the store the person actually wants to monitor, since ratings/reviews differ per storefront.
+  const country = (searchParams.get("country") || "tr").toLowerCase();
 
   if (term.length < 3) {
     return Response.json({ results: [] });
@@ -11,7 +14,7 @@ export async function GET(req) {
   try {
     const url = `https://itunes.apple.com/search?term=${encodeURIComponent(
       term
-    )}&entity=software&country=tr&limit=8`;
+    )}&entity=software&country=${encodeURIComponent(country)}&limit=8`;
     const res = await fetch(url);
     if (!res.ok) {
       return Response.json({ results: [] });
