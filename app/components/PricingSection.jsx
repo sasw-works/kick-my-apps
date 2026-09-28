@@ -5,6 +5,9 @@
 
 import { useState } from "react";
 import { X } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useSignInModal } from "./SignInModalProvider";
 
 // Prices are placeholders until real billing is wired up.
 // Every plan shares the same feature rows (so all three cards stay the same height and
@@ -29,6 +32,7 @@ const PLANS = [
     desc: "For curious founders and designers testing the value of feedback intelligence.",
     cta: "Get started free",
     ctaStyle: "glass",
+    ctaAction: "signup",
     highlight: false,
   },
   {
@@ -62,6 +66,19 @@ function Check() {
 
 export default function PricingSection() {
   const [yearly, setYearly] = useState(true);
+  const { open: openSignIn } = useSignInModal();
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  // Only the free plan's "Get started free" is wired for now (the paid/enterprise CTAs stay
+  // as they were until real billing / a contact flow exists). Signed-in visitors skip the modal
+  // -- it auto-closes for an authenticated session, so the button would otherwise look dead.
+  const handleCta = (plan) => {
+    if (plan.ctaAction === "signup") {
+      if (session) router.push("/console");
+      else openSignIn();
+    }
+  };
 
   return (
     <section className="kma-pricing" aria-label="Pricing">
@@ -250,7 +267,7 @@ export default function PricingSection() {
                 })}
               </ul>
               <div className="pr-cta-wrap">
-                <button type="button" className={`pr-cta pr-cta-${p.ctaStyle}`}>
+                <button type="button" className={`pr-cta pr-cta-${p.ctaStyle}`} onClick={() => handleCta(p)}>
                   {p.cta}
                 </button>
               </div>
