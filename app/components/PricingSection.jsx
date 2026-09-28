@@ -43,6 +43,7 @@ const PLANS = [
     desc: "For PMs, UX leads, and founders who need continuous competitive intelligence.",
     cta: "Upgrade to Pro",
     ctaStyle: "solid",
+    ctaAction: "signup",
     highlight: true,
   },
   {
@@ -53,6 +54,7 @@ const PLANS = [
     desc: "For teams that need custom limits, unlimited seats, and dedicated support.",
     cta: "Contact us",
     ctaStyle: "glass",
+    ctaHref: "mailto:support@kickmyapps.com?subject=Enterprise%20plan%20inquiry",
     highlight: false,
   },
 ];
@@ -70,9 +72,10 @@ export default function PricingSection() {
   const { data: session } = useSession();
   const router = useRouter();
 
-  // Only the free plan's "Get started free" is wired for now (the paid/enterprise CTAs stay
-  // as they were until real billing / a contact flow exists). Signed-in visitors skip the modal
-  // -- it auto-closes for an authenticated session, so the button would otherwise look dead.
+  // Free and Pro CTAs both start the sign-up flow (there's no real billing/checkout yet, so
+  // "Upgrade to Pro" can only get someone into an account for now). Signed-in visitors skip the
+  // modal -- it auto-closes for an authenticated session, so the button would look dead.
+  // "Contact us" isn't handled here: it's a plain mailto link (see ctaHref on the plan).
   const handleCta = (plan) => {
     if (plan.ctaAction === "signup") {
       if (session) router.push("/console");
@@ -195,6 +198,9 @@ export default function PricingSection() {
           transition: filter 0.2s ease, transform 0.2s ease;
         }
         .pr-cta:hover { transform: translateY(-1px); }
+        /* "Contact us" is a mailto link rather than a button: center its label like a button does,
+           drop the underline, and keep the border inside the 100% width. */
+        a.pr-cta { display: flex; align-items: center; justify-content: center; text-decoration: none; box-sizing: border-box; }
         .pr-cta-glass {
           background: var(--glass-bg);
           border: 1px solid var(--glass-border);
@@ -267,9 +273,15 @@ export default function PricingSection() {
                 })}
               </ul>
               <div className="pr-cta-wrap">
-                <button type="button" className={`pr-cta pr-cta-${p.ctaStyle}`} onClick={() => handleCta(p)}>
-                  {p.cta}
-                </button>
+                {p.ctaHref ? (
+                  <a href={p.ctaHref} className={`pr-cta pr-cta-${p.ctaStyle}`}>
+                    {p.cta}
+                  </a>
+                ) : (
+                  <button type="button" className={`pr-cta pr-cta-${p.ctaStyle}`} onClick={() => handleCta(p)}>
+                    {p.cta}
+                  </button>
+                )}
               </div>
             </div>
           );
