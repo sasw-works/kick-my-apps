@@ -1,5 +1,6 @@
 import { sql } from "@vercel/postgres";
 import { auth } from "../../../../auth";
+import { errorText } from "../../../lib/secrets";
 
 export const runtime = "nodejs";
 
@@ -23,6 +24,6 @@ export async function GET() {
     return Response.json({ user: rows[0] });
   } catch (err) {
     console.error(err);
-    return Response.json({ error: "Could not load your account: " + err.message }, { status: 500 });
+    return Response.json({ error: "Could not load your account: " + errorText(err) }, { status: 500 });
   }
 }

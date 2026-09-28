@@ -7,6 +7,8 @@ protects user data is *executed*, not just read. They are not part of the Next.j
 | --- | --- |
 | `isolation_test.py` | Two users can't see, change, or delete each other's reports/comparisons; legacy owner-less rows are invisible; admin access; account deletion removes everything. |
 | `hardening_test.py` | Sign-in code attempt limit holds under parallel guesses; codes are single-use; send-code and analyze rate limits (including atomicity under concurrency). |
+| `secret_leak_test.py` | A malformed AI key (pasted several times / with newlines) or missing keys never puts a secret or server internals in a response or in the server log; members get a generic message, admins a redacted detail. Needs network (talks to the real providers with obviously fake keys). |
+| `secrets_test.mjs` | Unit test of the key-reading and redaction helpers (no server or database needed: `node tests/integration/secrets_test.mjs`). |
 | `linking_test.mjs` | Auth.js links a Google login to the account already created by an emailed code (and shows it was rejected before the flag). |
 
 ## Run

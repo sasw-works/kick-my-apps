@@ -2,6 +2,7 @@ import { sql } from "@vercel/postgres";
 import { fetchAppStoreListing } from "../../lib/reviews";
 import { ensureScansSchema, ensureComparisonsSchema } from "../../lib/ensureScansSchema";
 import { getCurrentUser, unauthorized } from "../../lib/requireUser";
+import { errorText } from "../../lib/secrets";
 
 export const runtime = "nodejs";
 
@@ -42,7 +43,7 @@ export async function POST(req) {
     return Response.json({ ok: true, id: rows[0]?.id });
   } catch (err) {
     console.error(err);
-    return Response.json({ error: "Could not save history: " + err.message }, { status: 500 });
+    return Response.json({ error: "Could not save history: " + errorText(err) }, { status: 500 });
   }
 }
 
@@ -67,7 +68,7 @@ export async function DELETE(req) {
     return Response.json({ ok: true });
   } catch (err) {
     console.error(err);
-    return Response.json({ error: "Could not delete: " + err.message }, { status: 500 });
+    return Response.json({ error: "Could not delete: " + errorText(err) }, { status: 500 });
   }
 }
 
@@ -167,6 +168,6 @@ export async function GET(req) {
     return Response.json({ scans: rows });
   } catch (err) {
     console.error(err);
-    return Response.json({ error: "Could not retrieve history: " + err.message }, { status: 500 });
+    return Response.json({ error: "Could not retrieve history: " + errorText(err) }, { status: 500 });
   }
 }

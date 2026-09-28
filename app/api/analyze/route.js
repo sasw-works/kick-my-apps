@@ -2,6 +2,7 @@ import { fetchAppStoreReviews, fetchAppStoreListing, computeReviewAnalytics } fr
 import { computeLensScores } from "../../lib/lensScores";
 import { getCurrentUser, unauthorized } from "../../lib/requireUser";
 import { rateLimit, tooManyRequests } from "../../lib/rateLimit";
+import { readSecret, errorText } from "../../lib/secrets";
 
 export const runtime = "nodejs";
 
@@ -100,7 +101,7 @@ async function callGeminiModel(model, parts) {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        "x-goog-api-key": process.env.GEMINI_API_KEY,
+        "x-goog-api-key": readSecret("GEMINI_API_KEY"),
       },
       body: JSON.stringify({
         contents: [{ parts }],
@@ -139,7 +140,7 @@ function buildPromptPieces({ images, reviews, listing }) {
 }
 
 async function analyzeWithGemini({ images, reviews, listing }) {
-  if (!process.env.GEMINI_API_KEY) throw new Error("GEMINI_API_KEY not set");
+  if (!readSecret("GEMINI_API_KEY")) throw new Error("GEMINI_API_KEY not set");
 
   const { textBlocks } = buildPromptPieces({ images, reviews, listing });
   const parts = [{ text: textBlocks.join("\n\n") }];
@@ -206,7 +207,7 @@ async function callOpenRouterModel(model, textPrompt, images) {
     method: "POST",
     headers: {
       "content-type": "application/json",
-      authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+      authorization: `Bearer ${readSecret("OPENROUTER_API_KEY")}`,
     },
     body: JSON.stringify({
       model,
@@ -219,7 +220,7 @@ async function callOpenRouterModel(model, textPrompt, images) {
 }
 
 async function analyzeWithOpenRouter({ images, reviews, listing }) {
-  if (!process.env.OPENROUTER_API_KEY) throw new Error("OPENROUTER_API_KEY not set");
+  if (!readSecret("OPENROUTER_API_KEY")) throw new Error("OPENROUTER_API_KEY not set");
 
   const { textBlocks } = buildPromptPieces({ images, reviews, listing });
   const textPrompt = textBlocks.join("\n\n");
@@ -278,8 +279,8 @@ async function analyzeWithOpenRouter({ images, reviews, listing }) {
 // -- a different provider on a different platform -- if every Gemini attempt failed. This
 // keeps the service answering even during a full Gemini-side outage or an invalid/expired key.
 async function analyzeApp({ images, reviews, listing }) {
-  const hasGemini = !!process.env.GEMINI_API_KEY;
-  const hasOpenRouter = !!process.env.OPENROUTER_API_KEY;
+  const hasGemini = !!readSecret("GEMINI_API_KEY");
+  const hasOpenRouter = !!readSecret("OPENROUTER_API_KEY");
 
   if (!hasGemini && !hasOpenRouter) {
     throw new Error("MISSING_KEYS");
@@ -291,7 +292,7 @@ async function analyzeApp({ images, reviews, listing }) {
       return { result, provider: "gemini" };
     } catch (geminiErr) {
       if (!hasOpenRouter) throw geminiErr;
-      console.error("Gemini failed, falling back to OpenRouter:", geminiErr.message);
+      console.error("Gemini failed, falling back to OpenRouter:", errorText(geminiErr, 1000));
       const result = await analyzeWithOpenRouter({ images, reviews, listing });
       return { result, provider: "openrouter" };
     }
@@ -302,10 +303,11 @@ async function analyzeApp({ images, reviews, listing }) {
 }
 
 export async function POST(req) {
+  let user = null;
   try {
     // Signed-in users only. Checked first, before anything else, so an anonymous caller can't
     // burn AI quota and doesn't even learn how the server is configured.
-    const user = await getCurrentUser();
+    user = await getCurrentUser();
     if (!user) return unauthorized();
 
     // Abuse guard, not the plan limit (that comes with billing): each analysis spends AI quota, and
@@ -318,14 +320,9 @@ export async function POST(req) {
       if (!r.allowed) return tooManyRequests(r);
     }
 
-    if (!process.env.GEMINI_API_KEY && !process.env.OPENROUTER_API_KEY) {
-      return Response.json(
-        {
-          error:
-            "Neither GEMINI_API_KEY nor OPENROUTER_API_KEY is defined on the server. Add at least one from the Vercel project settings.",
-        },
-        { status: 500 }
-      );
+    if (!readSecret("GEMINI_API_KEY") && !readSecret("OPENROUTER_API_KEY")) {
+      console.error("Analysis unavailable: neither GEMINI_API_KEY nor OPENROUTER_API_KEY is set.");
+      return analysisFailure(user, "No AI provider key is configured (GEMINI_API_KEY / OPENROUTER_API_KEY).");
     }
 
     const formData = await req.formData();
@@ -393,10 +390,20 @@ export async function POST(req) {
 
     return Response.json(result);
   } catch (err) {
-    console.error(err);
-    return Response.json(
-      { error: "An error occurred during analysis: " + (err.message || "unknown error") },
-      { status: 500 }
-    );
+    // Log it (redacted -- logs get screenshotted and shared too), but never send raw error text to
+    // the browser: provider and runtime errors can contain request headers, i.e. API keys. That
+    // is exactly how a malformed OPENROUTER_API_KEY once showed the key on screen.
+    console.error("Analysis failed:", errorText(err, 1000));
+    return analysisFailure(user, errorText(err));
   }
+}
+
+// What a visitor sees when analysis fails. Admins additionally get the (redacted) reason, so the
+// person who can fix it doesn't have to dig through logs.
+function analysisFailure(user, detail) {
+  const base = "We couldn't complete the analysis right now. Please try again in a few minutes.";
+  return Response.json(
+    { error: user?.isAdmin ? `${base} [admin detail: ${detail}]` : base, code: "ANALYSIS_FAILED" },
+    { status: 500 }
+  );
 }

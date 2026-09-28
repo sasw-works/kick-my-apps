@@ -1,5 +1,6 @@
 import { sql } from "@vercel/postgres";
 import { getCurrentUser, unauthorized } from "../../lib/requireUser";
+import { errorText } from "../../lib/secrets";
 
 export const runtime = "nodejs";
 
@@ -45,6 +46,6 @@ export async function POST(req) {
     return Response.json({ ok: true });
   } catch (err) {
     console.error(err);
-    return Response.json({ error: "Could not create subscription: " + err.message }, { status: 500 });
+    return Response.json({ error: "Could not create subscription: " + errorText(err) }, { status: 500 });
   }
 }

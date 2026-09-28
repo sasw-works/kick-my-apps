@@ -1,6 +1,7 @@
 import { sql } from "@vercel/postgres";
 import { ensureScansSchema, ensureComparisonsSchema } from "../../../lib/ensureScansSchema";
 import { getCurrentUser, unauthorized } from "../../../lib/requireUser";
+import { errorText } from "../../../lib/secrets";
 
 export const runtime = "nodejs";
 
@@ -39,7 +40,7 @@ export async function POST(req) {
     return Response.json({ ok: true, id: rows[0]?.id });
   } catch (err) {
     console.error(err);
-    return Response.json({ error: "Could not save comparison: " + err.message }, { status: 500 });
+    return Response.json({ error: "Could not save comparison: " + errorText(err) }, { status: 500 });
   }
 }
 
@@ -63,7 +64,7 @@ export async function DELETE(req) {
     return Response.json({ ok: true });
   } catch (err) {
     console.error(err);
-    return Response.json({ error: "Could not delete: " + err.message }, { status: 500 });
+    return Response.json({ error: "Could not delete: " + errorText(err) }, { status: 500 });
   }
 }
 
@@ -137,6 +138,6 @@ export async function GET(req) {
     return Response.json({ scans: rows });
   } catch (err) {
     console.error(err);
-    return Response.json({ error: "Could not retrieve comparison data: " + err.message }, { status: 500 });
+    return Response.json({ error: "Could not retrieve comparison data: " + errorText(err) }, { status: 500 });
   }
 }

@@ -1,6 +1,7 @@
 import { sendEmailCode } from "../../../lib/emailCode";
 import { ensureAuthSchema } from "../../../lib/ensureAuthSchema";
 import { rateLimit, getClientIp, tooManyRequests } from "../../../lib/rateLimit";
+import { errorText } from "../../../lib/secrets";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -31,6 +32,6 @@ export async function POST(req) {
     return Response.json({ ok: true });
   } catch (err) {
     console.error(err);
-    return Response.json({ error: "Could not send the code: " + err.message }, { status: 500 });
+    return Response.json({ error: "Could not send the code: " + errorText(err) }, { status: 500 });
   }
 }

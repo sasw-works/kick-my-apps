@@ -2,6 +2,7 @@ import { sql } from "@vercel/postgres";
 import { auth } from "../../../../auth";
 import { isAdminEmail } from "../../../lib/isAdmin";
 import { ensureScansSchema } from "../../../lib/ensureScansSchema";
+import { errorText } from "../../../lib/secrets";
 
 export const runtime = "nodejs";
 
@@ -28,6 +29,6 @@ export async function GET(req) {
     return Response.json({ scans: rows });
   } catch (err) {
     console.error(err);
-    return Response.json({ error: "Could not retrieve scans: " + err.message }, { status: 500 });
+    return Response.json({ error: "Could not retrieve scans: " + errorText(err) }, { status: 500 });
   }
 }

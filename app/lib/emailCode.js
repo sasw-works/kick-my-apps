@@ -1,5 +1,6 @@
 import { randomInt, timingSafeEqual } from "node:crypto";
 import { sql } from "@vercel/postgres";
+import { readSecret } from "./secrets";
 
 const CODE_TTL_MINUTES = 10;
 const MAX_ATTEMPTS = 5;
@@ -44,7 +45,7 @@ export async function sendEmailCode(email) {
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+      Authorization: `Bearer ${readSecret("RESEND_API_KEY")}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({

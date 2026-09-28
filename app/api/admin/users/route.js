@@ -3,6 +3,7 @@ import { auth } from "../../../../auth";
 import { isAdminEmail } from "../../../lib/isAdmin";
 import { ensureScansSchema } from "../../../lib/ensureScansSchema";
 import { deleteUserData } from "../../../lib/deleteUserData";
+import { errorText } from "../../../lib/secrets";
 
 export const runtime = "nodejs";
 
@@ -38,7 +39,7 @@ export async function GET() {
     return Response.json({ users: rows });
   } catch (err) {
     console.error(err);
-    return Response.json({ error: "Could not retrieve users: " + err.message }, { status: 500 });
+    return Response.json({ error: "Could not retrieve users: " + errorText(err) }, { status: 500 });
   }
 }
 
@@ -62,6 +63,6 @@ export async function DELETE(req) {
     return Response.json({ ok: true });
   } catch (err) {
     console.error(err);
-    return Response.json({ error: "Could not delete user: " + err.message }, { status: 500 });
+    return Response.json({ error: "Could not delete user: " + errorText(err) }, { status: 500 });
   }
 }

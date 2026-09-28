@@ -1,5 +1,6 @@
 import { sql } from "@vercel/postgres";
 import { auth } from "../../../../auth";
+import { errorText } from "../../../lib/secrets";
 
 export const runtime = "nodejs";
 
@@ -17,6 +18,6 @@ export async function POST(req) {
     return Response.json({ ok: true, name: clean || null });
   } catch (err) {
     console.error(err);
-    return Response.json({ error: "Could not update your name: " + err.message }, { status: 500 });
+    return Response.json({ error: "Could not update your name: " + errorText(err) }, { status: 500 });
   }
 }

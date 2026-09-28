@@ -1,5 +1,6 @@
 import { sql } from "@vercel/postgres";
 import { fetchAppStoreReviews, computeReviewAnalytics } from "../../../lib/reviews";
+import { readSecret, errorText } from "../../../lib/secrets";
 
 export const runtime = "nodejs";
 
@@ -9,7 +10,7 @@ async function sendEmail({ to, subject, html }) {
     method: "POST",
     headers: {
       "content-type": "application/json",
-      Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+      Authorization: `Bearer ${readSecret("RESEND_API_KEY")}`,
     },
     body: JSON.stringify({ from, to, subject, html }),
   });
@@ -93,13 +94,13 @@ export async function GET(req) {
         }
         results.push({ storeUrl, sent: subscribers.length });
       } catch (err) {
-        results.push({ storeUrl, error: err.message });
+        results.push({ storeUrl, error: errorText(err) });
       }
     }
 
     return Response.json({ ok: true, results });
   } catch (err) {
     console.error(err);
-    return Response.json({ error: "Weekly send failed: " + err.message }, { status: 500 });
+    return Response.json({ error: "Weekly send failed: " + errorText(err) }, { status: 500 });
   }
 }
