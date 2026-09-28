@@ -2,6 +2,9 @@ import React, { useRef } from "react";
 import Link from "next/link";
 import LogoMark from "./LogoMark";
 import FooterLogo from "./FooterLogo";
+import { useSignInModal } from "./SignInModalProvider";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import {
   Store,
   Sparkles,
@@ -304,6 +307,9 @@ function FreshIcon({ size = 36 }) {
 }
 
 export default function MarketingSections() {
+  const { open: openSignIn } = useSignInModal();
+  const { data: session } = useSession();
+  const router = useRouter();
   const carouselRef = useRef(null);
   const dragState = useRef({ isDown: false, startX: 0, scrollStart: 0, moved: false });
   const cardsRef = useRef(null);
@@ -812,7 +818,7 @@ export default function MarketingSections() {
         <div className="mkt-closing-heading">Ready to see<br />what&apos;s hurting your app?</div>
         <button
           className="mkt-closing-btn"
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          onClick={() => (session ? router.push("/console") : openSignIn())}
         >
           Get started
         </button>
