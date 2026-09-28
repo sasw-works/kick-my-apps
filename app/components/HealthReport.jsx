@@ -2,6 +2,7 @@
 
 import React, { useRef, useState } from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { computeLensScores } from "../lib/lensScores";
 import {
   UploadCloud,
@@ -342,19 +343,20 @@ function FindingRow({ f }) {
 }
 
 function SubscribeForm({ appName, storeUrl }) {
-  const [email, setEmail] = useState("");
+  const { data: session } = useSession();
   const [status, setStatus] = useState("idle"); // idle | sending | done | error
   const [errorMsg, setErrorMsg] = useState("");
 
   const handleSubmit = async () => {
-    if (!email.trim()) return;
     setStatus("sending");
     setErrorMsg("");
     try {
+      // The digest always goes to the signed-in account's own email (the server reads it from the
+      // session), so there's no address to type.
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ email: email.trim(), appName, storeUrl }),
+        body: JSON.stringify({ appName, storeUrl }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Subscription failed.");
@@ -373,22 +375,15 @@ function SubscribeForm({ appName, storeUrl }) {
       <div className="subscribe-text">
         <div className="subscribe-title">Get a Weekly Review Summary</div>
         <div className="subscribe-desc">
-          {appName} Get a weekly email summary of new App Store reviews for {appName}.
+          Get a weekly email summary of new App Store reviews for {appName}{session?.user?.email ? ` at ${session.user.email}` : ""}.
         </div>
       </div>
       {status === "done" ? (
         <div className="subscribe-done">Subscribed ✓</div>
       ) : (
         <div className="subscribe-form-row">
-          <input
-            type="email"
-            placeholder="e-posta@ornek.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="subscribe-input"
-          />
           <button className="subscribe-btn" onClick={handleSubmit} disabled={status === "sending"}>
-            {status === "sending" ? "…" : "Abone Ol"}
+            {status === "sending" ? "…" : "Subscribe"}
           </button>
         </div>
       )}

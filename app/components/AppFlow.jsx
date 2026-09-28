@@ -1,8 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect, useRef } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 import UploadFlow from "./UploadFlow";
+import AuthGate from "./AuthGate";
+import { useSignInModal } from "./SignInModalProvider";
+import { savePendingQuery, takePendingQuery, clearPendingQuery } from "../lib/pendingQuery";
 import HealthReport from "./HealthReport";
 import DashboardSection from "./DashboardSection";
 import CustomersSection from "./CustomersSection";
@@ -15,7 +19,7 @@ import MarketingSections from "./MarketingSections";
 
 export default function AppFlow({ showMarketing = true }) {
   const router = useRouter();
-  const [stage, setStage] = useState("upload"); // upload | report (report is a rare fallback only)
+  const [stage, setStage] = useState("upload"); // upload | gate (sign-up wall) | report (rare fallback only)
   const [analyzing, setAnalyzing] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [reportData, setReportData] = useState(null);
@@ -24,8 +28,27 @@ export default function AppFlow({ showMarketing = true }) {
   const [scanId, setScanId] = useState(null);
   const [scanStoreUrl, setScanStoreUrl] = useState("");
   const [screenshotUrls, setScreenshotUrls] = useState([]);
+  const [gateApp, setGateApp] = useState("");
+  const pathname = usePathname();
+  const { status } = useSession();
+  const { open: openSignIn } = useSignInModal();
+  const pendingChecked = useRef(false);
+
+  // Nothing in the product runs without an account. A signed-out visitor who tries to analyze
+  // lands on the sign-up screen instead; their query is remembered and runs right after sign-in.
+  const sendToGate = async (files, storeUrl, appName) => {
+    await savePendingQuery({ files, storeUrl, appName });
+    setGateApp(appName);
+    setStage("gate");
+  };
 
   const handleAnalyze = async (files, storeUrl, appName) => {
+    if (status === "loading") return; // session not known yet; ignore rather than guess
+    if (status !== "authenticated") {
+      await sendToGate(files, storeUrl, appName);
+      return;
+    }
+
     setAnalyzing(true);
     setErrorMessage("");
     try {
@@ -35,6 +58,11 @@ export default function AppFlow({ showMarketing = true }) {
       formData.append("appName", appName);
 
       const res = await fetch("/api/analyze", { method: "POST", body: formData });
+
+      if (res.status === 401) {
+        await sendToGate(files, storeUrl, appName);
+        return;
+      }
 
       const rawText = await res.text();
       let data;
@@ -102,6 +130,23 @@ export default function AppFlow({ showMarketing = true }) {
     }
   };
 
+  // The gate replaces a long page, and the visitor pressed "analyze" from wherever they had
+  // scrolled to (on a phone, far down the hero). Bring the gate itself into view.
+  useEffect(() => {
+    if (stage === "gate") window.scrollTo(0, 0);
+  }, [stage]);
+
+  // Just signed up / in and landed on the Dashboard: run what they asked for before the gate.
+  // (Only in the Console -- that's where every sign-in flow lands.)
+  useEffect(() => {
+    if (status !== "authenticated" || !pathname?.startsWith("/console") || pendingChecked.current) return;
+    pendingChecked.current = true;
+    takePendingQuery().then((q) => {
+      if (q) handleAnalyze(q.files, q.storeUrl, q.appName);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status, pathname]);
+
   const handleReset = () => {
     setStage("upload");
     setReportData(null);
@@ -122,7 +167,16 @@ export default function AppFlow({ showMarketing = true }) {
         }
         .page-fade { animation: page-fade-in 0.35s ease; }
       `}</style>
-      {stage === "upload" ? (
+      {stage === "gate" ? (
+        <AuthGate
+          appName={gateApp}
+          onSignUp={openSignIn}
+          onBack={() => {
+            clearPendingQuery();
+            setStage("upload");
+          }}
+        />
+      ) : stage === "upload" ? (
         <>
           <UploadFlow onAnalyze={handleAnalyze} analyzing={analyzing} errorMessage={errorMessage} variant="dark" />
           {showMarketing && (

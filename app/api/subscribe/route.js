@@ -1,4 +1,5 @@
 import { sql } from "@vercel/postgres";
+import { getCurrentUser, unauthorized } from "../../lib/requireUser";
 
 export const runtime = "nodejs";
 
@@ -14,23 +15,23 @@ async function ensureTable() {
   `;
 }
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
 export async function POST(req) {
   try {
-    await ensureTable();
-    const { email, appName, storeUrl } = await req.json();
+    // Sign-in required, and the address is always the signed-in user's own: it comes from the
+    // session, never from the request body, so nobody can subscribe someone else's inbox.
+    const user = await getCurrentUser();
+    if (!user) return unauthorized();
 
-    if (!email || !EMAIL_RE.test(email)) {
-      return Response.json({ error: "Enter a valid email address." }, { status: 400 });
-    }
+    await ensureTable();
+    const { appName, storeUrl } = await req.json();
+
     if (!appName || !storeUrl) {
       return Response.json({ error: "appName and storeUrl are required." }, { status: 400 });
     }
 
     // Don't let the same email + same app subscribe twice.
     const { rows: existing } = await sql`
-      SELECT id FROM subscriptions WHERE email = ${email} AND app_name = ${appName} LIMIT 1;
+      SELECT id FROM subscriptions WHERE email = ${user.email} AND app_name = ${appName} LIMIT 1;
     `;
     if (existing.length > 0) {
       return Response.json({ ok: true, alreadySubscribed: true });
@@ -38,7 +39,7 @@ export async function POST(req) {
 
     await sql`
       INSERT INTO subscriptions (email, app_name, store_url)
-      VALUES (${email}, ${appName}, ${storeUrl});
+      VALUES (${user.email}, ${appName}, ${storeUrl});
     `;
 
     return Response.json({ ok: true });

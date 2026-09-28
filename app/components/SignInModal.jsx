@@ -8,7 +8,7 @@ import { useSignInModal } from "./SignInModalProvider";
 import SignInForm from "./SignInForm";
 
 export default function SignInModal() {
-  const { isOpen, close } = useSignInModal();
+  const { isOpen, open, close } = useSignInModal();
   const { status } = useSession();
   const { theme } = useTheme();
   const light = theme === "light";
@@ -18,6 +18,18 @@ export default function SignInModal() {
   useEffect(() => {
     if (isOpen && status === "authenticated") close();
   }, [isOpen, status, close]);
+
+  // Being sent here from a protected page (/?signin=1): open the panel, then drop the flag from
+  // the address bar so a refresh doesn't reopen it.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("signin") === "1") {
+      open();
+      params.delete("signin");
+      const qs = params.toString();
+      window.history.replaceState(null, "", window.location.pathname + (qs ? `?${qs}` : "") + window.location.hash);
+    }
+  }, [open]);
 
   useEffect(() => {
     if (!isOpen) return;

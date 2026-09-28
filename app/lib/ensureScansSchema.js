@@ -25,3 +25,25 @@ export async function ensureScansSchema() {
 
   ensured = true;
 }
+
+let comparisonsEnsured = false;
+
+// Comparisons used to be created inline in two different routes (with no owner at all).
+// One shared definition now, including the owner column every comparison query filters on.
+export async function ensureComparisonsSchema() {
+  if (comparisonsEnsured) return;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS comparisons (
+      id SERIAL PRIMARY KEY,
+      scan_id_a INTEGER NOT NULL,
+      scan_id_b INTEGER NOT NULL,
+      app_name_a TEXT NOT NULL,
+      app_name_b TEXT NOT NULL,
+      created_at TIMESTAMPTZ DEFAULT now()
+    );
+  `;
+  await sql`ALTER TABLE comparisons ADD COLUMN IF NOT EXISTS user_email TEXT;`;
+
+  comparisonsEnsured = true;
+}

@@ -1,5 +1,6 @@
 import { fetchAppStoreReviews, fetchAppStoreListing, computeReviewAnalytics } from "../../lib/reviews";
 import { computeLensScores } from "../../lib/lensScores";
+import { getCurrentUser, unauthorized } from "../../lib/requireUser";
 
 export const runtime = "nodejs";
 
@@ -301,6 +302,11 @@ async function analyzeApp({ images, reviews, listing }) {
 
 export async function POST(req) {
   try {
+    // Signed-in users only. Checked first, before anything else, so an anonymous caller can't
+    // burn AI quota and doesn't even learn how the server is configured.
+    const user = await getCurrentUser();
+    if (!user) return unauthorized();
+
     if (!process.env.GEMINI_API_KEY && !process.env.OPENROUTER_API_KEY) {
       return Response.json(
         {

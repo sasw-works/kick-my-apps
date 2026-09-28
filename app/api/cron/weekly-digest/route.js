@@ -55,9 +55,13 @@ function buildDigestHtml({ appName, analytics }) {
 }
 
 export async function GET(req) {
+  // Fails closed: without a configured CRON_SECRET nobody can trigger this. (It used to be open
+  // whenever the secret was unset, which let anyone on the internet fire a mass email send.)
+  // Vercel sends "Authorization: Bearer <CRON_SECRET>" on its own once the variable exists.
   const authHeader = req.headers.get("authorization");
-  if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    return Response.json({ error: "Yetkisiz." }, { status: 401 });
+  const cronSecret = process.env.CRON_SECRET;
+  if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
+    return Response.json({ error: "Unauthorized." }, { status: 401 });
   }
 
   try {
