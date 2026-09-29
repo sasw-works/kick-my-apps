@@ -54,10 +54,23 @@ export default function LegacyFaqSection() {
   return (
     <div className="mkt-reveal">
       <style>{`
-        /* Headline matches every other KMA Dark section: 42/57.6 title, 18/28 sub below it. */
+        /* Headline matches every other KMA Dark section: 42/57.6 title, 18/28 sub below it.
+           font-size and breakpoint match Audience/Pricing's own title shrink exactly, so FAQ's
+           heading is the same size as every other section's on a phone -- this file previously
+           had no mobile override at all, so it stayed at the 42px desktop size while every other
+           section's title already dropped to 32px. margin-top drops to 90px to match those same
+           sections' own top spacing (never large-margin adjusted for mobile there either, but 90
+           rather than a desktop-only 150). Desktop is untouched either way. */
         .faq-headline { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; margin-top: 150px; margin-bottom: 48px; }
         .mkt-section-title { margin: 0; font-size: 42px; line-height: 57.6px; font-weight: 400; color: var(--chalk); }
         .mkt-section-sub { margin: 0; font-size: var(--fs-18); line-height: 28px; font-weight: 400; color: var(--muted); }
+        @media (max-width: 560px) {
+          /* 66, not 90: the section right above this one (VideoFeatureGrid) carries its own ~24px
+             of trailing space, so 66 here lands the actual visible gap at 90px -- matching what
+             Audience/Pricing measure between each other, not just this rule's own number. */
+          .faq-headline { margin-top: 66px; }
+          .mkt-section-title { font-size: 32px; line-height: 1.25; }
+        }
         .faq-list { max-width: 720px; margin: 0 auto 48px; border-top: 1px solid var(--ink-3); }
         .faq-row { border-bottom: 1px solid var(--ink-3); }
         .faq-q {
