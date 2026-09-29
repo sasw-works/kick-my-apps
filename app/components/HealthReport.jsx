@@ -718,7 +718,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
         .upload-slot strong { color: var(--chalk); font-weight: 600; }
         .kma-toolbar-btn {
           border: none; cursor: pointer; white-space: nowrap; font-family: inherit; font-size: inherit;
-          margin: 0; box-sizing: border-box; line-height: normal;
+          margin: 0; box-sizing: border-box; line-height: normal; min-width: 125px;
           transition: transform 0.15s ease, opacity 0.15s ease;
         }
         .kma-toolbar-btn:hover { transform: translateY(-2px); }
@@ -732,6 +732,25 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
         .kma-toolbar-card {
           display: flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--ink-3);
           border-radius: 16px; padding: 24px; margin-bottom: 24px; flex-wrap: wrap;
+        }
+        @media (max-width: 900px) {
+          /* Reordered so the close button sits beside the app name/icon (top line) instead of
+             getting wrapped down with the action buttons, and the three action buttons share
+             their own full-width row below with extra breathing room above them. Achieved with
+             flex order + the spacer forcing a line break, not a DOM/JSX restructure, so desktop
+             (where this block doesn't apply) keeps its exact original single-row layout. */
+          .kma-toolbar-app { order: 1; max-width: calc(100% - 68px); }
+          .kma-toolbar-app-text { min-width: 0; overflow: hidden; }
+          .kma-toolbar-app-name, .kma-toolbar-app-date { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+          .kma-toolbar-spacer { order: 2; }
+          .kma-close-btn { order: 3; flex-shrink: 0; }
+          .kma-toolbar-btn {
+            order: 4; flex: 1 1 0; min-width: 0; padding-left: 8px !important; padding-right: 8px !important;
+            overflow: hidden; text-overflow: ellipsis;
+          }
+          /* 12px base gap (unchanged, still the spacing between the three buttons) + 20px more
+             between the app/close row and the button row below it, as asked for. */
+          .kma-toolbar-card { row-gap: 32px; }
         }
         .kma-toolbar-app { display: flex; align-items: center; gap: 12px; }
         .kma-toolbar-app-icon { width: 46px; height: 46px; border-radius: 8px; object-fit: cover; border: 1px solid var(--ink-3); }
@@ -1025,12 +1044,12 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
         <div className="kma-toolbar-card no-print">
           <div className="kma-toolbar-app">
             <ToolbarAppIcon name={appLabel} storeUrl={storeUrl} />
-            <div>
+            <div className="kma-toolbar-app-text">
               <div className="kma-toolbar-app-name">{appLabel}</div>
               <div className="kma-toolbar-app-date" suppressHydrationWarning>{reportDateLabel}</div>
             </div>
           </div>
-          <div style={{ flex: 1 }} />
+          <div style={{ flex: 1 }} className="kma-toolbar-spacer" />
           <button
             className="kma-toolbar-btn"
             onClick={handleExportPdf}
@@ -1039,7 +1058,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
               display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
               background: "var(--ink-2)", border: "1px solid var(--ink-3)", borderRadius: 999,
               padding: "0 14px", fontSize: 13.5, color: "var(--chalk)", height: 44, boxSizing: "border-box",
-              minWidth: 125, opacity: exporting ? 0.6 : 1,
+              opacity: exporting ? 0.6 : 1,
             }}
           >
             {exporting ? "Preparing…" : "Download PDF"}
@@ -1052,7 +1071,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
                 display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
                 background: "var(--ink-2)", border: "1px solid var(--ink-3)", borderRadius: 999,
                 padding: "0 14px", fontSize: 13.5, color: "var(--chalk)", height: 44, boxSizing: "border-box",
-                minWidth: 125, textDecoration: "none",
+                textDecoration: "none",
               }}
             >
               Compare
@@ -1064,7 +1083,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
             style={{
               display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
               background: "var(--brand)", border: "1px solid var(--brand)", borderRadius: 999,
-              padding: "0 16px", fontSize: 12.5, fontWeight: 600, color: "#fff", height: 44, boxSizing: "border-box", minWidth: 125,
+              padding: "0 16px", fontSize: 12.5, fontWeight: 600, color: "#fff", height: 44, boxSizing: "border-box",
             }}
           >
             {onReset ? (
