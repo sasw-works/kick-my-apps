@@ -493,13 +493,39 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           display: flex; align-items: center; justify-content: center;
           background: var(--blue-100);
         }
+        .upload-root-dark .submit-circle-mobile-icon { display: none; }
 
         @media (max-width: 780px) {
-          .upload-root-dark .hero-input-row { flex-wrap: wrap; }
+          /* The row's own children (search pill, upload pill, submit button) each take 100% of
+             it, so narrowing the row itself narrows all three together. */
+          .upload-root-dark .hero-input-row { flex-wrap: wrap; max-width: calc(100% - 20px); margin-left: auto; margin-right: auto; }
           .upload-root-dark .hero-search-anchor { flex: 1 1 100%; }
           .upload-root-dark .hero-search-pill,
         .upload-root-dark .upload-pill { padding: 0 24px; }
-          .upload-root-dark .upload-pill { flex: 1; width: auto; }
+          /* min-width: 0 overrides a flex item's default min-width:auto, which otherwise refuses
+             to shrink the pill below its label's natural (nowrap) width -- on very narrow phones
+             ("Upload screens" + icon + padding) that natural width is wider than the row itself,
+             which pushed this pill out of alignment with the search box and submit button above
+             it. The label gets its own overflow:hidden/ellipsis so if it still doesn't fit, it
+             truncates instead of spilling out of the pill. */
+          .upload-root-dark .upload-pill { flex: 1; width: auto; min-width: 0; }
+          .upload-root-dark .upload-pill-label { overflow: hidden; text-overflow: ellipsis; }
+
+          /* Submit button: on desktop this is a fixed 92x92 circular image asset (an arrow on a
+             disc) that sits beside the search box. That asset can't stretch into a wide pill, so
+             on mobile it steps aside for a plain icon on a CSS background instead -- matching the
+             search pill's own width, height, and pill shape (not round) as requested. */
+          .upload-root-dark .submit-circle {
+            flex: 1 1 100%;
+            width: 100%;
+            height: 92px;
+            border-radius: 999px;
+            background: var(--blue-100);
+          }
+          .upload-root-dark .submit-circle:disabled { background: var(--ink-3); opacity: 1; }
+          .upload-root-dark .submit-circle img.submit-circle-desktop-img { display: none; }
+          .upload-root-dark .submit-circle-mobile-icon { display: flex; align-items: center; justify-content: center; }
+          .upload-root-dark .submit-spinner { display: none; }
         }
 
 
@@ -756,7 +782,13 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         <button className={`submit-circle ${analyzing ? "submit-circle-analyzing" : ""}`} disabled={!canAnalyze} onClick={handleAnalyze} aria-label="Analyze">
           {dark ? (
             <>
-              <img src="/dark/hero-cta.svg" alt="" width={92} height={92} />
+              <img src="/dark/hero-cta.svg" alt="" width={92} height={92} className="submit-circle-desktop-img" />
+              {/* Mobile: the desktop image is a fixed-size circular asset that can't stretch into a
+                  full-width pill, so a plain icon + CSS background takes over there instead
+                  (see the max-width: 780px rules below). Hidden on desktop via CSS. */}
+              <span className="submit-circle-mobile-icon">
+                {analyzing ? <Loader2 size={20} className="spin" color="#FFFFFF" /> : <ArrowRight size={20} color="#FFFFFF" />}
+              </span>
               {analyzing && (
                 <span className="submit-spinner">
                   <Loader2 size={20} className="spin" color="#FFFFFF" />
