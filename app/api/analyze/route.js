@@ -3,6 +3,8 @@ import { computeLensScores } from "../../lib/lensScores";
 import { getCurrentUser, unauthorized } from "../../lib/requireUser";
 import { rateLimit, tooManyRequests } from "../../lib/rateLimit";
 import { readSecret, errorText } from "../../lib/secrets";
+import { reportsLimit } from "../../lib/plans";
+import { countReportsThisMonth } from "../../lib/usage";
 
 export const runtime = "nodejs";
 
@@ -310,14 +312,31 @@ export async function POST(req) {
     user = await getCurrentUser();
     if (!user) return unauthorized();
 
-    // Abuse guard, not the plan limit (that comes with billing): each analysis spends AI quota, and
-    // sign-up is free and instant. Generous enough that normal use never notices.
+    // Abuse guard: each analysis spends AI quota, and sign-up is free and instant. Generous
+    // enough that normal use never notices; the plan limit below is the real per-billing-month cap.
     for (const [key, opts] of [
       [`analyze:hour:${user.id}`, { limit: 15, windowSeconds: 3600 }],
       [`analyze:day:${user.id}`, { limit: 40, windowSeconds: 86400 }],
     ]) {
       const r = await rateLimit(key, opts);
       if (!r.allowed) return tooManyRequests(r);
+    }
+
+    // Plan limit, checked before the AI is ever called (so a blocked analysis doesn't burn quota).
+    // Counts scans actually saved this calendar month -- an analysis that fails after this point
+    // doesn't count against the limit, only a completed, saved report does.
+    const limit = reportsLimit(user);
+    if (limit !== null) {
+      const used = await countReportsThisMonth(user.email);
+      if (used >= limit) {
+        return Response.json(
+          {
+            error: `You've used all ${limit} reports included in your plan this month. It resets on the 1st, or you can upgrade for more.`,
+            code: "PLAN_LIMIT",
+          },
+          { status: 403 }
+        );
+      }
     }
 
     if (!readSecret("GEMINI_API_KEY") && !readSecret("OPENROUTER_API_KEY")) {

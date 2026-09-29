@@ -41,7 +41,7 @@ export default function AccountPage() {
   const [nameDraft, setNameDraft] = useState("");
   const [savingName, setSavingName] = useState(false);
   const [deleting, setDeleting] = useState(false);
-  const [pulseUsage, setPulseUsage] = useState(null); // { count, limit } | null while loading
+  const [usage, setUsage] = useState(null); // { reports, comparisons, pulse: {used, limit} } | null while loading
   const [subs, setSubs] = useState(null);
   const [unsubscribing, setUnsubscribing] = useState(null);
 
@@ -58,13 +58,13 @@ export default function AccountPage() {
 
   useEffect(() => {
     if (status !== "authenticated") return;
-    fetch("/api/pulse/monitors")
+    fetch("/api/account/usage")
       .then((r) => r.json())
       .then((d) => {
         if (d.error) throw new Error(d.error);
-        setPulseUsage({ count: (d.monitors || []).length, limit: d.limit });
+        setUsage(d);
       })
-      .catch(() => setPulseUsage(null)); // non-critical: the card below just falls back to a dash
+      .catch(() => setUsage(null)); // non-critical: the cards below just fall back to a dash
   }, [status]);
 
   useEffect(() => {
@@ -223,20 +223,10 @@ export default function AccountPage() {
         <div className="account-usage-grid">
           <div className="account-usage-item">
             <div className="account-usage-head"><FileText size={14} color="var(--muted)" />Reports</div>
-            <div className="account-usage-num"><span className="account-usage-current">3</span> / 10</div>
-            <div className="account-usage-bar"><div className="account-usage-fill" style={{ width: "30%" }} /></div>
-          </div>
-          <div className="account-usage-item">
-            <div className="account-usage-head"><GitCompare size={14} color="var(--muted)" />Comparisons</div>
-            <div className="account-usage-num"><span className="account-usage-current">1</span> / 5</div>
-            <div className="account-usage-bar"><div className="account-usage-fill" style={{ width: "20%" }} /></div>
-          </div>
-          <div className="account-usage-item">
-            <div className="account-usage-head"><Radio size={14} color="var(--muted)" />Pulse monitors</div>
             <div className="account-usage-num">
-              {pulseUsage ? (
+              {usage ? (
                 <>
-                  <span className="account-usage-current">{pulseUsage.count}</span> / {pulseUsage.limit ?? "∞"}
+                  <span className="account-usage-current">{usage.reports.used}</span> / {usage.reports.limit ?? "∞"}
                 </>
               ) : (
                 "—"
@@ -245,7 +235,43 @@ export default function AccountPage() {
             <div className="account-usage-bar">
               <div
                 className="account-usage-fill"
-                style={{ width: pulseUsage && pulseUsage.limit ? `${Math.min(100, (pulseUsage.count / pulseUsage.limit) * 100)}%` : "0%" }}
+                style={{ width: usage && usage.reports.limit ? `${Math.min(100, (usage.reports.used / usage.reports.limit) * 100)}%` : "0%" }}
+              />
+            </div>
+          </div>
+          <div className="account-usage-item">
+            <div className="account-usage-head"><GitCompare size={14} color="var(--muted)" />Comparisons</div>
+            <div className="account-usage-num">
+              {usage ? (
+                <>
+                  <span className="account-usage-current">{usage.comparisons.used}</span> / {usage.comparisons.limit ?? "∞"}
+                </>
+              ) : (
+                "—"
+              )}
+            </div>
+            <div className="account-usage-bar">
+              <div
+                className="account-usage-fill"
+                style={{ width: usage && usage.comparisons.limit ? `${Math.min(100, (usage.comparisons.used / usage.comparisons.limit) * 100)}%` : "0%" }}
+              />
+            </div>
+          </div>
+          <div className="account-usage-item">
+            <div className="account-usage-head"><Radio size={14} color="var(--muted)" />Pulse monitors</div>
+            <div className="account-usage-num">
+              {usage ? (
+                <>
+                  <span className="account-usage-current">{usage.pulse.used}</span> / {usage.pulse.limit ?? "∞"}
+                </>
+              ) : (
+                "—"
+              )}
+            </div>
+            <div className="account-usage-bar">
+              <div
+                className="account-usage-fill"
+                style={{ width: usage && usage.pulse.limit ? `${Math.min(100, (usage.pulse.used / usage.pulse.limit) * 100)}%` : "0%" }}
               />
             </div>
           </div>

@@ -2,6 +2,8 @@ import { sql } from "@vercel/postgres";
 import { ensureScansSchema, ensureComparisonsSchema } from "../../../lib/ensureScansSchema";
 import { getCurrentUser, unauthorized } from "../../../lib/requireUser";
 import { errorText } from "../../../lib/secrets";
+import { comparisonsLimit } from "../../../lib/plans";
+import { countComparisonsThisMonth } from "../../../lib/usage";
 
 export const runtime = "nodejs";
 
@@ -30,6 +32,22 @@ export async function POST(req) {
     `;
     if (owned.length !== wanted.length) {
       return Response.json({ error: "One of those reports wasn't found." }, { status: 404 });
+    }
+
+    // Plan limit, checked before writing the row: counts comparisons actually saved this
+    // calendar month.
+    const limit = comparisonsLimit(user);
+    if (limit !== null) {
+      const used = await countComparisonsThisMonth(user.email);
+      if (used >= limit) {
+        return Response.json(
+          {
+            error: `You've used all ${limit} comparison${limit === 1 ? "" : "s"} included in your plan this month. It resets on the 1st, or you can upgrade for more.`,
+            code: "PLAN_LIMIT",
+          },
+          { status: 403 }
+        );
+      }
     }
 
     const { rows } = await sql`
