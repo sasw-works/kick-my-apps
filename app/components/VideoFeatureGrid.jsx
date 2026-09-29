@@ -84,6 +84,7 @@ export default function VideoFeatureGrid() {
         .mkt-grid-dark-cell:hover .mkt-grid-dark-desc { color: rgba(255,255,255,0.75); }
         .mkt-grid-dark-cell:hover .mkt-grid-dark-headline { color: #FFFFFF; }
         @media (max-width: 1000px) {
+          .mkt-grid-dark-wrap { padding-left: 0; padding-right: 0; }
           .mkt-grid-dark-inner {
             display: grid; grid-template-columns: repeat(2, 1fr); max-width: 100%;
             border: none;
