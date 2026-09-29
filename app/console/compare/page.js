@@ -155,6 +155,14 @@ export default function ConsoleComparePage() {
         }
         .compare-cta-btn:disabled { opacity: 0.6; cursor: default; }
         .compare-error { color: var(--kick); font-size: 14px; text-align: center; margin-top: 12px; }
+        @media (max-width: 900px) {
+          /* Matches the Reports page's own mobile side margin (app/console/reports/page.js) so
+             Console pages are consistent with each other. */
+          .compare-page { padding: 48px 24px 120px; }
+          /* Cards were a fixed 2-column grid at every width; on mobile they're full-row-width,
+             one per line, like everywhere else in the Console. */
+          .compare-grid { grid-template-columns: 1fr; }
+        }
       `}</style>
 
       <div className="compare-header">
