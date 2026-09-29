@@ -39,6 +39,10 @@ export default function AppSidebar({ mobileOpen = false, onClose }) {
         .kma-sidebar-close { display: none; }
         @media (max-width: 900px) {
           .kma-sidebar {
+            /* 100vh can include the area behind Safari's own address/tab bar, which is what was
+               pushing the user row behind it. 100dvh tracks the actual visible viewport instead. */
+            height: 100dvh;
+            padding-bottom: 0;
             transform: translateX(-100%);
             transition: transform 0.25s ease;
             box-shadow: 20px 0 40px rgba(0,0,0,0.15);
@@ -65,6 +69,16 @@ export default function AppSidebar({ mobileOpen = false, onClose }) {
         .kma-sidebar-user {
           display: flex; align-items: center; gap: 12px; padding: 12px 8px 0;
           border-top: 1px solid var(--ink-3); margin-top: 12px;
+        }
+        @media (max-width: 900px) {
+          .kma-sidebar-user {
+            /* Genuinely pinned to the bottom of the visible panel (not just last in the flex
+               flow), and padded past the safe area so it clears the browser's own bottom bar /
+               home indicator on every screen size instead of sitting behind it. */
+            position: sticky; bottom: 0; z-index: 2;
+            background: var(--surface);
+            padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+          }
         }
         .kma-sidebar-avatar {
           width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;

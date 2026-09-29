@@ -21,6 +21,14 @@ export const metadata = {
   description: "AI-powered mobile app health report",
 };
 
+// viewport-fit=cover: without it, env(safe-area-inset-*) always resolves to 0, and content drawn
+// under the phone's home indicator / the browser's own bottom bar can't account for that space.
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`h-full antialiased ${inter.variable}`}>
