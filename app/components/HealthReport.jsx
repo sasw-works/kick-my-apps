@@ -899,6 +899,15 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
         .finding-filter-tab:hover { border-color: var(--brand); }
         .finding-filter-tab-active { background: var(--ink-3); border-color: var(--chalk); color: var(--chalk); font-weight: 400; }
         .finding-filter-count { font-family: var(--font-mono); font-size: 12px; opacity: 0.7; }
+        @media (max-width: 900px) {
+          /* All four tabs (All/Critical/Attention/Good) were ~358px wide together (gaps included)
+             against a ~310px available panel width, so "Good" wrapped to its own line. Trimming
+             padding, gap and font-size closes that gap -- tuned against double-digit counts
+             (e.g. "Attention 34"), not just the common single-digit case, since a big app's real
+             finding counts can easily reach two digits and the layout must not overflow then either. */
+          .finding-filter-tabs { flex-wrap: nowrap; gap: 3px; }
+          .finding-filter-tab { flex: 1 1 auto; min-width: 0; justify-content: center; gap: 3px; padding: 7px 6px; font-size: 11px; white-space: nowrap; }
+        }
         .empty-state { color: var(--muted); font-size: 14px; padding: 24px 0; text-align: center; }
         .lens-group { margin-bottom: 32px; }
         .lens-group:last-child { margin-bottom: 0; }
