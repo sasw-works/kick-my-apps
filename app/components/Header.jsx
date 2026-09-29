@@ -360,20 +360,24 @@ export default function Header() {
           .kma-mobile-panel, .kma-mobile-toggle { display: none !important; }
         }
         @media (max-width: 600px) {
-          .kma-header-logo svg { width: 260px; }
+          /* Everything from here down covers the whole phone range (this is where the hamburger
+             is already showing), not just the narrowest phones -- a 428-430px-wide phone (e.g.
+             iPhone Pro Max) falls in this bracket too, and the sign-in button needs the same
+             breathing room there as on a smaller phone. */
+          .kma-header-wrap { padding-left: 12px; padding-right: 20px; }
+          .kma-header-logo svg { width: 220px; }
           .kma-header-theme { display: none; }
           .kma-header-action { gap: 8px; }
           .kma-header-signin { width: auto; padding: 0 20px; }
         }
         @media (max-width: 400px) {
-          .kma-header-wrap { padding-left: 12px; padding-right: 12px; }
-          .kma-header-logo svg { width: 220px; }
           .kma-header-action { gap: 6px; }
           .kma-header-signin { padding: 0 16px; }
           .kma-mobile-toggle { width: 40px; height: 40px; }
+          .kma-header-logo svg { width: 200px; }
         }
         @media (max-width: 340px) {
-          .kma-header-logo svg { width: 190px; }
+          .kma-header-logo svg { width: 185px; }
         }
         @media (max-width: 330px) {
           .kma-header-logo svg { width: 165px; }

@@ -172,6 +172,9 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         }
 
         .upload-hero { text-align: center; margin-top: 150px; margin-bottom: 0; max-width: 1170px; position: relative; z-index: 1; }
+        @media (max-width: 720px) {
+          .upload-hero { margin-top: 40px; }
+        }
 
         .hero-title {
           font-family: var(--font-display);
@@ -337,6 +340,9 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         .upload-root-dark .upload-card:empty { display: none; }
         /* Figma "Hero" 4087:51 — 1170 wide, title starts 150px below the header */
         .upload-root-dark .upload-hero { text-align: center; margin-top: 150px; margin-bottom: 0; width: 100%; max-width: 1170px; position: relative; z-index: 1; }
+        @media (max-width: 720px) {
+          .upload-root-dark .upload-hero { margin-top: 40px; }
+        }
 
         /* 4086:44 — 90/85, -0.02em. Light mode: solid #1A2B3B. Dark mode: gradient text (below). */
         .upload-root-dark .hero-title {
