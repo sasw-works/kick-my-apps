@@ -60,63 +60,6 @@ const ALL_FEATURES = [
   { icon: Download, title: "PDF Export", desc: "Download your full report as a PDF and share it instantly.", color: "var(--yellow)", fill: "#F3C468", bgImage: null },
 ];
 
-const PRICING_PLANS = [
-  {
-    tier: "FREE",
-    name: "Free",
-    price: "€0",
-    priceNote: "Free forever",
-    desc: "For curious founders and designers testing the value of feedback intelligence.",
-    features: [
-      { text: "2 AI reports per month", included: true },
-      { text: "1 comparison report per month", included: true },
-      { text: "Share reports via link", included: true },
-      { text: "Pulse alerts", included: false },
-      { text: "PDF export", included: false },
-      { text: "Email support (48h response)", included: true },
-    ],
-    cta: "Get started free",
-    highlighted: false,
-  },
-  {
-    tier: "PRO",
-    name: "Pro",
-    priceMonthly: "€14",
-    priceMonthlyNote: "billed monthly",
-    priceAnnual: "€11",
-    priceAnnualNote: "€134/yr · billed annually",
-    priceSuffix: "/mo",
-    desc: "For PMs, UX leads, and founders who need continuous competitive intelligence.",
-    features: [
-      { text: "10 AI reports per month", included: true },
-      { text: "3 comparison reports per month", included: true },
-      { text: "Share reports via link", included: true },
-      { text: "2 Pulse monitors", included: true },
-      { text: "PDF export", included: true },
-      { text: "Priority email support (24h response)", included: true },
-    ],
-    cta: "Upgrade to Pro",
-    highlighted: true,
-  },
-  {
-    tier: "ENTERPRISE",
-    name: "Enterprise",
-    price: "Custom",
-    priceNote: "Tailored to your organization",
-    desc: "For teams and organizations that need custom limits, SSO, and integrations.",
-    features: [
-      { text: "Everything in Pro, unlimited", included: true, bold: true },
-      { text: "Unlimited seats", included: true },
-      { text: "SSO authentication", included: true },
-      { text: "Slack & Teams integration", included: true },
-      { text: "API access & data export", included: true },
-      { text: "Dedicated support", included: true },
-    ],
-    cta: "Contact Us",
-    highlighted: false,
-  },
-];
-
 const FAQ = [
   {
     q: "What data do you collect?",

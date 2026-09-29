@@ -11,8 +11,11 @@ export function planFor(/* user */) {
   return "free";
 }
 
-// null = unlimited (Infinity doesn't survive JSON).
+// null = unlimited (Infinity doesn't survive JSON). Admins are exempt from every plan limit here --
+// they need to freely test the product (including hitting limits deliberately, on a non-admin
+// account) without their own usage getting in the way.
 function limitFor(user, key) {
+  if (user?.isAdmin) return null;
   const n = PLAN_LIMITS[planFor(user)][key];
   return Number.isFinite(n) ? n : null;
 }
