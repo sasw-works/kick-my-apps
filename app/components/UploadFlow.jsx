@@ -501,31 +501,18 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
           .upload-root-dark .hero-input-row { flex-wrap: wrap; max-width: calc(100% - 20px); margin-left: auto; margin-right: auto; }
           .upload-root-dark .hero-search-anchor { flex: 1 1 100%; }
           .upload-root-dark .hero-search-pill,
-        .upload-root-dark .upload-pill { padding: 0 24px; }
+        .upload-root-dark .upload-pill { height: 72px; padding: 0 24px; }
           /* min-width: 0 overrides a flex item's default min-width:auto, which otherwise refuses
              to shrink the pill below its label's natural (nowrap) width -- on very narrow phones
              ("Upload screens" + icon + padding) that natural width is wider than the row itself,
              which pushed this pill out of alignment with the search box and submit button above
              it. The label gets its own overflow:hidden/ellipsis so if it still doesn't fit, it
              truncates instead of spilling out of the pill. */
-          .upload-root-dark .upload-pill { flex: 1; width: auto; min-width: 0; }
+          .upload-root-dark .upload-pill { flex: 1 1 100%; width: auto; min-width: 0; }
           .upload-root-dark .upload-pill-label { overflow: hidden; text-overflow: ellipsis; }
-
-          /* Submit button: on desktop this is a fixed 92x92 circular image asset (an arrow on a
-             disc) that sits beside the search box. That asset can't stretch into a wide pill, so
-             on mobile it steps aside for a plain icon on a CSS background instead -- matching the
-             search pill's own width, height, and pill shape (not round) as requested. */
-          .upload-root-dark .submit-circle {
-            flex: 1 1 100%;
-            width: 100%;
-            height: 92px;
-            border-radius: 999px;
-            background: var(--blue-100);
-          }
-          .upload-root-dark .submit-circle:disabled { background: var(--ink-3); opacity: 1; }
-          .upload-root-dark .submit-circle img.submit-circle-desktop-img { display: none; }
-          .upload-root-dark .submit-circle-mobile-icon { display: flex; align-items: center; justify-content: center; }
-          .upload-root-dark .submit-spinner { display: none; }
+          /* Submit button stays exactly as on desktop: the fixed 92x92 circular image asset,
+             centred on its own line by the same flex-wrap as above (search and upload already
+             fill their own rows, leaving no room beside this one). */
         }
 
 
