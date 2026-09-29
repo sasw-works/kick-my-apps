@@ -42,6 +42,8 @@ export default function AccountPage() {
   const [savingName, setSavingName] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [pulseUsage, setPulseUsage] = useState(null); // { count, limit } | null while loading
+  const [subs, setSubs] = useState(null);
+  const [unsubscribing, setUnsubscribing] = useState(null);
 
   useEffect(() => {
     if (status !== "authenticated") return;
@@ -64,6 +66,31 @@ export default function AccountPage() {
       })
       .catch(() => setPulseUsage(null)); // non-critical: the card below just falls back to a dash
   }, [status]);
+
+  useEffect(() => {
+    if (status !== "authenticated") return;
+    fetch("/api/subscribe")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.error) throw new Error(d.error);
+        setSubs(d.subscriptions);
+      })
+      .catch(() => setSubs([])); // non-critical: falls back to the empty-state message
+  }, [status]);
+
+  async function unsubscribe(id) {
+    setUnsubscribing(id);
+    try {
+      const res = await fetch(`/api/subscribe?id=${id}`, { method: "DELETE" });
+      const d = await res.json();
+      if (d.error) throw new Error(d.error);
+      setSubs((prev) => prev.filter((s) => s.id !== id));
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setUnsubscribing(null);
+    }
+  }
 
   async function saveName() {
     setSavingName(true);
@@ -226,6 +253,37 @@ export default function AccountPage() {
         <div className="account-usage-note">Usage resets monthly. Current billing period started the 1st.</div>
       </div>
 
+      {/* Subscriptions */}
+      <div className="account-card">
+        <div className="account-card-head">
+          <Mail size={16} color="var(--muted)" />
+          <span>Weekly Review Summaries</span>
+        </div>
+        {subs === null ? (
+          <div className="account-subs-loading"><Loader2 size={16} className="spin" /></div>
+        ) : subs.length === 0 ? (
+          <p className="account-subs-empty">
+            No subscriptions yet. Subscribe to an app from its report page to get a weekly email summary of new reviews.
+          </p>
+        ) : (
+          <div className="account-subs-list">
+            {subs.map((s) => (
+              <div className="account-subs-row" key={s.id}>
+                <span className="account-subs-name">{s.app_name}</span>
+                <button
+                  type="button"
+                  className="account-subs-remove"
+                  onClick={() => unsubscribe(s.id)}
+                  disabled={unsubscribing === s.id}
+                >
+                  {unsubscribing === s.id ? <Loader2 size={13} className="spin" /> : "Unsubscribe"}
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
       {/* Contact */}
       <a href="mailto:support@kickmyapps.com" className="account-link-card">
         <MessageCircle size={16} color="var(--muted)" />
@@ -316,6 +374,22 @@ const accountStyles = `
   .account-usage-bar { height: 5px; border-radius: 999px; background: var(--ink-3); overflow: hidden; }
   .account-usage-fill { height: 100%; background: var(--blue-100); border-radius: 999px; }
   .account-usage-note { font-size: 12px; color: var(--muted); margin-top: 16px; }
+
+  .account-subs-loading { padding: 4px 0; }
+  .account-subs-empty { font-size: 13px; color: var(--muted); line-height: 1.6; margin: 0; }
+  .account-subs-list { display: flex; flex-direction: column; }
+  .account-subs-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 12px 0; border-top: 1px solid var(--ink-3);
+  }
+  .account-subs-row:first-child { border-top: none; padding-top: 0; }
+  .account-subs-name { font-size: 14px; color: var(--chalk); font-weight: 500; }
+  .account-subs-remove {
+    flex-shrink: 0; background: transparent; border: 1px solid var(--ink-3); border-radius: 999px;
+    padding: 6px 14px; font-size: 12.5px; font-weight: 600; color: var(--muted); cursor: pointer;
+  }
+  .account-subs-remove:hover { color: var(--kick); border-color: color-mix(in srgb, var(--kick) 40%, transparent); }
+  .account-subs-remove:disabled { opacity: 0.6; cursor: default; }
 
   .account-link-card {
     display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--ink-3);

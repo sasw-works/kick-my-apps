@@ -1,6 +1,7 @@
 import { sql } from "@vercel/postgres";
 import { fetchAppStoreReviews, computeReviewAnalytics } from "../../../lib/reviews";
 import { readSecret, errorText } from "../../../lib/secrets";
+import { ensureSubscriptionsTable, backfillMissingTokens } from "../../../lib/subscriptionsSchema";
 
 export const runtime = "nodejs";
 
@@ -21,7 +22,7 @@ async function sendEmail({ to, subject, html }) {
   return res.json();
 }
 
-function buildDigestHtml({ appName, analytics }) {
+function buildDigestHtml({ appName, analytics, unsubscribeUrl }) {
   const stars = "★".repeat(Math.round(analytics.avgRating)) + "☆".repeat(5 - Math.round(analytics.avgRating));
   const distributionRows = analytics.ratingDistribution
     .slice()
@@ -50,7 +51,10 @@ function buildDigestHtml({ appName, analytics }) {
           View Full Analysis
         </a>
       </p>
-      <p style="color:#9AA2B1;font-size: 11px;margin-top: 24px;">You're receiving this email because you're tracking this app on Kick My Apps.</p>
+      <p style="color:#9AA2B1;font-size: 11px;margin-top: 24px;">
+        You're receiving this email because you're tracking this app on Kick My Apps.
+        <a href="${unsubscribeUrl}" style="color:#9AA2B1;text-decoration:underline;">Unsubscribe</a>
+      </p>
     </div>
   `;
 }
@@ -66,6 +70,8 @@ export async function GET(req) {
   }
 
   try {
+    await ensureSubscriptionsTable();
+    await backfillMissingTokens();
     const { rows: subs } = await sql`SELECT * FROM subscriptions;`;
 
     const byApp = {};
@@ -83,9 +89,14 @@ export async function GET(req) {
           continue;
         }
         const analytics = computeReviewAnalytics(reviews);
-        const html = buildDigestHtml({ appName: subscribers[0].app_name, analytics });
 
         for (const sub of subscribers) {
+          // Every recipient gets a link with their OWN token: opting out has to remove that one
+          // person's subscription, not the whole batch (they may not even be the only person
+          // watching this app).
+          const canonicalHost = process.env.CANONICAL_HOST || "kick-my-apps.vercel.app";
+          const unsubscribeUrl = `https://${canonicalHost}/unsubscribe?token=${sub.unsubscribe_token}`;
+          const html = buildDigestHtml({ appName: subscribers[0].app_name, analytics, unsubscribeUrl });
           await sendEmail({
             to: sub.email,
             subject: `${sub.app_name} — Weekly Review Summary`,
