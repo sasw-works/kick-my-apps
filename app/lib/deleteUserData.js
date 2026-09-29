@@ -25,6 +25,10 @@ export async function deleteUserData({ id, email }) {
   await ignoreMissingTable(() => sql`DELETE FROM scans WHERE user_email = ${email}`);
   await ignoreMissingTable(() => sql`DELETE FROM comparisons WHERE user_email = ${email}`);
   await ignoreMissingTable(() => sql`DELETE FROM subscriptions WHERE email = ${email}`);
+  // Cascades to that monitor's own pulse_snapshots/pulse_reviews/pulse_alerts rows (all three
+  // reference pulse_monitors.id ON DELETE CASCADE) -- deleting anything that references user_email
+  // is not enough on its own, since those three tables key off monitor_id, not the email directly.
+  await ignoreMissingTable(() => sql`DELETE FROM pulse_monitors WHERE user_email = ${email}`);
   await ignoreMissingTable(() => sql`DELETE FROM email_codes WHERE email = ${email}`);
   await sql`DELETE FROM users WHERE id = ${id}`;
 }

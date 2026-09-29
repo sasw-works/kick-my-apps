@@ -28,6 +28,11 @@ def signin(email,code="123456"):
     r=c.getresponse(); r.read(); ck2=r.msg.get_all("Set-Cookie") or []; c.close()
     return next((x.split(";")[0] for x in ck2 if x.startswith("authjs.session-token")),None)
 
+def seed_scan(email, name):
+    # Bypasses /api/history's own report-limit check on purpose: this is test setup (we need scans
+    # to exist so we can test the COMPARISONS limit), not a test of the reports limit itself.
+    return psql(f"insert into scans (app_name, health_score, user_email, result_json) values ('{name}', 70, '{email}', '{{}}') returning id")
+
 def mk_scan(cookie, name):
     rj = {"healthScore": 70, "findings": []}
     st,js,_=req("POST","/api/history",cookie=cookie,body={"appName":name,"healthScore":70,"badCount":1,"warnCount":0,"good_count":0,"goodCount":0,"resultJson":rj,"storeUrl":""})
@@ -62,7 +67,7 @@ check("the message is a real sentence, not a code", "report" in js3["error"].low
 check("bob is completely unaffected by alice's usage (owner-scoped)", req("POST","/api/analyze",cookie=BOB,form={"appName":"x"})[1].get("code") != "PLAN_LIMIT")
 
 print("== 2. comparisons limit (Free plan: 1/month) ==")
-a1 = mk_scan(ALICE,"CompareA"); a2 = mk_scan(ALICE,"CompareB"); a3 = mk_scan(ALICE,"CompareC")
+a1 = seed_scan("alice@x.com","CompareA"); a2 = seed_scan("alice@x.com","CompareB"); a3 = seed_scan("alice@x.com","CompareC")
 check("(setup) three scans created for alice", all([a1,a2,a3]))
 st,js,_=req("POST","/api/history/compare",cookie=ALICE,body={"scanIdA":a1,"scanIdB":a2,"appNameA":"A","appNameB":"B"})
 check("comparison #1 (under the limit of 1) succeeds", st==200 and js.get("id"), f"{st} {js}")
@@ -81,9 +86,9 @@ check("comparisons: same reset applies", st==200 and js.get("id"), f"{st} {js}")
 
 print("== 4. /api/account/usage reports real, current numbers ==")
 for t in ["scans","comparisons"]: psql(f"TRUNCATE {t} RESTART IDENTITY CASCADE")
-mk_scan(ALICE,"U1"); mk_scan(ALICE,"U2")
-a1=mk_scan(ALICE,"U3"); a2=mk_scan(ALICE,"U4")
-req("POST","/api/history/compare",cookie=ALICE,body={"scanIdA":a1,"scanIdB":a2,"appNameA":"U3","appNameB":"U4"})
+seed_scan("alice@x.com","U1"); seed_scan("alice@x.com","U2")
+a1=seed_scan("alice@x.com","U3"); a2=seed_scan("alice@x.com","U4")
+psql(f"insert into comparisons (scan_id_a,scan_id_b,app_name_a,app_name_b,user_email) values ({a1},{a2},'U3','U4','alice@x.com')")
 st,js,_=req("GET","/api/account/usage",cookie=ALICE)
 check("reports used = 4, limit = 2 (Free)", js["reports"]=={"used":4,"limit":2}, str(js))
 check("comparisons used = 1, limit = 1 (Free)", js["comparisons"]=={"used":1,"limit":1}, str(js))

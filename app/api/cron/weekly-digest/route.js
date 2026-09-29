@@ -22,7 +22,7 @@ async function sendEmail({ to, subject, html }) {
   return res.json();
 }
 
-function buildDigestHtml({ appName, analytics, unsubscribeUrl }) {
+function buildDigestHtml({ appName, analytics, unsubscribeUrl, homeUrl }) {
   const stars = "★".repeat(Math.round(analytics.avgRating)) + "☆".repeat(5 - Math.round(analytics.avgRating));
   const distributionRows = analytics.ratingDistribution
     .slice()
@@ -47,7 +47,7 @@ function buildDigestHtml({ appName, analytics, unsubscribeUrl }) {
       <table>${distributionRows}</table>
       ${negativeBlock}
       <p style="margin-top: 24px;">
-        <a href="https://kick-my-apps.vercel.app" style="background:#F5433A;color:#fff;padding: 12px 16px;border-radius: 999px;text-decoration:none;font-size: 14px;">
+        <a href="${homeUrl}" style="background:#F5433A;color:#fff;padding: 12px 16px;border-radius: 999px;text-decoration:none;font-size: 14px;">
           View Full Analysis
         </a>
       </p>
@@ -96,7 +96,7 @@ export async function GET(req) {
           // watching this app).
           const canonicalHost = process.env.CANONICAL_HOST || "kick-my-apps.vercel.app";
           const unsubscribeUrl = `https://${canonicalHost}/unsubscribe?token=${sub.unsubscribe_token}`;
-          const html = buildDigestHtml({ appName: subscribers[0].app_name, analytics, unsubscribeUrl });
+          const html = buildDigestHtml({ appName: subscribers[0].app_name, analytics, unsubscribeUrl, homeUrl: `https://${canonicalHost}` });
           await sendEmail({
             to: sub.email,
             subject: `${sub.app_name} — Weekly Review Summary`,

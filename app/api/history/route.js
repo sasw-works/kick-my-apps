@@ -3,6 +3,8 @@ import { fetchAppStoreListing } from "../../lib/reviews";
 import { ensureScansSchema, ensureComparisonsSchema } from "../../lib/ensureScansSchema";
 import { getCurrentUser, unauthorized } from "../../lib/requireUser";
 import { errorText } from "../../lib/secrets";
+import { reportsLimit } from "../../lib/plans";
+import { countReportsThisMonth } from "../../lib/usage";
 
 export const runtime = "nodejs";
 
@@ -20,6 +22,23 @@ export async function POST(req) {
 
     if (!appName || typeof healthScore !== "number") {
       return Response.json({ error: "appName and healthScore are required." }, { status: 400 });
+    }
+
+    // /api/analyze already checks this before spending AI quota, but the actual report is only
+    // created here -- so this is the check that actually guarantees the plan limit, in case
+    // anything ever calls this endpoint directly without going through /api/analyze first.
+    const limit = reportsLimit(user);
+    if (limit !== null) {
+      const used = await countReportsThisMonth(user.email);
+      if (used >= limit) {
+        return Response.json(
+          {
+            error: `You've used all ${limit} reports included in your plan this month. It resets on the 1st, or you can upgrade for more.`,
+            code: "PLAN_LIMIT",
+          },
+          { status: 403 }
+        );
+      }
     }
 
     const normalized = appName.trim();
