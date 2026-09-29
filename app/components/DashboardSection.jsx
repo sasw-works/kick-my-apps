@@ -17,6 +17,9 @@ export default function DashboardSection() {
           aspect-ratio: 1600 / 978;
           margin: 150px auto 0;
         }
+        @media (max-width: 780px) {
+          .kma-dashboard { margin-top: 48px; }
+        }
         /* 4155:193 — 996x426 at (87, 260.19), blur 50, 5 stops @ 25% */
         .kma-dashboard-shadow {
           position: absolute;
