@@ -691,6 +691,12 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
         .kma-close-btn:hover { background: var(--ink-3); border-color: var(--brand); color: var(--brand); }
 
         .kma-main { padding: 24px 32px 32px; display: flex; flex-direction: column; gap: 32px; }
+        @media (max-width: 700px) {
+          /* The page wrapper (page.js) already contributes 16px of its own on mobile; this is the
+             only other layer between the screen edge and the cards, so it drops to 0 here rather
+             than stacking on top of that 16px. */
+          .kma-main { padding-left: 0; padding-right: 0; }
+        }
 
         .upload-panel {
           background: var(--surface);
