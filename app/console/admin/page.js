@@ -223,8 +223,15 @@ const adminStyles = `
   .admin-scan-date { color: var(--muted); width: 110px; text-align: right; }
   @media (max-width: 700px) {
     .admin-page { padding: 24px 16px; }
-    .admin-user-row { flex-wrap: wrap; }
-    .admin-user-meta { width: 100%; padding-left: 50px; box-sizing: border-box; gap: 20px; }
+    .admin-user-row { flex-wrap: wrap; row-gap: 34px; }
+    /* Delete button moves up beside the avatar/name (order + a forced line break on the meta
+       row below), instead of wrapping down on its own -- same technique as the report toolbar's
+       close button: info's max-width leaves exactly enough room for the delete button + the gap
+       on either side of it, so it never grows wide enough to push delete to the next line. */
+    .admin-avatar, .admin-avatar-img { order: 1; }
+    .admin-user-info { order: 2; max-width: calc(100% - 130px); }
+    .admin-delete-btn { order: 3; }
+    .admin-user-meta { order: 4; width: 100%; padding-left: 50px; box-sizing: border-box; gap: 20px; justify-content: space-between; }
     .admin-scans { padding-left: 16px; }
   }
 `;
