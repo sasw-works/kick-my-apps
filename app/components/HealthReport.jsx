@@ -905,8 +905,11 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
              padding, gap and font-size closes that gap -- tuned against double-digit counts
              (e.g. "Attention 34"), not just the common single-digit case, since a big app's real
              finding counts can easily reach two digits and the layout must not overflow then either. */
-          .finding-filter-tabs { flex-wrap: nowrap; gap: 3px; }
-          .finding-filter-tab { flex: 1 1 auto; min-width: 0; justify-content: center; gap: 3px; padding: 7px 6px; font-size: 11px; white-space: nowrap; }
+          .finding-filter-tabs { flex-wrap: nowrap; gap: 6px; width: 100%; }
+          .finding-filter-tab { flex: 1 1 auto; min-width: 0; justify-content: center; gap: 4px; padding: 8px 8px; font-size: 12px; white-space: nowrap; }
+          /* This divider only ever sat between the Findings header and its filter tabs -- the
+             other four .panel-divider uses elsewhere on this page are untouched. */
+          .findings-panel-divider { display: none; }
         }
         .empty-state { color: var(--muted); font-size: 14px; padding: 24px 0; text-align: center; }
         .lens-group { margin-bottom: 32px; }
@@ -1329,7 +1332,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
               </button>
             </div>
           </div>
-          <div className="panel-divider" style={{ marginBottom: 51 }} />
+          <div className="panel-divider findings-panel-divider" style={{ marginBottom: 51 }} />
           {(() => {
             const filteredFindings = findingFilter === "all" ? findings : findings.filter((f) => f.status === findingFilter);
             if (filteredFindings.length === 0) {
