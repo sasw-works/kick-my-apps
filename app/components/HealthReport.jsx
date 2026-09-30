@@ -1038,6 +1038,16 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
         .subscribe-btn:disabled { opacity: 0.6; cursor: default; }
         .subscribe-done { font-size: 14px; color: var(--teal); font-weight: 600; }
         .subscribe-error { width: 100%; font-size: 12px; color: var(--kick); margin-top: 8px; }
+        @media (max-width: 700px) {
+          /* Icon moves above the title (its own line, forced by flex-basis:100%) instead of
+             sitting beside it, and the button fills the box's full width below the text --
+             flex order + forced line breaks, same technique used elsewhere on this page, so
+             desktop (where none of this applies) keeps its original single-row layout. */
+          .subscribe-icon { order: 1; }
+          .subscribe-text { order: 2; flex-basis: 100%; min-width: 0; }
+          .subscribe-form-row { order: 3; width: 100%; }
+          .subscribe-btn { flex: 1; }
+        }
 
         .soon-row {
           display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
