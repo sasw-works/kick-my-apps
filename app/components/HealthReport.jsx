@@ -18,7 +18,6 @@ import {
   MessageSquare,
   ChevronDown,
   X,
-  Lock,
   CheckCircle2,
   AlertTriangle,
   XCircle,
@@ -114,11 +113,6 @@ const REVIEW_STATS = {
     "Clarify error messages in the login flow.",
   ],
 };
-
-const COMING_SOON = [
-  { title: "Competitor Intelligence", desc: "Comparative analysis against competitor apps." },
-  { title: "Runtime Performance Monitoring", desc: "Real-time launch time and memory tracking via SDK." },
-];
 
 const STATUS_META = {
   good: { color: "var(--teal)", Icon: CheckCircle2, label: "No issue" },
@@ -1052,13 +1046,6 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
           .subscribe-btn { flex: 1; }
         }
 
-        .soon-row {
-          display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
-          font-size: 12px; color: var(--muted); padding-top: 4px;
-        }
-        .soon-label { font-family: var(--font-mono); letter-spacing: 0.1em; font-size: 12px; margin-right: 4px; }
-        .soon-item { display: inline-flex; align-items: center; gap: 4px; }
-        .soon-dot { margin-left: 8px; opacity: 0.6; }
         .soon-badge { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; color: var(--muted); border: 1px solid var(--ink-3); padding: 2px 8px; border-radius: 4px; }
       `}</style>
 
@@ -1519,23 +1506,6 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
         )}
 
         {storeUrl && <SubscribeForm appName={appLabel} storeUrl={storeUrl} />}
-
-        <div className="soon-row">
-          <span className="soon-label">Soon</span>
-          {COMING_SOON.map((s, i) => (
-            <span key={s.title} className="soon-item">
-              <Lock size={11} color="var(--muted)" />
-              {s.title}
-              {i < COMING_SOON.length - 1 && <span className="soon-dot">·</span>}
-            </span>
-          ))}
-        </div>
-
-        {data?._provider && (
-          <div style={{ marginTop: 24, fontSize: 11, color: "var(--muted)", opacity: 0.5, textAlign: "center" }}>
-            Analysis engine: {data._provider}
-          </div>
-        )}
       </div>
     </div>
   );
