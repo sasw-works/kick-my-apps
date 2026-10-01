@@ -25,12 +25,12 @@ const FEATURES = [
 
 const PLANS = [
   {
-    tag: "Starter",
+    tag: "Freemium",
     key: "starter",
     monthly: { price: "€0", duration: "Free forever" },
     yearly: { price: "€0", duration: "Free forever" },
     desc: "For curious founders and designers testing the value of feedback intelligence.",
-    cta: "Get started free",
+    cta: "Choose Freemium",
     ctaStyle: "glass",
     ctaAction: "signup",
     highlight: false,
@@ -41,7 +41,7 @@ const PLANS = [
     monthly: { price: "€12", duration: "/ month" },
     yearly: { price: "€8", duration: "/ month" },
     desc: "For PMs, UX leads, and founders who need continuous competitive intelligence.",
-    cta: "Upgrade to Pro",
+    cta: "Choose Professional",
     ctaStyle: "solid",
     ctaAction: "signup",
     highlight: true,
