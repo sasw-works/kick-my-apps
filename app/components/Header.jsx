@@ -139,7 +139,33 @@ export default function Header() {
   const [openMenu, setOpenMenu] = useState(null); // "features" | "usecases" | "resources" | null
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileSection, setMobileSection] = useState(null);
+  const [headerHidden, setHeaderHidden] = useState(false);
   const closeTimer = useRef(null);
+  const lastScrollY = useRef(0);
+
+  // Hide the header on scroll-down, reveal it again on scroll-up or near the top.
+  useEffect(() => {
+    lastScrollY.current = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      const diff = y - lastScrollY.current;
+      if (y < 80) {
+        setHeaderHidden(false);
+      } else if (diff > 4) {
+        setHeaderHidden(true);
+      } else if (diff < -4) {
+        setHeaderHidden(false);
+      }
+      lastScrollY.current = y;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Never hide the header while a menu is open underneath it.
+  useEffect(() => {
+    if (mobileOpen || openMenu) setHeaderHidden(false);
+  }, [mobileOpen, openMenu]);
 
   const openWithDelay = (key) => {
     if (closeTimer.current) {
@@ -178,7 +204,7 @@ export default function Header() {
   ];
 
   return (
-    <div className="kma-header-wrap">
+    <div className={`kma-header-wrap${headerHidden ? " kma-header-wrap-hidden" : ""}`}>
       <style>{`
         /* Figma "Header" 4071:585 — 1170x100, sits 50px from the top of the page. */
         .kma-header-wrap {
@@ -189,6 +215,14 @@ export default function Header() {
           margin-bottom: -64px; /* the 64px is only room for the blur fade; hero starts 150px below the header */
           pointer-events: none;
           background: transparent;
+          transform: translateY(0);
+          transition: transform 0.3s ease;
+        }
+        .kma-header-wrap-hidden {
+          transform: translateY(-100%);
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .kma-header-wrap { transition: none; }
         }
         .kma-header-blur-bg {
           position: absolute; inset: 0; z-index: 0;
