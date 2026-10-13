@@ -20,26 +20,46 @@ export default function DashboardSection() {
         @media (max-width: 780px) {
           .kma-dashboard { margin-top: 48px; }
         }
-        /* 4155:193 — 996x426 at (87, 260.19), blur 50, 5 stops @ 25% */
+        /* originally 4155:193 — a single blurred glow sitting under the card; now wraps all
+           4 sides as an animated rainbow aura peeking out from behind the card's edges. */
         .kma-dashboard-shadow {
           position: absolute;
-          left: 7.436%;
-          top: 37.170%;
-          width: 85.128%;
-          height: 60.857%;
-          filter: blur(50px);
-          background-image: linear-gradient(90deg,
-            rgba(68, 255, 154, 0.25) 0.54765%,
-            rgba(68, 176, 255, 0.25) 22.864%,
-            rgba(139, 68, 255, 0.25) 48.357%,
-            rgba(255, 102, 68, 0.25) 73.33%,
-            rgba(235, 255, 112, 0.25) 99.343%);
+          inset: -36px;
+          border-radius: 28px;
+          background-image: linear-gradient(120deg,
+            rgba(68, 255, 154, 0.38) 0%,
+            rgba(68, 176, 255, 0.38) 25%,
+            rgba(139, 68, 255, 0.38) 50%,
+            rgba(255, 102, 68, 0.38) 75%,
+            rgba(235, 255, 112, 0.38) 100%);
+          background-size: 220% 220%;
+          filter: blur(50px) hue-rotate(0deg);
+          animation: kma-glow-pan 14s ease-in-out infinite, kma-glow-hue 18s linear infinite;
           pointer-events: none;
+          z-index: 0;
+        }
+        @keyframes kma-glow-pan {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+        @keyframes kma-glow-hue {
+          0% { filter: blur(50px) hue-rotate(0deg); }
+          100% { filter: blur(50px) hue-rotate(360deg); }
+        }
+        @media (max-width: 780px) {
+          .kma-dashboard-shadow { inset: -20px; border-radius: 20px; }
+        }
+        @media (max-width: 480px) {
+          .kma-dashboard-shadow { inset: -12px; border-radius: 16px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .kma-dashboard-shadow { animation: none; }
         }
         /* 4155:194 */
         .kma-dashboard-card {
           position: absolute;
           inset: 0;
+          z-index: 1;
           background: ${light ? "#EFF1F4" : "#17181F"};
           border-radius: 8px;
           overflow: hidden;
