@@ -24,17 +24,17 @@ export default function DashboardSection() {
            4 sides as an animated rainbow aura peeking out from behind the card's edges. */
         .kma-dashboard-shadow {
           position: absolute;
-          inset: -36px;
-          border-radius: 28px;
+          inset: -64px;
+          border-radius: 36px;
           background-image: linear-gradient(120deg,
             rgba(68, 255, 154, 0.38) 0%,
             rgba(68, 176, 255, 0.38) 25%,
             rgba(139, 68, 255, 0.38) 50%,
             rgba(255, 102, 68, 0.38) 75%,
             rgba(235, 255, 112, 0.38) 100%);
-          background-size: 220% 220%;
-          filter: blur(50px) hue-rotate(0deg);
-          animation: kma-glow-pan 14s ease-in-out infinite, kma-glow-hue 18s linear infinite;
+          background-size: 300% 300%;
+          filter: blur(64px) hue-rotate(0deg);
+          animation: kma-glow-pan 8s ease-in-out infinite, kma-glow-hue 11s linear infinite;
           pointer-events: none;
           z-index: 0;
         }
@@ -43,14 +43,17 @@ export default function DashboardSection() {
           50% { background-position: 100% 50%; }
         }
         @keyframes kma-glow-hue {
-          0% { filter: blur(50px) hue-rotate(0deg); }
-          100% { filter: blur(50px) hue-rotate(360deg); }
+          0% { filter: blur(64px) hue-rotate(0deg); }
+          100% { filter: blur(64px) hue-rotate(360deg); }
+        }
+        /* The side gutter around .kma-dashboard-card is exactly 16px below 780px, 32px from
+           780px up to ~1298px, and only opens up past that — so the glow's inset is capped to
+           what's actually available at each tier, or it would push a real horizontal scrollbar. */
+        @media (max-width: 1298px) {
+          .kma-dashboard-shadow { inset: -28px; border-radius: 24px; }
         }
         @media (max-width: 780px) {
-          .kma-dashboard-shadow { inset: -20px; border-radius: 20px; }
-        }
-        @media (max-width: 480px) {
-          .kma-dashboard-shadow { inset: -12px; border-radius: 16px; }
+          .kma-dashboard-shadow { inset: -14px; border-radius: 18px; }
         }
         @media (prefers-reduced-motion: reduce) {
           .kma-dashboard-shadow { animation: none; }
