@@ -34,6 +34,7 @@ export default function DashboardSection() {
             rgba(235, 255, 112, 0.38) 100%);
           background-size: 300% 300%;
           filter: blur(64px) hue-rotate(0deg);
+          opacity: 0.5;
           animation: kma-glow-pan 8s ease-in-out infinite, kma-glow-hue 11s linear infinite;
           pointer-events: none;
           z-index: 0;
