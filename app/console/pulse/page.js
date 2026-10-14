@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import Link from "next/link";
 import {
-  Bell, Plus, MoreHorizontal, X, Loader2, Search, Pause, Play, RefreshCw, Trash2, ChevronRight,
+  Bell, Plus, MoreHorizontal, X, Loader2, Search, Pause, Play, RefreshCw, Trash2, ChevronRight, ChevronDown,
 } from "lucide-react";
 
 const COUNTRIES = [
@@ -430,6 +430,12 @@ function AddMonitorModal({ onClose, onAdded }) {
           width: 100%; height: 44px; border-radius: 10px; border: 1px solid var(--ink-3); background: var(--ink);
           color: var(--chalk); font-size: 14px; padding: 0 12px; box-sizing: border-box; font-family: inherit;
         }
+        .pulse-select-wrap { position: relative; }
+        .pulse-modal-select {
+          appearance: none; -webkit-appearance: none;
+          padding-right: 36px;
+        }
+        .pulse-select-chevron { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
         .pulse-search-wrap { position: relative; }
         .pulse-search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); }
         .pulse-modal-input { padding-left: 36px; }
@@ -456,11 +462,14 @@ function AddMonitorModal({ onClose, onAdded }) {
         </div>
 
         <div className="pulse-modal-label">Store</div>
-        <select className="pulse-modal-select" value={country} onChange={(e) => { setCountry(e.target.value); setSelected(null); }}>
-          {COUNTRIES.map((c) => (
-            <option key={c.code} value={c.code}>{c.label}</option>
-          ))}
-        </select>
+        <div className="pulse-select-wrap">
+          <select className="pulse-modal-select" value={country} onChange={(e) => { setCountry(e.target.value); setSelected(null); }}>
+            {COUNTRIES.map((c) => (
+              <option key={c.code} value={c.code}>{c.label}</option>
+            ))}
+          </select>
+          <ChevronDown size={16} className="pulse-select-chevron" />
+        </div>
 
         <div className="pulse-modal-label">App</div>
         <div className="pulse-search-wrap">
