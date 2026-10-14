@@ -149,7 +149,7 @@ export default function ConsolePulsePage() {
         .pulse-page { padding: 48px 48px 120px; max-width: 1240px; margin: 0 auto; }
         .pulse-header { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 12px; flex-wrap: wrap; }
         .pulse-title { margin: 0; font-family: var(--font-inter), sans-serif; font-size: 42px; line-height: 57.6px; font-weight: 400; color: var(--chalk); }
-        .pulse-subtitle { margin: 0; font-size: var(--fs-18); line-height: 28px; font-weight: 400; color: var(--muted); max-width: 560px; }
+        .pulse-subtitle { margin: 0; font-size: var(--fs-18); line-height: 28px; font-weight: 400; color: var(--muted); white-space: nowrap; }
         .pulse-add-btn {
           display: flex; align-items: center; gap: 8px; background: var(--brand); color: #fff;
           border: none; border-radius: 999px; padding: 12px 24px; font-size: 14px; font-weight: 600; cursor: pointer;
@@ -217,6 +217,9 @@ export default function ConsolePulsePage() {
         @media (max-width: 900px) {
           .pulse-card { flex-wrap: wrap; }
         }
+        @media (max-width: 560px) {
+          .pulse-subtitle { white-space: normal; }
+        }
         @media (max-width: 640px) {
           .pulse-card { padding: 16px; flex-direction: column; align-items: stretch; gap: 12px; }
           .pulse-card-top { display: flex; align-items: center; gap: 14px; width: 100%; }
@@ -236,7 +239,7 @@ export default function ConsolePulsePage() {
       <div className="pulse-header">
         <div>
           <div className="pulse-title">Monitor</div>
-          <div className="pulse-subtitle">Track your apps for new reviews, rating shifts, and version updates — automatically, in the background.</div>
+          <div className="pulse-subtitle">Track new reviews, rating shifts, and version updates — automatically.</div>
         </div>
         <button className="pulse-add-btn" onClick={() => setShowAdd(true)} disabled={atLimit}>
           <Plus size={16} />
