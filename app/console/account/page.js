@@ -173,6 +173,25 @@ export default function AccountPage() {
     }
   }
 
+  async function handleRemoveAvatar() {
+    if (!confirm("Remove your profile photo?")) return;
+    setUploadingAvatar(true);
+    try {
+      const res = await fetch("/api/account/update-avatar", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ image: null }),
+      });
+      const d = await res.json();
+      if (d.error) throw new Error(d.error);
+      setUser((prev) => ({ ...prev, image: null }));
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setUploadingAvatar(false);
+    }
+  }
+
   async function handleDeleteAccount() {
     if (!confirm("Delete your account and all of your reports permanently? This cannot be undone.")) return;
     setDeleting(true);
@@ -220,22 +239,35 @@ export default function AccountPage() {
         </div>
 
         <div className="account-profile-row">
-          <button
-            type="button"
-            className="account-avatar-btn"
-            onClick={() => avatarInputRef.current?.click()}
-            disabled={uploadingAvatar}
-            aria-label="Change profile photo"
-          >
-            {user?.image ? (
-              <img src={user.image} alt="" className="account-avatar-img" />
-            ) : (
-              <div className="account-avatar">{(user?.name || user?.email || "?")[0].toUpperCase()}</div>
+          <div className="account-avatar-wrap">
+            <button
+              type="button"
+              className="account-avatar-btn"
+              onClick={() => avatarInputRef.current?.click()}
+              disabled={uploadingAvatar}
+              aria-label="Change profile photo"
+            >
+              {user?.image ? (
+                <img src={user.image} alt="" className="account-avatar-img" />
+              ) : (
+                <div className="account-avatar">{(user?.name || user?.email || "?")[0].toUpperCase()}</div>
+              )}
+              <span className="account-avatar-overlay">
+                {uploadingAvatar ? <Loader2 size={16} className="spin" /> : <Camera size={16} />}
+              </span>
+            </button>
+            {user?.image && (
+              <button
+                type="button"
+                className="account-avatar-remove"
+                onClick={handleRemoveAvatar}
+                disabled={uploadingAvatar}
+                aria-label="Remove profile photo"
+              >
+                <X size={12} />
+              </button>
             )}
-            <span className="account-avatar-overlay">
-              {uploadingAvatar ? <Loader2 size={16} className="spin" /> : <Camera size={16} />}
-            </span>
-          </button>
+          </div>
           <input
             ref={avatarInputRef}
             type="file"
@@ -457,6 +489,7 @@ const accountStyles = `
   .account-profile-row { display: flex; align-items: center; gap: 14px; }
   .account-avatar, .account-avatar-img { width: 56px; height: 56px; border-radius: 50%; flex-shrink: 0; object-fit: cover; }
   .account-avatar { background: linear-gradient(135deg, var(--brand), #7C6BFF); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 20px; }
+  .account-avatar-wrap { position: relative; width: 56px; height: 56px; flex-shrink: 0; }
   .account-avatar-btn {
     position: relative; width: 56px; height: 56px; flex-shrink: 0; border-radius: 50%;
     padding: 0; border: none; background: transparent; cursor: pointer;
@@ -472,6 +505,15 @@ const accountStyles = `
   .account-avatar-btn:hover .account-avatar-overlay,
   .account-avatar-btn:focus-visible .account-avatar-overlay,
   .account-avatar-btn:disabled .account-avatar-overlay { opacity: 1; }
+  .account-avatar-remove {
+    position: absolute; top: -4px; right: -4px; width: 20px; height: 20px;
+    border-radius: 50%; padding: 0; border: 2px solid var(--surface);
+    background: var(--ink-3); color: var(--chalk);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: background 0.15s ease;
+  }
+  .account-avatar-remove:hover { background: #e24c4c; color: #fff; }
+  .account-avatar-remove:disabled { cursor: default; opacity: 0.6; }
   .account-profile-info { flex: 1; min-width: 0; }
   .account-name-row { display: flex; align-items: center; gap: 8px; }
   .account-name { font-size: 16px; font-weight: 700; color: var(--chalk); }
