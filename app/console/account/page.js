@@ -338,7 +338,7 @@ export default function AccountPage() {
             </div>
           </div>
           <div className="account-usage-item">
-            <div className="account-usage-head"><Radio size={14} color="var(--muted)" />Pulse monitors</div>
+            <div className="account-usage-head"><Radio size={14} color="var(--muted)" />Monitors</div>
             <div className="account-usage-num">
               {usage ? (
                 <>

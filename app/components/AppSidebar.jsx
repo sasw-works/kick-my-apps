@@ -12,7 +12,7 @@ const NAV_ITEMS = [
   { href: "/console", label: "Dashboard", icon: LayoutDashboard },
   { href: "/console/reports", label: "Reports", icon: ClipboardList },
   { href: "/console/compare", label: "Compare", icon: GitCompare },
-  { href: "/console/pulse", label: "Pulse", icon: Radio },
+  { href: "/console/pulse", label: "Monitor", icon: Radio },
 ];
 
 export default function AppSidebar({ mobileOpen = false, onClose }) {

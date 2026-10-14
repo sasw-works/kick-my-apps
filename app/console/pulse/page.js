@@ -235,7 +235,7 @@ export default function ConsolePulsePage() {
 
       <div className="pulse-header">
         <div>
-          <div className="pulse-title">Pulse</div>
+          <div className="pulse-title">Monitor</div>
           <div className="pulse-subtitle">Track your apps for new reviews, rating shifts, and version updates — automatically, in the background.</div>
         </div>
         <button className="pulse-add-btn" onClick={() => setShowAdd(true)} disabled={atLimit}>

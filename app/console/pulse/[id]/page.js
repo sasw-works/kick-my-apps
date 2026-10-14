@@ -137,7 +137,7 @@ export default function PulseMonitorDetailPage() {
     return (
       <main className="pmd-page">
         <style>{pmdStyles}</style>
-        <Link href="/console/pulse" className="pmd-back"><ArrowLeft size={14} />Back to Pulse</Link>
+        <Link href="/console/pulse" className="pmd-back"><ArrowLeft size={14} />Back to Monitor</Link>
         <div className="pmd-error">{error}</div>
       </main>
     );
@@ -158,7 +158,7 @@ export default function PulseMonitorDetailPage() {
     <main className="pmd-page">
       <style>{pmdStyles}</style>
 
-      <Link href="/console/pulse" className="pmd-back"><ArrowLeft size={14} />Back to Pulse</Link>
+      <Link href="/console/pulse" className="pmd-back"><ArrowLeft size={14} />Back to Monitor</Link>
 
       <div className="pmd-header">
         {m.icon_url ? <img src={m.icon_url} alt="" className="pmd-icon" /> : <div className="pmd-icon pmd-icon-fallback">{(m.app_name || "?")[0]}</div>}

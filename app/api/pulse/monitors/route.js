@@ -63,7 +63,7 @@ export async function POST(req) {
     const { rows } = await sql`SELECT COUNT(*)::int AS n FROM pulse_monitors WHERE user_email = ${user.email} AND status != 'deleted'`;
     if (rows[0].n >= limit) {
       return Response.json(
-        { error: `Your plan includes ${limit} Pulse monitor${limit === 1 ? "" : "s"}. Remove one to add another, or upgrade.`, code: "PLAN_LIMIT" },
+        { error: `Your plan includes ${limit} monitor${limit === 1 ? "" : "s"}. Remove one to add another, or upgrade.`, code: "PLAN_LIMIT" },
         { status: 403 }
       );
     }
