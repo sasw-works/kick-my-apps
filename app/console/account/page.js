@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
@@ -25,7 +25,45 @@ import {
   LogOut,
   ChevronRight,
   Loader2,
+  Camera,
 } from "lucide-react";
+
+// Center-crops to a square and downsizes to keep the stored data URL small -- avatars only ever
+// render at 56px, so there's no reason to ship/store a multi-megapixel original.
+const AVATAR_MAX_DIMENSION = 320;
+
+function fileToSquareDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    if (!file.type.startsWith("image/")) {
+      reject(new Error("Please choose an image file."));
+      return;
+    }
+    if (file.size > 15 * 1024 * 1024) {
+      reject(new Error("That image is too large (max 15MB)."));
+      return;
+    }
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error("Could not read that file."));
+    reader.onload = () => {
+      const img = new window.Image();
+      img.onerror = () => reject(new Error("That doesn't look like a valid image."));
+      img.onload = () => {
+        const side = Math.min(img.naturalWidth, img.naturalHeight);
+        const sx = (img.naturalWidth - side) / 2;
+        const sy = (img.naturalHeight - side) / 2;
+        const out = Math.min(AVATAR_MAX_DIMENSION, side);
+        const canvas = document.createElement("canvas");
+        canvas.width = out;
+        canvas.height = out;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, sx, sy, side, side, 0, 0, out, out);
+        resolve(canvas.toDataURL("image/jpeg", 0.85));
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
 
 function formatMonthYear(dateStr) {
   if (!dateStr) return "—";
@@ -41,6 +79,8 @@ export default function AccountPage() {
   const [nameDraft, setNameDraft] = useState("");
   const [savingName, setSavingName] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const avatarInputRef = useRef(null);
   const [usage, setUsage] = useState(null); // { reports, comparisons, pulse: {used, limit} } | null while loading
   const [subs, setSubs] = useState(null);
   const [unsubscribing, setUnsubscribing] = useState(null);
@@ -111,6 +151,28 @@ export default function AccountPage() {
     }
   }
 
+  async function handleAvatarChange(e) {
+    const file = e.target.files?.[0];
+    e.target.value = ""; // allow re-selecting the same file later
+    if (!file) return;
+    setUploadingAvatar(true);
+    try {
+      const dataUrl = await fileToSquareDataUrl(file);
+      const res = await fetch("/api/account/update-avatar", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ image: dataUrl }),
+      });
+      const d = await res.json();
+      if (d.error) throw new Error(d.error);
+      setUser((prev) => ({ ...prev, image: d.image }));
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setUploadingAvatar(false);
+    }
+  }
+
   async function handleDeleteAccount() {
     if (!confirm("Delete your account and all of your reports permanently? This cannot be undone.")) return;
     setDeleting(true);
@@ -158,11 +220,29 @@ export default function AccountPage() {
         </div>
 
         <div className="account-profile-row">
-          {user?.image ? (
-            <img src={user.image} alt="" className="account-avatar-img" />
-          ) : (
-            <div className="account-avatar">{(user?.name || user?.email || "?")[0].toUpperCase()}</div>
-          )}
+          <button
+            type="button"
+            className="account-avatar-btn"
+            onClick={() => avatarInputRef.current?.click()}
+            disabled={uploadingAvatar}
+            aria-label="Change profile photo"
+          >
+            {user?.image ? (
+              <img src={user.image} alt="" className="account-avatar-img" />
+            ) : (
+              <div className="account-avatar">{(user?.name || user?.email || "?")[0].toUpperCase()}</div>
+            )}
+            <span className="account-avatar-overlay">
+              {uploadingAvatar ? <Loader2 size={16} className="spin" /> : <Camera size={16} />}
+            </span>
+          </button>
+          <input
+            ref={avatarInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleAvatarChange}
+            style={{ display: "none" }}
+          />
           <div className="account-profile-info">
             {editingName ? (
               <div className="account-name-edit">
@@ -377,6 +457,21 @@ const accountStyles = `
   .account-profile-row { display: flex; align-items: center; gap: 14px; }
   .account-avatar, .account-avatar-img { width: 56px; height: 56px; border-radius: 50%; flex-shrink: 0; object-fit: cover; }
   .account-avatar { background: linear-gradient(135deg, var(--brand), #7C6BFF); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 20px; }
+  .account-avatar-btn {
+    position: relative; width: 56px; height: 56px; flex-shrink: 0; border-radius: 50%;
+    padding: 0; border: none; background: transparent; cursor: pointer;
+  }
+  .account-avatar-btn:disabled { cursor: default; }
+  .account-avatar-overlay {
+    position: absolute; inset: 0; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0, 0, 0, 0.45); color: #fff;
+    opacity: 0; transition: opacity 0.15s ease;
+    pointer-events: none;
+  }
+  .account-avatar-btn:hover .account-avatar-overlay,
+  .account-avatar-btn:focus-visible .account-avatar-overlay,
+  .account-avatar-btn:disabled .account-avatar-overlay { opacity: 1; }
   .account-profile-info { flex: 1; min-width: 0; }
   .account-name-row { display: flex; align-items: center; gap: 8px; }
   .account-name { font-size: 16px; font-weight: 700; color: var(--chalk); }
