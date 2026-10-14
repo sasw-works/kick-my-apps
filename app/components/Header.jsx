@@ -507,7 +507,7 @@ export default function Header() {
               onClick={toggleTheme}
             >
               {theme === "light" ? (
-                <Moon size={22} color="#1A2B3B" />
+                <Moon size={22} color="#1A2B3B" strokeWidth={1.8} />
               ) : (
                 <img src="/dark/header-theme-toggle.svg" alt="" width={56} height={56} />
               )}
