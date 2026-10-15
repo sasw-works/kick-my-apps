@@ -1,4 +1,5 @@
 import { Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import ConditionalChrome from "./components/ConditionalChrome";
 import { ThemeProvider } from "./components/ThemeProvider";
@@ -41,6 +42,8 @@ export default function RootLayout({ children }) {
             </SignInModalProvider>
           </ThemeProvider>
         </AuthSessionProvider>
+        {/* Vercel's own pageview/event analytics -- cookieless, no PII, no consent banner needed. */}
+        <Analytics />
       </body>
     </html>
   );
