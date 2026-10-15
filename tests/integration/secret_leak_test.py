@@ -14,10 +14,12 @@ FAKE="sk-or-v1-FAKEFAKEFAKE0123456789abcdef"      # obviously fake; the real (le
 GFAKE="AIzaFAKEFAKEFAKEFAKEFAKEFAKEFAKE01234567"
 GENERIC="We couldn't complete the analysis right now. Please try again in a few minutes."
 
+REPO_ROOT=os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # .../tests/integration/this_file -> repo root
+
 def start(extra):
     subprocess.run("pkill -f '[n]ext-server'; pkill -f '[n]ext start'; true", shell=True); time.sleep(1)
     env=dict(BASE_ENV); env.update(extra)
-    subprocess.Popen(["npx","next","start","-p","3111"],cwd="/home/claude/kick-my-apps",env=env,
+    subprocess.Popen(["npx","next","start","-p","3111"],cwd=REPO_ROOT,env=env,
                      stdout=open("/tmp/next_leak.log","w"),stderr=subprocess.STDOUT,start_new_session=True)
     for _ in range(60):
         try:
