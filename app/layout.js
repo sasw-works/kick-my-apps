@@ -6,6 +6,7 @@ import { ThemeProvider } from "./components/ThemeProvider";
 import AuthSessionProvider from "./components/AuthSessionProvider";
 import { SignInModalProvider } from "./components/SignInModalProvider";
 import SignInModal from "./components/SignInModal";
+import CookieNotice from "./components/CookieNotice";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -40,6 +41,7 @@ export default function RootLayout({ children }) {
               <ConditionalChrome>{children}</ConditionalChrome>
               <SignInModal />
             </SignInModalProvider>
+            <CookieNotice />
           </ThemeProvider>
         </AuthSessionProvider>
         {/* Vercel's own pageview/event analytics -- cookieless, no PII, no consent banner needed. */}
