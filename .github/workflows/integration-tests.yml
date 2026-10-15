@@ -96,6 +96,8 @@ jobs:
 
       - name: secrets_test.mjs
         run: node tests/integration/secrets_test.mjs
+      - name: email_from_test.mjs
+        run: node tests/integration/email_from_test.mjs
       - name: report_path_test.mjs
         run: node tests/integration/report_path_test.mjs
 

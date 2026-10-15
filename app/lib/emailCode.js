@@ -1,6 +1,7 @@
 import { randomInt, timingSafeEqual } from "node:crypto";
 import { sql } from "@vercel/postgres";
 import { readSecret } from "./secrets";
+import { getEmailFrom } from "./email";
 
 const CODE_TTL_MINUTES = 10;
 const MAX_ATTEMPTS = 5;
@@ -41,7 +42,7 @@ export async function sendEmailCode(email) {
     ON CONFLICT (email) DO UPDATE SET code = ${code}, expires_at = ${expiresAt.toISOString()}, attempts = 0
   `;
 
-  const from = process.env.EMAIL_FROM || "Kick My Apps <onboarding@resend.dev>";
+  const from = getEmailFrom();
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {

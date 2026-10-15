@@ -2,11 +2,12 @@ import { sql } from "@vercel/postgres";
 import { fetchAppStoreReviews, computeReviewAnalytics } from "../../../lib/reviews";
 import { readSecret, errorText } from "../../../lib/secrets";
 import { ensureSubscriptionsTable, backfillMissingTokens } from "../../../lib/subscriptionsSchema";
+import { getEmailFrom } from "../../../lib/email";
 
 export const runtime = "nodejs";
 
 async function sendEmail({ to, subject, html }) {
-  const from = process.env.EMAIL_FROM || "Kick My Apps <onboarding@resend.dev>";
+  const from = getEmailFrom();
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
