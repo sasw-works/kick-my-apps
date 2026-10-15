@@ -1,5 +1,6 @@
 import { sql } from "@vercel/postgres";
 import { ensureSubscriptionsTable } from "../../../lib/subscriptionsSchema";
+import { rateLimit, getClientIp, tooManyRequests } from "../../../lib/rateLimit";
 
 export const runtime = "nodejs";
 
@@ -13,6 +14,12 @@ export const runtime = "nodejs";
 // silently unsubscribe people who never clicked anything themselves. The confirmation page (which
 // calls DELETE) is the actual opt-out action.
 export async function GET(req) {
+  // No sign-in gate on this route (see above), so IP is the only lever against a script
+  // hammering it -- generous enough that a human clicking an email link never notices.
+  const ip = getClientIp(req);
+  const r = await rateLimit(`unsubscribe:ip:${ip}`, { limit: 30, windowSeconds: 60 });
+  if (!r.allowed) return tooManyRequests(r);
+
   await ensureSubscriptionsTable();
   const { searchParams } = new URL(req.url);
   const token = (searchParams.get("token") || "").trim();
@@ -29,6 +36,10 @@ export async function GET(req) {
 }
 
 export async function DELETE(req) {
+  const ip = getClientIp(req);
+  const r = await rateLimit(`unsubscribe:ip:${ip}`, { limit: 30, windowSeconds: 60 });
+  if (!r.allowed) return tooManyRequests(r);
+
   await ensureSubscriptionsTable();
   const { searchParams } = new URL(req.url);
   const token = (searchParams.get("token") || "").trim();

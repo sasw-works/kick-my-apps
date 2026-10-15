@@ -3,6 +3,7 @@ import { getCurrentUser, unauthorized } from "../../lib/requireUser";
 import { errorText } from "../../lib/secrets";
 import { generateUnsubscribeToken } from "../../lib/unsubscribeToken";
 import { ensureSubscriptionsTable } from "../../lib/subscriptionsSchema";
+import { rateLimit, tooManyRequests } from "../../lib/rateLimit";
 
 export const runtime = "nodejs";
 
@@ -29,6 +30,9 @@ export async function POST(req) {
     // session, never from the request body, so nobody can subscribe someone else's inbox.
     const user = await getCurrentUser();
     if (!user) return unauthorized();
+
+    const r = await rateLimit(`subscribe:add:${user.id}`, { limit: 30, windowSeconds: 3600 });
+    if (!r.allowed) return tooManyRequests(r);
 
     await ensureSubscriptionsTable();
     const { appName, storeUrl } = await req.json();
@@ -60,6 +64,9 @@ export async function POST(req) {
 export async function DELETE(req) {
   const user = await getCurrentUser();
   if (!user) return unauthorized();
+
+  const r = await rateLimit(`subscribe:delete:${user.id}`, { limit: 30, windowSeconds: 3600 });
+  if (!r.allowed) return tooManyRequests(r);
 
   await ensureSubscriptionsTable();
   const { searchParams } = new URL(req.url);

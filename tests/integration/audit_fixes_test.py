@@ -81,4 +81,26 @@ statuses2=[req("GET","/api/app-icon?storeUrl=https://apps.apple.com/us/app/x/id1
 check("same for app-icon", statuses2[:60]==[200]*60 and statuses2[60]==429, f"last 3: {statuses2[-3:]}")
 check("a different IP is unaffected by the first one's limit", req("GET","/api/search-app?term=insta",headers={"x-forwarded-for":"198.51.100.9"})[0]==200)
 
+print("== 5. previously-unprotected mutation endpoints now rate-limit too ==")
+psql("truncate rate_limits")
+
+TINY_PNG="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
+ERIN=signin("erin@x.com")
+avatar_statuses=[req("POST","/api/account/update-avatar",cookie=ERIN,body={"image":TINY_PNG})[0] for _ in range(21)]
+check("avatar upload: 20/hour allowed, the 21st is refused", avatar_statuses[:20]==[200]*20 and avatar_statuses[20]==429, f"last 3: {avatar_statuses[-3:]}")
+
+FRANK=signin("frank@x.com")
+frank_id=psql("select id from users where email='frank@x.com'")
+# Account deletion actually deletes the row on success, so the limit can't be observed by
+# repeating a real call (the 2nd would just 401, the account already being gone) -- seed the
+# counter at the limit directly instead, the same window a 5th real call would have produced.
+psql(f"insert into rate_limits (key, count, window_start) values ('account-delete:{frank_id}', 5, now())")
+st,js,_=req("DELETE","/api/account/delete",cookie=FRANK)
+check("account delete: blocked once the hourly limit is already spent", st==429, f"{st} {js}")
+check("...and frank's account is still intact, nothing was deleted", psql(f"select count(*) from users where id={frank_id}")=="1")
+
+psql("truncate rate_limits")
+unsub_statuses=[req("GET","/api/subscribe/unsubscribe?token=nonexistent",headers=IP)[0] for _ in range(31)]
+check("unsubscribe (public, no auth at all): 30/min by IP allowed, the 31st is refused", unsub_statuses[:30]==[200]*30 and unsub_statuses[30]==429, f"last 3: {unsub_statuses[-3:]}")
+
 print(f"\nRESULT: {P} passed, {F} failed"); sys.exit(1 if F else 0)

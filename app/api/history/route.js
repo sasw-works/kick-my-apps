@@ -5,6 +5,7 @@ import { getCurrentUser, unauthorized } from "../../lib/requireUser";
 import { errorText } from "../../lib/secrets";
 import { reportsLimit } from "../../lib/plans";
 import { countReportsThisMonth } from "../../lib/usage";
+import { rateLimit, tooManyRequests } from "../../lib/rateLimit";
 
 export const runtime = "nodejs";
 
@@ -70,6 +71,9 @@ export async function DELETE(req) {
   try {
     const user = await getCurrentUser();
     if (!user) return unauthorized();
+
+    const r = await rateLimit(`history:delete:${user.id}`, { limit: 60, windowSeconds: 3600 });
+    if (!r.allowed) return tooManyRequests(r);
 
     await ensureScansSchema();
     const { searchParams } = new URL(req.url);

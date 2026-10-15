@@ -4,6 +4,7 @@ import { getCurrentUser, unauthorized } from "../../../lib/requireUser";
 import { errorText } from "../../../lib/secrets";
 import { comparisonsLimit } from "../../../lib/plans";
 import { countComparisonsThisMonth } from "../../../lib/usage";
+import { rateLimit, tooManyRequests } from "../../../lib/rateLimit";
 
 export const runtime = "nodejs";
 
@@ -66,6 +67,9 @@ export async function DELETE(req) {
   try {
     const user = await getCurrentUser();
     if (!user) return unauthorized();
+
+    const r = await rateLimit(`compare:delete:${user.id}`, { limit: 60, windowSeconds: 3600 });
+    if (!r.allowed) return tooManyRequests(r);
 
     await ensureComparisonsSchema();
     const { searchParams } = new URL(req.url);

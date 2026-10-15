@@ -1,6 +1,7 @@
 import { sql } from "@vercel/postgres";
 import { getCurrentUser, unauthorized } from "../../../../lib/requireUser";
 import { ensurePulseSchema } from "../../../../lib/pulse/schema";
+import { rateLimit, tooManyRequests } from "../../../../lib/rateLimit";
 
 export const runtime = "nodejs";
 
@@ -56,6 +57,10 @@ export async function GET(req, { params }) {
 export async function PATCH(req, { params }) {
   const user = await getCurrentUser();
   if (!user) return unauthorized();
+
+  const r = await rateLimit(`pulse:patch:${user.id}`, { limit: 60, windowSeconds: 3600 });
+  if (!r.allowed) return tooManyRequests(r);
+
   const { id } = await params;
   const monitor = await ownedMonitor(id, user.email);
   if (!monitor) return Response.json({ error: "Monitor not found." }, { status: 404 });
@@ -71,6 +76,10 @@ export async function PATCH(req, { params }) {
 export async function DELETE(req, { params }) {
   const user = await getCurrentUser();
   if (!user) return unauthorized();
+
+  const r = await rateLimit(`pulse:delete:${user.id}`, { limit: 60, windowSeconds: 3600 });
+  if (!r.allowed) return tooManyRequests(r);
+
   const { id } = await params;
   const { rowCount } = await sql`DELETE FROM pulse_monitors WHERE id = ${id} AND user_email = ${user.email}`;
   if (rowCount === 0) return Response.json({ error: "Monitor not found." }, { status: 404 });
