@@ -1,11 +1,21 @@
 "use client";
 
 // Figma "Dashboard" — dark 4220:4947, light 4221:5279. 1170x700 card + blurred glow underneath.
+import { useState, useEffect } from "react";
 import { useTheme } from "./ThemeProvider";
 
 export default function DashboardSection() {
   const { theme } = useTheme();
   const light = theme === "light";
+  const src = light ? "/light/dashboard/dashboard.svg" : "/dark/dashboard/dashboard.svg";
+
+  // The mockup SVGs are large, so there's a real gap between paint and the image actually
+  // showing up -- cover it with a pulsing placeholder instead of a blank/half-drawn image.
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    setLoaded(false);
+  }, [src]);
+
   return (
     <section className="kma-dashboard" aria-label="Dashboard preview">
       <style>{`
@@ -74,14 +84,26 @@ export default function DashboardSection() {
           height: 100%;
           object-fit: cover;
           object-position: top center;
+          opacity: ${loaded ? 1 : 0};
+          transition: opacity 0.3s ease;
+        }
+        .kma-dashboard-skeleton {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
         }
       `}</style>
       <div className="kma-dashboard-shadow" aria-hidden="true" />
       <div className="kma-dashboard-card">
+        {/* Unmounted (not just faded) once loaded, so its pulse animation actually stops
+            instead of fighting the opacity transition on every frame. */}
+        {!loaded && <div className="kma-dashboard-skeleton kma-skeleton" aria-hidden="true" />}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={light ? "/light/dashboard/dashboard.svg" : "/dark/dashboard/dashboard.svg"}
+          src={src}
           alt="Kick My Apps dashboard preview"
+          onLoad={() => setLoaded(true)}
+          onError={() => setLoaded(true)}
         />
       </div>
     </section>

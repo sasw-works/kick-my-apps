@@ -5,6 +5,7 @@ import Link from "next/link";
 import {
   Bell, Plus, MoreHorizontal, X, Loader2, Search, Pause, Play, RefreshCw, Trash2, ChevronRight, ChevronDown,
 } from "lucide-react";
+import { SkeletonBlock } from "../../components/Skeleton";
 
 const COUNTRIES = [
   { code: "tr", label: "Turkey" },
@@ -262,7 +263,25 @@ export default function ConsolePulsePage() {
       {error && <div style={{ color: "var(--kick)", fontSize: 14, marginBottom: 16 }}>{error}</div>}
 
       {monitors === null ? (
-        <div className="pulse-empty"><Loader2 size={20} className="spin" /></div>
+        <div className="pulse-list">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div className="pulse-card" key={i} style={{ cursor: "default" }}>
+              <div className="pulse-card-top">
+                <SkeletonBlock width={42} height={42} radius={10} />
+                <div className="pulse-card-main" style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                  <SkeletonBlock width={160} height={14} />
+                  <SkeletonBlock width={110} height={11} />
+                </div>
+              </div>
+              <div className="pulse-card-bottom">
+                <div className="pulse-stat" style={{ display: "flex", flexDirection: "column", gap: 6, alignItems: "center" }}>
+                  <SkeletonBlock width={34} height={16} />
+                  <SkeletonBlock width={54} height={10} />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       ) : monitors.length === 0 ? (
         <div className="pulse-empty">
           <div className="pulse-empty-title">No apps being watched yet</div>

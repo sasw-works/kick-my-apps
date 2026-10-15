@@ -3,8 +3,9 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Search, Loader2, Eye, Download, Trash2, X } from "lucide-react";
+import { Search, Eye, Download, Trash2, X } from "lucide-react";
 import { reportPath } from "../../lib/reportPath";
+import { SkeletonBlock } from "../../components/Skeleton";
 
 function AppIcon({ name, size = 40, iconUrl, storeUrl }) {
   const [fetchedUrl, setFetchedUrl] = useState(null);
@@ -309,8 +310,49 @@ export default function ConsoleReportsPage() {
       </div>
 
       {scans === null ? (
-        <div className="reports-empty">
-          <Loader2 size={20} className="spin" />
+        <div className="reports-table-scroll">
+          <table className="reports-table" lang="en">
+            <thead>
+              <tr>
+                <th style={{ width: 40, paddingLeft: 21 }} />
+                <th>Report</th>
+                <th lang="en" className="reports-col-center" style={{ width: 175 }}>INQUIRY TYPE</th>
+                <th lang="en" className="reports-col-center" style={{ width: 175 }}>REVIEWS</th>
+                <th lang="en" className="reports-col-center" style={{ width: 175 }}>CREATED ON</th>
+                <th lang="en" className="reports-col-center" style={{ width: 175 }}>ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Array.from({ length: 6 }).map((_, i) => (
+                <tr key={i}>
+                  <td style={{ paddingLeft: 21 }}>
+                    <SkeletonBlock width={16} height={16} radius={4} />
+                  </td>
+                  <td>
+                    <div className="reports-row-name">
+                      <SkeletonBlock width={40} height={40} radius={10} />
+                      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                        <SkeletonBlock width={140} height={14} />
+                        <SkeletonBlock width={90} height={10} />
+                      </div>
+                    </div>
+                  </td>
+                  <td className="reports-col-center">
+                    <SkeletonBlock width={84} height={22} radius={999} style={{ margin: "0 auto" }} />
+                  </td>
+                  <td className="reports-col-center">
+                    <SkeletonBlock width={22} height={14} style={{ margin: "0 auto" }} />
+                  </td>
+                  <td className="reports-col-center">
+                    <SkeletonBlock width={72} height={14} style={{ margin: "0 auto" }} />
+                  </td>
+                  <td className="reports-col-center">
+                    <SkeletonBlock width={60} height={14} style={{ margin: "0 auto" }} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       ) : rows.length === 0 ? (
         <div className="reports-empty">

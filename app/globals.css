@@ -99,3 +99,18 @@ body {
   transition: background 0.2s ease, color 0.2s ease;
   overflow-x: hidden;
 }
+
+/* Shared skeleton-loading placeholder (app/components/Skeleton.jsx composes this into page-
+   specific shapes). A plain pulsing block rather than a shimmer sweep, so it stays cheap and
+   calm wherever it's dropped in -- table rows, cards, images alike. */
+@keyframes kma-skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.kma-skeleton {
+  background: var(--ink-3);
+  animation: kma-skeleton-pulse 1.4s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .kma-skeleton { animation: none; opacity: 0.75; }
+}

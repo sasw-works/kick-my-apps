@@ -7,6 +7,7 @@ import { LayoutDashboard, ClipboardList, GitCompare, Radio, Moon, Sun, X, Shield
 import LogoMark from "./LogoMark";
 import { useTheme } from "./ThemeProvider";
 import { useSession } from "next-auth/react";
+import { SkeletonBlock } from "./Skeleton";
 
 const NAV_ITEMS = [
   { href: "/console", label: "Dashboard", icon: LayoutDashboard },
@@ -19,7 +20,8 @@ export default function AppSidebar({ mobileOpen = false, onClose }) {
   const pathname = usePathname();
   const router = useRouter();
   const { theme, toggleTheme } = useTheme();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const sessionLoading = status === "loading";
   const navItems = session?.user?.isAdmin
     ? [...NAV_ITEMS, { href: "/console/admin", label: "Admin", icon: ShieldCheck }]
     : NAV_ITEMS;
@@ -122,14 +124,25 @@ export default function AppSidebar({ mobileOpen = false, onClose }) {
       <div className="kma-sidebar-spacer" />
 
       <div className="kma-sidebar-user">
-        {session?.user?.image ? (
+        {sessionLoading ? (
+          <SkeletonBlock width={32} height={32} radius={999} />
+        ) : session?.user?.image ? (
           <img src={session.user.image} alt="" className="kma-sidebar-avatar-img" />
         ) : (
           <div className="kma-sidebar-avatar">{initial}</div>
         )}
         <div className="kma-sidebar-user-info" onClick={() => session && router.push("/console/account")} title={session ? "Account" : ""}>
-          <div style={{ fontSize: 13.5, fontWeight: 600, color: "var(--chalk)" }}>{displayName}</div>
-          <div className="kma-sidebar-plan">{session ? "Free" : "Not signed in"}</div>
+          {sessionLoading ? (
+            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+              <SkeletonBlock width={90} height={12} />
+              <SkeletonBlock width={40} height={16} radius={999} />
+            </div>
+          ) : (
+            <>
+              <div style={{ fontSize: 13.5, fontWeight: 600, color: "var(--chalk)" }}>{displayName}</div>
+              <div className="kma-sidebar-plan">{session ? "Free" : "Not signed in"}</div>
+            </>
+          )}
         </div>
         <button
           type="button"

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeftRight, Clock, Loader2 } from "lucide-react";
+import { SkeletonBlock } from "../../components/Skeleton";
 
 function AppIcon({ name, size = 44, iconUrl, storeUrl }) {
   const [fetchedUrl, setFetchedUrl] = useState(null);
@@ -171,9 +172,20 @@ export default function ConsoleComparePage() {
       </div>
 
       {scans === null ? (
-        <div className="compare-empty">
-          <Loader2 size={20} className="spin" />
-        </div>
+        <>
+          <SkeletonBlock width={150} height={13} style={{ marginBottom: 16 }} />
+          <div className="compare-grid">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div className="compare-card" key={i} style={{ cursor: "default" }}>
+                <SkeletonBlock width={44} height={44} radius={10} />
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  <SkeletonBlock width={120} height={14} />
+                  <SkeletonBlock width={70} height={10} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
       ) : (
         <>
           <div className="compare-section-label">Your Reports ({scans.length})</div>
