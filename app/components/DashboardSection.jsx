@@ -1,7 +1,7 @@
 "use client";
 
 // Figma "Dashboard" — dark 4220:4947, light 4221:5279. 1170x700 card + blurred glow underneath.
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useTheme } from "./ThemeProvider";
 
 export default function DashboardSection() {
@@ -9,11 +9,19 @@ export default function DashboardSection() {
   const light = theme === "light";
   const src = light ? "/light/dashboard/dashboard.svg" : "/dark/dashboard/dashboard.svg";
 
-  // The mockup SVGs are large, so there's a real gap between paint and the image actually
-  // showing up -- cover it with a pulsing placeholder instead of a blank/half-drawn image.
+  // Cover the gap between paint and the image actually showing up with a pulsing placeholder
+  // instead of a blank/half-drawn image.
   const [loaded, setLoaded] = useState(false);
+  const imgRef = useRef(null);
   useEffect(() => {
     setLoaded(false);
+    // If the browser already has this image cached (now that the file is small, this is the
+    // common case), the native load event can fire before this onLoad prop is even attached,
+    // so it's missed entirely and the skeleton would be stuck forever. Catch that by checking
+    // the element's own .complete state right after mount.
+    if (imgRef.current?.complete && imgRef.current.naturalWidth > 0) {
+      setLoaded(true);
+    }
   }, [src]);
 
   return (
@@ -100,6 +108,7 @@ export default function DashboardSection() {
         {!loaded && <div className="kma-dashboard-skeleton kma-skeleton" aria-hidden="true" />}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
+          ref={imgRef}
           src={src}
           alt="Kick My Apps dashboard preview"
           onLoad={() => setLoaded(true)}
