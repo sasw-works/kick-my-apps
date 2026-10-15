@@ -46,7 +46,14 @@ def signin(email):
     st,_,_,ck2=req("POST","/api/auth/callback/email-code",cookie=cc,form={"csrfToken":js["csrfToken"],"email":email,"code":"123456","callbackUrl":"http://localhost:3111/console","json":"true"})
     return next((x.split(";")[0] for x in ck2 if x.startswith("authjs.session-token")),None)
 
-PNG=open("/tmp/shot.png","rb").read()
+import base64
+# A real, valid 1x1 PNG, generated inline rather than read from a path outside the repo -- this
+# test used to depend on a /tmp/shot.png nobody committed anywhere, so it only ever ran on a
+# machine where someone had manually left one behind (which is how it slipped through on CI
+# bring-up: a fresh checkout has no such file).
+PNG=base64.b64decode(
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
+)
 def analyze(cookie): return req("POST","/api/analyze",cookie=cookie,multipart={"fields":{"appName":"TestApp"},"file":PNG})
 
 P=F=0

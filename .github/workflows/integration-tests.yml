@@ -1,0 +1,106 @@
+name: Integration tests
+
+# These exercise the real app against a real local Postgres, through the real sign-in flow
+# (see tests/integration/README.md). They've only ever been run by hand before this; wiring
+# them in here means a regression gets caught on push instead of relying on someone remembering
+# to run the suite.
+on:
+  push:
+    branches: [main, kma-dark-full]
+  pull_request:
+    branches: [main, kma-dark-full]
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: kma
+          POSTGRES_PASSWORD: kma
+          POSTGRES_DB: kma_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U kma -d kma_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      PGPASSWORD: kma
+      POSTGRES_URL: postgres://kma:kma@127.0.0.1:5432/kma_test
+      AUTH_SECRET: test-secret-for-ci
+      AUTH_TRUST_HOST: "true"
+      ADMIN_EMAILS: admin@x.com
+      CRON_SECRET: test-cron-secret
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Enable local-Postgres test shim
+        run: tests/integration/setup-shim.sh enable
+
+      - name: Build
+        run: npx next build
+
+      - name: Start server
+        run: |
+          nohup npx next start -p 3111 > /tmp/next-server.log 2>&1 &
+          for i in $(seq 1 60); do
+            curl -sf http://localhost:3111/ > /dev/null && exit 0
+            sleep 1
+          done
+          echo "server never became ready"; cat /tmp/next-server.log; exit 1
+
+      # One step per file so a failure shows up against the specific suite in the Actions UI,
+      # not buried inside one big combined log.
+      - name: isolation_test.py
+        run: python3 tests/integration/isolation_test.py
+      - name: hardening_test.py
+        run: python3 tests/integration/hardening_test.py
+      - name: plan_limits_test.py
+        run: python3 tests/integration/plan_limits_test.py
+      - name: admin_exempt_test.py
+        run: python3 tests/integration/admin_exempt_test.py
+      - name: audit_fixes_test.py
+        run: python3 tests/integration/audit_fixes_test.py
+      - name: unsubscribe_test.py
+        run: python3 tests/integration/unsubscribe_test.py
+      - name: pulse_api_test.py (hits the real App Store)
+        run: python3 tests/integration/pulse_api_test.py
+
+      - name: pulse_check_test.mjs
+        run: node tests/integration/pulse_check_test.mjs
+      - name: linking_test.mjs
+        run: node tests/integration/linking_test.mjs
+
+      # secret_leak_test.py manages its own server (it needs to restart it between scenarios with
+      # different fake-key env permutations), so the persistent one from "Start server" above is
+      # stopped first rather than left running underneath it on the same port.
+      - name: Stop persistent server
+        if: always()
+        run: pkill -f "next-server" || pkill -f "next start" || true
+      - name: secret_leak_test.py
+        run: python3 tests/integration/secret_leak_test.py
+
+      - name: secrets_test.mjs
+        run: node tests/integration/secrets_test.mjs
+      - name: report_path_test.mjs
+        run: node tests/integration/report_path_test.mjs
+
+      # ALWAYS restore the real @vercel/postgres, even if an earlier step failed -- a leftover
+      # shim must never leak into anything that reuses this checkout.
+      - name: Restore real @vercel/postgres
+        if: always()
+        run: tests/integration/setup-shim.sh disable
