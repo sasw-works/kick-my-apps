@@ -237,7 +237,7 @@ export default function FeaturesSection() {
         <div className="kf-sec1" style={{ display: "flex", flexDirection: "column" }}>
           <Headline
             light={light}
-            title="Everything your reviews are telling you"
+            title={<>Everything your <span className="kma-grad-text">reviews</span> are telling you</>}
             subLines={[
               "Screenshot analysis and real user reviews come together in one comprehensive report, giving you a clearer view of",
               "both the user experience and actual customer feedback.",
@@ -397,7 +397,7 @@ export default function FeaturesSection() {
           <Headline
             light={light}
             pill="Signal over Noise"
-            title="Deep, but never messy"
+            title={<><span className="kma-grad-text">Deep</span>, but never messy</>}
             subLines={[
               "Discover findings across 13 key categories, prioritized by impact and continuously tracked through",
               "weekly digests and competitor comparisons.",

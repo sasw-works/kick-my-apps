@@ -114,3 +114,16 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .kma-skeleton { animation: none; opacity: 0.75; }
 }
+
+/* One colored phrase per headline, not a whole-headline effect -- reuses the brand's own two
+   signature hues (the purple everywhere else on the site, into the red-orange from the health
+   score/priority tags) rather than an unrelated accent color, so it reads as this site's own
+   mark rather than decoration. Each heading picks ONE short, meaningful phrase; applying this to
+   every heading on the page would cheapen it. */
+.kma-grad-text {
+  background-image: linear-gradient(95deg, var(--brand) 10%, var(--kick) 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}

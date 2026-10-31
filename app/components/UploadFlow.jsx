@@ -677,7 +677,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
         <h1 className="hero-title">
           <span className="hero-title-line">Uncover what really</span>
           <br />
-          hurts your app
+          <span className="kma-grad-text">hurts</span> your app
         </h1>
       </div>
       <p className="hero-subtitle">
