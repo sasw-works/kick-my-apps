@@ -758,7 +758,7 @@ export default function MarketingSections() {
       {/* Closing CTA */}
       <div className="mkt-fullbleed mkt-closing-cta mkt-reveal">
         <div className="mkt-closing-logo"><FooterLogo size={200} /></div>
-        <div className="mkt-closing-heading">Ready to see<br />what&apos;s <span className="kma-grad-text">hurting your app</span>?</div>
+        <div className="mkt-closing-heading">Ready to see<br />what&apos;s hurting your app?</div>
         <button
           className="mkt-closing-btn"
           onClick={() => (session ? router.push("/console") : openSignIn())}

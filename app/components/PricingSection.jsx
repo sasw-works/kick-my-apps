@@ -231,7 +231,7 @@ export default function PricingSection() {
         }
       `}</style>
       <div className="pr-headline">
-        <h2 className="pr-title">Simple pricing, <span className="kma-grad-text">real answers</span></h2>
+        <h2 className="pr-title">Simple pricing, real answers</h2>
         <p className="pr-sub">
           Start free and see what&apos;s hurting your app today. Upgrade whenever you need deeper, more frequent insight.
         </p>
