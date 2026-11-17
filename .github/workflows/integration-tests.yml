@@ -77,6 +77,8 @@ jobs:
         run: python3 tests/integration/audit_fixes_test.py
       - name: share_links_test.py
         run: python3 tests/integration/share_links_test.py
+      - name: finding_tracking_test.py
+        run: python3 tests/integration/finding_tracking_test.py
       - name: unsubscribe_test.py
         run: python3 tests/integration/unsubscribe_test.py
       - name: pulse_api_test.py (hits the real App Store)
@@ -100,6 +102,8 @@ jobs:
         run: node tests/integration/secrets_test.mjs
       - name: email_from_test.mjs
         run: node tests/integration/email_from_test.mjs
+      - name: finding_progress_test.mjs
+        run: node tests/integration/finding_progress_test.mjs
       - name: review_signals_test.mjs
         run: node tests/integration/review_signals_test.mjs
       - name: report_path_test.mjs

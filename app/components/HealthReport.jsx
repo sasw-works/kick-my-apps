@@ -310,15 +310,18 @@ function AnnotatedScreenshot({ url, index, findings }) {
   );
 }
 
-function FindingRow({ f }) {
+function FindingRow({ f, track, onTrack }) {
   const meta = STATUS_META[f.status];
+  const closed = track === "done" || track === "wontfix";
   return (
-    <div className="finding-row" style={{ background: `color-mix(in srgb, ${meta.color} 10%, var(--ink-2))` }}>
+    <div className={`finding-row ${closed ? "finding-row-closed" : ""}`} style={{ background: `color-mix(in srgb, ${meta.color} 10%, var(--ink-2))` }}>
       <span className="finding-status-pill" style={{ color: meta.color, background: `color-mix(in srgb, ${meta.color} 15%, transparent)` }}>
         {meta.label}
       </span>
       <div className="finding-row-top">
         <span className="finding-title">{f.title}</span>
+        {track === "done" && <span className="finding-track-pill finding-track-done">Fixed</span>}
+        {track === "wontfix" && <span className="finding-track-pill">Won't fix</span>}
         {f.screenshotIndex && <span className="finding-shot-ref">Ekran #{f.screenshotIndex}</span>}
       </div>
       <p className="finding-text">{f.finding}</p>
@@ -326,6 +329,16 @@ function FindingRow({ f }) {
         <div className="finding-suggestion">
           <Lightbulb size={12} strokeWidth={2.2} color="var(--yellow)" />
           <span>{f.suggestion}</span>
+        </div>
+      )}
+      {onTrack && f.status !== "good" && (
+        <div className="finding-track" role="group" aria-label={`Track progress: ${f.title}`}>
+          <button type="button" className={`finding-track-btn ${track === "done" ? "finding-track-btn-on" : ""}`} aria-pressed={track === "done"} onClick={() => onTrack(f.key, track === "done" ? "open" : "done")}>
+            <CheckCircle2 size={13} /> {track === "done" ? "Marked fixed" : "Mark as fixed"}
+          </button>
+          <button type="button" className={`finding-track-btn ${track === "wontfix" ? "finding-track-btn-on" : ""}`} aria-pressed={track === "wontfix"} onClick={() => onTrack(f.key, track === "wontfix" ? "open" : "wontfix")}>
+            Won't fix
+          </button>
         </div>
       )}
       {f.codeSnippet?.code && (
@@ -543,11 +556,37 @@ function HistoryPanel({ history }) {
 // Main
 // ---------------------------------------------------------------------------
 
-export default function KickMyAppsHealthReport({ data, appLabel = "Your App", onReset, history = [], onViewHistory, scanId, storeUrl, screenshots = [], onClose, readOnly = false }) {
+export default function KickMyAppsHealthReport({ data, appLabel = "Your App", onReset, history = [], onViewHistory, scanId, storeUrl, screenshots = [], onClose, readOnly = false, findingStatus, progress }) {
   const usingRealData = Boolean(data);
   const reportRef = useRef(null);
   const [exporting, setExporting] = useState(false);
   const [findingFilter, setFindingFilter] = useState("all");
+  const [track, setTrack] = useState(findingStatus || {});
+  const canTrack = Boolean(scanId) && !readOnly;
+  const [trackError, setTrackError] = useState("");
+
+  // Optimistic: the row updates at once, and rolls back if the server refuses.
+  const handleTrack = async (key, status) => {
+    const before = track;
+    setTrackError("");
+    setTrack((t) => {
+      const next = { ...t };
+      if (status === "open") delete next[key]; else next[key] = status;
+      return next;
+    });
+    try {
+      const res = await fetch(`/api/history/findings?id=${scanId}`, {
+        method: "PATCH",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ key, status }),
+      });
+      const d = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(d.error || "Could not save.");
+    } catch (err) {
+      setTrack(before);
+      setTrackError(err.message);
+    }
+  };
 
   const handleExportPdf = async () => {
     if (!reportRef.current) return;
@@ -590,6 +629,9 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
 
   const badCount = findings.filter((f) => f.status === "bad").length;
   const warnCount = findings.filter((f) => f.status === "warn").length;
+  const openFindings = findings.filter((f) => f.status !== "good");
+  const fixedN = openFindings.filter((f) => track[f.key] === "done").length;
+  const wontN = openFindings.filter((f) => track[f.key] === "wontfix").length;
   const goodCount = findings.filter((f) => f.status === "good").length;
 
   const lensSummary = LENS_ORDER.map((lens) => {
@@ -1006,6 +1048,21 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
         .aso-suggestions { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
         .aso-suggestion-row { display: flex; align-items: flex-start; gap: 8px; background: var(--ink); border-radius: 4px; padding: 8px 12px; font-size: 12px; color: var(--muted); }
 
+        .finding-row-closed .finding-title, .finding-row-closed .finding-text { opacity: 0.6; }
+        .finding-row-closed .finding-title { text-decoration: line-through; }
+        .finding-track { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+        .finding-track-btn { display: inline-flex; align-items: center; gap: 5px; background: var(--ink); border: 1px solid var(--ink-3); border-radius: 999px; padding: 6px 12px; font-size: 12px; color: var(--muted); cursor: pointer; }
+        .finding-track-btn:hover { color: var(--chalk); }
+        .finding-track-btn-on { color: var(--teal); border-color: var(--teal); }
+        .finding-track-pill { font-size: 11px; font-family: var(--font-mono); color: var(--muted); background: var(--ink-3); border-radius: 999px; padding: 2px 8px; }
+        .finding-track-done { color: var(--teal); background: color-mix(in srgb, var(--teal) 15%, transparent); }
+        .track-summary { margin-bottom: 20px; }
+        .track-summary-text { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+        .track-summary-text strong { color: var(--teal); font-family: var(--font-mono); }
+        .track-bar { height: 6px; border-radius: 999px; background: var(--ink-3); overflow: hidden; }
+        .track-bar-fill { height: 100%; background: var(--teal); border-radius: 999px; transition: width .25s ease; }
+        .track-error { font-size: 12px; color: var(--kick); margin-top: 6px; }
+
         .risk-disclaimer { font-size: 12px; color: var(--muted); margin-bottom: 12px; font-style: italic; }
         .risk-list { display: flex; flex-direction: column; gap: 8px; }
         .risk-row { display: flex; gap: 12px; background: var(--ink); border-radius: 4px; padding: 12px 12px; }
@@ -1305,6 +1362,36 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
           </div>
         )}
 
+        {progress && !readOnly && progress.resolved.length + progress.persisting.length + progress.newIssues.length > 0 && (
+          <div className="panel" data-testid="progress-panel">
+            <div className="panel-title">Since your last scan</div>
+            <div className="panel-subtitle">
+              Compared with the report from {new Date(progress.previousDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+              {typeof progress.previousScore === "number" && healthScore != null ? ` · score ${progress.previousScore} → ${healthScore}` : ""}
+            </div>
+            <div className="risk-list">
+              {progress.resolved.map((f) => (
+                <div className="risk-row" key={"r" + f.key} style={{ background: "color-mix(in srgb, var(--teal) 10%, var(--ink))" }}>
+                  <CheckCircle2 size={14} color="var(--teal)" />
+                  <div><div className="risk-issue">{f.title}</div><div className="risk-guideline">Fixed since last scan</div></div>
+                </div>
+              ))}
+              {progress.newIssues.map((f) => (
+                <div className="risk-row" key={"n" + f.key} style={{ background: "color-mix(in srgb, var(--kick) 10%, var(--ink))" }}>
+                  <AlertTriangle size={14} color="var(--kick)" />
+                  <div><div className="risk-issue">{f.title}</div><div className="risk-guideline">New since last scan</div></div>
+                </div>
+              ))}
+              {progress.persisting.map((f) => (
+                <div className="risk-row" key={"p" + f.key}>
+                  <AlertTriangle size={14} color="var(--yellow)" />
+                  <div><div className="risk-issue">{f.title}</div><div className="risk-guideline">Still open</div></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="panel">
           <div className="findings-header">
             <div>
@@ -1326,6 +1413,18 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
               </button>
             </div>
           </div>
+          {canTrack && openFindings.length > 0 && (
+            <div className="track-summary" data-testid="track-summary">
+              <div className="track-summary-text">
+                <strong>{fixedN}</strong> of {openFindings.length} issues fixed
+                {wontN > 0 && <span> · {wontN} won't fix</span>}
+              </div>
+              <div className="track-bar" role="progressbar" aria-valuemin={0} aria-valuemax={openFindings.length} aria-valuenow={fixedN}>
+                <div className="track-bar-fill" style={{ width: `${(fixedN / openFindings.length) * 100}%` }} />
+              </div>
+              {trackError && <div className="track-error">{trackError}</div>}
+            </div>
+          )}
           <div className="panel-divider findings-panel-divider" style={{ marginBottom: 51 }} />
           {(() => {
             const filteredFindings = findingFilter === "all" ? findings : findings.filter((f) => f.status === findingFilter);
@@ -1340,7 +1439,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
                   <div className="lens-group-caption">{items.length} findings · {LENS_SUBTITLE[lens]}</div>
                   <div className="finding-list">
                     {items.map((f) => (
-                      <FindingRow key={f.key} f={f} />
+                      <FindingRow key={f.key} f={f} track={track[f.key]} onTrack={canTrack ? handleTrack : undefined} />
                     ))}
                   </div>
                 </div>

@@ -6,6 +6,7 @@ import { errorText } from "../../lib/secrets";
 import { reportsLimit } from "../../lib/plans";
 import { countReportsThisMonth } from "../../lib/usage";
 import { rateLimit, tooManyRequests } from "../../lib/rateLimit";
+import { computeProgress } from "../../lib/findingProgress";
 
 export const runtime = "nodejs";
 
@@ -115,7 +116,7 @@ export async function GET(req) {
         return Response.json({ error: "Scan not found." }, { status: 404 });
       }
       const { rows } = await sql`
-        SELECT id, app_name, health_score, bad_count, warn_count, good_count, result_json, store_url, created_at, user_email
+        SELECT id, app_name, health_score, bad_count, warn_count, good_count, result_json, store_url, created_at, user_email, finding_status
         FROM scans
         WHERE id = ${id}
         LIMIT 1;
@@ -125,7 +126,31 @@ export async function GET(req) {
         return Response.json({ error: "Scan not found." }, { status: 404 });
       }
       const { user_email: _owner, ...scan } = row;
-      return Response.json({ scan });
+
+      // "Since your last scan": the same owner's previous report of the same app, if any.
+      let progress = null;
+      try {
+        const { rows: prevRows } = await sql`
+          SELECT id, health_score, created_at, result_json
+          FROM scans
+          WHERE user_email = ${row.user_email} AND app_name = ${row.app_name}
+            AND (created_at < ${row.created_at} OR (created_at = ${row.created_at} AND id < ${row.id}))
+          ORDER BY created_at DESC, id DESC
+          LIMIT 1;
+        `;
+        const prev = prevRows[0];
+        if (prev?.result_json?.findings && row.result_json?.findings) {
+          progress = {
+            previousId: prev.id,
+            previousDate: prev.created_at,
+            previousScore: prev.health_score,
+            ...computeProgress(prev.result_json.findings, row.result_json.findings),
+          };
+        }
+      } catch (e) {
+        console.error("progress lookup failed:", errorText(e));
+      }
+      return Response.json({ scan, progress });
     }
 
     if (apps) {

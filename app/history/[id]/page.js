@@ -9,6 +9,7 @@ export default function ScanDetailPage() {
   const params = useParams();
   const router = useRouter();
   const [scan, setScan] = useState(null);
+  const [progress, setProgress] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -19,6 +20,7 @@ export default function ScanDetailPage() {
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Could not retrieve scan.");
         setScan(data.scan);
+        setProgress(data.progress || null);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -48,6 +50,8 @@ export default function ScanDetailPage() {
             history={[]}
             scanId={scan.id}
             storeUrl={scan.store_url || ""}
+            findingStatus={scan.finding_status || {}}
+            progress={progress}
           />
         ) : null}
       </div>

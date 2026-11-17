@@ -25,6 +25,8 @@ export async function ensureScansSchema() {
   // Public read-only link: NULL = not shared. The token is the only thing that grants access.
   await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS share_token TEXT;`;
   await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS shared_at TIMESTAMPTZ;`;
+  // Owner's manual progress per finding category: { "contrast": "done", "cta": "wontfix" }.
+  await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS finding_status JSONB;`;
   await sql`CREATE UNIQUE INDEX IF NOT EXISTS scans_share_token_idx ON scans (share_token) WHERE share_token IS NOT NULL;`;
 
   ensured = true;
