@@ -22,6 +22,10 @@ export async function ensureScansSchema() {
   await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS store_url TEXT;`;
   await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS icon_url TEXT;`;
   await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS user_email TEXT;`;
+  // Public read-only link: NULL = not shared. The token is the only thing that grants access.
+  await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS share_token TEXT;`;
+  await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS shared_at TIMESTAMPTZ;`;
+  await sql`CREATE UNIQUE INDEX IF NOT EXISTS scans_share_token_idx ON scans (share_token) WHERE share_token IS NOT NULL;`;
 
   ensured = true;
 }

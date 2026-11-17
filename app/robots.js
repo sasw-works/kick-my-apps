@@ -9,7 +9,7 @@ export default function robots() {
       allow: "/",
       // Everything behind sign-in, plus API routes and the legacy pre-/console pages -- no
       // SEO value, and some require auth a crawler will never have.
-      disallow: ["/api/", "/console/", "/dashboard", "/report", "/history", "/unsubscribe"],
+      disallow: ["/api/", "/console/", "/dashboard", "/report", "/history", "/unsubscribe", "/r/"],
     },
     sitemap: `https://${HOST}/sitemap.xml`,
   };

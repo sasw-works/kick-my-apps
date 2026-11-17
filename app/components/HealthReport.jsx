@@ -4,6 +4,7 @@ import React, { useRef, useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { computeLensScores } from "../lib/lensScores";
+import ShareButton from "./ShareButton";
 import { PerformancePanel, CompatibilityPanel, AccessibilityChecklist, SignalPanelStyles } from "./SignalPanels";
 import {
   UploadCloud,
@@ -542,7 +543,7 @@ function HistoryPanel({ history }) {
 // Main
 // ---------------------------------------------------------------------------
 
-export default function KickMyAppsHealthReport({ data, appLabel = "Your App", onReset, history = [], onViewHistory, scanId, storeUrl, screenshots = [], onClose }) {
+export default function KickMyAppsHealthReport({ data, appLabel = "Your App", onReset, history = [], onViewHistory, scanId, storeUrl, screenshots = [], onClose, readOnly = false }) {
   const usingRealData = Boolean(data);
   const reportRef = useRef(null);
   const [exporting, setExporting] = useState(false);
@@ -1073,7 +1074,8 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
           >
             {exporting ? "Preparing…" : "Download PDF"}
           </button>
-          {scanId && (
+          {scanId && !readOnly && <ShareButton scanId={scanId} />}
+          {scanId && !readOnly && (
             <Link
               href={`/history?preselect=${scanId}`}
               className="kma-toolbar-btn"
@@ -1098,6 +1100,10 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
           >
             {onReset ? (
               "New Analysis"
+            ) : readOnly ? (
+              <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>
+                Analyze your own app
+              </Link>
             ) : (
               <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>
                 New Analysis

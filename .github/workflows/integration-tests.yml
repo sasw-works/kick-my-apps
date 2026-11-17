@@ -75,6 +75,8 @@ jobs:
         run: python3 tests/integration/admin_exempt_test.py
       - name: audit_fixes_test.py
         run: python3 tests/integration/audit_fixes_test.py
+      - name: share_links_test.py
+        run: python3 tests/integration/share_links_test.py
       - name: unsubscribe_test.py
         run: python3 tests/integration/unsubscribe_test.py
       - name: pulse_api_test.py (hits the real App Store)
