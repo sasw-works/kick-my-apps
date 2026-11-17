@@ -4,6 +4,7 @@ import React, { useRef, useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { computeLensScores } from "../lib/lensScores";
+import { PerformancePanel, CompatibilityPanel, AccessibilityChecklist, SignalPanelStyles } from "./SignalPanels";
 import {
   UploadCloud,
   Link2,
@@ -1503,6 +1504,15 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
               ))}
             </div>
           </div>
+        )}
+
+        {usingRealData && (
+          <>
+            <SignalPanelStyles />
+            <PerformancePanel data={data.performanceStability} />
+            <CompatibilityPanel data={data.compatibility} />
+            <AccessibilityChecklist checks={data.accessibilityChecks} />
+          </>
         )}
 
         {storeUrl && <SubscribeForm appName={appLabel} storeUrl={storeUrl} />}

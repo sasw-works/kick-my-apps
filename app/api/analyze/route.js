@@ -1,5 +1,6 @@
 import { fetchAppStoreReviews, fetchAppStoreListing, computeReviewAnalytics } from "../../lib/reviews";
 import { computeLensScores } from "../../lib/lensScores";
+import { applyAnalysisExtras } from "../../lib/analysisExtras";
 import { getCurrentUser, unauthorized } from "../../lib/requireUser";
 import { rateLimit, tooManyRequests } from "../../lib/rateLimit";
 import { readSecret, errorText } from "../../lib/secrets";
@@ -45,7 +46,25 @@ than English.
   },
   "approvalRisks": [
     { "issue": "<a concrete observed risk>", "guideline": "<the relevant Apple/Google review guideline category, e.g. 'Completeness' or 'Misleading Content'>", "severity": "<high|medium>" }
-  ]
+  ],
+  "performanceStability": {
+    "summary": "<1-2 sentences on what users report about speed, crashes, battery, loading>",
+    "signals": [
+      { "type": "<slow|crash|battery|loading|freeze|storage|network|other>", "label": "<short title>", "severity": "<high|medium|low>", "evidence": "<what reviewers actually say, paraphrased, one sentence>" }
+    ],
+    "suggestions": ["<1-3 concrete things to investigate or profile>"]
+  } or null,
+  "compatibility": {
+    "summary": "<1-2 sentences>",
+    "platformNotes": [
+      { "issue": "<a platform-convention issue visible in the screenshots>", "guideline": "<e.g. 'Apple HIG: Navigation bars' or 'Material Design: Bottom navigation'>", "severity": "<high|medium|low>" }
+    ],
+    "deviceSignals": [{ "label": "<device / OS / screen-size problem users mention>", "evidence": "<one sentence>" }],
+    "suggestions": ["<1-3 concrete suggestions>"]
+  } or null,
+  "accessibilityChecks": [
+    { "check": "<touch_targets|text_size|contrast|color_only|labels>", "status": "<good|warn|bad|unknown>", "note": "<one sentence on what you see>", "standard": "<e.g. 'WCAG 2.5.8 / Apple HIG 44pt', 'WCAG 1.4.3', 'Material 48dp'>" }
+  ] or null
 }
 
 Category guide (if screenshots were provided, try to evaluate all of them):
@@ -93,6 +112,18 @@ Rules:
   a half-finished feature, misleading exaggerated claims). If reviews mention a lot of crash/error
   complaints, you can add that as a risk too.
   If there's no concrete evidence, return an empty array — don't invent a risk.
+- performanceStability: ONLY from what reviewers actually report (slowness, crashes, freezes, battery,
+  loading, storage, connection problems). This is not a technical measurement: never claim a memory
+  leak, request count or load time you cannot observe. At most 5 signals. Null if no reviews were given.
+- compatibility: platformNotes ONLY from what is visible in the screenshots (e.g. a back gesture or
+  navigation pattern that differs from the platform's convention); at most 4. deviceSignals ONLY from
+  devices, OS versions or screen sizes reviewers name; at most 4. Null if neither reviews nor
+  screenshots were given. Don't invent a platform the app doesn't target.
+- accessibilityChecks: one entry per check you can actually judge from the screenshots, at most 5, no
+  duplicates. Use status "unknown" when the screenshots don't let you tell. Never state exact pixel
+  sizes or contrast ratios as measurements; say "appears" / "looks like". Null if no screenshots.
+- Keep these three sections compact so the whole response stays within the output limit. They do not
+  count toward the 5-11 findings and must not duplicate them word for word.
 - Final reminder: regardless of the language of the reviews or any other input, every string you write
   in the response (titles, findings, suggestions, summaries, labels) must be in English.`;
 
@@ -109,7 +140,7 @@ async function callGeminiModel(model, parts) {
         contents: [{ parts }],
         generationConfig: {
           responseMimeType: "application/json",
-          maxOutputTokens: 8192,
+          maxOutputTokens: 12288,
         },
       }),
     }
@@ -406,6 +437,8 @@ export async function POST(req) {
       result.asoReview.storeAvgRating = listing.averageRating;
       result.asoReview.storeRatingCount = listing.ratingCount;
     }
+
+    applyAnalysisExtras(result, { reviews, hasImages: images.length > 0 });
 
     return Response.json(result);
   } catch (err) {
