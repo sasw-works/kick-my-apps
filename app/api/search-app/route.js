@@ -1,3 +1,4 @@
+import { searchPlayApps } from "../../lib/pulse/playStore";
 import { rateLimit, getClientIp, tooManyRequests } from "../../lib/rateLimit";
 
 export const runtime = "nodejs";
@@ -20,25 +21,37 @@ export async function GET(req) {
     return Response.json({ results: [] });
   }
 
-  try {
+  // store: "appstore" (default, what Pulse and older callers get), "play", or "all" (home search:
+  // both stores side by side, each result tagged with where it lives).
+  const storeParam = (searchParams.get("store") || "appstore").toLowerCase();
+  const store = ["appstore", "play", "all"].includes(storeParam) ? storeParam : "appstore";
+
+  const searchAppStore = async () => {
     const url = `https://itunes.apple.com/search?term=${encodeURIComponent(
       term
     )}&entity=software&country=${encodeURIComponent(country)}&limit=8`;
     const res = await fetch(url);
-    if (!res.ok) {
-      return Response.json({ results: [] });
-    }
+    if (!res.ok) return [];
     const data = await res.json();
-
-    const results = (data.results || []).map((r) => ({
+    return (data.results || []).map((r) => ({
       trackId: r.trackId,
       name: r.trackName,
       developer: r.sellerName || r.artistName || "",
       icon: r.artworkUrl100 || r.artworkUrl60,
       storeUrl: r.trackViewUrl,
+      store: "appstore",
     }));
+  };
+  const searchPlay = async () => (await searchPlayApps(term, country)).map((r) => ({ ...r, store: "play" }));
 
-    return Response.json({ results });
+  try {
+    if (store === "play") return Response.json({ results: await searchPlay() });
+    if (store === "appstore") return Response.json({ results: await searchAppStore() });
+    // One store being down must not blank the other, so each side fails on its own.
+    const [a, p] = await Promise.allSettled([searchAppStore(), searchPlay()]);
+    const apple = a.status === "fulfilled" ? a.value.slice(0, 5) : [];
+    const play = p.status === "fulfilled" ? p.value.slice(0, 5) : [];
+    return Response.json({ results: [...apple, ...play] });
   } catch (err) {
     console.error(err);
     return Response.json({ results: [] });

@@ -107,7 +107,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
     debounceRef.current = setTimeout(async () => {
       setSearching(true);
       try {
-        const res = await fetch(`/api/search-app?term=${encodeURIComponent(query.trim())}`);
+        const res = await fetch(`/api/search-app?term=${encodeURIComponent(query.trim())}&store=all`);
         const data = await res.json();
         setSuggestions(data.results || []);
         setShowDropdown(true);
@@ -726,7 +726,7 @@ export default function UploadFlow({ onAnalyze, analyzing, errorMessage, onViewH
                   )}
                   <div className="suggestion-text">
                     <div className="suggestion-name">{app.name}</div>
-                    <div className="suggestion-dev">{app.developer}</div>
+                    <div className="suggestion-dev">{app.developer}{app.store === "play" ? " · Google Play" : ""}</div>
                   </div>
                 </button>
               ))}

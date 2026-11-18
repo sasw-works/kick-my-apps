@@ -1,3 +1,5 @@
+import { playIdFromStoreUrl, fetchPlayReviews, fetchPlayListing } from "./pulse/playStore.js";
+
 // Apple's public RSS review feed — no auth needed, real data.
 // (Play Store has no equivalent public feed; that's a known v1 gap, see README.)
 async function fetchReviewsFromRss(appId, country) {
@@ -80,6 +82,7 @@ async function fetchReviewsFromWebPage(storeUrl) {
 }
 
 export async function fetchAppStoreReviews(storeUrl) {
+  if (playIdFromStoreUrl(storeUrl)) return fetchPlayReviews(storeUrl);
   const idMatch = storeUrl.match(/id(\d+)/);
   if (!idMatch) return null;
   const appId = idMatch[1];
@@ -95,6 +98,7 @@ export async function fetchAppStoreReviews(storeUrl) {
 // Apple's public Lookup API — real store listing metadata (title, description,
 // version notes). Used for the ASO / store listing review.
 export async function fetchAppStoreListing(storeUrl) {
+  if (playIdFromStoreUrl(storeUrl)) return fetchPlayListing(storeUrl);
   const idMatch = storeUrl.match(/id(\d+)/);
   if (!idMatch) return null;
   const appId = idMatch[1];

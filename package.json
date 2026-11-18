@@ -12,6 +12,7 @@
     "@auth/pg-adapter": "^1.11.3",
     "@vercel/analytics": "^2.0.1",
     "@vercel/postgres": "^0.10.0",
+    "google-play-scraper": "^10.1.4",
     "html2canvas": "^1.4.1",
     "jspdf": "^4.2.1",
     "lucide-react": "^1.27.0",

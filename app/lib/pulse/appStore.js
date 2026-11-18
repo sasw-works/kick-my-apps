@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { isPlayId, playIdFromStoreUrl, playCountryFromStoreUrl, lookupPlayApp, fetchRecentPlayReviews } from "./playStore.js";
 
 // Everything Pulse asks Apple. Two sources, chosen for how much we can trust each:
 //  - the official lookup API: version, release date, notes, average rating, rating count. Stable,
@@ -31,10 +32,17 @@ export const COUNTRIES = {
   nl: "Netherlands",
 };
 
-export const isAppId = (v) => /^\d{5,12}$/.test(String(v ?? ""));
+// A monitored app is an App Store id (digits) or a Google Play package name; the two never overlap,
+// so the id alone says which store it is.
+export const isAppStoreId = (v) => /^\d{5,12}$/.test(String(v ?? ""));
+export const isAppId = (v) => isAppStoreId(v) || isPlayId(v);
+export { isPlayId };
+export const storeName = (appId) => (isPlayId(appId) ? "Google Play" : "App Store");
+export const storeOfAppId = (v) => (isPlayId(v) ? "play" : "appstore");
 export const isCountry = (v) => /^[a-z]{2}$/.test(String(v ?? ""));
-export const appIdFromStoreUrl = (url) => /\/id(\d{5,12})/.exec(String(url ?? ""))?.[1] ?? null;
-export const countryFromStoreUrl = (url) => /apps\.apple\.com\/([a-z]{2})\//i.exec(String(url ?? ""))?.[1]?.toLowerCase() ?? null;
+export const appIdFromStoreUrl = (url) => /\/id(\d{5,12})/.exec(String(url ?? ""))?.[1] ?? playIdFromStoreUrl(url);
+export const countryFromStoreUrl = (url) =>
+  /apps\.apple\.com\/([a-z]{2})\//i.exec(String(url ?? ""))?.[1]?.toLowerCase() ?? playCountryFromStoreUrl(url);
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -46,6 +54,7 @@ async function getJson(url, timeoutMs = DEFAULT_TIMEOUT_MS) {
 
 // { ok: true, app } | { ok: false, reason: "not_found" | "unavailable" }
 export async function lookupApp(appId, country) {
+  if (isPlayId(appId)) return lookupPlayApp(appId, country);
   try {
     const data = await getJson(`https://itunes.apple.com/lookup?id=${appId}&country=${country}&entity=software`);
     const r = (data.results || []).find((x) => String(x.trackId) === String(appId));
@@ -99,6 +108,7 @@ function parseEntry(e) {
 // "check now" path (one monitor, its own invocation) passes attempts: 2 for a better shot at a
 // feed that's just having a bad moment.
 export async function fetchRecentReviews(appId, country, { attempts = 1 } = {}) {
+  if (isPlayId(appId)) return fetchRecentPlayReviews(appId, country, { attempts });
   for (let i = 0; i < attempts; i++) {
     try {
       const data = await getJson(`https://itunes.apple.com/${country}/rss/customerreviews/id=${appId}/sortby=mostrecent/json`);

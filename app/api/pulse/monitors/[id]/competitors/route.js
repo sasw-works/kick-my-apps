@@ -1,7 +1,7 @@
 import { sql } from "@vercel/postgres";
 import { getCurrentUser, unauthorized } from "../../../../../lib/requireUser";
 import { ensurePulseSchema } from "../../../../../lib/pulse/schema";
-import { lookupApp, isAppId, isCountry, appIdFromStoreUrl, countryFromStoreUrl } from "../../../../../lib/pulse/appStore";
+import { lookupApp, isAppId, isCountry, appIdFromStoreUrl, countryFromStoreUrl, storeOfAppId, storeName } from "../../../../../lib/pulse/appStore";
 import { claimAndCheck } from "../../../../../lib/pulse/check";
 import { summarizeApp, gapVersus } from "../../../../../lib/pulse/compare";
 import { competitorsLimit } from "../../../../../lib/plans";
@@ -79,7 +79,12 @@ export async function POST(req, { params }) {
     const appId = String(body.appId || appIdFromStoreUrl(body.storeUrl) || "").trim();
     // Default to the parent's storefront: ratings only compare fairly within one country.
     const country = String(body.country || countryFromStoreUrl(body.storeUrl) || parent.country).toLowerCase();
-    if (!isAppId(appId)) return Response.json({ error: "That doesn't look like a valid App Store app." }, { status: 400 });
+    if (!isAppId(appId)) return Response.json({ error: "That doesn't look like a valid App Store or Google Play app." }, { status: 400 });
+    // Ratings and review volumes aren't comparable across the two stores, so a competitor must be
+    // listed in the same store as the app it's compared with.
+    if (storeOfAppId(appId) !== storeOfAppId(parent.app_id)) {
+      return Response.json({ error: `Competitors must be on ${storeName(parent.app_id)}, like your app.` }, { status: 400 });
+    }
     if (!isCountry(country)) return Response.json({ error: "Unsupported store." }, { status: 400 });
     if (appId === parent.app_id && country === parent.country) {
       return Response.json({ error: "That's your own app. Pick a competitor." }, { status: 400 });
@@ -109,7 +114,7 @@ export async function POST(req, { params }) {
     const found = await lookupApp(appId, country);
     if (!found.ok) {
       return Response.json(
-        { error: found.reason === "not_found" ? "That app couldn't be found in this store." : "The App Store didn't respond. Please try again." },
+        { error: found.reason === "not_found" ? "That app couldn't be found in this store." : `${storeName(appId)} didn't respond. Please try again.` },
         { status: found.reason === "not_found" ? 404 : 502 }
       );
     }

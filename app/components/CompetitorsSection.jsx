@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Search, Plus, Trash2, Loader2, TrendingUp, TrendingDown } from "lucide-react";
 
 // "Competitors" block on a monitored app's page: your numbers next to each tracked competitor's.
-// Their data comes from the same daily check as yours; it's the public App Store rating, version,
+// Their data comes from the same daily check as yours; it's the public store rating, version,
 // and the recent written reviews we've seen -- not their private analytics.
 
 const ago = (d) => {
@@ -14,7 +14,10 @@ const ago = (d) => {
 };
 const stars = (v) => (v == null ? "—" : `${v.toFixed(2)}★`);
 
-export default function CompetitorsSection({ monitorId, country }) {
+export default function CompetitorsSection({ monitorId, country, appId }) {
+  // Competitors are searched in the same store as the app they're compared with.
+  const isPlay = /^[A-Za-z]/.test(String(appId || ""));
+  const storeLabel = isPlay ? "Google Play" : "the App Store";
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
   const [adding, setAdding] = useState(false);
@@ -39,12 +42,12 @@ export default function CompetitorsSection({ monitorId, country }) {
     timer.current = setTimeout(async () => {
       setSearching(true);
       try {
-        const r = await fetch(`/api/search-app?term=${encodeURIComponent(query)}&country=${country}`);
+        const r = await fetch(`/api/search-app?term=${encodeURIComponent(query)}&country=${country}&store=${isPlay ? "play" : "appstore"}`);
         setResults((await r.json()).results || []);
       } catch { setResults([]); } finally { setSearching(false); }
     }, 350);
     return () => clearTimeout(timer.current);
-  }, [query, country]);
+  }, [query, country, isPlay]);
 
   async function add(app) {
     setBusyId(String(app.trackId)); setFormError("");
@@ -110,14 +113,14 @@ export default function CompetitorsSection({ monitorId, country }) {
         </button>
       </div>
       <p className="cmp-sub">
-        Public App Store numbers, checked daily alongside yours{limit != null ? ` · ${competitors.length} of ${limit} used` : ""}. Review topics come from the recent written reviews we&apos;ve seen, not every review.
+        Public {isPlay ? "Google Play" : "App Store"} numbers, checked daily alongside yours{limit != null ? ` · ${competitors.length} of ${limit} used` : ""}. Review topics come from the recent written reviews we&apos;ve seen, not every review.
       </p>
 
       {adding && (
         <div className="cmp-add">
           <div className="cmp-input-wrap">
             <Search size={15} />
-            <input className="cmp-input" autoFocus placeholder="Search the App Store for a competitor…" value={query} onChange={(e) => setQuery(e.target.value)} aria-label="Search for a competitor" />
+            <input className="cmp-input" autoFocus placeholder={`Search ${storeLabel} for a competitor…`} value={query} onChange={(e) => setQuery(e.target.value)} aria-label="Search for a competitor" />
           </div>
           {searching && <div className="cmp-muted" style={{ marginTop: 10 }}><Loader2 size={13} className="spin" /> Searching…</div>}
           {query.trim().length >= 3 && results.slice(0, 6).map((app) => (

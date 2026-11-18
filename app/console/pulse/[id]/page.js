@@ -173,7 +173,7 @@ export default function PulseMonitorDetailPage() {
         </div>
         <div className="pmd-actions">
           {m.store_url && (
-            <a href={m.store_url} target="_blank" rel="noopener noreferrer" className="pmd-action-btn" aria-label="Open in App Store">
+            <a href={m.store_url} target="_blank" rel="noopener noreferrer" className="pmd-action-btn" aria-label={/^[A-Za-z]/.test(String(m.app_id)) ? "Open in Google Play" : "Open in App Store"}>
               <ExternalLink size={15} />
             </a>
           )}
@@ -267,7 +267,7 @@ export default function PulseMonitorDetailPage() {
           </>
         )}
       </div>
-      {!m.competitor_of && <CompetitorsSection monitorId={m.id} country={m.country} />}
+      {!m.competitor_of && <CompetitorsSection monitorId={m.id} country={m.country} appId={m.app_id} />}
     </main>
   );
 }

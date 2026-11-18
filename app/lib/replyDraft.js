@@ -24,7 +24,7 @@ const oneLine = (s, max) => String(s ?? "").replace(/\s+/g, " ").trim().slice(0,
 export function buildReplyPrompt({ appName, developer, review, tone, note }) {
   const toneText = TONES[tone] || TONES.professional;
   const devNote = oneLine(note, 400);
-  return `You write replies to App Store reviews on behalf of the team behind the app "${oneLine(appName, 80)}"${developer ? ` (${oneLine(developer, 80)})` : ""}.
+  return `You write replies to app store reviews (App Store or Google Play) on behalf of the team behind the app "${oneLine(appName, 80)}"${developer ? ` (${oneLine(developer, 80)})` : ""}.
 
 Write ONE reply to the review below.
 

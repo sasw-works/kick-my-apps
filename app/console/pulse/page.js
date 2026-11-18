@@ -387,6 +387,7 @@ export default function ConsolePulsePage() {
 
 function AddMonitorModal({ onClose, onAdded }) {
   const [country, setCountry] = useState("tr");
+  const [store, setStore] = useState("appstore");
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [searching, setSearching] = useState(false);
@@ -407,7 +408,7 @@ function AddMonitorModal({ onClose, onAdded }) {
     debounceRef.current = setTimeout(async () => {
       setSearching(true);
       try {
-        const res = await fetch(`/api/search-app?term=${encodeURIComponent(query)}&country=${country}`);
+        const res = await fetch(`/api/search-app?term=${encodeURIComponent(query)}&country=${country}&store=${store}`);
         const d = await res.json();
         setResults(d.results || []);
       } catch {
@@ -417,7 +418,7 @@ function AddMonitorModal({ onClose, onAdded }) {
       }
     }, 350);
     return () => clearTimeout(debounceRef.current);
-  }, [query, country]);
+  }, [query, country, store]);
 
   async function handleAdd() {
     if (!selected) return;
@@ -452,6 +453,9 @@ function AddMonitorModal({ onClose, onAdded }) {
           width: 100%; height: 44px; border-radius: 10px; border: 1px solid var(--ink-3); background: var(--ink);
           color: var(--chalk); font-size: 14px; padding: 0 12px; box-sizing: border-box; font-family: inherit;
         }
+        .pulse-store-tabs { display: flex; gap: 6px; }
+        .pulse-store-tab { flex: 1; height: 40px; border-radius: 10px; border: 1px solid var(--ink-3); background: var(--ink); color: var(--muted); font-size: 13.5px; font-weight: 600; cursor: pointer; font-family: inherit; }
+        .pulse-store-tab-on { border-color: var(--brand); color: var(--chalk); background: color-mix(in srgb, var(--brand) 10%, var(--ink)); }
         .pulse-select-wrap { position: relative; }
         .pulse-modal-select {
           appearance: none; -webkit-appearance: none;
@@ -483,7 +487,22 @@ function AddMonitorModal({ onClose, onAdded }) {
           <button className="pulse-modal-close" onClick={onClose} aria-label="Close"><X size={18} /></button>
         </div>
 
-        <div className="pulse-modal-label">Store</div>
+        <div className="pulse-modal-label">Platform</div>
+        <div className="pulse-store-tabs" role="group" aria-label="Platform">
+          {[["appstore", "App Store"], ["play", "Google Play"]].map(([k, label]) => (
+            <button
+              key={k}
+              type="button"
+              className={`pulse-store-tab ${store === k ? "pulse-store-tab-on" : ""}`}
+              aria-pressed={store === k}
+              onClick={() => { setStore(k); setSelected(null); setResults([]); }}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+
+        <div className="pulse-modal-label">Country</div>
         <div className="pulse-select-wrap">
           <select className="pulse-modal-select" value={country} onChange={(e) => { setCountry(e.target.value); setSelected(null); }}>
             {COUNTRIES.map((c) => (

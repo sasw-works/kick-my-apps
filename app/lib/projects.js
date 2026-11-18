@@ -3,9 +3,12 @@
 
 const isOpen = (s) => s === "bad" || s === "warn";
 
-// Prefers the App Store id from the link (stable even if the name changes); falls back to the name
+// Prefers the App Store id (or Play package name) from the link (stable even if the name changes); falls back to the name
 // for analyses made from screenshots only.
 export function projectKey(appName, storeUrl) {
+  // Google Play links carry the package name: ...play.google.com/store/apps/details?id=com.example.app
+  const play = typeof storeUrl === "string" ? storeUrl.match(/^https:\/\/play\.google\.com\/.*[?&]id=([A-Za-z][\w]*(?:\.[A-Za-z][\w]*)+)/) : null;
+  if (play) return `app:${play[1].toLowerCase()}`;
   const m = typeof storeUrl === "string" ? storeUrl.match(/id(\d{4,})/) : null;
   if (m) return `app:${m[1]}`;
   return `name:${String(appName || "").trim().toLowerCase().slice(0, 120)}`;

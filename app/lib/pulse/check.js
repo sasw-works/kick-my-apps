@@ -1,5 +1,5 @@
 import { sql } from "@vercel/postgres";
-import { lookupApp, fetchRecentReviews } from "./appStore.js";
+import { lookupApp, fetchRecentReviews, storeName } from "./appStore.js";
 
 // One check of one monitor. Data sources are injectable (deps) so the logic can be tested with
 // exact, invented Apple responses instead of whatever the real store says today.
@@ -70,7 +70,7 @@ export async function runCheck(monitor, deps = defaultDeps, { reviewAttempts = 1
     const error =
       found.reason === "not_found"
         ? "This app is no longer listed in this store."
-        : "The App Store didn't respond. We'll try again.";
+        : `${storeName(monitor.app_id)} didn't respond. We'll try again.`;
     await sql`UPDATE pulse_monitors SET last_check_ok = false, last_error = ${error} WHERE id = ${monitor.id}`;
     return { ok: false, error };
   }

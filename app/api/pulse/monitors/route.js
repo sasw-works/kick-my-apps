@@ -1,7 +1,7 @@
 import { sql } from "@vercel/postgres";
 import { getCurrentUser, unauthorized } from "../../../lib/requireUser";
 import { ensurePulseSchema } from "../../../lib/pulse/schema";
-import { lookupApp, isAppId, isCountry, appIdFromStoreUrl, countryFromStoreUrl } from "../../../lib/pulse/appStore";
+import { lookupApp, isAppId, isCountry, appIdFromStoreUrl, countryFromStoreUrl, storeName } from "../../../lib/pulse/appStore";
 import { claimAndCheck } from "../../../lib/pulse/check";
 import { pulseLimit } from "../../../lib/plans";
 import { rateLimit, tooManyRequests } from "../../../lib/rateLimit";
@@ -47,7 +47,7 @@ export async function POST(req) {
 
   const appId = String(body.appId || appIdFromStoreUrl(body.storeUrl) || "").trim();
   const country = String(body.country || countryFromStoreUrl(body.storeUrl) || "us").toLowerCase();
-  if (!isAppId(appId)) return Response.json({ error: "That doesn't look like a valid App Store app." }, { status: 400 });
+  if (!isAppId(appId)) return Response.json({ error: "That doesn't look like a valid App Store or Google Play app." }, { status: 400 });
   if (!isCountry(country)) return Response.json({ error: "Unsupported store." }, { status: 400 });
 
   // Checked before the plan limit: re-adding an app you already monitor should say so, not "your
@@ -72,7 +72,7 @@ export async function POST(req) {
   const found = await lookupApp(appId, country);
   if (!found.ok) {
     return Response.json(
-      { error: found.reason === "not_found" ? "That app couldn't be found in this store." : "The App Store didn't respond. Please try again." },
+      { error: found.reason === "not_found" ? "That app couldn't be found in this store." : `${storeName(appId)} didn't respond. Please try again.` },
       { status: found.reason === "not_found" ? 404 : 502 }
     );
   }

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { MessageSquareReply, Loader2, Copy, Check, RefreshCw } from "lucide-react";
 
 // "Draft reply" for one review of your own app. The draft is only a starting point: it's shown in an
-// editable box, nothing is posted, and you copy it into App Store Connect yourself.
+// editable box, nothing is posted, and you copy it into App Store Connect or the Play Console yourself.
 
 const TONES = [
   { key: "friendly", label: "Friendly" },
