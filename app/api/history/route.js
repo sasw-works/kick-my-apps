@@ -8,6 +8,7 @@ import { countReportsThisMonth } from "../../lib/usage";
 import { rateLimit, tooManyRequests } from "../../lib/rateLimit";
 import { computeProgress } from "../../lib/findingProgress";
 import { projectKey } from "../../lib/projects";
+import { computeLensScores } from "../../lib/lensScores";
 import { migrateLegacyTracking, loadStatusMap } from "../../lib/taskData";
 
 export const runtime = "nodejs";
@@ -170,7 +171,25 @@ export async function GET(req) {
       } catch (e) {
         console.error("task status lookup failed:", errorText(e));
       }
-      return Response.json({ scan, progress, taskStatus });
+
+      // Score history of this app (same owner, same project), oldest first, for the trend chart.
+      let history = [];
+      try {
+        const { rows: all } = await sql`
+          SELECT id, app_name, store_url, health_score, created_at, result_json->'findings' AS findings
+          FROM scans WHERE user_email = ${row.user_email}
+          ORDER BY created_at DESC, id DESC LIMIT 300;
+        `;
+        const pk = projectKey(row.app_name, row.store_url);
+        history = all
+          .filter((r) => projectKey(r.app_name, r.store_url) === pk)
+          .slice(0, 24)
+          .reverse()
+          .map((r) => ({ id: r.id, health_score: r.health_score, created_at: r.created_at, lens: computeLensScores(r.findings) }));
+      } catch (e) {
+        console.error("history lookup failed:", errorText(e));
+      }
+      return Response.json({ scan, progress, taskStatus, history });
     }
 
     if (apps) {

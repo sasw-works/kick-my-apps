@@ -13,6 +13,7 @@ export default function ConsoleReportDetailPage() {
   const [scan, setScan] = useState(null);
   const [progress, setProgress] = useState(null);
   const [taskStatus, setTaskStatus] = useState({});
+  const [history, setHistory] = useState([]);
   const [error, setError] = useState("");
   // "43-instagram" -> 43. Only the number is ever looked up; the name part is cosmetic.
   const id = parseReportId(idParam);
@@ -26,6 +27,7 @@ export default function ConsoleReportDetailPage() {
         setScan(d.scan);
         setProgress(d.progress || null);
         setTaskStatus(d.taskStatus || {});
+        setHistory(d.history || []);
         // Old /reports/43 links, or a stale/wrong name: show the canonical address. replaceState, not a
         // navigation -- nothing reloads, and the effect depends on the number, so it doesn't refetch.
         const canonical = reportPath(d.scan.id, d.scan.app_name);
@@ -59,7 +61,7 @@ export default function ConsoleReportDetailPage() {
           data={scan.result_json}
           appLabel={scan.app_name}
           onReset={() => router.push("/console")}
-          history={[]}
+          history={history}
           scanId={scan.id}
           storeUrl={scan.store_url}
           taskStatus={taskStatus}

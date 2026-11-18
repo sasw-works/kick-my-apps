@@ -11,6 +11,7 @@ export default function ScanDetailPage() {
   const [scan, setScan] = useState(null);
   const [progress, setProgress] = useState(null);
   const [taskStatus, setTaskStatus] = useState({});
+  const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -23,6 +24,7 @@ export default function ScanDetailPage() {
         setScan(data.scan);
         setProgress(data.progress || null);
         setTaskStatus(data.taskStatus || {});
+        setHistory(data.history || []);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -49,7 +51,7 @@ export default function ScanDetailPage() {
             data={scan.result_json}
             appLabel={scan.app_name}
             onReset={() => router.push("/history")}
-            history={[]}
+            history={history}
             scanId={scan.id}
             storeUrl={scan.store_url || ""}
             taskStatus={taskStatus}

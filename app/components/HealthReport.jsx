@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { computeLensScores } from "../lib/lensScores";
 import ShareButton from "./ShareButton";
+import ScoreTrend from "./ScoreTrend";
 import { PerformancePanel, CompatibilityPanel, AccessibilityChecklist, SignalPanelStyles } from "./SignalPanels";
 import {
   UploadCloud,
@@ -480,68 +481,6 @@ const EFFORT_MAP = {
   conversion: "high",
 };
 
-function HistoryBarChart({ points, width = 560, height = 120 }) {
-  const shown = points.slice(-12); // at most the last 12 scans
-  const slot = width / shown.length;
-  const r = Math.min(22, slot * 0.32);
-  const padTop = r + 4;
-  const padBottom = r + 4;
-  const drawH = height - padTop - padBottom;
-
-  return (
-    <svg width={width} height={height + 26} viewBox={`0 0 ${width} ${height + 26}`}>
-      {shown.map((p, i) => {
-        const cx = i * slot + slot / 2;
-        const cy = padTop + drawH - (p.health_score / 100) * drawH;
-        const color = p.health_score >= 75 ? "var(--teal)" : p.health_score >= 50 ? "var(--yellow)" : "var(--kick)";
-        const dateLabel = new Date(p.created_at).toLocaleDateString("en-US", { day: "2-digit", month: "2-digit" });
-        return (
-          <g key={i}>
-            <circle cx={cx} cy={cy} r={r} fill={color} opacity={i === shown.length - 1 ? 1 : 0.6} />
-            <text x={cx} y={height + 18} textAnchor="middle" style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, fill: "var(--muted)" }}>
-              {dateLabel}
-            </text>
-          </g>
-        );
-      })}
-    </svg>
-  );
-}
-
-function HistoryPanel({ history }) {
-  if (!history || history.length === 0) return null;
-
-  const first = history[0];
-  const last = history[history.length - 1];
-  const delta = last.health_score - first.health_score;
-  const deltaColor = delta >= 0 ? "var(--teal)" : "var(--kick)";
-
-  return (
-    <div className="panel">
-      <div className="hist-header">
-        <div className="panel-title">Health Score Trend</div>
-        <div className="panel-subtitle">Change over time across {history.length} scans</div>
-      </div>
-      {history.length >= 2 ? (
-        <>
-          <div className="hist-bignum">
-            {last.health_score}
-            <span className="hist-delta" style={{ color: deltaColor }}>
-              ({delta >= 0 ? "+" : ""}
-              {delta}) since the first scan
-            </span>
-          </div>
-          <HistoryBarChart points={history} />
-        </>
-      ) : (
-        <div style={{ fontSize: 13.5, color: "var(--muted)" }}>
-          This is your first scan — you'll see a trend here after the next one.
-        </div>
-      )}
-    </div>
-  );
-}
-
 // ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
@@ -589,6 +528,9 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
   const reviewSummary = usingRealData ? data.reviewSummary : REVIEW_STATS;
   const asoReview = usingRealData ? data.asoReview : null;
   const approvalRisks = usingRealData ? data.approvalRisks || [] : [];
+  // Change versus the scan right before THIS report (not simply the last one in the list).
+  const thisIdx = history.findIndex((h) => String(h.id) === String(scanId));
+  const previousScan = thisIdx > 0 ? history[thisIdx - 1] : null;
   const lensScores = usingRealData ? data.lensScores || computeLensScores(findings) : null;
 
   const badCount = findings.filter((f) => f.status === "bad").length;
@@ -847,12 +789,6 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
         .dial-panel .dial-wrap { align-self: center; display: flex; flex-direction: column; align-items: center; }
         .dial-caption { font-size: 12px; color: var(--muted); text-align: center; margin-top: 4px; }
 
-        .hist-header { margin-bottom: 12px; }
-        .hist-bignum {
-          font-family: var(--font-display); font-size: 32px; font-weight: 700; letter-spacing: -0.02em;
-          color: var(--chalk); display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;
-        }
-        .hist-delta { font-family: var(--font-mono); font-size: 12px; font-weight: 600; }
 
         .summary-list { display: flex; flex-direction: column; gap: 8px; }
         .summary-row { display: flex; align-items: center; gap: 12px; font-size: 14px; }
@@ -1137,7 +1073,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
             <div className="panel-title">App Health Score</div>
             <div className="panel-subtitle">{dialCaption}</div>
             <div className="dial-wrap">
-              <HealthDial score={healthScore} delta={history.length >= 2 ? healthScore - history[history.length - 2].health_score : null} />
+              <HealthDial score={healthScore} delta={previousScan ? healthScore - previousScan.health_score : null} />
             </div>
           </div>
           <div className="panel">
@@ -1262,7 +1198,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
           </div>
         )}
 
-        <HistoryPanel history={history} />
+        <ScoreTrend history={history} currentId={scanId} appLabel={appLabel} />
 
         {screenshots.length > 0 && (
           <div className="panel">
