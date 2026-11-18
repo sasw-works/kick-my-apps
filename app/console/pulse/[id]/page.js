@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import CompetitorsSection from "../../../components/CompetitorsSection";
+import ReplyDraft from "../../../components/ReplyDraft";
 import {
   ArrowLeft, Bell, AlertTriangle, TrendingUp, TrendingDown, Info, Loader2, RefreshCw, Pause, Play, Trash2, ExternalLink,
 } from "lucide-react";
@@ -254,6 +255,7 @@ export default function PulseMonitorDetailPage() {
                   </div>
                   {r.title && <div className="pmd-review-title">{r.title}</div>}
                   {r.content && <div className="pmd-review-content">{r.content}</div>}
+                  {!m.competitor_of && <ReplyDraft monitorId={m.id} review={r} />}
                 </div>
               ))}
             </div>
