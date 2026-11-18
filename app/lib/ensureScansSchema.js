@@ -27,6 +27,15 @@ export async function ensureScansSchema() {
   await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS shared_at TIMESTAMPTZ;`;
   // Owner's manual progress per finding category: { "contrast": "done", "cta": "wontfix" }.
   await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS finding_status JSONB;`;
+  // Task progress per project (app), kept across re-scans. 'todo' is simply the absence of a row.
+  await sql`CREATE TABLE IF NOT EXISTS task_status (
+    user_email TEXT NOT NULL,
+    project_key TEXT NOT NULL,
+    finding_key TEXT NOT NULL,
+    status TEXT NOT NULL,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    PRIMARY KEY (user_email, project_key, finding_key)
+  );`;
   await sql`CREATE UNIQUE INDEX IF NOT EXISTS scans_share_token_idx ON scans (share_token) WHERE share_token IS NOT NULL;`;
 
   ensured = true;

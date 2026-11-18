@@ -7,6 +7,8 @@ import { reportsLimit } from "../../lib/plans";
 import { countReportsThisMonth } from "../../lib/usage";
 import { rateLimit, tooManyRequests } from "../../lib/rateLimit";
 import { computeProgress } from "../../lib/findingProgress";
+import { projectKey } from "../../lib/projects";
+import { migrateLegacyTracking, loadStatusMap } from "../../lib/taskData";
 
 export const runtime = "nodejs";
 
@@ -116,7 +118,7 @@ export async function GET(req) {
         return Response.json({ error: "Scan not found." }, { status: 404 });
       }
       const { rows } = await sql`
-        SELECT id, app_name, health_score, bad_count, warn_count, good_count, result_json, store_url, created_at, user_email, finding_status
+        SELECT id, app_name, health_score, bad_count, warn_count, good_count, result_json, store_url, created_at, user_email
         FROM scans
         WHERE id = ${id}
         LIMIT 1;
@@ -150,7 +152,25 @@ export async function GET(req) {
       } catch (e) {
         console.error("progress lookup failed:", errorText(e));
       }
-      return Response.json({ scan, progress });
+
+      // The owner's task statuses for this app (managed on the Tasks page), shown read-only here.
+      // "Won't do" is a standing decision about the app. A "done" tick made before this report
+      // existed says nothing about it (the issue may have come back), so only newer ones count.
+      let taskStatus = {};
+      try {
+        const { rows: legacy } = await sql`
+          SELECT id, app_name, store_url, finding_status FROM scans
+          WHERE user_email = ${row.user_email} AND finding_status IS NOT NULL;
+        `;
+        await migrateLegacyTracking(row.user_email, legacy);
+        const map = await loadStatusMap(row.user_email, projectKey(row.app_name, row.store_url));
+        for (const [k, v] of Object.entries(map)) {
+          if (v.status === "wontdo" || new Date(v.updated_at) >= new Date(row.created_at)) taskStatus[k] = v.status;
+        }
+      } catch (e) {
+        console.error("task status lookup failed:", errorText(e));
+      }
+      return Response.json({ scan, progress, taskStatus });
     }
 
     if (apps) {

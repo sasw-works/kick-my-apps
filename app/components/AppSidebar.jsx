@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, ClipboardList, GitCompare, Radio, Moon, Sun, X, ShieldCheck } from "lucide-react";
+import { LayoutDashboard, ClipboardList, ListChecks, GitCompare, Radio, Moon, Sun, X, ShieldCheck } from "lucide-react";
 import LogoMark from "./LogoMark";
 import { useTheme } from "./ThemeProvider";
 import { useSession } from "next-auth/react";
@@ -12,6 +12,7 @@ import { SkeletonBlock } from "./Skeleton";
 const NAV_ITEMS = [
   { href: "/console", label: "Dashboard", icon: LayoutDashboard },
   { href: "/console/reports", label: "Reports", icon: ClipboardList },
+  { href: "/console/tasks", label: "Tasks", icon: ListChecks },
   { href: "/console/compare", label: "Compare", icon: GitCompare },
   { href: "/console/pulse", label: "Monitor", icon: Radio },
 ];
@@ -111,7 +112,7 @@ export default function AppSidebar({ mobileOpen = false, onClose }) {
       <nav className="kma-sidebar-nav">
         {navItems.map((item) => {
           const Icon = item.icon;
-          const active = pathname === item.href;
+          const active = pathname === item.href || (item.href !== "/console" && pathname.startsWith(item.href + "/"));
           return (
             <Link key={item.href} href={item.href} className={`kma-sidebar-link ${active ? "kma-sidebar-link-active" : ""}`} onClick={onClose}>
               <Icon size={17} strokeWidth={2} />

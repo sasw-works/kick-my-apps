@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { projectKey } from "../../../lib/projects";
 import HealthReport from "../../../components/HealthReport";
 import { reportPath, parseReportId } from "../../../lib/reportPath";
 import { Loader2 } from "lucide-react";
@@ -11,6 +12,7 @@ export default function ConsoleReportDetailPage() {
   const router = useRouter();
   const [scan, setScan] = useState(null);
   const [progress, setProgress] = useState(null);
+  const [taskStatus, setTaskStatus] = useState({});
   const [error, setError] = useState("");
   // "43-instagram" -> 43. Only the number is ever looked up; the name part is cosmetic.
   const id = parseReportId(idParam);
@@ -23,6 +25,7 @@ export default function ConsoleReportDetailPage() {
         if (d.error) throw new Error(d.error);
         setScan(d.scan);
         setProgress(d.progress || null);
+        setTaskStatus(d.taskStatus || {});
         // Old /reports/43 links, or a stale/wrong name: show the canonical address. replaceState, not a
         // navigation -- nothing reloads, and the effect depends on the number, so it doesn't refetch.
         const canonical = reportPath(d.scan.id, d.scan.app_name);
@@ -59,7 +62,8 @@ export default function ConsoleReportDetailPage() {
           history={[]}
           scanId={scan.id}
           storeUrl={scan.store_url}
-          findingStatus={scan.finding_status || {}}
+          taskStatus={taskStatus}
+          tasksHref={`/console/tasks/${encodeURIComponent(projectKey(scan.app_name, scan.store_url))}`}
           progress={progress}
           screenshots={[]}
           onClose={() => router.push("/console/reports")}
