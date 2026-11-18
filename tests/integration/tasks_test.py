@@ -113,6 +113,25 @@ st,js,_=proj(BOB,"name:old")
 check("legacy done / wontfix show up as done / won't do", {t["key"]:t["status"] for t in js["tasks"]}=={"contrast":"done","cta":"wontdo"}, js)
 check("...and the legacy column is cleared (migrated once)", psql(f"select finding_status is null from scans where id={b1}")=="t")
 
+print("== 6b. export")
+def raw(m,p,cookie=None):
+    c=http.client.HTTPConnection("localhost",3111,timeout=30); h={"Cookie":cookie} if cookie else {}
+    c.request(m,p,headers=h); r=c.getresponse(); t=r.read().decode("utf-8","ignore"); hd={k.lower():v for k,v in r.getheaders()}; c.close(); return r.status,hd,t
+q=urllib.parse.quote(PK)
+st,hd,body=raw("GET",f"/api/tasks/export?project={q}&format=csv",ALICE)
+check("CSV downloads as an attachment", st==200 and "text/csv" in hd["content-type"] and "attachment" in hd["content-disposition"] and ".csv" in hd["content-disposition"], (st,hd))
+check("...with her real tasks in it, statuses included", "Contrast" in body and '"Done"' in body and '"Won\'t do"' in body.replace("'","\\'") or ("Won't do" in body), body[:300])
+st,hd,body=raw("GET",f"/api/tasks/export?project={q}&format=md",ALICE)
+check("Markdown downloads with a checklist", st==200 and "markdown" in hd["content-type"] and "- [x]" in body and "## Won't do" in body, body[:300])
+check("export is never cached", hd.get("cache-control")=="no-store")
+# (Bob has his own 'Demo' with the same store id from section 5b, so his export is 200 -- but it
+# must contain only HIS data, never Alice's.)
+st,_,bobcsv=raw("GET",f"/api/tasks/export?project={q}&format=csv",BOB)
+check("another user's export of the same app contains only his own data", st==200 and "Cta" in bobcsv and "Contrast" not in bobcsv and "Trust" not in bobcsv, bobcsv[:200])
+check("an app another user doesn't have -> 404", raw("GET","/api/tasks/export?project=app%3A424242&format=csv",BOB)[0]==404)
+check("anonymous -> 401", raw("GET",f"/api/tasks/export?project={q}&format=csv")[0]==401)
+check("unknown format -> 400", raw("GET",f"/api/tasks/export?project={q}&format=exe",ALICE)[0]==400)
+
 print("== 7. report-less projects and cleanup")
 save(ALICE,"NoLink",rj(Fd("cta","bad")),"")
 check("an app analyzed without a link is its own project, keyed by name", any(p["key"]=="name:nolink" for p in req("GET","/api/tasks",cookie=ALICE)[1]["projects"]))

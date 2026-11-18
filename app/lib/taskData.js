@@ -1,5 +1,6 @@
 import { sql } from "@vercel/postgres";
 import { projectKey, groupProjects } from "./projects";
+import { ensureScansSchema } from "./ensureScansSchema";
 
 // All of one user's reports, newest first, with only the parts the task views need.
 export async function loadUserScans(email) {
@@ -39,6 +40,16 @@ export async function loadStatusMap(email, pk) {
   const map = {};
   for (const r of rows) map[r.finding_key] = { status: r.status, updated_at: r.updated_at };
   return map;
+}
+
+// The caller's projects (one per app), newest first, after the one-time legacy migration.
+export async function loadProjects(email) {
+  await ensureScansSchema();
+  const scans = await loadUserScans(email);
+  if (await migrateLegacyTracking(email, scans)) {
+    for (const s of scans) s.finding_status = null;
+  }
+  return groupProjects(scans);
 }
 
 export { groupProjects, projectKey };

@@ -102,6 +102,8 @@ jobs:
         run: node tests/integration/secrets_test.mjs
       - name: email_from_test.mjs
         run: node tests/integration/email_from_test.mjs
+      - name: task_export_test.mjs
+        run: node tests/integration/task_export_test.mjs
       - name: projects_test.mjs
         run: node tests/integration/projects_test.mjs
       - name: finding_progress_test.mjs

@@ -1,10 +1,9 @@
 import { sql } from "@vercel/postgres";
-import { ensureScansSchema } from "../../lib/ensureScansSchema";
 import { getCurrentUser, unauthorized } from "../../lib/requireUser";
 import { rateLimit, tooManyRequests } from "../../lib/rateLimit";
 import { errorText } from "../../lib/secrets";
 import { computeProjectTasks, TASK_STATUSES } from "../../lib/projects";
-import { loadUserScans, migrateLegacyTracking, loadStatusMap, groupProjects } from "../../lib/taskData";
+import { loadProjects, loadStatusMap } from "../../lib/taskData";
 
 export const runtime = "nodejs";
 
@@ -13,20 +12,11 @@ export const runtime = "nodejs";
 // PATCH          -> set one task's status
 // Everything is scoped to the signed-in user's own reports; admins get no special access here.
 
-async function prepare(user) {
-  await ensureScansSchema();
-  const scans = await loadUserScans(user.email);
-  if (await migrateLegacyTracking(user.email, scans)) {
-    for (const s of scans) s.finding_status = null;
-  }
-  return groupProjects(scans);
-}
-
 export async function GET(req) {
   try {
     const user = await getCurrentUser();
     if (!user) return unauthorized();
-    const projects = await prepare(user);
+    const projects = await loadProjects(user.email);
     const wanted = new URL(req.url).searchParams.get("project");
 
     if (wanted) {
@@ -72,7 +62,7 @@ export async function PATCH(req) {
       return Response.json({ error: "project, key and a valid status are required." }, { status: 400 });
     }
 
-    const projects = await prepare(user);
+    const projects = await loadProjects(user.email);
     const project = projects.find((p) => p.key === pk);
     if (!project) return Response.json({ error: "Project not found." }, { status: 404 });
     // Only issues the latest report actually contains can be tracked (no arbitrary keys).

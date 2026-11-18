@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { ArrowLeft, CheckCircle2, Lightbulb, FileText } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Lightbulb, FileText, Download } from "lucide-react";
 import AppIcon from "../../../components/AppIcon";
 import { SkeletonBlock } from "../../../components/Skeleton";
 import { reportPath } from "../../../lib/reportPath";
@@ -66,6 +66,9 @@ export default function ProjectTasksPage() {
     .pt-head h1 { margin: 0; font-size: 32px; font-weight: 500; color: var(--chalk); }
     .pt-meta { font-size: 13px; color: var(--muted); margin-bottom: 24px; display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
     .pt-meta a { color: var(--brand); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
+    .pt-export { display: inline-flex; align-items: center; gap: 8px; }
+    .pt-export a { background: var(--surface); border: 1px solid var(--ink-3); border-radius: 999px; padding: 3px 12px; font-size: 12px; color: var(--chalk); }
+    .pt-export a:hover { border-color: var(--brand); text-decoration: none; }
     .pt-progress { margin-bottom: 24px; }
     .pt-progress-text { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
     .pt-progress-text b { color: var(--teal); font-family: var(--font-mono); }
@@ -134,6 +137,11 @@ export default function ProjectTasksPage() {
       <div className="pt-meta">
         <span>From the latest of {project.reportCount} {project.reportCount === 1 ? "report" : "reports"} · {new Date(project.latestScanDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
         <Link href={reportPath(project.latestScanId, project.appName)}><FileText size={14} /> Open the report</Link>
+        <span className="pt-export" data-testid="export-links">
+          <Download size={14} /> Export
+          <a href={`/api/tasks/export?project=${encodeURIComponent(project.key)}&format=md`} download>Markdown</a>
+          <a href={`/api/tasks/export?project=${encodeURIComponent(project.key)}&format=csv`} download>CSV</a>
+        </span>
       </div>
 
       {total > 0 && (
