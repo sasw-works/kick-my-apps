@@ -25,6 +25,10 @@ export async function ensurePulseSchema() {
       UNIQUE (user_email, app_id, country)
     )
   `;
+  // A competitor is just a monitor attached to one of the user's own apps: same daily checks and
+  // history, but it never raises alerts and isn't listed (or counted) as one of their apps.
+  // Deleting the parent app deletes its competitors with it.
+  await sql`ALTER TABLE pulse_monitors ADD COLUMN IF NOT EXISTS competitor_of INTEGER REFERENCES pulse_monitors(id) ON DELETE CASCADE`;
   await sql`
     CREATE TABLE IF NOT EXISTS pulse_snapshots (
       id SERIAL PRIMARY KEY,

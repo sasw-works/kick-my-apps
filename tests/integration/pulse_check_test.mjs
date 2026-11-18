@@ -51,6 +51,28 @@ console.log("== 2. new version detected");
   check("second check finds the version bump", a.some((x) => x.kind === "new_version" && x.title.includes("1.1")), JSON.stringify(a));
 }
 
+console.log("== 2b. competitors are tracked silently");
+{
+  const parent = await makeMonitor({ appId: "20" });
+  const { rows } = await sql`
+    INSERT INTO pulse_monitors (user_email, app_id, country, app_name, developer, store_url, competitor_of)
+    VALUES ('alice@x.com', '21', 'us', 'Rival', 'Dev', 'x', ${parent.id}) RETURNING *`;
+  const rival = rows[0];
+  await runCheck(rival, deps({ ok: true, app: app({ appId: "21", avgRating: 4.6, version: "1.0" }) }, { ok: true, reviews: [review(1, 5)] }));
+  // A drop, a new version and a burst of bad reviews would all alert on one of the user's own apps.
+  await runCheck(rival, deps({ ok: true, app: app({ appId: "21", avgRating: 3.9, version: "2.0" }) }, { ok: true, reviews: [review(2, 1), review(3, 1), review(4, 1), review(5, 1)] }));
+  check("a competitor raises NO alerts, whatever happens to it", (await alerts(rival.id)).length === 0, JSON.stringify(await alerts(rival.id)));
+  const { rows: snaps } = await sql`SELECT count(*)::int c FROM pulse_snapshots WHERE monitor_id=${rival.id}`;
+  const { rows: revs } = await sql`SELECT count(*)::int c FROM pulse_reviews WHERE monitor_id=${rival.id}`;
+  check("...but its snapshots and reviews are still recorded for comparison", snaps[0].c === 2 && revs[0].c === 5, JSON.stringify([snaps[0], revs[0]]));
+  await runCheck(parent, deps({ ok: true, app: app({ appId: "20", avgRating: 4.5 }) }, { ok: true, reviews: [] }));
+  await runCheck(parent, deps({ ok: true, app: app({ appId: "20", avgRating: 4.2 }) }, { ok: true, reviews: [] }));
+  check("while the user's own app still alerts as before", (await alerts(parent.id)).some((x) => x.kind === "rating_drop"));
+  await sql`DELETE FROM pulse_monitors WHERE id = ${parent.id}`;
+  const { rows: left } = await sql`SELECT count(*)::int c FROM pulse_monitors WHERE id = ${rival.id}`;
+  check("deleting the parent app deletes its competitors too", left[0].c === 0);
+}
+
 console.log("== 3. rating drop: warn vs critical thresholds");
 {
   const m = await makeMonitor({ appId: "3" });

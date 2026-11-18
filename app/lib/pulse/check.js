@@ -112,7 +112,8 @@ export async function runCheck(monitor, deps = defaultDeps, { reviewAttempts = 1
   `;
 
   const alerts = [];
-  if (!baseline) {
+  // Competitors are only tracked for comparison: no alerts (they'd be noise about someone else's app).
+  if (!baseline && monitor.competitor_of == null) {
     if (app.version && prev.version && app.version !== prev.version) {
       alerts.push({
         kind: "new_version",

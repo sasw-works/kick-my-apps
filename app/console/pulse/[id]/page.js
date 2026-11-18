@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import CompetitorsSection from "../../../components/CompetitorsSection";
 import {
   ArrowLeft, Bell, AlertTriangle, TrendingUp, TrendingDown, Info, Loader2, RefreshCw, Pause, Play, Trash2, ExternalLink,
 } from "lucide-react";
@@ -264,6 +265,7 @@ export default function PulseMonitorDetailPage() {
           </>
         )}
       </div>
+      {!m.competitor_of && <CompetitorsSection monitorId={m.id} country={m.country} />}
     </main>
   );
 }

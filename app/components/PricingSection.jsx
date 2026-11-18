@@ -18,6 +18,7 @@ const FEATURES = [
   { key: "ai", label: "AI reports per month", starter: "2 AI reports / month", professional: "10 AI reports / month", enterprise: "Unlimited AI reports" },
   { key: "compare", label: "Comparison reports per month", starter: "1 comparison report / month", professional: "3 comparison reports / month", enterprise: "Unlimited comparison reports" },
   { key: "pulse", label: "Monitoring", starter: "1 monitor", professional: "5 monitors", enterprise: "Unlimited monitors" },
+  { key: "competitors", label: "Competitor tracking", starter: "1 competitor per app", professional: "3 competitors per app", enterprise: "Unlimited competitors" },
   { key: "share", label: "Report sharing & PDF export", starter: true, professional: true, enterprise: true },
   { key: "priority", label: "Priority support (24h response)", starter: false, professional: true, enterprise: true },
   { key: "seats", label: "Unlimited seats", starter: false, professional: false, enterprise: true },

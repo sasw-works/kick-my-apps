@@ -2,9 +2,9 @@
 // payments arrive, planFor() reads the real subscription and nothing else here has to change.
 // Numbers match the pricing page (PricingSection.jsx) -- keep the two in sync if either changes.
 export const PLAN_LIMITS = {
-  free: { pulseMonitors: 1, reportsPerMonth: 2, comparisonsPerMonth: 1 },
-  pro: { pulseMonitors: 5, reportsPerMonth: 10, comparisonsPerMonth: 3 },
-  enterprise: { pulseMonitors: Infinity, reportsPerMonth: Infinity, comparisonsPerMonth: Infinity },
+  free: { pulseMonitors: 1, reportsPerMonth: 2, comparisonsPerMonth: 1, competitorsPerApp: 1 },
+  pro: { pulseMonitors: 5, reportsPerMonth: 10, comparisonsPerMonth: 3, competitorsPerApp: 3 },
+  enterprise: { pulseMonitors: Infinity, reportsPerMonth: Infinity, comparisonsPerMonth: Infinity, competitorsPerApp: Infinity },
 };
 
 export function planFor(/* user */) {
@@ -23,3 +23,4 @@ function limitFor(user, key) {
 export const pulseLimit = (user) => limitFor(user, "pulseMonitors");
 export const reportsLimit = (user) => limitFor(user, "reportsPerMonth");
 export const comparisonsLimit = (user) => limitFor(user, "comparisonsPerMonth");
+export const competitorsLimit = (user) => limitFor(user, "competitorsPerApp");

@@ -23,7 +23,7 @@ export async function GET() {
     LEFT JOIN LATERAL (
       SELECT * FROM pulse_snapshots WHERE monitor_id = m.id ORDER BY taken_at DESC, id DESC LIMIT 1
     ) s ON true
-    WHERE m.user_email = ${user.email}
+    WHERE m.user_email = ${user.email} AND m.competitor_of IS NULL
     ORDER BY m.created_at ASC
   `;
   return Response.json({ monitors: rows, limit: pulseLimit(user) });
@@ -60,7 +60,7 @@ export async function POST(req) {
 
   const limit = pulseLimit(user);
   if (limit !== null) {
-    const { rows } = await sql`SELECT COUNT(*)::int AS n FROM pulse_monitors WHERE user_email = ${user.email} AND status != 'deleted'`;
+    const { rows } = await sql`SELECT COUNT(*)::int AS n FROM pulse_monitors WHERE user_email = ${user.email} AND status != 'deleted' AND competitor_of IS NULL`;
     if (rows[0].n >= limit) {
       return Response.json(
         { error: `Your plan includes ${limit} monitor${limit === 1 ? "" : "s"}. Remove one to add another, or upgrade.`, code: "PLAN_LIMIT" },
