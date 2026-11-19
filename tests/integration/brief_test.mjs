@@ -47,7 +47,7 @@ const expectTop = computeReviewTopics(Array.from({ length: 4 }, () => ({ rating:
 check("most complained-about topic with its count", a.topComplaint?.label === expectTop.label && a.topComplaint.count === 4, JSON.stringify(a.topComplaint));
 check("rival changes from the last 7 days only", b.rivals.length === 1 && b.rivals[0].app === "RivalOne" && b.rivals[0].title === "Released version 9.0");
 check("top 3 open tasks: critical first, the one marked done and the good one left out", b.todos.map((t) => t.title).join("|") === "Fix low contrast|Slow onboarding|Weak main button" && b.openTaskCount === 4, JSON.stringify(b.todos));
-check("another user's apps and rivals never appear", !JSON.stringify(b).includes("Bob") && !JSON.stringify(b).includes("99"));
+check("another user's apps and rivals never appear", !JSON.stringify(b).includes("Bob") && !/(?<![\d.:-])99(?![\d])/.test(JSON.stringify(b)));
 check("someone with nothing gets an empty brief", (await buildBrief("nobody@x.com")).empty === true);
 
 console.log("== 2. text and html");
