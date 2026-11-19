@@ -72,6 +72,8 @@ export async function lookupApp(appId, country) {
         releaseNotes: r.releaseNotes || "",
         avgRating: typeof r.averageUserRating === "number" ? r.averageUserRating : null,
         ratingCount: Number.isInteger(r.userRatingCount) ? r.userRatingCount : 0,
+        screenshots: [].concat(r.screenshotUrls ?? []).filter((u) => typeof u === "string").slice(0, 12),
+        price: typeof r.formattedPrice === "string" ? r.formattedPrice : typeof r.price === "number" ? (r.price === 0 ? "Free" : String(r.price)) : null,
       },
     };
   } catch (err) {

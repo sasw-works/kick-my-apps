@@ -77,6 +77,8 @@ export function mapPlayApp(a, country = "us") {
     releaseNotes: String(a.recentChanges || ""),
     avgRating: typeof a.score === "number" ? a.score : null,
     ratingCount: Number.isInteger(a.ratings) ? a.ratings : 0,
+    screenshots: Array.isArray(a.screenshots) ? a.screenshots.filter((u) => typeof u === "string").slice(0, 12) : [],
+    price: a.free === true ? "Free" : typeof a.priceText === "string" && a.priceText ? a.priceText : a.free === false && typeof a.price === "number" ? String(a.price) : null,
   };
 }
 

@@ -8,6 +8,7 @@ import ReleaseImpact from "../../../components/ReleaseImpact";
 import ReviewTopics from "../../../components/ReviewTopics";
 import ReplyDraft from "../../../components/ReplyDraft";
 import ReleaseNotes from "../../../components/ReleaseNotes";
+import RivalChanges from "../../../components/RivalChanges";
 import {
   ArrowLeft, Bell, AlertTriangle, TrendingUp, TrendingDown, Info, Loader2, RefreshCw, Pause, Play, Trash2, ExternalLink,
 } from "lucide-react";
@@ -179,7 +180,7 @@ export default function PulseMonitorDetailPage() {
     );
   }
 
-  const { monitor: m, snapshots, reviews, alerts } = data;
+  const { monitor: m, snapshots, reviews, alerts, changes } = data;
   const hasError = m.last_check_ok === false;
 
   return (
@@ -263,6 +264,8 @@ export default function PulseMonitorDetailPage() {
           <RatingChart snapshots={snapshots} />
         </div>
       )}
+
+      {m.kind === "other" && <RivalChanges changes={changes || []} />}
 
       {m.kind === "mine" && <ReviewTopics monitorId={m.id} />}
 

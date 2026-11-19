@@ -1,6 +1,7 @@
 import { sql } from "@vercel/postgres";
 import { lookupApp, fetchRecentReviews, storeName } from "./appStore.js";
 import { notifyAlerts } from "../notify.js";
+import { detectChanges, listingFingerprint } from "./changes.js";
 
 // One check of one monitor. Data sources are injectable (deps) so the logic can be tested with
 // exact, invented Apple responses instead of whatever the real store says today.
@@ -104,13 +105,23 @@ export async function runCheck(monitor, deps = defaultDeps, { reviewAttempts = 1
   const newCount = baseline ? 0 : fresh.length;
   const negatives = baseline ? [] : fresh.filter((r) => r.rating <= 2);
 
+  const fp = listingFingerprint(app);
   const { rows: snapRows } = await sql`
     INSERT INTO pulse_snapshots
-      (monitor_id, version, version_released_at, avg_rating, rating_count, reviews_ok, new_review_count, new_negative_count, is_baseline)
+      (monitor_id, version, version_released_at, avg_rating, rating_count, reviews_ok, new_review_count, new_negative_count, is_baseline,
+       release_notes, listing_name, icon_key, screens_key, screens_count, price)
     VALUES
-      (${monitor.id}, ${app.version}, ${app.releasedAt}, ${app.avgRating}, ${app.ratingCount}, ${reviewsOk}, ${newCount}, ${negatives.length}, ${baseline})
+      (${monitor.id}, ${app.version}, ${app.releasedAt}, ${app.avgRating}, ${app.ratingCount}, ${reviewsOk}, ${newCount}, ${negatives.length}, ${baseline},
+       ${fp.releaseNotes}, ${fp.listingName}, ${fp.iconKey}, ${fp.screensKey}, ${fp.screensCount}, ${fp.price})
     RETURNING id
   `;
+
+  // Other people's apps get a change log (what did the rival do?), whether or not alerts are on.
+  if (!baseline && monitor.kind === "other") {
+    for (const c of detectChanges(prev, app)) {
+      await sql`INSERT INTO pulse_changes (monitor_id, user_email, kind, title, detail) VALUES (${monitor.id}, ${monitor.user_email}, ${c.kind}, ${c.title}, ${c.detail})`;
+    }
+  }
 
   const alerts = [];
   // Alerts can be switched off per monitor (the default for other people's apps).

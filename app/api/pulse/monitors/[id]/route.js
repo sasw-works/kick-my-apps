@@ -49,9 +49,13 @@ export async function GET(req, { params }) {
     FROM pulse_alerts WHERE monitor_id = ${id} ORDER BY created_at DESC LIMIT 50
   `;
 
+  const { rows: changes } = await sql`
+    SELECT id, kind, title, detail, detected_at FROM pulse_changes WHERE monitor_id = ${id} ORDER BY detected_at DESC, id DESC LIMIT 30
+  `;
+
   await sql`UPDATE pulse_alerts SET read_at = now() WHERE monitor_id = ${id} AND read_at IS NULL`;
 
-  return Response.json({ monitor, snapshots, reviews, alerts });
+  return Response.json({ monitor, snapshots, reviews, alerts, changes });
 }
 
 export async function PATCH(req, { params }) {

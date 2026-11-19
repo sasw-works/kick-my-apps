@@ -6,6 +6,7 @@ import {
   Bell, Plus, MoreHorizontal, X, Loader2, Search, Pause, Play, RefreshCw, Trash2, ChevronRight, ChevronDown,
 } from "lucide-react";
 import { SkeletonBlock } from "../../components/Skeleton";
+import RivalChanges from "../../components/RivalChanges";
 
 const COUNTRIES = [
   { code: "tr", label: "Turkey" },
@@ -261,6 +262,8 @@ export default function ConsolePulsePage() {
       )}
 
       {error && <div style={{ color: "var(--kick)", fontSize: 14, marginBottom: 16 }}>{error}</div>}
+
+      <RivalChanges />
 
       {monitors === null ? (
         <div className="pulse-list">

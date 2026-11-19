@@ -78,6 +78,28 @@ export async function ensurePulseSchema() {
       read_at TIMESTAMPTZ
     )
   `;
+  // What an app looked like at each check, so the next check can tell what changed: its listing
+  // name, icon and screenshots (as short keys, not the images), price and release notes. NULL on
+  // snapshots from before these existed, which means "unknown", never "changed".
+  await sql`ALTER TABLE pulse_snapshots ADD COLUMN IF NOT EXISTS release_notes TEXT`;
+  await sql`ALTER TABLE pulse_snapshots ADD COLUMN IF NOT EXISTS listing_name TEXT`;
+  await sql`ALTER TABLE pulse_snapshots ADD COLUMN IF NOT EXISTS icon_key TEXT`;
+  await sql`ALTER TABLE pulse_snapshots ADD COLUMN IF NOT EXISTS screens_key TEXT`;
+  await sql`ALTER TABLE pulse_snapshots ADD COLUMN IF NOT EXISTS screens_count INTEGER`;
+  await sql`ALTER TABLE pulse_snapshots ADD COLUMN IF NOT EXISTS price TEXT`;
+  // A change log for other people's apps (rivals): one row per thing that changed at a check.
+  await sql`
+    CREATE TABLE IF NOT EXISTS pulse_changes (
+      id SERIAL PRIMARY KEY,
+      monitor_id INTEGER NOT NULL REFERENCES pulse_monitors(id) ON DELETE CASCADE,
+      user_email TEXT NOT NULL,
+      kind TEXT NOT NULL,
+      title TEXT NOT NULL,
+      detail TEXT,
+      detected_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    )
+  `;
+  await sql`CREATE INDEX IF NOT EXISTS pulse_changes_user_idx ON pulse_changes (user_email, detected_at DESC)`;
   await sql`CREATE INDEX IF NOT EXISTS pulse_alerts_user_idx ON pulse_alerts (user_email, created_at DESC)`;
 
   ensured = true;
