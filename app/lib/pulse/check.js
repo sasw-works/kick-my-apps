@@ -48,16 +48,18 @@ export async function secondsUntilCheckAllowed(id, { minIntervalSeconds }) {
 async function recordReviews(monitorId, reviews) {
   if (reviews.length === 0) return [];
   const { rows } = await sql`
-    INSERT INTO pulse_reviews (monitor_id, review_id, rating, title, content, version, reviewed_at)
-    SELECT ${monitorId}::int, t.review_id, t.rating, t.title, t.content, t.version, t.reviewed_at
+    INSERT INTO pulse_reviews (monitor_id, review_id, rating, title, content, version, reviewed_at, handled_at, handled_how)
+    SELECT ${monitorId}::int, t.review_id, t.rating, t.title, t.content, t.version, t.reviewed_at,
+           CASE WHEN t.store_replied THEN now() END, CASE WHEN t.store_replied THEN 'store' END
     FROM unnest(
       ${reviews.map((r) => r.id)}::text[],
       ${reviews.map((r) => r.rating)}::int[],
       ${reviews.map((r) => r.title)}::text[],
       ${reviews.map((r) => r.content)}::text[],
       ${reviews.map((r) => r.version)}::text[],
-      ${reviews.map((r) => r.reviewedAt)}::timestamptz[]
-    ) AS t(review_id, rating, title, content, version, reviewed_at)
+      ${reviews.map((r) => r.reviewedAt)}::timestamptz[],
+      ${reviews.map((r) => r.storeReplied === true)}::boolean[]
+    ) AS t(review_id, rating, title, content, version, reviewed_at, store_replied)
     ON CONFLICT (monitor_id, review_id) DO NOTHING
     RETURNING review_id
   `;

@@ -95,6 +95,7 @@ export function mapPlayReview(r) {
     version: cleanVersion(r.version),
     reviewedAt,
     helpfulVotes: Number(r.thumbsUp) || 0,
+    storeReplied: Boolean(r.replyText),
   };
 }
 

@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { SkeletonBlock } from "../../components/Skeleton";
 import RivalChanges from "../../components/RivalChanges";
+import ReplyInbox from "../../components/ReplyInbox";
 
 const COUNTRIES = [
   { code: "tr", label: "Turkey" },
@@ -262,6 +263,8 @@ export default function ConsolePulsePage() {
       )}
 
       {error && <div style={{ color: "var(--kick)", fontSize: 14, marginBottom: 16 }}>{error}</div>}
+
+      <ReplyInbox />
 
       <RivalChanges />
 

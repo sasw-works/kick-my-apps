@@ -65,6 +65,11 @@ export async function ensurePulseSchema() {
       PRIMARY KEY (monitor_id, review_id)
     )
   `;
+  // Reply inbox: when a review was dealt with. "replied" and "skipped" are the person's own marks
+  // (the App Store gives us no way to see developer replies); "store" is set when the store itself
+  // says the developer already replied (Google Play does).
+  await sql`ALTER TABLE pulse_reviews ADD COLUMN IF NOT EXISTS handled_at TIMESTAMPTZ`;
+  await sql`ALTER TABLE pulse_reviews ADD COLUMN IF NOT EXISTS handled_how TEXT`;
   await sql`
     CREATE TABLE IF NOT EXISTS pulse_alerts (
       id SERIAL PRIMARY KEY,
