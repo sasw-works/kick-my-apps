@@ -28,6 +28,8 @@ export async function ensureScansSchema() {
   // Owner's manual progress per finding category: { "contrast": "done", "cta": "wontfix" }.
   await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS finding_status JSONB;`;
   await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS visuals_json JSONB;`;
+  // Screenshots added to a report afterwards (shrunk JPEG/PNG/WebP data URLs, at most 8). Only these are kept; images used for the first analysis never were.
+  await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS screens_json JSONB;`;
   // Task progress per project (app), kept across re-scans. 'todo' is simply the absence of a row.
   await sql`CREATE TABLE IF NOT EXISTS task_status (
     user_email TEXT NOT NULL,

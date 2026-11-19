@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { projectKey } from "../../../lib/projects";
 import HealthReport from "../../../components/HealthReport";
+import AddScreens from "../../../components/AddScreens";
 import { reportPath, parseReportId } from "../../../lib/reportPath";
 import { Loader2 } from "lucide-react";
 
@@ -14,6 +15,9 @@ export default function ConsoleReportDetailPage() {
   const [progress, setProgress] = useState(null);
   const [taskStatus, setTaskStatus] = useState({});
   const [history, setHistory] = useState([]);
+  const [screens, setScreens] = useState([]);
+  const [reload, setReload] = useState(0);
+  const [isOwner, setIsOwner] = useState(true);
   const [error, setError] = useState("");
   // "43-instagram" -> 43. Only the number is ever looked up; the name part is cosmetic.
   const id = parseReportId(idParam);
@@ -25,6 +29,7 @@ export default function ConsoleReportDetailPage() {
       .then((d) => {
         if (d.error) throw new Error(d.error);
         setScan(d.scan);
+        setIsOwner(d.isOwner !== false);
         setProgress(d.progress || null);
         setTaskStatus(d.taskStatus || {});
         setHistory(d.history || []);
@@ -34,7 +39,12 @@ export default function ConsoleReportDetailPage() {
         if (window.location.pathname !== canonical) window.history.replaceState(null, "", canonical);
       })
       .catch((err) => setError(err.message));
-  }, [id]);
+  }, [id, reload]);
+
+  useEffect(() => {
+    if (!id) return;
+    fetch(`/api/history/screens?id=${id}`).then((r) => r.json()).then((d) => setScreens(Array.isArray(d.screens) ? d.screens : [])).catch(() => setScreens([]));
+  }, [id, reload]);
 
   // An address that isn't a report number at all (/reports/abc) is a "not found" we can tell without asking the server.
   const message = id ? error : "Report not found.";
@@ -57,6 +67,14 @@ export default function ConsoleReportDetailPage() {
   return (
     <main className="min-h-screen max-[700px]:px-4 px-6 py-8" style={{ background: "var(--ink)" }}>
       <div className="max-w-[1240px] mx-auto">
+        {isOwner && scan.result_json && (
+          <AddScreens
+            scanId={scan.id}
+            runs={scan.result_json.visualAdded?.runs || 0}
+            hasVisual={!!scan.result_json.visualAdded || (scan.result_json.findings || []).some((f) => f.screenshotIndex) || !!scan.result_json.accessibilityChecks}
+            onDone={() => setReload((n) => n + 1)}
+          />
+        )}
         <HealthReport
           data={scan.result_json}
           appLabel={scan.app_name}
@@ -67,7 +85,7 @@ export default function ConsoleReportDetailPage() {
           taskStatus={taskStatus}
           tasksHref={`/console/tasks/${encodeURIComponent(projectKey(scan.app_name, scan.store_url))}`}
           progress={progress}
-          screenshots={[]}
+          screenshots={screens}
           onClose={() => router.push("/console/reports")}
         />
       </div>

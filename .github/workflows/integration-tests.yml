@@ -99,6 +99,8 @@ jobs:
         run: python3 tests/integration/review_languages_api_test.py
       - name: category_benchmark_api_test.py
         run: python3 tests/integration/category_benchmark_api_test.py
+      - name: add_screens_api_test.py
+        run: python3 tests/integration/add_screens_api_test.py
       - name: brief_api_test.py
         run: python3 tests/integration/brief_api_test.py
       - name: issue_export_api_test.py
@@ -130,6 +132,8 @@ jobs:
         run: node tests/integration/review_languages_test.mjs
       - name: category_benchmark_test.mjs
         run: node tests/integration/category_benchmark_test.mjs
+      - name: add_screens_test.mjs
+        run: node tests/integration/add_screens_test.mjs
       - name: brief_test.mjs
         run: node tests/integration/brief_test.mjs
       - name: issue_export_test.mjs

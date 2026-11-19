@@ -129,6 +129,8 @@ export async function GET(req) {
         return Response.json({ error: "Scan not found." }, { status: 404 });
       }
       const { user_email: _owner, ...scan } = row;
+      // The report as it was before screenshots were added is internal bookkeeping; the page doesn't need it.
+      if (scan.result_json && scan.result_json._base) { const { _base, ...rest } = scan.result_json; scan.result_json = rest; }
 
       // "Since your last scan": the same owner's previous report of the same app, if any.
       let progress = null;
@@ -189,7 +191,7 @@ export async function GET(req) {
       } catch (e) {
         console.error("history lookup failed:", errorText(e));
       }
-      return Response.json({ scan, progress, taskStatus, history });
+      return Response.json({ scan, progress, taskStatus, history, isOwner: row.user_email === user.email });
     }
 
     if (apps) {
