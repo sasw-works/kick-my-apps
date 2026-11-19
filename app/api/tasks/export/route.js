@@ -2,7 +2,7 @@ import { getCurrentUser, unauthorized } from "../../../lib/requireUser";
 import { rateLimit, tooManyRequests } from "../../../lib/rateLimit";
 import { errorText } from "../../../lib/secrets";
 import { computeProjectTasks } from "../../../lib/projects";
-import { loadProjects, loadStatusMap } from "../../../lib/taskData";
+import { loadProjects, loadStatusMap, loadCustomTasks } from "../../../lib/taskData";
 import { tasksToCsv, tasksToMarkdown, exportFileName } from "../../../lib/taskExport";
 
 export const runtime = "nodejs";
@@ -25,7 +25,7 @@ export async function GET(req) {
     const project = projects.find((p) => p.key === sp.get("project"));
     if (!project) return Response.json({ error: "Project not found." }, { status: 404 });
 
-    const { tasks, verified } = computeProjectTasks(project.scans, await loadStatusMap(user.email, project.key));
+    const { tasks, verified } = computeProjectTasks(project.scans, await loadStatusMap(user.email, project.key), await loadCustomTasks(user.email, project.key));
     const body = format === "csv" ? tasksToCsv(project.appName, tasks, verified) : tasksToMarkdown(project.appName, tasks, verified);
     return new Response(body, {
       headers: {

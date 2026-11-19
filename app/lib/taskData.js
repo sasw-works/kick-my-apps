@@ -42,6 +42,25 @@ export async function loadStatusMap(email, pk) {
   return map;
 }
 
+// Tasks added by hand from review complaint topics, for one project (or all, keyed by project).
+export async function loadCustomTasks(email, pk) {
+  const { rows } = await sql`
+    SELECT task_key AS key, title, severity, finding, suggestion, source
+    FROM custom_tasks WHERE user_email = ${email} AND project_key = ${pk} ORDER BY created_at ASC
+  `;
+  return rows;
+}
+
+export async function loadAllCustomTasks(email) {
+  const { rows } = await sql`
+    SELECT project_key, task_key AS key, title, severity, finding, suggestion, source
+    FROM custom_tasks WHERE user_email = ${email} ORDER BY created_at ASC
+  `;
+  const byProject = {};
+  for (const r of rows) (byProject[r.project_key] ||= []).push(r);
+  return byProject;
+}
+
 // The caller's projects (one per app), newest first, after the one-time legacy migration.
 export async function loadProjects(email) {
   await ensureScansSchema();

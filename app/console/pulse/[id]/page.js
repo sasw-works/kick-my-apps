@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import CompareSection from "../../../components/CompareSection";
 import ReleaseImpact from "../../../components/ReleaseImpact";
+import ReviewTopics from "../../../components/ReviewTopics";
 import ReplyDraft from "../../../components/ReplyDraft";
 import {
   ArrowLeft, Bell, AlertTriangle, TrendingUp, TrendingDown, Info, Loader2, RefreshCw, Pause, Play, Trash2, ExternalLink,
@@ -261,6 +262,8 @@ export default function PulseMonitorDetailPage() {
           <RatingChart snapshots={snapshots} />
         </div>
       )}
+
+      {m.kind === "mine" && <ReviewTopics monitorId={m.id} />}
 
       {m.kind === "mine" && <ReleaseImpact monitorId={m.id} />}
 

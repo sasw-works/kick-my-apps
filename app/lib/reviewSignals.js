@@ -9,7 +9,7 @@
 // Keyword lists cover English plus common Turkish/German/Spanish/French phrasing, since the
 // reviews are read in their original language.
 
-const PERFORMANCE_TOPICS = [
+export const PERFORMANCE_TOPICS = [
   {
     key: "slow",
     label: "Slow / laggy",

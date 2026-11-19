@@ -37,6 +37,20 @@ export async function ensureScansSchema() {
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     PRIMARY KEY (user_email, project_key, finding_key)
   );`;
+  // Tasks that don't come from a report's findings: today, ones made from review complaint topics
+  // ("Reviews: Crashes"). Their status lives in task_status like any other task (finding_key = task_key).
+  await sql`CREATE TABLE IF NOT EXISTS custom_tasks (
+    user_email TEXT NOT NULL,
+    project_key TEXT NOT NULL,
+    task_key TEXT NOT NULL,
+    title TEXT NOT NULL,
+    severity TEXT NOT NULL DEFAULT 'warn',
+    finding TEXT NOT NULL DEFAULT '',
+    suggestion TEXT NOT NULL DEFAULT '',
+    source TEXT NOT NULL DEFAULT 'review',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    PRIMARY KEY (user_email, project_key, task_key)
+  );`;
   await sql`CREATE UNIQUE INDEX IF NOT EXISTS scans_share_token_idx ON scans (share_token) WHERE share_token IS NOT NULL;`;
 
   ensured = true;

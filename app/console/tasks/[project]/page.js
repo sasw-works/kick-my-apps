@@ -171,6 +171,7 @@ export default function ProjectTasksPage() {
                 <span className={`pt-pill ${t.severity === "bad" ? "pt-pill-bad" : "pt-pill-warn"}`}>{t.severity === "bad" ? "Critical" : "Attention"}</span>
                 {t.isNew && <span className="pt-pill pt-pill-new">New</span>}
                 {t.reappeared && <span className="pt-pill pt-pill-bad">Came back</span>}
+                {t.source === "review" && <span className="pt-pill pt-pill-new">From reviews</span>}
               </div>
               <p className="pt-text">{t.finding}</p>
               {t.suggestion && <div className="pt-sugg"><Lightbulb size={13} color="var(--yellow)" /><span>{t.suggestion}</span></div>}

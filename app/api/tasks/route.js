@@ -3,7 +3,7 @@ import { getCurrentUser, unauthorized } from "../../lib/requireUser";
 import { rateLimit, tooManyRequests } from "../../lib/rateLimit";
 import { errorText } from "../../lib/secrets";
 import { computeProjectTasks, TASK_STATUSES } from "../../lib/projects";
-import { loadProjects, loadStatusMap } from "../../lib/taskData";
+import { loadProjects, loadStatusMap, loadCustomTasks, loadAllCustomTasks } from "../../lib/taskData";
 
 export const runtime = "nodejs";
 
@@ -23,7 +23,7 @@ export async function GET(req) {
       const project = projects.find((p) => p.key === wanted);
       if (!project) return Response.json({ error: "Project not found." }, { status: 404 });
       const statusMap = await loadStatusMap(user.email, project.key);
-      const result = computeProjectTasks(project.scans, statusMap);
+      const result = computeProjectTasks(project.scans, statusMap, await loadCustomTasks(user.email, project.key));
       const latest = project.scans[0];
       return Response.json({
         project: { key: project.key, appName: project.appName, storeUrl: project.storeUrl, reportCount: project.scans.length, latestScanId: latest.id, latestScanDate: latest.created_at },
@@ -32,12 +32,13 @@ export async function GET(req) {
     }
 
     const { rows: all } = await sql`SELECT project_key, finding_key, status, updated_at FROM task_status WHERE user_email = ${user.email}`;
+    const customByProject = await loadAllCustomTasks(user.email);
     const byProject = {};
     for (const r of all) (byProject[r.project_key] ||= {})[r.finding_key] = { status: r.status, updated_at: r.updated_at };
 
     return Response.json({
       projects: projects.map((p) => {
-        const { counts } = computeProjectTasks(p.scans, byProject[p.key] || {});
+        const { counts } = computeProjectTasks(p.scans, byProject[p.key] || {}, customByProject[p.key] || []);
         const latest = p.scans[0];
         return { key: p.key, appName: p.appName, storeUrl: p.storeUrl, reportCount: p.scans.length, latestScanId: latest.id, latestScanDate: latest.created_at, counts };
       }),
@@ -65,8 +66,12 @@ export async function PATCH(req) {
     const projects = await loadProjects(user.email);
     const project = projects.find((p) => p.key === pk);
     if (!project) return Response.json({ error: "Project not found." }, { status: 404 });
-    // Only issues the latest report actually contains can be tracked (no arbitrary keys).
-    const open = (project.scans[0].findings || []).some((f) => f?.key === key && (f.status === "bad" || f.status === "warn"));
+    // Only real tasks can be tracked (no arbitrary keys): an open issue in the latest report, or a
+    // task the user made from review complaints.
+    const custom = await loadCustomTasks(user.email, pk);
+    const open =
+      (project.scans[0].findings || []).some((f) => f?.key === key && (f.status === "bad" || f.status === "warn")) ||
+      custom.some((c) => c.key === key);
     if (!open) return Response.json({ error: "That isn't an open issue in this project." }, { status: 400 });
 
     if (status === "todo") {
@@ -79,7 +84,7 @@ export async function PATCH(req) {
         DO UPDATE SET status = EXCLUDED.status, updated_at = now();
       `;
     }
-    const result = computeProjectTasks(project.scans, await loadStatusMap(user.email, pk));
+    const result = computeProjectTasks(project.scans, await loadStatusMap(user.email, pk), custom);
     return Response.json({ ok: true, counts: result.counts });
   } catch (err) {
     console.error(err);

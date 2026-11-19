@@ -24,7 +24,9 @@ export const TASK_STATUSES = ["todo", "done", "wontdo"];
 //    reappeared=true (the scan is newer than their tick).
 //  - isNew: issue that wasn't an issue in the previous report.
 //  - verified: issues that a newer scan now reports as good (fixed, confirmed by a scan).
-export function computeProjectTasks(scansNewestFirst, statusByKey = {}) {
+//  - extraTasks: tasks that don't come from a report (made from review complaint topics). They keep
+//    whatever status the user gave them; there is no scan to say they "came back".
+export function computeProjectTasks(scansNewestFirst, statusByKey = {}, extraTasks = []) {
   const [latest, prev] = scansNewestFirst;
   if (!latest) return { tasks: [], verified: [], counts: { todo: 0, done: 0, wontdo: 0, verified: 0 } };
 
@@ -65,6 +67,21 @@ export function computeProjectTasks(scansNewestFirst, statusByKey = {}) {
         verified.push({ key, title: String(f.title || key).slice(0, 160) });
       }
     }
+  }
+  for (const x of Array.isArray(extraTasks) ? extraTasks : []) {
+    if (!x?.key) continue;
+    const stored = statusByKey[x.key]?.status;
+    tasks.push({
+      key: x.key,
+      title: String(x.title || x.key).slice(0, 160),
+      severity: x.severity === "bad" ? "bad" : "warn",
+      finding: String(x.finding || "").slice(0, 600),
+      suggestion: String(x.suggestion || "").slice(0, 600),
+      status: stored === "done" || stored === "wontdo" ? stored : "todo",
+      isNew: false,
+      reappeared: false,
+      source: x.source || "review",
+    });
   }
   tasks.sort((a, b) => (a.severity === b.severity ? 0 : a.severity === "bad" ? -1 : 1));
 

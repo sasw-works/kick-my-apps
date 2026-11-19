@@ -25,6 +25,7 @@ export async function deleteUserData({ id, email }) {
   await ignoreMissingTable(() => sql`DELETE FROM scans WHERE user_email = ${email}`);
   await ignoreMissingTable(() => sql`DELETE FROM comparisons WHERE user_email = ${email}`);
   await ignoreMissingTable(() => sql`DELETE FROM task_status WHERE user_email = ${email}`);
+  await ignoreMissingTable(() => sql`DELETE FROM custom_tasks WHERE user_email = ${email}`);
   await ignoreMissingTable(() => sql`DELETE FROM subscriptions WHERE email = ${email}`);
   // Cascades to that monitor's own pulse_snapshots/pulse_reviews/pulse_alerts rows (all three
   // reference pulse_monitors.id ON DELETE CASCADE) -- deleting anything that references user_email

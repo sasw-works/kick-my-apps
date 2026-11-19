@@ -28,7 +28,7 @@ export function tasksToCsv(appName, tasks, verified = []) {
     STATUS_LABEL[t.status] || t.status,
     t.finding,
     t.suggestion,
-    [t.isNew ? "New since last scan" : "", t.reappeared ? "Came back after being marked done" : ""].filter(Boolean).join("; "),
+    [t.isNew ? "New since last scan" : "", t.reappeared ? "Came back after being marked done" : "", t.source === "review" ? "From user reviews" : ""].filter(Boolean).join("; "),
   ]);
   for (const v of verified) rows.push([appName, v.title, "", "Fixed", "", "", "Confirmed by a newer scan"]);
   // BOM so Excel reads the file as UTF-8 (accents, Turkish letters) instead of guessing.
@@ -43,7 +43,7 @@ export function tasksToMarkdown(appName, tasks, verified = [], generatedAt = new
     if (!items.length) return;
     lines.push(`## ${title} (${items.length})`, "");
     for (const t of items) {
-      const tags = [SEVERITY_LABEL[t.severity], t.isNew ? "new" : "", t.reappeared ? "came back" : ""].filter(Boolean).join(", ");
+      const tags = [SEVERITY_LABEL[t.severity], t.isNew ? "new" : "", t.reappeared ? "came back" : "", t.source === "review" ? "from reviews" : ""].filter(Boolean).join(", ");
       lines.push(`- [${checked ? "x" : " "}] **${mdInline(t.title)}**${tags ? ` (${tags})` : ""}`);
       if (t.finding) lines.push(`  - Found: ${mdInline(t.finding)}`);
       if (t.suggestion) lines.push(`  - Fix: ${mdInline(t.suggestion)}`);
