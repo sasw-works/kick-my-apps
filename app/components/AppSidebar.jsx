@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, ClipboardList, ListChecks, GitCompare, Radio, Moon, Sun, X, ShieldCheck } from "lucide-react";
+import { LayoutDashboard, ClipboardList, ListChecks, ClipboardCheck, GitCompare, Radio, Moon, Sun, X, ShieldCheck } from "lucide-react";
 import LogoMark from "./LogoMark";
 import { useTheme } from "./ThemeProvider";
 import { useSession } from "next-auth/react";
@@ -15,6 +15,7 @@ const NAV_ITEMS = [
   { href: "/console/tasks", label: "Tasks", icon: ListChecks },
   { href: "/console/compare", label: "Compare", icon: GitCompare },
   { href: "/console/pulse", label: "Monitor", icon: Radio },
+  { href: "/console/checklist", label: "Checklist", icon: ClipboardCheck },
 ];
 
 export default function AppSidebar({ mobileOpen = false, onClose }) {
