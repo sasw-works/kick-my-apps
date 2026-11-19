@@ -79,6 +79,8 @@ jobs:
         run: python3 tests/integration/share_links_test.py
       - name: pulse_kinds_test.py
         run: python3 tests/integration/pulse_kinds_test.py
+      - name: release_impact_api_test.py
+        run: python3 tests/integration/release_impact_api_test.py
       - name: play_store_test.py
         run: python3 tests/integration/play_store_test.py
       - name: store_visuals_test.py
@@ -114,6 +116,8 @@ jobs:
         run: node tests/integration/reply_draft_unit_test.mjs
       - name: play_store_unit_test.mjs
         run: node tests/integration/play_store_unit_test.mjs
+      - name: release_impact_test.mjs
+        run: node tests/integration/release_impact_test.mjs
       - name: store_visuals_unit_test.mjs
         run: node tests/integration/store_visuals_unit_test.mjs
       - name: pulse_compare_test.mjs
