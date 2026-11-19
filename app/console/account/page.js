@@ -89,6 +89,10 @@ export default function AccountPage() {
   const [hookUrl, setHookUrl] = useState("");
   const [hookBusy, setHookBusy] = useState(false);
   const [hookMsg, setHookMsg] = useState(null); // { ok, text }
+  const [brief, setBrief] = useState(null); // settings, or null while loading
+  const [briefMsg, setBriefMsg] = useState(null);
+  const [briefBusy, setBriefBusy] = useState(false);
+  const [briefPreview, setBriefPreview] = useState(null); // { text } | { empty: true }
 
   useEffect(() => {
     if (status !== "authenticated") return;
@@ -130,6 +134,28 @@ export default function AccountPage() {
       .then((d) => setChannel(d.channel || null))
       .catch(() => setChannel(null));
   }, [status]);
+
+  useEffect(() => {
+    if (status !== "authenticated") return;
+    fetch("/api/account/brief").then((r) => r.json()).then((d) => setBrief(d.settings || null)).catch(() => {});
+  }, [status, channel]);
+
+  async function briefCall(method, url, body, okText) {
+    setBriefBusy(true);
+    setBriefMsg(null);
+    try {
+      const res = await fetch(url, { method, headers: body ? { "content-type": "application/json" } : undefined, body: body ? JSON.stringify(body) : undefined });
+      const d = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(d.error || "Something went wrong.");
+      if (d.settings) setBrief(d.settings);
+      if (d.preview) setBriefPreview(d.preview.empty ? { empty: true } : { text: d.preview.text });
+      if (okText) setBriefMsg({ ok: true, text: okText });
+    } catch (err) {
+      setBriefMsg({ ok: false, text: err.message });
+    } finally {
+      setBriefBusy(false);
+    }
+  }
 
   async function hookCall(method, body, okText) {
     setHookBusy(true);
@@ -498,6 +524,37 @@ export default function AccountPage() {
         )}
       </div>
 
+      <div className="account-card" id="brief">
+        <div className="account-card-head">
+          <Bell size={16} color="var(--muted)" />
+          <span>Weekly product brief</span>
+        </div>
+        <p className="account-subs-empty">
+          One short message every Monday: how your apps did this week (rating, new reviews, releases), the most common complaint, what your rivals changed, and the first three things to fix. Off until you turn it on.
+        </p>
+        {brief && (
+          <>
+            <label className="account-subs-row" style={{ cursor: "pointer" }}>
+              <input type="checkbox" checked={brief.emailOn} disabled={briefBusy || !brief.emailAvailable} onChange={(e) => briefCall("PUT", "/api/account/brief", { emailOn: e.target.checked })} />
+              <span className="account-subs-name">Email me{!brief.emailAvailable ? " (email isn't set up on this server)" : ""}</span>
+              {brief.emailAvailable && <button type="button" className="account-subs-remove" disabled={briefBusy} onClick={(e) => { e.preventDefault(); briefCall("POST", "/api/account/brief", { channel: "email" }, "Sent. Check your inbox."); }}>Send me one now</button>}
+            </label>
+            <label className="account-subs-row" style={{ cursor: "pointer" }}>
+              <input type="checkbox" checked={brief.chatOn} disabled={briefBusy || !brief.hasChannel} onChange={(e) => briefCall("PUT", "/api/account/brief", { chatOn: e.target.checked })} />
+              <span className="account-subs-name">Post it in my chat channel{!brief.hasChannel ? " (save a Slack, Discord or webhook above first)" : ""}</span>
+              {brief.hasChannel && <button type="button" className="account-subs-remove" disabled={briefBusy} onClick={(e) => { e.preventDefault(); briefCall("POST", "/api/account/brief", { channel: "chat" }, "Posted. Check your channel."); }}>Post one now</button>}
+            </label>
+            <div className="account-subs-row">
+              <button type="button" className="account-subs-remove" disabled={briefBusy} onClick={() => briefCall("GET", "/api/account/brief?preview=1")}>{briefBusy ? <Loader2 size={13} className="spin" /> : "Preview this week's brief"}</button>
+            </div>
+            {briefPreview && (briefPreview.empty
+              ? <p className="account-subs-empty">Nothing to report yet. Add an app to Monitored apps or run a report first.</p>
+              : <pre className="account-brief-preview" aria-label="Brief preview">{briefPreview.text}</pre>)}
+            {briefMsg && <p role="status" className="account-subs-empty" style={{ color: briefMsg.ok ? "inherit" : "var(--danger, #c0392b)" }}>{briefMsg.text}</p>}
+          </>
+        )}
+      </div>
+
       {/* Contact */}
       <a href="mailto:support@kickmyapps.com" className="account-link-card">
         <MessageCircle size={16} color="var(--muted)" />
@@ -622,6 +679,7 @@ const accountStyles = `
     padding: 12px 0; border-top: 1px solid var(--ink-3);
   }
   .account-subs-row:first-child { border-top: none; padding-top: 0; }
+  .account-brief-preview { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; font-size: 13px; line-height: 1.55; color: var(--chalk); background: var(--ink, transparent); border: 1px solid var(--ink-3); border-radius: 10px; padding: 12px 14px; margin: 8px 0; }
   .account-hook-input {
     flex: 1; min-width: 0; background: var(--ink-2, transparent); border: 1px solid var(--ink-3); border-radius: 10px;
     padding: 9px 12px; font-size: 13.5px; color: var(--chalk);

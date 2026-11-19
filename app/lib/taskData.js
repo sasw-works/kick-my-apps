@@ -1,6 +1,6 @@
 import { sql } from "@vercel/postgres";
-import { projectKey, groupProjects } from "./projects";
-import { ensureScansSchema } from "./ensureScansSchema";
+import { projectKey, groupProjects } from "./projects.js";
+import { ensureScansSchema } from "./ensureScansSchema.js";
 
 // All of one user's reports, newest first, with only the parts the task views need.
 export async function loadUserScans(email) {

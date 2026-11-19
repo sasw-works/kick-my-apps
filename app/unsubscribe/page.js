@@ -8,13 +8,15 @@ import { BellOff, Loader2, CheckCircle2 } from "lucide-react";
 function UnsubscribeInner() {
   const params = useSearchParams();
   const token = params.get("token") || "";
+  const isBrief = params.get("type") === "brief";
+  const api = isBrief ? "/api/brief/unsubscribe" : "/api/subscribe/unsubscribe";
   const [status, setStatus] = useState(() => (token ? "loading" : "error")); // loading | found | notfound | done | error
   const [info, setInfo] = useState(null);
   const [removing, setRemoving] = useState(false);
 
   useEffect(() => {
     if (!token) return;
-    fetch(`/api/subscribe/unsubscribe?token=${encodeURIComponent(token)}`)
+    fetch(`${api}?token=${encodeURIComponent(token)}`)
       .then((r) => r.json())
       .then((d) => {
         if (d.error) throw new Error(d.error);
@@ -22,12 +24,12 @@ function UnsubscribeInner() {
         setStatus(d.found ? "found" : "notfound");
       })
       .catch(() => setStatus("error"));
-  }, [token]);
+  }, [token, api]);
 
   async function confirm() {
     setRemoving(true);
     try {
-      const res = await fetch(`/api/subscribe/unsubscribe?token=${encodeURIComponent(token)}`, { method: "DELETE" });
+      const res = await fetch(`${api}?token=${encodeURIComponent(token)}`, { method: "DELETE" });
       const d = await res.json();
       if (d.error) throw new Error(d.error);
       setStatus("done");
@@ -50,10 +52,11 @@ function UnsubscribeInner() {
 
         {status === "found" && (
           <>
-            <h1 className="unsub-title">Unsubscribe from {info.appName}?</h1>
+            <h1 className="unsub-title">{isBrief ? "Stop the weekly brief email?" : `Unsubscribe from ${info.appName}?`}</h1>
             <p className="unsub-body">
-              You&apos;ll stop receiving the weekly review summary for {info.appName} at {info.email}. You can
-              re-subscribe any time from that app&apos;s report page.
+              {isBrief
+                ? "You'll stop getting the weekly product brief by email. You can turn it back on any time in your account settings."
+                : `You'll stop receiving the weekly review summary for ${info.appName} at ${info.email}. You can re-subscribe any time from that app's report page.`}
             </p>
             <button className="unsub-btn" onClick={confirm} disabled={removing}>
               {removing ? <Loader2 size={16} className="spin" /> : "Unsubscribe"}
@@ -64,7 +67,7 @@ function UnsubscribeInner() {
         {status === "done" && (
           <>
             <h1 className="unsub-title">You&apos;re unsubscribed</h1>
-            <p className="unsub-body">You won&apos;t get any more weekly summaries for this app.</p>
+            <p className="unsub-body">{isBrief ? "You won't get the weekly brief by email any more." : "You won't get any more weekly summaries for this app."}</p>
           </>
         )}
 

@@ -1,28 +1,11 @@
 import { sql } from "@vercel/postgres";
 import { fetchAppStoreReviews, computeReviewAnalytics } from "../../../lib/reviews";
-import { readSecret, errorText } from "../../../lib/secrets";
+import { errorText } from "../../../lib/secrets";
+import { sendEmail, escapeHtml } from "../../../lib/resend";
 import { ensureSubscriptionsTable, backfillMissingTokens } from "../../../lib/subscriptionsSchema";
-import { getEmailFrom } from "../../../lib/email";
 import { notifyDigest } from "../../../lib/notify";
 
 export const runtime = "nodejs";
-
-async function sendEmail({ to, subject, html }) {
-  const from = getEmailFrom();
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-      Authorization: `Bearer ${readSecret("RESEND_API_KEY")}`,
-    },
-    body: JSON.stringify({ from, to, subject, html }),
-  });
-  if (!res.ok) {
-    const errText = await res.text();
-    throw new Error(`Resend error: ${res.status} ${errText}`);
-  }
-  return res.json();
-}
 
 function buildDigestHtml({ appName, analytics, unsubscribeUrl, homeUrl }) {
   const stars = "★".repeat(Math.round(analytics.avgRating)) + "☆".repeat(5 - Math.round(analytics.avgRating));
@@ -38,24 +21,24 @@ function buildDigestHtml({ appName, analytics, unsubscribeUrl, homeUrl }) {
   const negativeBlock = analytics.mostHelpfulNegative
     ? `<p style="font-size: 14px;color:#1A1F36;background:#F6F8FA;padding: 12px;border-radius: 8px;">
          <strong>Most-voted negative review:</strong><br/>
-         ${(analytics.mostHelpfulNegative.content || "").slice(0, 220)}
+         ${escapeHtml((analytics.mostHelpfulNegative.content || "").slice(0, 220))}
        </p>`
     : "";
 
   return `
     <div style="font-family: Inter, Arial, sans-serif; max-width: 480px; margin: 0 auto;">
-      <h2 style="color:#1A1F36;">${appName} — Weekly Review Summary</h2>
+      <h2 style="color:#1A1F36;">${escapeHtml(appName)} — Weekly Review Summary</h2>
       <p style="color:#697386;font-size: 14px;">Based on the last ${analytics.totalReviews} reviews, average <strong>${analytics.avgRating}</strong> ${stars}</p>
       <table>${distributionRows}</table>
       ${negativeBlock}
       <p style="margin-top: 24px;">
-        <a href="${homeUrl}" style="background:#F5433A;color:#fff;padding: 12px 16px;border-radius: 999px;text-decoration:none;font-size: 14px;">
+        <a href="${escapeHtml(homeUrl)}" style="background:#F5433A;color:#fff;padding: 12px 16px;border-radius: 999px;text-decoration:none;font-size: 14px;">
           View Full Analysis
         </a>
       </p>
       <p style="color:#9AA2B1;font-size: 11px;margin-top: 24px;">
         You're receiving this email because you're tracking this app on Kick My Apps.
-        <a href="${unsubscribeUrl}" style="color:#9AA2B1;text-decoration:underline;">Unsubscribe</a>
+        <a href="${escapeHtml(unsubscribeUrl)}" style="color:#9AA2B1;text-decoration:underline;">Unsubscribe</a>
       </p>
     </div>
   `;
