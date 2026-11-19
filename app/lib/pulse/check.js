@@ -1,5 +1,6 @@
 import { sql } from "@vercel/postgres";
 import { lookupApp, fetchRecentReviews, storeName } from "./appStore.js";
+import { notifyAlerts } from "../notify.js";
 
 // One check of one monitor. Data sources are injectable (deps) so the logic can be tested with
 // exact, invented Apple responses instead of whatever the real store says today.
@@ -153,6 +154,9 @@ export async function runCheck(monitor, deps = defaultDeps, { reviewAttempts = 1
       VALUES (${monitor.id}, ${monitor.user_email}, ${a.kind}, ${a.severity}, ${a.title}, ${a.detail})
     `;
   }
+
+  // Chat/webhook delivery is best effort and must never fail (or noticeably slow) the check.
+  if (alerts.length) await notifyAlerts(monitor, alerts).catch(() => {});
 
   // Keep history bounded.
   await sql`

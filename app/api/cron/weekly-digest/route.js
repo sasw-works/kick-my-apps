@@ -3,6 +3,7 @@ import { fetchAppStoreReviews, computeReviewAnalytics } from "../../../lib/revie
 import { readSecret, errorText } from "../../../lib/secrets";
 import { ensureSubscriptionsTable, backfillMissingTokens } from "../../../lib/subscriptionsSchema";
 import { getEmailFrom } from "../../../lib/email";
+import { notifyDigest } from "../../../lib/notify";
 
 export const runtime = "nodejs";
 
@@ -103,6 +104,7 @@ export async function GET(req) {
             subject: `${sub.app_name} — Weekly Review Summary`,
             html,
           });
+          await notifyDigest(sub.email, { appName: sub.app_name, analytics });
         }
         results.push({ storeUrl, sent: subscribers.length });
       } catch (err) {

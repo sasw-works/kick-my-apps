@@ -26,6 +26,7 @@ import {
   ChevronRight,
   Loader2,
   Camera,
+  Bell,
 } from "lucide-react";
 
 // Center-crops to a square and downsizes to keep the stored data URL small -- avatars only ever
@@ -84,6 +85,10 @@ export default function AccountPage() {
   const [usage, setUsage] = useState(null); // { reports, comparisons, pulse: {used, limit} } | null while loading
   const [subs, setSubs] = useState(null);
   const [unsubscribing, setUnsubscribing] = useState(null);
+  const [channel, setChannel] = useState(undefined); // undefined = loading, null = none
+  const [hookUrl, setHookUrl] = useState("");
+  const [hookBusy, setHookBusy] = useState(false);
+  const [hookMsg, setHookMsg] = useState(null); // { ok, text }
 
   useEffect(() => {
     if (status !== "authenticated") return;
@@ -117,6 +122,36 @@ export default function AccountPage() {
       })
       .catch(() => setSubs([])); // non-critical: falls back to the empty-state message
   }, [status]);
+
+  useEffect(() => {
+    if (status !== "authenticated") return;
+    fetch("/api/account/notifications")
+      .then((r) => r.json())
+      .then((d) => setChannel(d.channel || null))
+      .catch(() => setChannel(null));
+  }, [status]);
+
+  async function hookCall(method, body, okText) {
+    setHookBusy(true);
+    setHookMsg(null);
+    try {
+      const res = await fetch("/api/account/notifications", {
+        method,
+        headers: body ? { "content-type": "application/json" } : undefined,
+        body: body ? JSON.stringify(body) : undefined,
+      });
+      const d = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(d.error || "Something went wrong.");
+      if (method === "PUT") { setChannel(d.channel); setHookUrl(""); }
+      if (method === "DELETE") setChannel(null);
+      setHookMsg({ ok: true, text: okText });
+      if (method === "POST") fetch("/api/account/notifications").then((r) => r.json()).then((x) => setChannel(x.channel || null));
+    } catch (err) {
+      setHookMsg({ ok: false, text: err.message });
+    } finally {
+      setHookBusy(false);
+    }
+  }
 
   async function unsubscribe(id) {
     setUnsubscribing(id);
@@ -422,6 +457,47 @@ export default function AccountPage() {
         )}
       </div>
 
+      <div className="account-card" id="notifications">
+        <div className="account-card-head">
+          <Bell size={16} color="var(--muted)" />
+          <span>Slack, Discord &amp; webhook alerts</span>
+        </div>
+        <p className="account-subs-empty">
+          Get Monitored-app alerts (rating drops, new versions, review bursts) and the weekly summary in your team chat.
+          Paste an incoming-webhook URL from Slack or Discord, or any https endpoint. One channel per account; turn alerts on or off per app on its page.
+        </p>
+        {channel === undefined ? (
+          <div className="account-subs-loading"><Loader2 size={16} className="spin" /></div>
+        ) : (
+          <>
+            {channel && (
+              <div className="account-subs-row">
+                <span className="account-subs-name">
+                  {channel.kind === "slack" ? "Slack" : channel.kind === "discord" ? "Discord" : "Webhook"} · {channel.urlMasked}
+                  {channel.lastOk === false && <span style={{ color: "var(--danger, #c0392b)" }}> · last delivery failed</span>}
+                </span>
+                <button type="button" className="account-subs-remove" disabled={hookBusy} onClick={() => hookCall("POST", null, "Test message sent.")}>Send test</button>
+                <button type="button" className="account-subs-remove" disabled={hookBusy} onClick={() => hookCall("DELETE", null, "Channel removed.")}>Remove</button>
+              </div>
+            )}
+            <div className="account-subs-row">
+              <input
+                type="url"
+                className="account-hook-input"
+                placeholder={channel ? "Replace with a new webhook URL" : "https://hooks.slack.com/services/…"}
+                value={hookUrl}
+                onChange={(e) => setHookUrl(e.target.value)}
+                aria-label="Webhook URL"
+              />
+              <button type="button" className="account-subs-remove" disabled={hookBusy || !hookUrl.trim()} onClick={() => hookCall("PUT", { url: hookUrl }, "Saved. Use “Send test” to check it.")}>
+                {hookBusy ? <Loader2 size={13} className="spin" /> : "Save"}
+              </button>
+            </div>
+            {hookMsg && <p role="status" className="account-subs-empty" style={{ color: hookMsg.ok ? "inherit" : "var(--danger, #c0392b)" }}>{hookMsg.text}</p>}
+          </>
+        )}
+      </div>
+
       {/* Contact */}
       <a href="mailto:support@kickmyapps.com" className="account-link-card">
         <MessageCircle size={16} color="var(--muted)" />
@@ -546,6 +622,10 @@ const accountStyles = `
     padding: 12px 0; border-top: 1px solid var(--ink-3);
   }
   .account-subs-row:first-child { border-top: none; padding-top: 0; }
+  .account-hook-input {
+    flex: 1; min-width: 0; background: var(--ink-2, transparent); border: 1px solid var(--ink-3); border-radius: 10px;
+    padding: 9px 12px; font-size: 13.5px; color: var(--chalk);
+  }
   .account-subs-name { font-size: 14px; color: var(--chalk); font-weight: 500; }
   .account-subs-remove {
     flex-shrink: 0; background: transparent; border: 1px solid var(--ink-3); border-radius: 999px;
