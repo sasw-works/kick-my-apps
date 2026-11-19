@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { CheckCircle2, AlertTriangle, XCircle, Circle } from "lucide-react";
 import { STORES, checkSubmission } from "../../lib/submissionCheck";
+import ListingTranslate from "../../components/ListingTranslate";
 
 const KEY = "kma-submission-draft-v1";
 const ICON = { pass: CheckCircle2, warn: AlertTriangle, fail: XCircle, todo: Circle, info: Circle };
@@ -124,6 +125,7 @@ export default function ChecklistPage() {
           <div className="cl-note">These are the stores&apos; published field limits and the most common reasons listings get sent back. Passing them doesn&apos;t guarantee approval. The review guidelines are the final word.</div>
         </section>
       </div>
+      <ListingTranslate store={draft.store} fields={draft.fields} />
     </main>
   );
 }
