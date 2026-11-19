@@ -9,8 +9,8 @@ import { buildReplyPrompt, cleanReply, TONES, defaultToneFor } from "../../../..
 export const runtime = "nodejs";
 
 // POST { reviewId, tone?, note? } -> { reply }: a draft answer to one review of the caller's OWN
-// app. Competitors' reviews can't be answered (they aren't yours), so the monitor must be a
-// top-level one. Nothing is posted anywhere: the draft is for the person to edit and use.
+// app. Reviews of other people's apps can't be answered (they aren't yours), so the monitor must
+// be one of kind "mine". Nothing is posted anywhere: the draft is for the person to edit and use.
 export async function POST(req, { params }) {
   try {
     const user = await getCurrentUser();
@@ -32,7 +32,7 @@ export async function POST(req, { params }) {
       SELECT m.app_name, m.developer, rv.rating, rv.title, rv.content
       FROM pulse_monitors m
       JOIN pulse_reviews rv ON rv.monitor_id = m.id AND rv.review_id = ${reviewId}
-      WHERE m.id = ${id} AND m.user_email = ${user.email} AND m.competitor_of IS NULL
+      WHERE m.id = ${id} AND m.user_email = ${user.email} AND m.kind = 'mine'
       LIMIT 1
     `;
     const row = rows[0];

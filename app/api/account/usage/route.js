@@ -20,7 +20,7 @@ export async function GET() {
   const [reportsUsed, comparisonsUsed, pulseRows] = await Promise.all([
     countReportsThisMonth(user.email),
     countComparisonsThisMonth(user.email),
-    sql`SELECT COUNT(*)::int AS n FROM pulse_monitors WHERE user_email = ${user.email} AND status != 'deleted' AND competitor_of IS NULL`,
+    sql`SELECT COUNT(*)::int AS n FROM pulse_monitors WHERE user_email = ${user.email} AND status != 'deleted'`,
   ]);
 
   return Response.json({

@@ -23,7 +23,7 @@ export async function GET() {
     LEFT JOIN LATERAL (
       SELECT * FROM pulse_snapshots WHERE monitor_id = m.id ORDER BY taken_at DESC, id DESC LIMIT 1
     ) s ON true
-    WHERE m.user_email = ${user.email} AND m.competitor_of IS NULL
+    WHERE m.user_email = ${user.email}
     ORDER BY m.created_at ASC
   `;
   return Response.json({ monitors: rows, limit: pulseLimit(user) });
@@ -49,6 +49,14 @@ export async function POST(req) {
   const country = String(body.country || countryFromStoreUrl(body.storeUrl) || "us").toLowerCase();
   if (!isAppId(appId)) return Response.json({ error: "That doesn't look like a valid App Store or Google Play app." }, { status: 400 });
   if (!isCountry(country)) return Response.json({ error: "Unsupported store." }, { status: 400 });
+  // "mine" (default) or "other" (someone else's app, e.g. a rival). Alerts follow the kind unless
+  // the caller says otherwise: on for your own apps, off for other people's.
+  const kind = body.kind == null ? "mine" : body.kind;
+  if (!["mine", "other"].includes(kind)) return Response.json({ error: "kind must be 'mine' or 'other'." }, { status: 400 });
+  if (body.alertsEnabled != null && typeof body.alertsEnabled !== "boolean") {
+    return Response.json({ error: "alertsEnabled must be true or false." }, { status: 400 });
+  }
+  const alertsEnabled = body.alertsEnabled ?? kind === "mine";
 
   // Checked before the plan limit: re-adding an app you already monitor should say so, not "your
   // plan is full" (which it would, confusingly, if this ran second and the account happened to be
@@ -60,10 +68,10 @@ export async function POST(req) {
 
   const limit = pulseLimit(user);
   if (limit !== null) {
-    const { rows } = await sql`SELECT COUNT(*)::int AS n FROM pulse_monitors WHERE user_email = ${user.email} AND status != 'deleted' AND competitor_of IS NULL`;
+    const { rows } = await sql`SELECT COUNT(*)::int AS n FROM pulse_monitors WHERE user_email = ${user.email} AND status != 'deleted'`;
     if (rows[0].n >= limit) {
       return Response.json(
-        { error: `Your plan includes ${limit} monitor${limit === 1 ? "" : "s"}. Remove one to add another, or upgrade.`, code: "PLAN_LIMIT" },
+        { error: `Your plan includes ${limit} monitored app${limit === 1 ? "" : "s"} (yours and other people's together). Remove one to add another, or upgrade.`, code: "PLAN_LIMIT" },
         { status: 403 }
       );
     }
@@ -79,8 +87,8 @@ export async function POST(req) {
   const app = found.app;
 
   const { rows } = await sql`
-    INSERT INTO pulse_monitors (user_email, app_id, country, app_name, developer, icon_url, store_url)
-    VALUES (${user.email}, ${appId}, ${country}, ${app.name}, ${app.developer}, ${app.iconUrl}, ${app.storeUrl})
+    INSERT INTO pulse_monitors (user_email, app_id, country, app_name, developer, icon_url, store_url, kind, alerts_enabled)
+    VALUES (${user.email}, ${appId}, ${country}, ${app.name}, ${app.developer}, ${app.iconUrl}, ${app.storeUrl}, ${kind}, ${alertsEnabled})
     RETURNING *
   `;
   const monitor = rows[0];

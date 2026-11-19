@@ -51,26 +51,49 @@ console.log("== 2. new version detected");
   check("second check finds the version bump", a.some((x) => x.kind === "new_version" && x.title.includes("1.1")), JSON.stringify(a));
 }
 
-console.log("== 2b. competitors are tracked silently");
+console.log("== 2b. alerts can be switched off per monitor (the default for other people's apps)");
 {
-  const parent = await makeMonitor({ appId: "20" });
-  const { rows } = await sql`
-    INSERT INTO pulse_monitors (user_email, app_id, country, app_name, developer, store_url, competitor_of)
-    VALUES ('alice@x.com', '21', 'us', 'Rival', 'Dev', 'x', ${parent.id}) RETURNING *`;
-  const rival = rows[0];
+  const quiet = await makeMonitor({ appId: "21" });
+  await sql`UPDATE pulse_monitors SET kind = 'other', alerts_enabled = false WHERE id = ${quiet.id}`;
+  const rival = (await sql`SELECT * FROM pulse_monitors WHERE id = ${quiet.id}`).rows[0];
   await runCheck(rival, deps({ ok: true, app: app({ appId: "21", avgRating: 4.6, version: "1.0" }) }, { ok: true, reviews: [review(1, 5)] }));
-  // A drop, a new version and a burst of bad reviews would all alert on one of the user's own apps.
+  // A drop, a new version and a burst of bad reviews would all alert on a monitor with alerts on.
   await runCheck(rival, deps({ ok: true, app: app({ appId: "21", avgRating: 3.9, version: "2.0" }) }, { ok: true, reviews: [review(2, 1), review(3, 1), review(4, 1), review(5, 1)] }));
-  check("a competitor raises NO alerts, whatever happens to it", (await alerts(rival.id)).length === 0, JSON.stringify(await alerts(rival.id)));
+  check("a monitor with alerts off raises NO alerts, whatever happens to it", (await alerts(rival.id)).length === 0, JSON.stringify(await alerts(rival.id)));
   const { rows: snaps } = await sql`SELECT count(*)::int c FROM pulse_snapshots WHERE monitor_id=${rival.id}`;
   const { rows: revs } = await sql`SELECT count(*)::int c FROM pulse_reviews WHERE monitor_id=${rival.id}`;
   check("...but its snapshots and reviews are still recorded for comparison", snaps[0].c === 2 && revs[0].c === 5, JSON.stringify([snaps[0], revs[0]]));
-  await runCheck(parent, deps({ ok: true, app: app({ appId: "20", avgRating: 4.5 }) }, { ok: true, reviews: [] }));
-  await runCheck(parent, deps({ ok: true, app: app({ appId: "20", avgRating: 4.2 }) }, { ok: true, reviews: [] }));
-  check("while the user's own app still alerts as before", (await alerts(parent.id)).some((x) => x.kind === "rating_drop"));
+
+  // Same "other app", alerts switched ON: it alerts like any monitor (it is a switch, not a rule).
+  const loud = await makeMonitor({ appId: "22" });
+  await sql`UPDATE pulse_monitors SET kind = 'other', alerts_enabled = true WHERE id = ${loud.id}`;
+  const loudRow = (await sql`SELECT * FROM pulse_monitors WHERE id = ${loud.id}`).rows[0];
+  await runCheck(loudRow, deps({ ok: true, app: app({ appId: "22", avgRating: 4.5 }) }, { ok: true, reviews: [] }));
+  await runCheck(loudRow, deps({ ok: true, app: app({ appId: "22", avgRating: 4.2 }) }, { ok: true, reviews: [] }));
+  check("an 'other' app with alerts ON does alert", (await alerts(loud.id)).some((x) => x.kind === "rating_drop"));
+
+  const mine = await makeMonitor({ appId: "20" });
+  await runCheck(mine, deps({ ok: true, app: app({ appId: "20", avgRating: 4.5 }) }, { ok: true, reviews: [] }));
+  await runCheck(mine, deps({ ok: true, app: app({ appId: "20", avgRating: 4.2 }) }, { ok: true, reviews: [] }));
+  check("while the user's own app alerts as before (default on)", (await alerts(mine.id)).some((x) => x.kind === "rating_drop"));
+}
+
+console.log("== 2c. old 'competitor' rows migrate to plain 'other' monitors");
+{
+  const parent = await makeMonitor({ appId: "30" });
+  const { rows } = await sql`
+    INSERT INTO pulse_monitors (user_email, app_id, country, app_name, developer, store_url, competitor_of)
+    VALUES ('alice@x.com', '31', 'us', 'OldRival', 'Dev', 'x', ${parent.id}) RETURNING id`;
+  const legacy = rows[0].id;
+  const fresh = await import("../../app/lib/pulse/schema.js?migrate"); // a new module copy: runs the migration again
+  await fresh.ensurePulseSchema();
+  const { rows: after } = await sql`SELECT kind, alerts_enabled, competitor_of FROM pulse_monitors WHERE id = ${legacy}`;
+  check("it becomes kind 'other', quiet, and detached from its parent", after[0].kind === "other" && after[0].alerts_enabled === false && after[0].competitor_of === null, JSON.stringify(after[0]));
   await sql`DELETE FROM pulse_monitors WHERE id = ${parent.id}`;
-  const { rows: left } = await sql`SELECT count(*)::int c FROM pulse_monitors WHERE id = ${rival.id}`;
-  check("deleting the parent app deletes its competitors too", left[0].c === 0);
+  const { rows: left } = await sql`SELECT count(*)::int c FROM pulse_monitors WHERE id = ${legacy}`;
+  check("deleting the old parent app no longer deletes it", left[0].c === 1);
+  const { rows: mine } = await sql`SELECT kind, alerts_enabled FROM pulse_monitors WHERE app_id = '20' LIMIT 1`;
+  check("ordinary monitors keep kind 'mine' with alerts on", mine[0].kind === "mine" && mine[0].alerts_enabled === true, JSON.stringify(mine[0]));
 }
 
 console.log("== 3. rating drop: warn vs critical thresholds");

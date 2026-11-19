@@ -92,7 +92,7 @@ psql(f"insert into comparisons (scan_id_a,scan_id_b,app_name_a,app_name_b,user_e
 st,js,_=req("GET","/api/account/usage",cookie=ALICE)
 check("reports used = 4, limit = 2 (Free)", js["reports"]=={"used":4,"limit":2}, str(js))
 check("comparisons used = 1, limit = 1 (Free)", js["comparisons"]=={"used":1,"limit":1}, str(js))
-check("pulse present with a limit even at 0 used", js["pulse"]["limit"]==1 and js["pulse"]["used"]==0, str(js))
+check("pulse present with a limit even at 0 used", js["pulse"]["limit"]==2 and js["pulse"]["used"]==0, str(js))
 check("signed-out cannot read usage", req("GET","/api/account/usage")[0]==401)
 check("bob's usage is independent (all zero)", req("GET","/api/account/usage",cookie=BOB)[1]["reports"]["used"]==0)
 

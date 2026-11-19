@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import CompetitorsSection from "../../../components/CompetitorsSection";
+import CompareSection from "../../../components/CompareSection";
 import ReplyDraft from "../../../components/ReplyDraft";
 import {
   ArrowLeft, Bell, AlertTriangle, TrendingUp, TrendingDown, Info, Loader2, RefreshCw, Pause, Play, Trash2, ExternalLink,
@@ -103,6 +103,29 @@ export default function PulseMonitorDetailPage() {
     }
   }
 
+  // kind ("mine" | "other") and alerts. Changing the kind resets alerts to that kind's default.
+  async function saveSettings(patch) {
+    if (!data) return;
+    setBusy(true);
+    try {
+      const res = await fetch(`/api/pulse/monitors/${id}`, {
+        method: "PATCH",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(patch),
+      });
+      if (!res.ok) throw new Error();
+      const next = { ...patch };
+      if (patch.kind && patch.alertsEnabled === undefined) next.alerts_enabled = patch.kind === "mine";
+      if (patch.alertsEnabled !== undefined) next.alerts_enabled = patch.alertsEnabled;
+      delete next.alertsEnabled;
+      setData((d) => ({ ...d, monitor: { ...d.monitor, ...next } }));
+    } catch {
+      alert("Couldn't save that. Please try again.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function checkNow() {
     setBusy(true);
     try {
@@ -188,6 +211,31 @@ export default function PulseMonitorDetailPage() {
       {m.status === "paused" && <div className="pmd-banner">Monitoring is paused for this app.</div>}
       {hasError && <div className="pmd-banner pmd-banner-error">{m.last_error || "The last check failed."}</div>}
 
+      <div className="pmd-settings" data-testid="monitor-settings">
+        <div className="pmd-set-group" role="group" aria-label="Whose app is this">
+          {[["mine", "My app"], ["other", "Another app"]].map(([k, label]) => (
+            <button
+              key={k}
+              className={`pmd-set-tab ${m.kind === k ? "pmd-set-tab-on" : ""}`}
+              aria-pressed={m.kind === k}
+              disabled={busy}
+              onClick={() => m.kind !== k && saveSettings({ kind: k })}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+        <label className="pmd-set-alerts">
+          <input
+            type="checkbox"
+            checked={m.alerts_enabled !== false}
+            disabled={busy}
+            onChange={(e) => saveSettings({ alertsEnabled: e.target.checked })}
+          />
+          Alert me about this app
+        </label>
+      </div>
+
       <div className="pmd-stats">
         <div className="pmd-stat-card">
           <div className="pmd-stat-label">Average rating</div>
@@ -255,7 +303,7 @@ export default function PulseMonitorDetailPage() {
                   </div>
                   {r.title && <div className="pmd-review-title">{r.title}</div>}
                   {r.content && <div className="pmd-review-content">{r.content}</div>}
-                  {!m.competitor_of && <ReplyDraft monitorId={m.id} review={r} />}
+                  {m.kind === "mine" && <ReplyDraft monitorId={m.id} review={r} />}
                 </div>
               ))}
             </div>
@@ -267,7 +315,7 @@ export default function PulseMonitorDetailPage() {
           </>
         )}
       </div>
-      {!m.competitor_of && <CompetitorsSection monitorId={m.id} country={m.country} appId={m.app_id} />}
+      {m.kind === "mine" && <CompareSection monitorId={m.id} country={m.country} appId={m.app_id} />}
     </main>
   );
 }
@@ -295,6 +343,11 @@ const pmdStyles = `
   .pmd-action-btn:hover { background: var(--ink); color: var(--chalk); }
   .pmd-action-danger:hover { color: var(--kick); }
 
+  .pmd-settings { display: flex; flex-wrap: wrap; gap: 14px 20px; align-items: center; margin-bottom: 20px; }
+  .pmd-set-group { display: inline-flex; gap: 6px; }
+  .pmd-set-tab { height: 34px; padding: 0 14px; border-radius: 10px; border: 1px solid var(--ink-3); background: var(--ink); color: var(--muted); font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; }
+  .pmd-set-tab-on { border-color: var(--brand); color: var(--chalk); background: color-mix(in srgb, var(--brand) 10%, var(--ink)); }
+  .pmd-set-alerts { display: inline-flex; gap: 8px; align-items: center; font-size: 13.5px; color: var(--muted); cursor: pointer; }
   .pmd-banner { background: var(--ink); border: 1px solid var(--ink-3); border-radius: 10px; padding: 10px 14px; font-size: 13.5px; color: var(--muted); margin-bottom: 20px; }
   .pmd-banner-error { color: var(--kick); border-color: color-mix(in srgb, var(--kick) 30%, var(--ink-3)); }
 

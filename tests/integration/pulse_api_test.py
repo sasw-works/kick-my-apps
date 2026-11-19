@@ -62,15 +62,16 @@ st,js,_=req("POST","/api/pulse/monitors",cookie=CAROL,body={"appId":"99999999999
 check("a real-looking but nonexistent app id -> 404 (fresh account, room in her plan)", st==404, f"{st} {js}")
 check("...and nothing got created for her from the failed attempt", req("GET","/api/pulse/monitors",cookie=CAROL)[1]["monitors"]==[])
 
-print("== 4. Free plan limit (1 monitor)")
+print("== 4. Free plan limit (2 monitored apps, yours and other people's together)")
+psql("INSERT INTO pulse_monitors (user_email,app_id,country,app_name,developer,kind,alerts_enabled) VALUES ('alice@x.com','999999991','us','Filler','Dev','other',false)")  # her 2nd (setup, no network)
 st,js,txt=req("POST","/api/pulse/monitors",cookie=ALICE,body={"appId":"324684580","country":"us"})  # Spotify
-check("a second monitor is refused with the plan-limit code", st==403 and (js or {}).get("code")=="PLAN_LIMIT", f"{st} {txt[:200]}")
+check("a third monitored app is refused with the plan-limit code (an 'other' app counted toward it)", st==403 and (js or {}).get("code")=="PLAN_LIMIT", f"{st} {txt[:200]}")
 
 print("== 5. ownership: bob can't see, check, or delete alice's monitor")
 mid=mon["id"]
 st,js,_=req("GET","/api/pulse/monitors",cookie=BOB)
 check("bob's list is empty", js["monitors"]==[])
-check("bob's plan limit is HIS OWN (1), unaffected by alice's usage", js["limit"]==1, str(js))
+check("bob's plan limit is HIS OWN (2), unaffected by alice's usage", js["limit"]==2, str(js))
 check("bob can't fetch alice's monitor by id -> 404", req("GET",f"/api/pulse/monitors/{mid}",cookie=BOB)[0]==404)
 check("bob can't pause it -> 404", req("PATCH",f"/api/pulse/monitors/{mid}",cookie=BOB,body={"status":"paused"})[0]==404)
 check("bob can't check-now it -> 404", req("POST",f"/api/pulse/monitors/{mid}/check",cookie=BOB)[0]==404)

@@ -65,11 +65,27 @@ export async function PATCH(req, { params }) {
   const monitor = await ownedMonitor(id, user.email);
   if (!monitor) return Response.json({ error: "Monitor not found." }, { status: 404 });
 
-  const { status } = await req.json().catch(() => ({}));
-  if (!["active", "paused"].includes(status)) {
+  // Any of: status ("active" | "paused"), kind ("mine" | "other"), alertsEnabled (boolean).
+  // Changing kind also resets alerts to that kind's default unless alertsEnabled is given too.
+  const body = await req.json().catch(() => ({}));
+  const { status, kind, alertsEnabled } = body || {};
+  if (status === undefined && kind === undefined && alertsEnabled === undefined) {
+    return Response.json({ error: "Nothing to change." }, { status: 400 });
+  }
+  if (status !== undefined && !["active", "paused"].includes(status)) {
     return Response.json({ error: "status must be 'active' or 'paused'." }, { status: 400 });
   }
-  await sql`UPDATE pulse_monitors SET status = ${status} WHERE id = ${id}`;
+  if (kind !== undefined && !["mine", "other"].includes(kind)) {
+    return Response.json({ error: "kind must be 'mine' or 'other'." }, { status: 400 });
+  }
+  if (alertsEnabled !== undefined && typeof alertsEnabled !== "boolean") {
+    return Response.json({ error: "alertsEnabled must be true or false." }, { status: 400 });
+  }
+  if (status !== undefined) await sql`UPDATE pulse_monitors SET status = ${status} WHERE id = ${id}`;
+  if (kind !== undefined) {
+    await sql`UPDATE pulse_monitors SET kind = ${kind}, alerts_enabled = ${kind === "mine"} WHERE id = ${id}`;
+  }
+  if (alertsEnabled !== undefined) await sql`UPDATE pulse_monitors SET alerts_enabled = ${alertsEnabled} WHERE id = ${id}`;
   return Response.json({ ok: true });
 }
 

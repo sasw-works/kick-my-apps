@@ -250,7 +250,7 @@ export default function ConsolePulsePage() {
 
       {limit !== null && monitors && (
         <p className="pulse-limit-note">
-          {monitors.length} / {limit} monitor{limit === 1 ? "" : "s"} used on your plan.
+          {`${monitors.length} / ${limit} monitored app${limit === 1 ? "" : "s"} used on your plan (yours and other people's).`}
           {atLimit && (
             <>
               {" "}
@@ -310,6 +310,7 @@ export default function ConsolePulsePage() {
                       <span className={`pulse-status-dot ${statusClass}`} />
                       <span className="pulse-card-name">{m.app_name}</span>
                       <span className="pulse-country-tag">{m.country}</span>
+                      {m.kind === "other" && <span className="pulse-country-tag" title="Someone else's app">other app</span>}
                       {m.unread_alerts > 0 && (
                         <span className="pulse-unread">
                           <Bell size={11} />
@@ -388,6 +389,7 @@ export default function ConsolePulsePage() {
 function AddMonitorModal({ onClose, onAdded }) {
   const [country, setCountry] = useState("tr");
   const [store, setStore] = useState("appstore");
+  const [kind, setKind] = useState("mine");
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [searching, setSearching] = useState(false);
@@ -428,7 +430,7 @@ function AddMonitorModal({ onClose, onAdded }) {
       const res = await fetch("/api/pulse/monitors", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ appId: String(selected.trackId), country }),
+        body: JSON.stringify({ appId: String(selected.trackId), country, kind }),
       });
       const d = await res.json();
       if (d.error) throw new Error(d.error);
@@ -456,6 +458,7 @@ function AddMonitorModal({ onClose, onAdded }) {
         .pulse-store-tabs { display: flex; gap: 6px; }
         .pulse-store-tab { flex: 1; height: 40px; border-radius: 10px; border: 1px solid var(--ink-3); background: var(--ink); color: var(--muted); font-size: 13.5px; font-weight: 600; cursor: pointer; font-family: inherit; }
         .pulse-store-tab-on { border-color: var(--brand); color: var(--chalk); background: color-mix(in srgb, var(--brand) 10%, var(--ink)); }
+        .pulse-kind-hint { font-size: 12.5px; color: var(--muted); margin-top: 6px; }
         .pulse-select-wrap { position: relative; }
         .pulse-modal-select {
           appearance: none; -webkit-appearance: none;
@@ -485,6 +488,20 @@ function AddMonitorModal({ onClose, onAdded }) {
         <div className="pulse-modal-head">
           <div className="pulse-modal-title">Add Monitor</div>
           <button className="pulse-modal-close" onClick={onClose} aria-label="Close"><X size={18} /></button>
+        </div>
+
+        <div className="pulse-modal-label">Whose app is it?</div>
+        <div className="pulse-store-tabs" role="group" aria-label="Whose app is it">
+          {[["mine", "My app"], ["other", "Another app"]].map(([k, label]) => (
+            <button key={k} type="button" className={`pulse-store-tab ${kind === k ? "pulse-store-tab-on" : ""}`} aria-pressed={kind === k} onClick={() => setKind(k)}>
+              {label}
+            </button>
+          ))}
+        </div>
+        <div className="pulse-kind-hint">
+          {kind === "mine"
+            ? "You'll get alerts for rating drops, new versions and bad reviews."
+            : "Kept quietly for comparison (a rival, say). No alerts unless you turn them on later."}
         </div>
 
         <div className="pulse-modal-label">Platform</div>

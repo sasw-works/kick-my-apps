@@ -51,7 +51,7 @@ check("admin: reports limit is null (unlimited)", js["reports"]["limit"] is None
 check("admin: comparisons limit is null", js["comparisons"]["limit"] is None, str(js))
 check("admin: pulse limit is null", js["pulse"]["limit"] is None, str(js))
 st,js,_=req("GET","/api/account/usage",cookie=ALICE)
-check("alice: still sees the real Free limits (2 reports, 1 comparison, 1 pulse)", js["reports"]["limit"]==2 and js["comparisons"]["limit"]==1 and js["pulse"]["limit"]==1, str(js))
+check("alice: still sees the real Free limits (2 reports, 1 comparison, 2 monitored apps)", js["reports"]["limit"]==2 and js["comparisons"]["limit"]==1 and js["pulse"]["limit"]==2, str(js))
 
 print("== 2. admin can exceed what would be alice's report limit ==")
 for i in range(5):

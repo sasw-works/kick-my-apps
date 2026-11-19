@@ -30,7 +30,7 @@ def check(n,c,d=""):
     if c: P+=1; print(f"  ok   {n}")
     else: F+=1; print(f"  FAIL {n}   {d}")
 
-# Talks to the real Google Play and App Store: real apps, real lookups (like pulse_competitors_test.py).
+# Talks to the real Google Play and App Store: real apps, real lookups (like pulse_kinds_test.py).
 SPOTIFY="com.spotify.music"; NETFLIX="com.netflix.mediaclient"; INSTAGRAM="389801252"
 for t in ["pulse_alerts","pulse_reviews","pulse_snapshots","pulse_monitors","rate_limits","email_codes","users","accounts","sessions"]:
     try: psql(f"TRUNCATE {t} RESTART IDENTITY CASCADE")
@@ -74,24 +74,28 @@ st,js,_=req("POST","/api/pulse/monitors",cookie=ADMIN,body={"storeUrl":f"https:/
 check("adding from a Play link works (id + country read from it)", st==200 and js["monitor"]["app_id"]==NETFLIX and js["monitor"]["country"]=="us", f"{st} {str(js)[:200]}")
 nid=js["monitor"]["id"] if st==200 else None
 
-print("== 3. competitors stay within one store")
-st,js,_=req("POST",f"/api/pulse/monitors/{mid}/competitors",cookie=ADMIN,body={"appId":INSTAGRAM})
-check("an App Store app can't be a competitor of a Play app", st==400 and "Google Play" in js["error"], f"{st} {js}")
-st,js,_=req("POST",f"/api/pulse/monitors/{mid}/competitors",cookie=ADMIN,body={"appId":"com.google.android.youtube"})
-check("a Play app can", st==200, f"{st} {str(js)[:200]}")
-st,js,_=req("GET",f"/api/pulse/monitors/{mid}/competitors",cookie=ADMIN)
-check("it is listed with its numbers", st==200 and len(js["competitors"])==1 and js["competitors"][0]["avgRating"] is not None, f"{st} {str(js)[:300]}")
+print("== 3. comparison stays within one store")
+st,js,_=req("POST","/api/pulse/monitors",cookie=ADMIN,body={"appId":"com.google.android.youtube","country":"us","kind":"other"})
+check("a Play app can be added as an 'other' app", st==200 and js["monitor"]["kind"]=="other", f"{st} {str(js)[:200]}")
+st,js,_=req("POST","/api/pulse/monitors",cookie=ADMIN,body={"appId":INSTAGRAM,"country":"us","kind":"other"})
+check("(setup) an App Store 'other' app too", st==200, f"{st} {js}")
+st,js,_=req("GET",f"/api/pulse/monitors/{mid}/compare",cookie=ADMIN)
+ids=[o["app_id"] for o in js["others"]] if st==200 else []
+check("a Play app's comparison shows only Play apps, with real numbers", st==200 and ids==["com.google.android.youtube"] and js["others"][0]["avgRating"] is not None, f"{st} {str(js)[:300]}")
+check("...and counts the App Store one as hidden", js["hidden"]==1, js.get("hidden"))
 st,js,_=req("GET","/api/pulse/monitors",cookie=ADMIN)
-check("competitors don't appear in the monitor list", all(x["app_id"]!="com.google.android.youtube" for x in js["monitors"]))
+check("both kinds appear in the one monitor list", any(x["app_id"]=="com.google.android.youtube" and x["kind"]=="other" for x in js["monitors"]))
 st,js,_=req("POST","/api/pulse/monitors",cookie=ADMIN,body={"appId":INSTAGRAM,"country":"us"})
-aid=js["monitor"]["id"] if st==200 else None
-check("(setup) an App Store monitor", st==200, f"{st} {js}")
-st,js,_=req("POST",f"/api/pulse/monitors/{aid}/competitors",cookie=ADMIN,body={"appId":SPOTIFY+"x"}) if aid else (0,{},"")
-check("and a Play app can't be a competitor of an App Store app", st==400 and "App Store" in js["error"], f"{st} {js}")
+aid=None
+st2,js2,_=req("GET","/api/pulse/monitors",cookie=ADMIN)
+ig=[x for x in js2["monitors"] if x["app_id"]==INSTAGRAM][0]
+req("PATCH",f"/api/pulse/monitors/{ig['id']}",cookie=ADMIN,body={"kind":"mine"})
+st,js,_=req("GET",f"/api/pulse/monitors/{ig['id']}/compare",cookie=ADMIN)
+check("an App Store app's comparison doesn't include Play apps", st==200 and all(o["app_id"].isdigit() for o in js["others"]) and js["hidden"]>=1, f"{st} {str(js)[:200]}")
 
 print("== 4. isolation")
-st,js,_=req("GET",f"/api/pulse/monitors/{mid}/competitors",cookie=ALICE)
-check("another user can't read a Play monitor's competitors", st==404, st)
+st,js,_=req("GET",f"/api/pulse/monitors/{mid}/compare",cookie=ALICE)
+check("another user can't read a Play monitor's comparison", st==404, st)
 st,js,_=req("GET","/api/pulse/monitors",cookie=ALICE)
 check("another user's list doesn't include it", st==200 and js["monitors"]==[], str(js)[:200])
 

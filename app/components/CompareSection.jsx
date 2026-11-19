@@ -3,7 +3,8 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Search, Plus, Trash2, Loader2, TrendingUp, TrendingDown } from "lucide-react";
 
-// "Competitors" block on a monitored app's page: your numbers next to each tracked competitor's.
+// "Compare" block on one of your apps' pages: your numbers next to every other app you monitor in
+// the same store and country. Adding one here simply adds a monitor of kind "other".
 // Their data comes from the same daily check as yours; it's the public store rating, version,
 // and the recent written reviews we've seen -- not their private analytics.
 
@@ -14,8 +15,8 @@ const ago = (d) => {
 };
 const stars = (v) => (v == null ? "—" : `${v.toFixed(2)}★`);
 
-export default function CompetitorsSection({ monitorId, country, appId }) {
-  // Competitors are searched in the same store as the app they're compared with.
+export default function CompareSection({ monitorId, country, appId }) {
+  // Other apps are searched in the same store as the app they're compared with.
   const isPlay = /^[A-Za-z]/.test(String(appId || ""));
   const storeLabel = isPlay ? "Google Play" : "the App Store";
   const [data, setData] = useState(null);
@@ -29,9 +30,9 @@ export default function CompetitorsSection({ monitorId, country, appId }) {
   const timer = useRef(null);
 
   const load = useCallback(() => {
-    fetch(`/api/pulse/monitors/${monitorId}/competitors`)
+    fetch(`/api/pulse/monitors/${monitorId}/compare`)
       .then((r) => r.json().then((d) => ({ ok: r.ok, d })))
-      .then(({ ok, d }) => { if (!ok) throw new Error(d.error || "Could not load competitors."); setData(d); setError(""); })
+      .then(({ ok, d }) => { if (!ok) throw new Error(d.error || "Could not load the comparison."); setData(d); setError(""); })
       .catch((e) => setError(e.message));
   }, [monitorId]);
   useEffect(() => { load(); }, [load]);
@@ -52,9 +53,9 @@ export default function CompetitorsSection({ monitorId, country, appId }) {
   async function add(app) {
     setBusyId(String(app.trackId)); setFormError("");
     try {
-      const res = await fetch(`/api/pulse/monitors/${monitorId}/competitors`, {
+      const res = await fetch("/api/pulse/monitors", {
         method: "POST", headers: { "content-type": "application/json" },
-        body: JSON.stringify({ appId: String(app.trackId), country }),
+        body: JSON.stringify({ appId: String(app.trackId), country, kind: "other" }),
       });
       const d = await res.json();
       if (!res.ok) throw new Error(d.error || "Could not add it.");
@@ -63,17 +64,15 @@ export default function CompetitorsSection({ monitorId, country, appId }) {
   }
 
   async function remove(c) {
-    if (!confirm(`Stop tracking ${c.app_name}? Its history is removed too.`)) return;
+    if (!confirm(`Stop monitoring ${c.app_name}? Its history is removed and it leaves your Monitor list too.`)) return;
     setBusyId(c.id);
     try { await fetch(`/api/pulse/monitors/${c.id}`, { method: "DELETE" }); load(); } finally { setBusyId(null); }
   }
 
-  const competitors = data?.competitors || [];
-  const limit = data?.limit;
-  const full = limit != null && competitors.length >= limit;
+  const others = data?.others || [];
 
   return (
-    <section className="cmp" data-testid="competitors">
+    <section className="cmp" data-testid="compare">
       <style>{`
         .cmp { margin-top: 32px; }
         .cmp-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
@@ -107,20 +106,20 @@ export default function CompetitorsSection({ monitorId, country, appId }) {
       `}</style>
 
       <div className="cmp-head">
-        <h2>Competitors</h2>
-        <button className="cmp-btn" onClick={() => { setAdding((a) => !a); setFormError(""); }} disabled={!data || full} title={full ? `Your plan includes ${limit} per app` : undefined}>
-          <Plus size={14} /> Add competitor
+        <h2>Compare with other apps</h2>
+        <button className="cmp-btn" onClick={() => { setAdding((a) => !a); setFormError(""); }} disabled={!data}>
+          <Plus size={14} /> Add an app to compare
         </button>
       </div>
       <p className="cmp-sub">
-        Public {isPlay ? "Google Play" : "App Store"} numbers, checked daily alongside yours{limit != null ? ` · ${competitors.length} of ${limit} used` : ""}. Review topics come from the recent written reviews we&apos;ve seen, not every review.
+        Public {isPlay ? "Google Play" : "App Store"} numbers, checked daily alongside yours. Apps added here are monitored like any other (quietly: no alerts unless you turn them on) and count toward your plan&apos;s monitored apps. Review topics come from the recent written reviews we&apos;ve seen, not every review.
       </p>
 
       {adding && (
         <div className="cmp-add">
           <div className="cmp-input-wrap">
             <Search size={15} />
-            <input className="cmp-input" autoFocus placeholder={`Search ${storeLabel} for a competitor…`} value={query} onChange={(e) => setQuery(e.target.value)} aria-label="Search for a competitor" />
+            <input className="cmp-input" autoFocus placeholder={`Search ${storeLabel} for an app to compare…`} value={query} onChange={(e) => setQuery(e.target.value)} aria-label="Search for an app to compare" />
           </div>
           {searching && <div className="cmp-muted" style={{ marginTop: 10 }}><Loader2 size={13} className="spin" /> Searching…</div>}
           {query.trim().length >= 3 && results.slice(0, 6).map((app) => (
@@ -137,8 +136,11 @@ export default function CompetitorsSection({ monitorId, country, appId }) {
         <div className="cmp-empty" role="alert">{error}</div>
       ) : !data ? (
         <div className="cmp-empty"><Loader2 size={18} className="spin" /></div>
-      ) : competitors.length === 0 ? (
-        <div className="cmp-empty">No competitors yet. Add one to see how its rating, releases and review complaints compare with yours.</div>
+      ) : others.length === 0 ? (
+        <div className="cmp-empty">
+          No other apps to compare yet. Add one to see how its rating, releases and review complaints compare with yours.
+          {data.hidden > 0 && ` (${data.hidden} other app${data.hidden === 1 ? "" : "s"} you monitor ${data.hidden === 1 ? "is" : "are"} in a different store or country, so can't be compared fairly.)`}
+        </div>
       ) : (
         <div className="cmp-scroll">
           <table className="cmp-table">
@@ -146,7 +148,7 @@ export default function CompetitorsSection({ monitorId, country, appId }) {
               <tr><th>App</th><th>Rating</th><th>Version</th><th>1–2★ reviews</th><th>Top complaints</th><th aria-label="Actions" /></tr>
             </thead>
             <tbody>
-              {[{ ...data.self, isSelf: true }, ...competitors].map((a) => (
+              {[{ ...data.self, isSelf: true }, ...others].map((a) => (
                 <tr key={a.id} className={a.isSelf ? "cmp-self" : ""} data-testid={a.isSelf ? "cmp-self" : `cmp-row-${a.id}`}>
                   <td>
                     <div className="cmp-app">
@@ -177,13 +179,14 @@ export default function CompetitorsSection({ monitorId, country, appId }) {
                   </td>
                   <td>
                     {!a.isSelf && (
-                      <button className="cmp-icon-btn" onClick={() => remove(a)} disabled={busyId === a.id} aria-label={`Stop tracking ${a.app_name}`}><Trash2 size={15} /></button>
+                      <button className="cmp-icon-btn" onClick={() => remove(a)} disabled={busyId === a.id} aria-label={`Stop monitoring ${a.app_name}`}><Trash2 size={15} /></button>
                     )}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+          {data.hidden > 0 && <div className="cmp-muted" style={{ marginTop: 8 }}>{data.hidden} more monitored app{data.hidden === 1 ? " is" : "s are"} in a different store or country and can&apos;t be compared fairly.</div>}
         </div>
       )}
     </section>

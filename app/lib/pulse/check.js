@@ -112,8 +112,8 @@ export async function runCheck(monitor, deps = defaultDeps, { reviewAttempts = 1
   `;
 
   const alerts = [];
-  // Competitors are only tracked for comparison: no alerts (they'd be noise about someone else's app).
-  if (!baseline && monitor.competitor_of == null) {
+  // Alerts can be switched off per monitor (the default for other people's apps).
+  if (!baseline && monitor.alerts_enabled !== false) {
     if (app.version && prev.version && app.version !== prev.version) {
       alerts.push({
         kind: "new_version",

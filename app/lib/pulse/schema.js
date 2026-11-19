@@ -25,10 +25,17 @@ export async function ensurePulseSchema() {
       UNIQUE (user_email, app_id, country)
     )
   `;
-  // A competitor is just a monitor attached to one of the user's own apps: same daily checks and
-  // history, but it never raises alerts and isn't listed (or counted) as one of their apps.
-  // Deleting the parent app deletes its competitors with it.
+  // One kind of thing: a monitored app. It is either "mine" or "other" (someone else's app you keep
+  // an eye on, e.g. a rival), and alerts_enabled says whether it raises alerts. Others default to
+  // quiet (alerts about someone else's app are noise unless you ask for them) but that is a switch,
+  // not a rule. Others show up in the side-by-side comparison on your apps' pages.
+  await sql`ALTER TABLE pulse_monitors ADD COLUMN IF NOT EXISTS kind TEXT NOT NULL DEFAULT 'mine'`;
+  await sql`ALTER TABLE pulse_monitors ADD COLUMN IF NOT EXISTS alerts_enabled BOOLEAN NOT NULL DEFAULT true`;
+  // Older versions had "competitors" attached to a parent app via competitor_of. They become plain
+  // monitors of kind "other" (quiet, as before) and are detached so deleting an app no longer
+  // deletes them. The column is kept, unused, so older code running during a deploy doesn't break.
   await sql`ALTER TABLE pulse_monitors ADD COLUMN IF NOT EXISTS competitor_of INTEGER REFERENCES pulse_monitors(id) ON DELETE CASCADE`;
+  await sql`UPDATE pulse_monitors SET kind = 'other', alerts_enabled = false, competitor_of = NULL WHERE competitor_of IS NOT NULL`;
   await sql`
     CREATE TABLE IF NOT EXISTS pulse_snapshots (
       id SERIAL PRIMARY KEY,
