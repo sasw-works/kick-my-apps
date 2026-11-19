@@ -405,7 +405,7 @@ export async function POST(req) {
       return Response.json(
         {
           error:
-            "Analysis needs at least one screenshot or a valid App Store link (Play Store links are not yet supported).",
+            "Analysis needs at least one screenshot or a valid App Store or Google Play link.",
         },
         { status: 400 }
       );

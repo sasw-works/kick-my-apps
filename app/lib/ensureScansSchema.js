@@ -27,6 +27,7 @@ export async function ensureScansSchema() {
   await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS shared_at TIMESTAMPTZ;`;
   // Owner's manual progress per finding category: { "contrast": "done", "cta": "wontfix" }.
   await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS finding_status JSONB;`;
+  await sql`ALTER TABLE scans ADD COLUMN IF NOT EXISTS visuals_json JSONB;`;
   // Task progress per project (app), kept across re-scans. 'todo' is simply the absence of a row.
   await sql`CREATE TABLE IF NOT EXISTS task_status (
     user_email TEXT NOT NULL,

@@ -159,6 +159,7 @@ export async function fetchPlayListing(storeUrl) {
       releaseNotes: a.recentChanges || "",
       genre: a.genre || "",
       screenshotCount: Array.isArray(a.screenshots) ? a.screenshots.length : 0,
+      screenshotUrls: Array.isArray(a.screenshots) ? a.screenshots : [],
       version: cleanVersion(a.version) || "",
       averageRating: typeof a.score === "number" ? a.score : null,
       ratingCount: Number.isInteger(a.ratings) ? a.ratings : null,

@@ -117,6 +117,8 @@ export async function fetchAppStoreListing(storeUrl) {
     releaseNotes: app.releaseNotes ?? "",
     genre: app.primaryGenreName ?? "",
     screenshotCount: (app.screenshotUrls?.length ?? 0) + (app.ipadScreenshotUrls?.length ?? 0),
+    // iPhone screenshots first (what most people see); iPad ones only when there are none.
+    screenshotUrls: (app.screenshotUrls?.length ? app.screenshotUrls : app.ipadScreenshotUrls) ?? [],
     version: app.version ?? "",
     averageRating: app.averageUserRating ?? null,
     ratingCount: app.userRatingCount ?? null,

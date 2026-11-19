@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { computeLensScores } from "../lib/lensScores";
 import ShareButton from "./ShareButton";
+import StoreVisualsPanel from "./StoreVisualsPanel";
 import ScoreTrend from "./ScoreTrend";
 import { PerformancePanel, CompatibilityPanel, AccessibilityChecklist, SignalPanelStyles } from "./SignalPanels";
 import {
@@ -1199,6 +1200,8 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
         )}
 
         <ScoreTrend history={history} currentId={scanId} appLabel={appLabel} />
+
+        {scanId && storeUrl && !readOnly && <StoreVisualsPanel scanId={scanId} />}
 
         {screenshots.length > 0 && (
           <div className="panel">
