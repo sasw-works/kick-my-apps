@@ -7,6 +7,7 @@ import CompareSection from "../../../components/CompareSection";
 import ReleaseImpact from "../../../components/ReleaseImpact";
 import ReviewTopics from "../../../components/ReviewTopics";
 import ReplyDraft from "../../../components/ReplyDraft";
+import ReleaseNotes from "../../../components/ReleaseNotes";
 import {
   ArrowLeft, Bell, AlertTriangle, TrendingUp, TrendingDown, Info, Loader2, RefreshCw, Pause, Play, Trash2, ExternalLink,
 } from "lucide-react";
@@ -266,6 +267,8 @@ export default function PulseMonitorDetailPage() {
       {m.kind === "mine" && <ReviewTopics monitorId={m.id} />}
 
       {m.kind === "mine" && <ReleaseImpact monitorId={m.id} />}
+
+      {m.kind === "mine" && <ReleaseNotes monitorId={m.id} />}
 
       <div className="pmd-panel">
         <div className="pmd-panel-title">Alerts</div>

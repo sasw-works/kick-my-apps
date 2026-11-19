@@ -13,10 +13,10 @@ const TONES = [
 ];
 const defaultTone = (rating) => (rating <= 2 ? "empathetic" : rating === 3 ? "professional" : "friendly");
 
-export default function ReplyDraft({ monitorId, review }) {
+export default function ReplyDraft({ monitorId, review, initialNote = "" }) {
   const [open, setOpen] = useState(false);
   const [tone, setTone] = useState(defaultTone(review.rating));
-  const [note, setNote] = useState("");
+  const [note, setNote] = useState(initialNote);
   const [reply, setReply] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");

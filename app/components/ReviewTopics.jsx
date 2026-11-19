@@ -2,7 +2,57 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
-import { Loader2, TrendingUp, TrendingDown, Plus, Check } from "lucide-react";
+import { Loader2, TrendingUp, TrendingDown, Plus, Check, MessageSquareReply } from "lucide-react";
+import ReplyDraft from "./ReplyDraft";
+
+
+// For a topic marked done in Tasks: the reviewers who complained about it, each with a reply draft
+// that already carries "this was fixed in version X" (the developer confirms the version).
+function FixedReplies({ monitorId, topic }) {
+  const [open, setOpen] = useState(false);
+  const [data, setData] = useState(null);
+  const [error, setError] = useState("");
+  const [version, setVersion] = useState("");
+
+  async function toggle() {
+    const next = !open;
+    setOpen(next);
+    if (!next || data) return;
+    try {
+      const res = await fetch(`/api/pulse/monitors/${monitorId}/topics/${topic.key}`);
+      const d = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(d.error || "Could not load the reviews.");
+      setData(d);
+      setVersion(d.latestVersion || "");
+    } catch (e) { setError(e.message); }
+  }
+  const note = `The "${topic.label}" problem was fixed${version.trim() ? ` in version ${version.trim()}` : " in the latest update"}. Suggest they update the app.`;
+
+  return (
+    <div className="rt-fixed" data-testid={`fixed-${topic.key}`}>
+      <button type="button" className="rt-btn" onClick={toggle} aria-expanded={open}>
+        <MessageSquareReply size={13} /> Tell people it&apos;s fixed
+      </button>
+      {open && (
+        <div className="rt-fixed-box">
+          {error ? <div className="rt-err" role="alert">{error}</div> : !data ? <Loader2 size={16} className="rt-spin" /> : (
+            <>
+              <label className="rt-note" htmlFor={`fv-${topic.key}`}>Fixed in version</label>
+              <input id={`fv-${topic.key}`} className="rt-ver" maxLength={30} value={version} onChange={(e) => setVersion(e.target.value)} placeholder="e.g. 2.4.1" />
+              <div className="rt-note">{data.total} written review{data.total === 1 ? "" : "s"} mention this{data.total > 15 ? " (showing the newest 15)" : ""}. Each draft says the problem is fixed, so only use it once the fix is really live.</div>
+              {data.reviews.map((r) => (
+                <div className="rt-rev" key={r.id}>
+                  <div className="rt-quote">{"★".repeat(r.rating)}{r.version ? ` · v${r.version}` : ""} {r.title ? `${r.title} — ` : ""}{String(r.content || "").slice(0, 220)}</div>
+                  <ReplyDraft monitorId={monitorId} review={{ id: r.id, rating: r.rating }} initialNote={note} />
+                </div>
+              ))}
+            </>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
 
 // "What users complain about" on one of your apps' Pulse pages: complaint topics counted from the
 // written 1-3 star reviews Pulse has stored, each with a one-click way to put it in Tasks.
@@ -80,6 +130,7 @@ export default function ReviewTopics({ monitorId }) {
                 )}
                 {!t.canAdd && !t.added && <span className="rt-note">needs 3+ mentions</span>}
               </div>
+              {t.fixed && <FixedReplies monitorId={monitorId} topic={t} />}
             </div>
           ))}
         </div>
@@ -107,6 +158,9 @@ export default function ReviewTopics({ monitorId }) {
         .rt-added { display: inline-flex; gap: 5px; align-items: center; font-size: 13px; font-weight: 600; color: var(--teal); text-decoration: none; }
         .rt-note { font-size: 12px; color: var(--muted); }
         .rt-err { font-size: 13px; color: var(--kick); margin-top: 10px; }
+        .rt-fixed-box { margin-top: 10px; display: flex; flex-direction: column; gap: 10px; }
+        .rt-ver { width: 140px; border: 1px solid var(--ink-3); background: var(--surface); color: var(--chalk); border-radius: 8px; padding: 6px 10px; font-size: 13px; font-family: inherit; }
+        .rt-rev { border-top: 1px solid var(--ink-3); padding-top: 10px; }
         .rt-spin { animation: rt-rot 1s linear infinite; } @keyframes rt-rot { to { transform: rotate(360deg); } }
       `}</style>
     </div>

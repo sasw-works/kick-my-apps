@@ -48,10 +48,12 @@ export async function GET(req, { params }) {
     const { pk, hasReports } = await projectOf(user.email, monitor);
     const { rows: added } = await sql`SELECT task_key FROM custom_tasks WHERE user_email = ${user.email} AND project_key = ${pk}`;
     const addedKeys = new Set(added.map((r) => r.task_key));
+    const { rows: doneRows } = await sql`SELECT finding_key FROM task_status WHERE user_email = ${user.email} AND project_key = ${pk} AND status = 'done' AND finding_key LIKE 'rev:%'`;
+    const doneKeys = new Set(doneRows.map((r) => r.finding_key));
     return Response.json({
       sample,
       hasReports,
-      topics: topics.map((t) => ({ ...t, added: addedKeys.has(`rev:${t.key}`) })),
+      topics: topics.map((t) => ({ ...t, added: addedKeys.has(`rev:${t.key}`), fixed: addedKeys.has(`rev:${t.key}`) && doneKeys.has(`rev:${t.key}`) })),
     });
   } catch (err) {
     console.error(err);
