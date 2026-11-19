@@ -91,6 +91,8 @@ jobs:
         run: python3 tests/integration/reply_draft_test.py
       - name: reply_inbox_api_test.py
         run: python3 tests/integration/reply_inbox_api_test.py
+      - name: feature_requests_api_test.py
+        run: python3 tests/integration/feature_requests_api_test.py
       - name: brief_api_test.py
         run: python3 tests/integration/brief_api_test.py
       - name: issue_export_api_test.py
@@ -112,6 +114,8 @@ jobs:
         run: node tests/integration/pulse_check_test.mjs
       - name: reply_inbox_test.mjs
         run: node tests/integration/reply_inbox_test.mjs
+      - name: feature_requests_test.mjs
+        run: node tests/integration/feature_requests_test.mjs
       - name: brief_test.mjs
         run: node tests/integration/brief_test.mjs
       - name: issue_export_test.mjs

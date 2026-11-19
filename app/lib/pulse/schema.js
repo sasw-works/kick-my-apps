@@ -70,6 +70,18 @@ export async function ensurePulseSchema() {
   // says the developer already replied (Google Play does).
   await sql`ALTER TABLE pulse_reviews ADD COLUMN IF NOT EXISTS handled_at TIMESTAMPTZ`;
   await sql`ALTER TABLE pulse_reviews ADD COLUMN IF NOT EXISTS handled_how TEXT`;
+  // Feature-request groups the AI found among reviews the plain rules did not recognise. Only the
+  // title and which stored reviews belong to it are kept; counts and quotes are rebuilt from reviews.
+  await sql`
+    CREATE TABLE IF NOT EXISTS feature_clusters (
+      monitor_id INTEGER NOT NULL REFERENCES pulse_monitors(id) ON DELETE CASCADE,
+      cluster_key TEXT NOT NULL,
+      title TEXT NOT NULL,
+      review_ids TEXT[] NOT NULL,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+      PRIMARY KEY (monitor_id, cluster_key)
+    )
+  `;
   await sql`
     CREATE TABLE IF NOT EXISTS pulse_alerts (
       id SERIAL PRIMARY KEY,

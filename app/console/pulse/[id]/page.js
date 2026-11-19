@@ -6,6 +6,7 @@ import Link from "next/link";
 import CompareSection from "../../../components/CompareSection";
 import ReleaseImpact from "../../../components/ReleaseImpact";
 import ReviewTopics from "../../../components/ReviewTopics";
+import FeatureRequests from "../../../components/FeatureRequests";
 import ReplyDraft from "../../../components/ReplyDraft";
 import ReleaseNotes from "../../../components/ReleaseNotes";
 import RivalChanges from "../../../components/RivalChanges";
@@ -268,6 +269,7 @@ export default function PulseMonitorDetailPage() {
       {m.kind === "other" && <RivalChanges changes={changes || []} />}
 
       {m.kind === "mine" && <ReviewTopics monitorId={m.id} />}
+      {m.kind === "mine" && <FeatureRequests monitorId={m.id} />}
 
       {m.kind === "mine" && <ReleaseImpact monitorId={m.id} />}
 
