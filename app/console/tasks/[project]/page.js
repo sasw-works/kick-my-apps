@@ -141,6 +141,9 @@ export default function ProjectTasksPage() {
           <Download size={14} /> Export
           <a href={`/api/tasks/export?project=${encodeURIComponent(project.key)}&format=md`} download>Markdown</a>
           <a href={`/api/tasks/export?project=${encodeURIComponent(project.key)}&format=csv`} download>CSV</a>
+          <a href={`/api/tasks/export?project=${encodeURIComponent(project.key)}&format=linear`} download title="CSV for Linear's importer: open tasks only">Linear</a>
+          <a href={`/api/tasks/export?project=${encodeURIComponent(project.key)}&format=jira`} download title="CSV for Jira's importer: open tasks only">Jira</a>
+          <a href={`/api/tasks/export?project=${encodeURIComponent(project.key)}&format=github`} download title="A script that files the open tasks as GitHub issues with the gh CLI">GitHub issues</a>
         </span>
       </div>
 

@@ -13,6 +13,8 @@ export default function ShareButton({ scanId }) {
 
   const url = state.token && typeof window !== "undefined" ? `${window.location.origin}/r/${state.token}` : "";
 
+  const badgeUrl = state.token && typeof window !== "undefined" ? `${window.location.origin}/api/badge/${state.token}` : "";
+
   async function call(method) {
     setState((s) => ({ ...s, loading: true, error: "" }));
     try {
@@ -97,6 +99,21 @@ export default function ShareButton({ scanId }) {
                   {copied ? <Check size={14} /> : null}{copied ? "Copied" : "Copy"}
                 </button>
               </div>
+              <details style={{ marginTop: 12 }}>
+                <summary style={{ fontSize: 12.5, color: "var(--muted)", cursor: "pointer" }}>Add an “App Health” badge to your README or site</summary>
+                <div style={{ fontSize: 12, color: "var(--muted)", margin: "8px 0 6px", lineHeight: 1.45 }}>
+                  Shows this report&apos;s score and stops working when you stop sharing.
+                </div>
+                <img src={badgeUrl} alt="App health badge preview" height={20} style={{ display: "block", marginBottom: 8 }} />
+                <textarea
+                  readOnly
+                  aria-label="Badge Markdown"
+                  value={`[![App Health](${badgeUrl})](${url})`}
+                  onFocus={(e) => e.target.select()}
+                  rows={3}
+                  style={{ width: "100%", boxSizing: "border-box", background: "var(--ink)", border: "1px solid var(--ink-3)", borderRadius: 8, padding: "8px 10px", fontSize: 11.5, color: "var(--chalk)", fontFamily: "var(--font-mono, monospace)" }}
+                />
+              </details>
               <button
                 onClick={() => call("DELETE")}
                 disabled={state.loading}
