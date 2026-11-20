@@ -486,7 +486,7 @@ const EFFORT_MAP = {
 // Main
 // ---------------------------------------------------------------------------
 
-export default function KickMyAppsHealthReport({ data, appLabel = "Your App", onReset, history = [], onViewHistory, scanId, storeUrl, screenshots = [], onClose, readOnly = false, taskStatus, progress, tasksHref }) {
+export default function KickMyAppsHealthReport({ data, appLabel = "Your App", onReset, history = [], onViewHistory, scanId, storeUrl, screenshots = [], onClose, readOnly = false, taskStatus, progress, tasksHref, topExtra = null }) {
   const usingRealData = Boolean(data);
   const reportRef = useRef(null);
   const [exporting, setExporting] = useState(false);
@@ -778,7 +778,8 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
           .lens-score-item { min-width: 0; }
         }
 
-        .top-grid { display: grid; grid-template-columns: 330px 0.85fr 1.15fr; gap: 32px; }
+        .top-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+        .top-grid > :last-child:nth-child(odd) { grid-column: 1 / -1; }
         @media (max-width: 900px) {
           .top-grid { grid-template-columns: 1fr; }
         }
@@ -1077,6 +1078,13 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
               <HealthDial score={healthScore} delta={previousScan ? healthScore - previousScan.health_score : null} />
             </div>
           </div>
+          {usingRealData && data.aiSummary && (
+            <div className="panel">
+              <div className="panel-title">AI Summary</div>
+              <div className="panel-subtitle">{dialCaption}</div>
+              <p className="ai-summary-text">{data.aiSummary}</p>
+            </div>
+          )}
           <div className="panel">
             <div className="panel-title">Summary</div>
             <div className="panel-subtitle">{dialCaption}</div>
@@ -1109,13 +1117,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
               )}
             </div>
           </div>
-          {usingRealData && data.aiSummary && (
-            <div className="panel">
-              <div className="panel-title">AI Summary</div>
-              <div className="panel-subtitle">{dialCaption}</div>
-              <p className="ai-summary-text">{data.aiSummary}</p>
-            </div>
-          )}
+          {topExtra}
         </div>
 
         <div className="action-impact-grid">

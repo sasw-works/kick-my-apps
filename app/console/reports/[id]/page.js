@@ -67,14 +67,6 @@ export default function ConsoleReportDetailPage() {
   return (
     <main className="min-h-screen max-[700px]:px-4 px-6 py-8" style={{ background: "var(--ink)" }}>
       <div className="max-w-[1240px] mx-auto">
-        {isOwner && scan.result_json && (
-          <AddScreens
-            scanId={scan.id}
-            runs={scan.result_json.visualAdded?.runs || 0}
-            hasVisual={!!scan.result_json.visualAdded || (scan.result_json.findings || []).some((f) => f.screenshotIndex) || !!scan.result_json.accessibilityChecks}
-            onDone={() => setReload((n) => n + 1)}
-          />
-        )}
         <HealthReport
           data={scan.result_json}
           appLabel={scan.app_name}
@@ -87,6 +79,15 @@ export default function ConsoleReportDetailPage() {
           progress={progress}
           screenshots={screens}
           onClose={() => router.push("/console/reports")}
+          topExtra={isOwner && scan.result_json && (
+            <AddScreens
+              inGrid
+              scanId={scan.id}
+              runs={scan.result_json.visualAdded?.runs || 0}
+              hasVisual={!!scan.result_json.visualAdded || (scan.result_json.findings || []).some((f) => f.screenshotIndex) || !!scan.result_json.accessibilityChecks}
+              onDone={() => setReload((n) => n + 1)}
+            />
+          )}
         />
       </div>
     </main>

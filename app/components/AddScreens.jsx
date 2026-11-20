@@ -20,7 +20,7 @@ async function shrink(file) {
 }
 
 // Card on a report's page: add the app's own screenshots to a report that has none (or replace them).
-export default function AddScreens({ scanId, hasVisual, runs = 0, maxRuns = 2, onDone }) {
+export default function AddScreens({ scanId, hasVisual, runs = 0, maxRuns = 2, onDone, inGrid = false }) {
   const [files, setFiles] = useState([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -49,7 +49,7 @@ export default function AddScreens({ scanId, hasVisual, runs = 0, maxRuns = 2, o
 
   if (hasVisual && left === 0) return null;
   return (
-    <section className="as-card" aria-label="Add screenshots" data-testid="add-screens">
+    <section className={`as-card${inGrid ? " as-grid" : ""}`} aria-label="Add screenshots" data-testid="add-screens">
       <div className="as-title"><ImagePlus size={16} /> {hasVisual ? "Replace the screenshots" : "Add screenshots to this report"}</div>
       <div className="as-sub">
         {hasVisual
@@ -74,6 +74,7 @@ export default function AddScreens({ scanId, hasVisual, runs = 0, maxRuns = 2, o
       {note && <div className="as-note" role="status">{note}</div>}
       <style>{`
         .as-card { background: var(--surface); border: 1px solid var(--ink-3); border-radius: 12px; padding: 18px 20px; margin-bottom: 20px; }
+        .as-card.as-grid { margin-bottom: 0; border-radius: 16px; padding: 24px; box-shadow: var(--shadow); }
         .as-title { display: flex; gap: 8px; align-items: center; font-weight: 600; color: var(--chalk); }
         .as-sub { font-size: 13px; color: var(--muted); line-height: 1.5; margin: 6px 0 12px; max-width: 720px; }
         .as-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
