@@ -779,7 +779,11 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
         }
 
         .top-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
-        .top-grid > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+        .top-grid > .ai-wide { grid-column: 1 / -1; }
+        .visuals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+        .visuals-grid:empty { display: none; }
+        .visuals-grid > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+        @media (max-width: 900px) { .visuals-grid { grid-template-columns: 1fr; } }
         @media (max-width: 900px) {
           .top-grid { grid-template-columns: 1fr; }
         }
@@ -1078,13 +1082,6 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
               <HealthDial score={healthScore} delta={previousScan ? healthScore - previousScan.health_score : null} />
             </div>
           </div>
-          {usingRealData && data.aiSummary && (
-            <div className="panel">
-              <div className="panel-title">AI Summary</div>
-              <div className="panel-subtitle">{dialCaption}</div>
-              <p className="ai-summary-text">{data.aiSummary}</p>
-            </div>
-          )}
           <div className="panel">
             <div className="panel-title">Summary</div>
             <div className="panel-subtitle">{dialCaption}</div>
@@ -1117,7 +1114,13 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
               )}
             </div>
           </div>
-          {topExtra}
+          {usingRealData && data.aiSummary && (
+            <div className="panel ai-wide">
+              <div className="panel-title">AI Summary</div>
+              <div className="panel-subtitle">{dialCaption}</div>
+              <p className="ai-summary-text">{data.aiSummary}</p>
+            </div>
+          )}
         </div>
 
         <div className="action-impact-grid">
@@ -1203,7 +1206,10 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
 
         <ScoreTrend history={history} currentId={scanId} appLabel={appLabel} />
 
-        {scanId && storeUrl && !readOnly && <StoreVisualsPanel scanId={scanId} />}
+        <div className="visuals-grid">
+          {scanId && storeUrl && !readOnly && <StoreVisualsPanel scanId={scanId} />}
+          {topExtra}
+        </div>
 
         {screenshots.length > 0 && (
           <div className="panel">
