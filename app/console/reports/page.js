@@ -164,6 +164,7 @@ export default function ConsoleReportsPage() {
         }
         .reports-table td { padding: 16px 0; font-size: 15px; letter-spacing: -0.2px; color: var(--muted); vertical-align: middle; height: 80px; box-sizing: border-box; background: var(--surface); transition: background 0.1s ease; }
         .reports-table th:first-child, .reports-table td:first-child { padding-left: 32px; border-radius: 8px 0 0 8px; }
+        .reports-table th:first-child, .reports-table td:first-child { padding-right: 16px; }
         .reports-table th:last-child, .reports-table td:last-child { padding-right: 32px; border-radius: 0 8px 8px 0; }
         @media (max-width: 900px) {
           .reports-page { padding: 0 0 120px; }
