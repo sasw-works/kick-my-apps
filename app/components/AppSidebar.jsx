@@ -13,7 +13,7 @@ import { SkeletonBlock } from "./Skeleton";
 // inverts them with CSS.
 const NAV_ITEMS = [
   { href: "/console", label: "Dashboard", icon: "/console/nav-dashboard.svg", size: 18 },
-  { href: "/console/reports", label: "Reports", icon: "/console/nav-reports.svg", size: 16 },
+  { href: "/console/reports", label: "Insights", icon: "/console/nav-reports.svg", size: 16 },
   { href: "/console/tasks", label: "Tasks", icon: "/console/nav-tasks.svg", size: 17 },
   { href: "/console/compare", label: "Compare", icon: "/console/nav-compare.svg", size: 18 },
   { href: "/console/pulse", label: "Monitor", icon: "/console/nav-monitor.svg", size: 17 },

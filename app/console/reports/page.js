@@ -226,8 +226,8 @@ export default function ConsoleReportsPage() {
       `}</style>
 
       <div className="reports-header">
-        <h1>Reports</h1>
-        <p>Browse, search, and manage every report you&apos;ve generated.</p>
+        <h1>Manage insights</h1>
+        <p>Manage all the reports you’ve generated, keeping them organized and easy to find whenever you need them.</p>
       </div>
 
       <div className="reports-toolbar">
