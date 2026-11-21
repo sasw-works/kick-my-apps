@@ -66,12 +66,11 @@ export default function AppSidebar({ mobileOpen = false, onClose }) {
         .kma-sidebar-icon-box { width: 18px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .kma-sidebar-icon { display: block; max-width: none; }
         .kma-sidebar-profile { padding: 0 16px 24px; display: flex; flex-direction: column; gap: 24px; }
-        .kma-sidebar-sep { display: block; width: 100%; height: 1px; border: 0; border-top: 1px dashed rgba(255, 255, 255, 0.22); margin: 0; }
-        .kma-console:not(.kma-dark) .kma-sidebar-sep { border-top-color: var(--ink-3); }
+        .kma-sidebar-sep { display: block; width: 100%; height: 0.7px; margin: 0; }
         .kma-sidebar-user { display: flex; align-items: center; gap: 12px; }
         .kma-sidebar-user-info { display: flex; align-items: center; gap: 15px; flex: 1; min-width: 0; padding-left: 16px; cursor: pointer; }
         .kma-sidebar-avatar {
-          width: 50px; height: 50px; border-radius: 50%; flex-shrink: 0; background: #2b59ff;
+          width: 50px; height: 50px; border-radius: 50%; flex-shrink: 0; background: #2B59FF;
           color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 16px;
         }
         .kma-sidebar-avatar-img { width: 50px; height: 50px; border-radius: 50%; flex-shrink: 0; object-fit: cover; }
@@ -137,7 +136,7 @@ export default function AppSidebar({ mobileOpen = false, onClose }) {
       </nav>
 
       <div className="kma-sidebar-profile">
-        <hr className="kma-sidebar-sep" />
+        <img src="/console/separator.svg" alt="" className="kma-sidebar-sep" />
         <div className="kma-sidebar-user">
           <div className="kma-sidebar-user-info" onClick={() => session && router.push("/console/account")} title={session ? "Account" : ""}>
             {sessionLoading ? (
