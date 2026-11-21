@@ -30,7 +30,7 @@ def check(n,c,d=""):
     if c: P+=1; print(f"  ok   {n}")
     else: F+=1; print(f"  FAIL {n}   {d}")
 
-for t in ["scans","comparisons","rate_limits","email_codes","users","accounts","sessions","task_status"]:
+for t in ["scans","comparisons","rate_limits","email_codes","users","accounts","sessions","task_status","hidden_task_projects"]:
     try: psql(f"TRUNCATE {t} RESTART IDENTITY CASCADE")
     except Exception: pass
 
@@ -131,6 +131,31 @@ check("another user's export of the same app contains only his own data", st==20
 check("an app another user doesn't have -> 404", raw("GET","/api/tasks/export?project=app%3A424242&format=csv",BOB)[0]==404)
 check("anonymous -> 401", raw("GET",f"/api/tasks/export?project={q}&format=csv")[0]==401)
 check("unknown format -> 400", raw("GET",f"/api/tasks/export?project={q}&format=exe",ALICE)[0]==400)
+
+print("== 7b. removing projects from the Tasks list")
+save(ALICE,"Doomed",rj(Fd("cta","bad"),Fd("copy","warn")),"https://apps.apple.com/us/app/doomed/id909090")
+psql("INSERT INTO scans (app_name,health_score,result_json,store_url,user_email) VALUES ('Doomed',60,$j$"+json.dumps(rj(Fd("cta","bad")))+"$j$::jsonb,'https://apps.apple.com/us/app/doomed/id909090','bob@x.com')")
+DK="app:909090"
+setst(ALICE,DK,"cta","done")
+sid=lambda ck:[p["key"] for p in req("GET","/api/tasks",cookie=ck)[1]["projects"]]
+check("signed-out delete is 401", req("DELETE","/api/tasks",body={"projects":[DK]})[0]==401)
+check("a missing list is 400", req("DELETE","/api/tasks",cookie=ALICE,body={})[0]==400 and req("DELETE","/api/tasks",cookie=ALICE,body={"projects":[]})[0]==400)
+st,js,_=req("DELETE","/api/tasks",cookie=ALICE,body={"projects":["app:777777","name:nobody"]})
+check("keys she doesn't have are ignored (nothing removed)", st==200 and js["removed"]==0 and DK in sid(ALICE))
+reports_before=psql("select count(*) from scans where user_email='admin@x.com'")
+st,js,_=req("DELETE","/api/tasks",cookie=ALICE,body={"projects":[DK]})
+check("removing a project works", st==200 and js["removed"]==1 and DK not in sid(ALICE), js)
+check("...her progress on it is deleted", psql("select count(*) from task_status where user_email='admin@x.com' and project_key='app:909090'")=="0")
+check("...her reports are NOT deleted", psql("select count(*) from scans where user_email='admin@x.com'")==reports_before)
+check("...its page is gone too", proj(ALICE,DK)[0]==404)
+check("...bob's copy of the same app is untouched", DK in sid(BOB))
+time.sleep(1.1)
+save(ALICE,"Doomed",rj(Fd("cta","bad"),Fd("copy","warn")),"https://apps.apple.com/us/app/doomed/id909090")
+js=proj(ALICE,DK)[1]
+check("analysing the app again brings it back, with fresh progress", DK in sid(ALICE) and {t["key"]:t["status"] for t in js["tasks"]}=={"cta":"todo","copy":"todo"}, js)
+save(ALICE,"Doomed2",rj(Fd("cta","bad")),"https://apps.apple.com/us/app/doomed2/id808080")
+check("several at once", req("DELETE","/api/tasks",cookie=ALICE,body={"projects":[DK,"app:808080"]})[1]["removed"]==2)
+
 
 print("== 7. report-less projects and cleanup")
 save(ALICE,"NoLink",rj(Fd("cta","bad")),"")

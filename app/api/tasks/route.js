@@ -49,6 +49,39 @@ export async function GET(req) {
   }
 }
 
+// DELETE { projects: [key, ...] } -> remove those projects from the caller's Tasks list: their progress
+// (ticks and review-made tasks) is deleted and the project is hidden. The reports are NOT touched, and
+// the project reappears (fresh) when the app is analysed again.
+export async function DELETE(req) {
+  try {
+    const user = await getCurrentUser();
+    if (!user) return unauthorized();
+    const r = await rateLimit(`tasks:delete:${user.id}`, { limit: 120, windowSeconds: 3600 });
+    if (!r.allowed) return tooManyRequests(r);
+
+    let body;
+    try { body = await req.json(); } catch { body = null; }
+    const keys = Array.isArray(body?.projects) ? [...new Set(body.projects.filter((k) => typeof k === "string"))].slice(0, 100) : [];
+    if (!keys.length) return Response.json({ error: "projects is required." }, { status: 400 });
+
+    // Only projects the caller really has: nobody can write rows for keys that are not theirs.
+    const mine = new Set((await loadProjects(user.email)).map((p) => p.key));
+    const removed = keys.filter((k) => mine.has(k));
+    for (const pk of removed) {
+      await sql`DELETE FROM task_status WHERE user_email = ${user.email} AND project_key = ${pk}`;
+      await sql`DELETE FROM custom_tasks WHERE user_email = ${user.email} AND project_key = ${pk}`;
+      await sql`
+        INSERT INTO hidden_task_projects (user_email, project_key, hidden_at) VALUES (${user.email}, ${pk}, now())
+        ON CONFLICT (user_email, project_key) DO UPDATE SET hidden_at = now()
+      `;
+    }
+    return Response.json({ ok: true, removed: removed.length });
+  } catch (err) {
+    console.error(err);
+    return Response.json({ error: "Could not delete: " + errorText(err) }, { status: 500 });
+  }
+}
+
 export async function PATCH(req) {
   try {
     const user = await getCurrentUser();

@@ -25,6 +25,7 @@ export async function deleteUserData({ id, email }) {
   await ignoreMissingTable(() => sql`DELETE FROM scans WHERE user_email = ${email}`);
   await ignoreMissingTable(() => sql`DELETE FROM comparisons WHERE user_email = ${email}`);
   await ignoreMissingTable(() => sql`DELETE FROM task_status WHERE user_email = ${email}`);
+  await ignoreMissingTable(() => sql`DELETE FROM hidden_task_projects WHERE user_email = ${email}`);
   await ignoreMissingTable(() => sql`DELETE FROM custom_tasks WHERE user_email = ${email}`);
   await ignoreMissingTable(() => sql`DELETE FROM notification_channels WHERE user_email = ${email}`);
   await ignoreMissingTable(() => sql`DELETE FROM app_notifications WHERE user_email = ${email}`);

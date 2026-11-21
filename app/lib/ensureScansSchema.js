@@ -53,6 +53,14 @@ export async function ensureScansSchema() {
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     PRIMARY KEY (user_email, project_key, task_key)
   );`;
+  // A project the person removed from their Tasks list. The reports themselves stay; the project only comes back
+  // if a report newer than hidden_at is saved (they analysed the app again).
+  await sql`CREATE TABLE IF NOT EXISTS hidden_task_projects (
+    user_email TEXT NOT NULL,
+    project_key TEXT NOT NULL,
+    hidden_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    PRIMARY KEY (user_email, project_key)
+  );`;
   await sql`CREATE UNIQUE INDEX IF NOT EXISTS scans_share_token_idx ON scans (share_token) WHERE share_token IS NOT NULL;`;
 
   ensured = true;

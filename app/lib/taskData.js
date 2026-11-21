@@ -68,7 +68,13 @@ export async function loadProjects(email) {
   if (await migrateLegacyTracking(email, scans)) {
     for (const s of scans) s.finding_status = null;
   }
-  return groupProjects(scans);
+  const { rows: hidden } = await sql`SELECT project_key, hidden_at FROM hidden_task_projects WHERE user_email = ${email}`;
+  const hiddenAt = new Map(hidden.map((h) => [h.project_key, new Date(h.hidden_at).getTime()]));
+  // A removed project stays gone until a report newer than the removal exists.
+  return groupProjects(scans).filter((p) => {
+    const at = hiddenAt.get(p.key);
+    return at === undefined || new Date(p.scans[0].created_at).getTime() > at;
+  });
 }
 
 export { groupProjects, projectKey };
