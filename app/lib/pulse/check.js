@@ -1,6 +1,7 @@
 import { sql } from "@vercel/postgres";
 import { lookupApp, fetchRecentReviews, storeName } from "./appStore.js";
 import { notifyAlerts } from "../notify.js";
+import { addNotification } from "../inapp.js";
 import { detectChanges, listingFingerprint } from "./changes.js";
 
 // One check of one monitor. Data sources are injectable (deps) so the logic can be tested with
@@ -122,6 +123,7 @@ export async function runCheck(monitor, deps = defaultDeps, { reviewAttempts = 1
   if (!baseline && monitor.kind === "other") {
     for (const c of detectChanges(prev, app)) {
       await sql`INSERT INTO pulse_changes (monitor_id, user_email, kind, title, detail) VALUES (${monitor.id}, ${monitor.user_email}, ${c.kind}, ${c.title}, ${c.detail})`;
+      await addNotification(monitor.user_email, { kind: "rival", title: `${monitor.app_name || "A rival app"}: ${c.title}`, body: c.detail, href: `/console/pulse/${monitor.id}` });
     }
   }
 
@@ -166,6 +168,7 @@ export async function runCheck(monitor, deps = defaultDeps, { reviewAttempts = 1
       INSERT INTO pulse_alerts (monitor_id, user_email, kind, severity, title, detail)
       VALUES (${monitor.id}, ${monitor.user_email}, ${a.kind}, ${a.severity}, ${a.title}, ${a.detail})
     `;
+    await addNotification(monitor.user_email, { kind: `alert_${a.severity}`, title: `${monitor.app_name || "Your app"}: ${a.title}`, body: a.detail, href: `/console/pulse/${monitor.id}` });
   }
 
   // Chat/webhook delivery is best effort and must never fail (or noticeably slow) the check.

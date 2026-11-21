@@ -66,7 +66,8 @@ export default function ConsoleReportDetailPage() {
 
   return (
     <main className="min-h-screen">
-      <div className="max-w-[1120px] mx-auto" style={{ marginTop: -24 }}>
+      <div className="max-w-[1120px] mx-auto kma-rpt-wrap">
+        <style>{`.kma-rpt-wrap { margin-top: 70px; } @media (max-width: 900px) { .kma-rpt-wrap { margin-top: -24px; } }`}</style>
         <HealthReport
           data={scan.result_json}
           appLabel={scan.app_name}

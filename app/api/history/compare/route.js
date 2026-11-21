@@ -1,4 +1,5 @@
 import { sql } from "@vercel/postgres";
+import { addNotification } from "../../../lib/inapp";
 import { ensureScansSchema, ensureComparisonsSchema } from "../../../lib/ensureScansSchema";
 import { getCurrentUser, unauthorized } from "../../../lib/requireUser";
 import { errorText } from "../../../lib/secrets";
@@ -56,6 +57,12 @@ export async function POST(req) {
       VALUES (${a}, ${b}, ${appNameA || ""}, ${appNameB || ""}, ${user.email})
       RETURNING id;
     `;
+    await addNotification(user.email, {
+      kind: "comparison",
+      title: "Comparison ready",
+      body: `${appNameA || "App A"} vs ${appNameB || "App B"}`,
+      href: `/console/compare/${rows[0]?.id}`,
+    });
     return Response.json({ ok: true, id: rows[0]?.id });
   } catch (err) {
     console.error(err);

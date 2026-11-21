@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Menu } from "lucide-react";
 import AppSidebar from "../components/AppSidebar";
 import { useTheme } from "../components/ThemeProvider";
+import ConsoleHeaderActions from "./ConsoleHeaderActions";
 
 // Console frame, after Figma 4240:171: a floating sidebar (50px from the top and left edges, 280px wide),
 // the radial blue light at the top of the page, and a content column that starts 75px to the right of the
@@ -53,7 +54,10 @@ export default function ConsoleShell({ children }) {
       <div className="kma-console-shell">
         <div className={`kma-console-backdrop ${mobileOpen ? "open" : ""}`} onClick={() => setMobileOpen(false)} />
         <AppSidebar mobileOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
-        <div className="kma-console-main">{children}</div>
+        <div className="kma-console-main">
+          <ConsoleHeaderActions />
+          {children}
+        </div>
       </div>
     </div>
   );

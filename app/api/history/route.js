@@ -1,4 +1,5 @@
 import { sql } from "@vercel/postgres";
+import { addNotification } from "../../lib/inapp";
 import { fetchAppStoreListing } from "../../lib/reviews";
 import { ensureScansSchema, ensureComparisonsSchema } from "../../lib/ensureScansSchema";
 import { getCurrentUser, unauthorized } from "../../lib/requireUser";
@@ -64,6 +65,12 @@ export async function POST(req) {
       RETURNING id;
     `;
 
+    await addNotification(user.email, {
+      kind: "report",
+      title: `Report ready: ${normalized}`,
+      body: `Health score ${healthScore}/100${(badCount ?? 0) ? ` · ${badCount} critical issue${badCount === 1 ? "" : "s"}` : ""}.`,
+      href: `/console/reports/${rows[0]?.id}`,
+    });
     return Response.json({ ok: true, id: rows[0]?.id });
   } catch (err) {
     console.error(err);

@@ -3,9 +3,8 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Moon, Sun, X } from "lucide-react";
+import { X } from "lucide-react";
 import LogoMark from "./LogoMark";
-import { useTheme } from "./ThemeProvider";
 import { useSession } from "next-auth/react";
 import { SkeletonBlock } from "./Skeleton";
 
@@ -24,7 +23,6 @@ const ADMIN_ITEM = { href: "/console/admin", label: "Admin", icon: "/console/nav
 export default function AppSidebar({ mobileOpen = false, onClose }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { theme, toggleTheme } = useTheme();
   const { data: session, status } = useSession();
   const sessionLoading = status === "loading";
   const navItems = session?.user?.isAdmin
@@ -78,12 +76,6 @@ export default function AppSidebar({ mobileOpen = false, onClose }) {
         .kma-sidebar-plan { font-size: 13px; line-height: 20px; color: var(--muted); }
         .kma-sidebar-chevron { flex-shrink: 0; width: 20px; height: 20px; display: block; }
         .kma-console:not(.kma-dark) .kma-sidebar-chevron { filter: invert(1); }
-        .kma-sidebar-theme {
-          flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%;
-          display: flex; align-items: center; justify-content: center; cursor: pointer;
-          background: var(--glass-bg); border: 1px solid var(--glass-border);
-        }
-        .kma-sidebar-theme-light { background: #ffffff; border: none; }
         @media (max-width: 900px) {
           .kma-sidebar {
             /* 100vh can include the area behind Safari's own address/tab bar, which is what was
@@ -158,14 +150,6 @@ export default function AppSidebar({ mobileOpen = false, onClose }) {
               </div>
             )}
           </div>
-          <button
-            type="button"
-            className={`kma-sidebar-theme ${theme === "light" ? "kma-sidebar-theme-light" : ""}`}
-            aria-label="Toggle theme"
-            onClick={toggleTheme}
-          >
-            {theme === "light" ? <Moon size={16} color="#1A2B3B" /> : <Sun size={16} color="var(--chalk)" />}
-          </button>
           <img src="/console/chevron.svg" alt="" className="kma-sidebar-chevron" />
         </div>
       </div>

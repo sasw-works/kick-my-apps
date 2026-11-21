@@ -7,7 +7,7 @@ import { runCheck, claimAndCheck, claimMonitor, checkDueMonitors, RULES } from "
 let ok = 0, bad = 0;
 const check = (n, c, d = "") => (c ? (ok++, console.log("  ok  ", n)) : (bad++, console.log("  FAIL", n, d)));
 
-for (const t of ["pulse_alerts", "pulse_reviews", "pulse_snapshots", "pulse_monitors"]) {
+for (const t of ["app_notifications", "pulse_alerts", "pulse_reviews", "pulse_snapshots", "pulse_monitors"]) {
   try { await sql.query(`TRUNCATE ${t} RESTART IDENTITY CASCADE`); } catch {}
 }
 await ensurePulseSchema();
@@ -49,6 +49,9 @@ console.log("== 2. new version detected");
   const r = await runCheck(m, deps({ ok: true, app: app({ appId: "2", version: "1.1", releaseNotes: "Fixed a crash" }) }, { ok: true, reviews: [] }));
   const a = await alerts(m.id);
   check("second check finds the version bump", a.some((x) => x.kind === "new_version" && x.title.includes("1.1")), JSON.stringify(a));
+  // Every alert is also announced in the Console bell, with a link to the monitor.
+  const { rows: bell } = await sql`SELECT kind, title, href FROM app_notifications WHERE user_email = ${m.user_email} AND href = ${"/console/pulse/" + m.id}`;
+  check("the alert also lands in the account's notifications", bell.length === a.length && bell.some((x) => x.kind === "alert_info" && x.title.includes("1.1")), JSON.stringify(bell));
 }
 
 console.log("== 2b. alerts can be switched off per monitor (the default for other people's apps)");
