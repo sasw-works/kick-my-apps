@@ -97,6 +97,40 @@ body:has(.kma-console.kma-dark) { background: #0d1117; }
 .kma-console .kma-root .kma-main { padding-left: 0; padding-right: 0; }
 .kma-console .cmp-root { padding: 0; }
 
+/* Figma box fill: white at 3% opacity, no outline. Applies to every card on the Console pages. Menus, modals and
+   sticky bars deliberately keep their opaque --surface so they never turn see-through. */
+.kma-console.kma-dark .panel,
+.kma-console.kma-dark .upload-panel,
+.kma-console.kma-dark .kma-toolbar-card,
+.kma-console.kma-dark .finding-row,
+.kma-console.kma-dark .as-card,
+.kma-console.kma-dark .cmp-score-card,
+.kma-console.kma-dark .verdict-panel,
+.kma-console.kma-dark .lens-cmp-card,
+.kma-console.kma-dark .fc-block,
+.kma-console.kma-dark .review-cmp-card,
+.kma-console.kma-dark .scan-row,
+.kma-console.kma-dark .lt-card,
+.kma-console.kma-dark .ri-wrap,
+.kma-console.kma-dark .rt-ver,
+.kma-console.kma-dark .rc-wrap,
+.kma-console.kma-dark .account-card,
+.kma-console.kma-dark .account-link-card,
+.kma-console.kma-dark .admin-user-card,
+.kma-console.kma-dark .cl-card,
+.kma-console.kma-dark .compare-card,
+.kma-console.kma-dark .compare-recent-row,
+.kma-console.kma-dark .pmd-stat-card,
+.kma-console.kma-dark .pmd-panel,
+.kma-console.kma-dark .pulse-card,
+.kma-console.kma-dark .pt-task,
+.kma-console.kma-dark .tasks-card,
+.kma-console.kma-dark .account-usage-item {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: transparent;
+  box-shadow: none;
+}
+
 /* Figma 4157:177 "Div [absolute]" — 1728x1558 radial light, centred, top of page */
 .kma-glow {
   position: absolute;
