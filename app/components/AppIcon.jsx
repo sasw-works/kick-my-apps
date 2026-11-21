@@ -31,8 +31,6 @@ export default function AppIcon({ name, size = 40, iconUrl, storeUrl, radius = 1
           borderRadius: radius,
           flexShrink: 0,
           objectFit: "cover",
-          border: "1px solid var(--ink-3)",
-          boxSizing: "border-box",
         }}
       />
     );
