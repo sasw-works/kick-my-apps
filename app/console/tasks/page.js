@@ -23,7 +23,7 @@ export default function TasksPage() {
   return (
     <main className="tasks-page">
       <style>{`
-        .tasks-page { padding: 0 0 120px; max-width: 1120px; margin: 0; }
+        .tasks-page { padding: 0 0 120px; max-width: 1120px; margin: 0 auto; }
         .tasks-page h1 { margin: 0 0 8px; font-family: Helvetica, Arial, sans-serif; font-size: 48px; line-height: 52px; font-weight: 700; letter-spacing: -1.44px; color: var(--chalk); }
         .tasks-lede { margin: 0 0 50px; font-size: 15px; line-height: 32px; letter-spacing: -0.2px; font-weight: 400; color: var(--muted); }
         .tasks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }

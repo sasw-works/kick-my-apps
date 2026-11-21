@@ -339,7 +339,7 @@ export default function PulseMonitorDetailPage() {
 }
 
 const pmdStyles = `
-  .pmd-page { padding: 0 0 120px; max-width: 1120px; margin: 0; }
+  .pmd-page { padding: 0 0 120px; max-width: 1120px; margin: 0 auto; }
   .pmd-loading, .pmd-error { padding: 80px 0; text-align: center; color: var(--muted); font-size: 14px; }
   .pmd-error { color: var(--kick); }
   .pmd-back { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); text-decoration: none; font-size: 13.5px; margin-bottom: 24px; }

@@ -149,7 +149,7 @@ export default function ConsolePulsePage() {
   return (
     <main className="pulse-page">
       <style>{`
-        .pulse-page { padding: 0 0 120px; max-width: 1120px; margin: 0; }
+        .pulse-page { padding: 0 0 120px; max-width: 1120px; margin: 0 auto; }
         .pulse-header { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 50px; flex-wrap: wrap; }
         .pulse-title { margin: 0 0 8px; font-family: Helvetica, Arial, sans-serif; font-size: 48px; line-height: 52px; font-weight: 700; letter-spacing: -1.44px; color: var(--chalk); }
         .pulse-subtitle { margin: 0; font-size: 15px; line-height: 32px; letter-spacing: -0.2px; font-weight: 400; color: var(--muted); white-space: nowrap; }

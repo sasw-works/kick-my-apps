@@ -123,7 +123,7 @@ export default function ConsoleComparePage() {
   return (
     <main className="compare-page">
       <style>{`
-        .compare-page { padding: 0 0 120px; max-width: 1120px; margin: 0; }
+        .compare-page { padding: 0 0 120px; max-width: 1120px; margin: 0 auto; }
         .compare-header { text-align: left; margin-bottom: 50px; display: flex; flex-direction: column; gap: 8px; }
         .compare-header h1 { margin: 0; font-family: Helvetica, Arial, sans-serif; font-size: 48px; line-height: 52px; font-weight: 700; letter-spacing: -1.44px; color: var(--chalk); }
         .compare-header p { margin: 0; font-size: 15px; line-height: 32px; letter-spacing: -0.2px; font-weight: 400; color: var(--muted); }

@@ -59,7 +59,7 @@ export default function ProjectTasksPage() {
   };
 
   const css = `
-    .pt-page { padding: 0 0 120px; max-width: 1120px; margin: 0; }
+    .pt-page { padding: 0 0 120px; max-width: 1120px; margin: 0 auto; }
     .pt-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); text-decoration: none; margin-bottom: 20px; }
     .pt-back:hover { color: var(--chalk); }
     .pt-head { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; flex-wrap: wrap; }

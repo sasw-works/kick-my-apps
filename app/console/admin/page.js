@@ -189,7 +189,7 @@ export default function AdminPage() {
 }
 
 const adminStyles = `
-  .admin-page { padding: 0 0 80px; max-width: 1120px; }
+  .admin-page { padding: 0 0 80px; max-width: 1120px; margin: 0 auto; }
   .admin-header { margin-bottom: 50px; }
   .admin-title { font-family: Helvetica, Arial, sans-serif; font-size: 48px; line-height: 52px; font-weight: 700; letter-spacing: -1.44px; color: var(--chalk); }
   .admin-sub { font-size: 15px; line-height: 32px; letter-spacing: -0.2px; font-weight: 400; color: var(--muted); margin-top: 8px; }

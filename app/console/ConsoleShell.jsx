@@ -17,7 +17,7 @@ export default function ConsoleShell({ children }) {
     <div className={`kma-console ${isDark ? "kma-dark" : ""}`}>
       <style>{`
         .kma-console-shell { display: flex; min-height: 100vh; overflow-x: clip; }
-        .kma-console-main { flex: 1; min-width: 0; margin-left: 330px; padding: 100px 50px 0 75px; position: relative; }
+        .kma-console-main { flex: 1; min-width: 0; margin-left: 330px; padding: 100px 50px 0; position: relative; }
         .kma-console-topbar { display: none; }
         .kma-console-backdrop { display: none; }
         .kma-console:not(.kma-dark) { background: var(--ink); }

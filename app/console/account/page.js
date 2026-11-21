@@ -611,7 +611,7 @@ export default function AccountPage() {
 }
 
 const accountStyles = `
-  .account-page { max-width: 720px; margin: 0; padding: 0 0 60px; }
+  .account-page { max-width: 720px; margin: 0 auto; padding: 0 0 60px; }
   .account-title { font-family: Helvetica, Arial, sans-serif; font-size: 48px; line-height: 52px; font-weight: 700; letter-spacing: -1.44px; color: var(--chalk); margin-bottom: 40px; }
   .account-loading { padding: 80px 0; text-align: center; color: var(--muted); font-size: 14px; }
   .account-error { padding: 10px 14px; border-radius: 10px; background: color-mix(in srgb, var(--kick) 12%, transparent); color: var(--kick); font-size: 13px; margin-bottom: 16px; }

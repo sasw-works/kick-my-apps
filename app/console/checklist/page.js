@@ -34,7 +34,7 @@ export default function ChecklistPage() {
   return (
     <main className="cl-page">
       <style>{`
-        .cl-page { padding: 0 0 120px; max-width: 1120px; margin: 0; }
+        .cl-page { padding: 0 0 120px; max-width: 1120px; margin: 0 auto; }
         .cl-page h1 { margin: 0 0 8px; font-family: Helvetica, Arial, sans-serif; font-size: 48px; line-height: 52px; font-weight: 700; letter-spacing: -1.44px; color: var(--chalk); }
         .cl-lede { margin: 0 0 50px; font-size: 15px; line-height: 32px; letter-spacing: -0.2px; font-weight: 400; color: var(--muted); max-width: 720px; }
         .cl-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: start; }

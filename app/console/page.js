@@ -6,7 +6,7 @@ import AppFlow from "../components/AppFlow";
 // only supplies the content column.
 export default function ConsoleDashboardPage() {
   return (
-    <main style={{ position: "relative", isolation: "isolate", margin: "-52px -50px 0 -75px", padding: "0 24px 32px" }}>
+    <main style={{ position: "relative", isolation: "isolate", margin: "-52px -50px 0", padding: "0 24px 32px" }}>
       <div className="max-w-[1240px] mx-auto" style={{ position: "relative", zIndex: 1 }}>
         <AppFlow showMarketing={false} />
       </div>
