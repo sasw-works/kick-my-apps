@@ -160,8 +160,9 @@ export default function ConsoleReportsPage() {
         .reports-table { width: 100%; min-width: 760px; border-collapse: separate; border-spacing: 0 2px; }
         .reports-table th {
           text-align: left; font-size: 15px; letter-spacing: -0.2px; color: var(--chalk); font-weight: 500;
-          padding: 16px 0; height: 80px; box-sizing: border-box; background: var(--ink-2);
+          padding: 16px 0; height: 80px; box-sizing: border-box; background: rgba(255, 255, 255, 0.04);
         }
+        .kma-console:not(.kma-dark) .reports-table th { background: var(--ink-2); }
         .reports-table td { padding: 16px 0; font-size: 15px; letter-spacing: -0.2px; color: var(--muted); vertical-align: middle; height: 80px; box-sizing: border-box; background: var(--surface); transition: background 0.1s ease; }
         .reports-table th:first-child, .reports-table td:first-child { padding-left: 32px; border-radius: 8px 0 0 8px; }
         .reports-table th:first-child, .reports-table td:first-child { padding-right: 16px; }
