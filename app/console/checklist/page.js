@@ -34,9 +34,9 @@ export default function ChecklistPage() {
   return (
     <main className="cl-page">
       <style>{`
-        .cl-page { padding: 48px 48px 120px; max-width: 1240px; margin: 0 auto; }
-        .cl-page h1 { margin: 0; font-size: 42px; line-height: 57.6px; font-weight: 400; color: var(--chalk); }
-        .cl-lede { margin: 0 0 24px; font-size: var(--fs-18); line-height: 28px; color: var(--muted); max-width: 720px; }
+        .cl-page { padding: 0 0 120px; max-width: 1120px; margin: 0; }
+        .cl-page h1 { margin: 0 0 8px; font-family: Helvetica, Arial, sans-serif; font-size: 48px; line-height: 52px; font-weight: 700; letter-spacing: -1.44px; color: var(--chalk); }
+        .cl-lede { margin: 0 0 50px; font-size: 15px; line-height: 32px; letter-spacing: -0.2px; font-weight: 400; color: var(--muted); max-width: 720px; }
         .cl-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: start; }
         .cl-card { background: var(--surface); border: 1px solid var(--ink-3); border-radius: 12px; padding: 20px; }
         .cl-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
@@ -58,7 +58,7 @@ export default function ChecklistPage() {
         .cl-item svg { flex: none; margin-top: 2px; }
         .cl-check { display: flex; gap: 10px; align-items: flex-start; padding: 6px 0; font-size: 14px; color: var(--chalk); cursor: pointer; }
         .cl-note { font-size: 12px; color: var(--muted); margin-top: 14px; line-height: 1.5; }
-        @media (max-width: 900px) { .cl-page { padding: 32px 20px 96px; } .cl-page h1 { font-size: 32px; line-height: 44px; } .cl-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 900px) { .cl-page { padding: 0 0 96px; } .cl-page h1 { font-size: 34px; line-height: 40px; letter-spacing: -1px; } .cl-grid { grid-template-columns: 1fr; } }
       `}</style>
       <h1>Pre-submission checklist</h1>
       <p className="cl-lede">Fill in your store listing draft and tick what you have confirmed. It checks field limits, common rejection causes and what people forget, before the store does. Nothing here is saved on our servers.</p>

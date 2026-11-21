@@ -21,8 +21,8 @@ export default function ConsoleSavedComparisonPage() {
   }, [id]);
 
   return (
-    <main className="min-h-screen px-6 py-8" style={{ background: "var(--ink)" }}>
-      <div className="max-w-[1240px] mx-auto">
+    <main className="min-h-screen">
+      <div className="max-w-[1120px]">
         {error && (
           <div style={{ color: "var(--kick)", fontSize: 13, textAlign: "center", marginTop: 12 }}>{error}</div>
         )}

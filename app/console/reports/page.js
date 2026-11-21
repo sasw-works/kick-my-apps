@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Search, Eye, Download, Trash2, X } from "lucide-react";
+import { Eye, Download, Trash2, X } from "lucide-react";
 import { reportPath } from "../../lib/reportPath";
 import { SkeletonBlock } from "../../components/Skeleton";
 import AppIcon from "../../components/AppIcon";
@@ -46,7 +46,7 @@ export default function ConsoleReportsPage() {
     createdAt: s.created_at,
     href: reportPath(s.id, s.app_name),
     deleteUrl: `/api/history?id=${s.id}`,
-    icon: <AppIcon name={s.app_name} iconUrl={s.icon_url} storeUrl={s.store_url} />,
+    icon: <AppIcon name={s.app_name} size={55} radius={16} iconUrl={s.icon_url} storeUrl={s.store_url} />,
   }));
 
   const comparisonRows = comparisons.map((c) => ({
@@ -61,9 +61,9 @@ export default function ConsoleReportsPage() {
     deleteUrl: `/api/history/compare?id=${c.id}`,
     icon: (
       <div style={{ display: "flex" }}>
-        <AppIcon name={c.app_name_a} size={40} iconUrl={c.icon_url_a} />
-        <div style={{ marginLeft: -12 }}>
-          <AppIcon name={c.app_name_b} size={40} iconUrl={c.icon_url_b} />
+        <AppIcon name={c.app_name_a} size={55} radius={16} iconUrl={c.icon_url_a} />
+        <div style={{ marginLeft: -23 }}>
+          <AppIcon name={c.app_name_b} size={55} radius={16} iconUrl={c.icon_url_b} />
         </div>
       </div>
     ),
@@ -129,71 +129,72 @@ export default function ConsoleReportsPage() {
   return (
     <main className="reports-page">
       <style>{`
-        .reports-page { padding: 48px 48px 120px; max-width: 1240px; margin: 0 auto; }
-        .reports-header { text-align: left; margin-bottom: 32px; }
-        .reports-header h1 { margin: 0; font-family: var(--font-inter), sans-serif; font-size: 42px; line-height: 57.6px; font-weight: 400; color: var(--chalk); }
-        .reports-header p { margin: 0; font-size: var(--fs-18); line-height: 28px; font-weight: 400; color: var(--muted); }
-        .reports-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 24px; }
+        .reports-page { padding: 0 0 120px; max-width: 1120px; margin: 0; }
+        .reports-header { text-align: left; margin-bottom: 50px; display: flex; flex-direction: column; gap: 8px; }
+        .reports-header h1 { margin: 0; font-family: Helvetica, Arial, sans-serif; font-size: 48px; line-height: 52px; font-weight: 700; letter-spacing: -1.44px; color: var(--chalk); }
+        .reports-header p { margin: 0; font-size: 15px; line-height: 32px; letter-spacing: -0.2px; font-weight: 400; color: var(--muted); }
+        .reports-toolbar { display: flex; align-items: center; gap: 16px; margin-bottom: 50px; }
         .reports-search {
-          flex: 1; max-width: 640px; display: flex; align-items: center; gap: 12px;
-          background: var(--surface); border: 1px solid var(--ink-3); border-radius: 999px; padding: 0 16px;
-          height: 49px; box-sizing: border-box;
+          flex: 1; min-width: 0; display: flex; align-items: center; gap: 24px;
+          background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 114px; padding: 0 42px;
+          backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+          height: 58px; box-sizing: border-box;
         }
-        .reports-search input { flex: 1; border: none; outline: none; background: transparent; font-size: 14px; color: var(--chalk); }
-        .reports-tabs { display: flex; gap: 8px; flex-wrap: wrap; flex-shrink: 0; }
+        .reports-search input { flex: 1; min-width: 0; border: none; outline: none; background: transparent; font-size: 15px; letter-spacing: -0.2px; color: var(--chalk); }
+        .reports-search input::placeholder { color: var(--chalk); opacity: 1; }
+        .reports-search:focus-within { border-color: var(--brand); }
+        .reports-tabs { display: flex; gap: 16px; flex-wrap: wrap; flex-shrink: 0; }
         .reports-tab {
-          display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--surface); border: 1px solid var(--ink-3);
-          border-radius: 999px; padding: 0 16px; font-size: 12px; color: var(--muted); cursor: pointer;
+          display: flex; align-items: center; justify-content: center; background: var(--glass-bg); border: 1px solid var(--glass-border);
+          border-radius: 114px; padding: 0 42px; font-size: 15px; letter-spacing: -0.2px; color: var(--chalk); cursor: pointer; white-space: nowrap;
+          backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
           transition: border-color 0.15s ease, background 0.15s ease;
-          height: 49px; box-sizing: border-box; min-width: 150px;
+          height: 58px; box-sizing: border-box; width: 175px; padding-left: 0; padding-right: 0;
         }
         .reports-tab:hover { border-color: var(--brand); }
         .reports-tab:focus { outline: none; }
         .reports-tab:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
-        .reports-tab-active { background: var(--ink-3); border-color: var(--brand); color: var(--chalk); font-weight: 600; }
-        .reports-tab-count { font-family: var(--font-mono); font-size: 11px; opacity: 0.7; }
-        .reports-table-scroll { width: 100%; overflow-x: auto; border: 1px solid var(--ink-3); border-radius: 8px; }
-        .reports-table { width: 100%; min-width: 760px; border-collapse: collapse; background: var(--surface); overflow: hidden; }
+        .reports-tab-active { background: rgba(43, 89, 255, 0.5); border-color: #2b59ff; }
+        .reports-table-scroll { width: 100%; overflow-x: auto; }
+        /* Figma 4242:598: every row is its own 8px-rounded card, 2px apart; the header row is a slightly lighter card. */
+        .reports-table { width: 100%; min-width: 760px; border-collapse: separate; border-spacing: 0 2px; }
         .reports-table th {
-          text-align: left; font-size: 11px; letter-spacing: 0.06em; color: var(--muted); font-weight: 600;
-          padding: 16px 16px; border-bottom: 1px solid var(--ink-3); text-transform: uppercase;
-          height: 65px; box-sizing: border-box; background: var(--ink-3);
+          text-align: left; font-size: 15px; letter-spacing: -0.2px; color: var(--chalk); font-weight: 500;
+          padding: 16px 0; height: 80px; box-sizing: border-box; background: var(--ink-2);
         }
-        .kma-dark .reports-table th { background: #0d0d0d; }
-        .reports-table td { padding: 16px 16px; border-bottom: 1px solid var(--ink-3); font-size: 14px; color: var(--chalk); vertical-align: middle; height: 65px; box-sizing: border-box; }
+        .reports-table td { padding: 16px 0; font-size: 15px; letter-spacing: -0.2px; color: var(--muted); vertical-align: middle; height: 80px; box-sizing: border-box; background: var(--surface); transition: background 0.1s ease; }
+        .reports-table th:first-child, .reports-table td:first-child { padding-left: 32px; border-radius: 8px 0 0 8px; }
+        .reports-table th:last-child, .reports-table td:last-child { padding-right: 32px; border-radius: 0 8px 8px 0; }
         @media (max-width: 900px) {
-          .reports-page { padding: 48px 24px 120px; }
+          .reports-page { padding: 0 0 120px; }
           .reports-toolbar { flex-wrap: wrap; }
-          .reports-search { max-width: none; flex: 1 1 100%; }
-          .reports-tabs { flex: 1 1 100%; }
-          .reports-tab { flex: 1 1 0; min-width: 0; }
+          .reports-search { flex: 1 1 100%; padding: 0 24px; }
+          .reports-tabs { flex: 1 1 100%; gap: 8px; }
+          .reports-tab { flex: 1 1 0; min-width: 0; width: auto; padding: 0 8px; font-size: 13px; }
         }
         .reports-col-center, th.reports-col-center, td.reports-col-center { text-align: center; }
-        .reports-table tr:last-child td { border-bottom: none; }
-        .reports-table tr { transition: background 0.1s ease; }
-        .reports-table tbody tr:hover { background: var(--ink); }
-        .reports-row-selected { background: color-mix(in srgb, var(--brand) 6%, transparent) !important; }
-        .reports-row-name { display: flex; align-items: center; gap: 12px; }
+        .reports-table tbody tr:hover td { background: var(--ink-2); }
+        .reports-table tbody tr.reports-row-selected td { background: color-mix(in srgb, var(--brand) 12%, var(--surface)); }
+        .reports-row-name { display: flex; align-items: center; gap: 19px; }
         .reports-row-name-clickable { cursor: pointer; width: fit-content; }
-        .reports-row-title { font-weight: 600; }
-        .reports-row-subtitle { font-size: 12px; color: var(--muted); margin-top: 2px; }
-        .reports-type-tag { display: inline-flex; align-items: center; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 999px; width: fit-content; }
-        .reports-type-individual { background: var(--ink-3); color: var(--muted); }
-        .reports-type-comparison { background: color-mix(in srgb, var(--brand) 15%, transparent); color: var(--brand); }
+        .reports-row-title { font-weight: 500; color: var(--chalk); }
+        .reports-row-subtitle { font-size: 13px; color: var(--muted); margin-top: 2px; }
+        .reports-type-tag { display: inline-flex; align-items: center; font-size: 13px; line-height: 32px; font-weight: 400; padding: 0 18px; border-radius: 100px; width: fit-content; }
+        .reports-type-individual { background: rgba(255, 255, 255, 0.05); color: var(--muted); }
+        .reports-type-comparison { background: rgba(43, 89, 255, 0.1); color: #2b59ff; }
         .reports-empty { text-align: center; padding: 96px 24px; color: var(--muted); }
+        /* Selection control drawn like the Figma radio (4247:744): 24px ring, blue ring + dot when on. Still a checkbox
+           underneath, so several rows can be selected at once. */
         .reports-checkbox {
           appearance: none; -webkit-appearance: none;
-          width: 16px; height: 16px; border-radius: 4px; cursor: pointer;
-          background: var(--surface); border: 1px solid var(--ink-3);
-          display: inline-flex; align-items: center; justify-content: center;
-          transition: background 0.12s ease, border-color 0.12s ease;
+          width: 24px; height: 24px; border-radius: 50%; cursor: pointer; margin: 0; flex-shrink: 0;
+          background: transparent; border: 1px solid var(--glass-border);
+          display: inline-block; vertical-align: middle;
+          transition: border-color 0.12s ease;
         }
         .reports-checkbox:hover { border-color: var(--brand); }
-        .reports-checkbox:checked {
-          background: var(--brand); border-color: var(--brand);
-          background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'><path d='M3.5 8.5L6.5 11.5L12.5 4.5' stroke='white' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>");
-          background-repeat: no-repeat; background-position: center;
-        }
+        .reports-checkbox:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+        .reports-checkbox:checked { border-color: #2b59ff; background: radial-gradient(circle, #2b59ff 0 6px, transparent 6.5px); }
         .reports-row-actions { display: flex; align-items: center; justify-content: center; gap: 8px; opacity: 0; transition: opacity 0.12s ease; }
         .reports-table tbody tr:hover .reports-row-actions { opacity: 1; }
         .reports-action-btn {
@@ -231,12 +232,12 @@ export default function ConsoleReportsPage() {
 
       <div className="reports-toolbar">
         <div className="reports-search">
-          <Search size={16} color="var(--muted)" />
-          <input placeholder="Search reports..." value={query} onChange={(e) => setQuery(e.target.value)} />
+          <img src="/console/search.svg" alt="" width={16} height={16} style={{ display: "block", flexShrink: 0 }} />
+          <input placeholder="Search reports" value={query} onChange={(e) => setQuery(e.target.value)} />
         </div>
         <div className="reports-tabs">
           {[
-            { key: "all", label: "All Reports", count: individualRows.length + comparisonRows.length },
+            { key: "all", label: "All reports", count: individualRows.length + comparisonRows.length },
             { key: "comparison", label: "Comparison", count: comparisonRows.length },
             { key: "individual", label: "Individual", count: individualRows.length },
           ].map((t) => (
@@ -245,7 +246,7 @@ export default function ConsoleReportsPage() {
               className={`reports-tab ${filter === t.key ? "reports-tab-active" : ""}`}
               onClick={() => setFilter(t.key)}
             >
-              {t.label} <span className="reports-tab-count">{t.count}</span>
+              {t.label} ({t.count})
             </button>
           ))}
         </div>
@@ -256,23 +257,23 @@ export default function ConsoleReportsPage() {
           <table className="reports-table" lang="en">
             <thead>
               <tr>
-                <th style={{ width: 40, paddingLeft: 21 }} />
-                <th>Report</th>
-                <th lang="en" className="reports-col-center" style={{ width: 175 }}>INQUIRY TYPE</th>
-                <th lang="en" className="reports-col-center" style={{ width: 175 }}>REVIEWS</th>
-                <th lang="en" className="reports-col-center" style={{ width: 175 }}>CREATED ON</th>
-                <th lang="en" className="reports-col-center" style={{ width: 175 }}>ACTIONS</th>
+                <th style={{ width: 24 }} />
+                <th style={{ paddingLeft: 32 }}>Report</th>
+                <th lang="en" className="reports-col-center" style={{ width: 175 }}>Inquiry Type</th>
+                <th lang="en" className="reports-col-center" style={{ width: 175 }}>Reviews</th>
+                <th lang="en" className="reports-col-center" style={{ width: 175 }}>Created on</th>
+                <th lang="en" className="reports-col-center" style={{ width: 175 }}>Actions</th>
               </tr>
             </thead>
             <tbody>
               {Array.from({ length: 6 }).map((_, i) => (
                 <tr key={i}>
-                  <td style={{ paddingLeft: 21 }}>
+                  <td>
                     <SkeletonBlock width={16} height={16} radius={4} />
                   </td>
                   <td>
                     <div className="reports-row-name">
-                      <SkeletonBlock width={40} height={40} radius={10} />
+                      <SkeletonBlock width={55} height={55} radius={16} />
                       <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                         <SkeletonBlock width={140} height={14} />
                         <SkeletonBlock width={90} height={10} />
@@ -305,20 +306,20 @@ export default function ConsoleReportsPage() {
           <table className="reports-table" lang="en">
           <thead>
             <tr>
-              <th style={{ width: 40, paddingLeft: 21 }}>
+              <th style={{ width: 24 }}>
                 <input type="checkbox" className="reports-checkbox" checked={allSelected} onChange={toggleAll} />
               </th>
-              <th>Report</th>
-              <th lang="en" className="reports-col-center" style={{ width: 175 }}>INQUIRY TYPE</th>
-              <th lang="en" className="reports-col-center" style={{ width: 175 }}>REVIEWS</th>
-              <th lang="en" className="reports-col-center" style={{ width: 175 }}>CREATED ON</th>
-              <th lang="en" className="reports-col-center" style={{ width: 175 }}>ACTIONS</th>
+              <th style={{ paddingLeft: 32 }}>Report</th>
+              <th lang="en" className="reports-col-center" style={{ width: 175 }}>Inquiry Type</th>
+              <th lang="en" className="reports-col-center" style={{ width: 175 }}>Reviews</th>
+              <th lang="en" className="reports-col-center" style={{ width: 175 }}>Created on</th>
+              <th lang="en" className="reports-col-center" style={{ width: 175 }}>Actions</th>
             </tr>
           </thead>
           <tbody>
             {rows.map((r) => (
               <tr key={r.key} className={selected.has(r.key) ? "reports-row-selected" : ""}>
-                <td style={{ paddingLeft: 21 }}>
+                <td>
                   <input
                     type="checkbox"
                     className="reports-checkbox"
@@ -350,7 +351,7 @@ export default function ConsoleReportsPage() {
                   )}
                 </td>
                 <td className="reports-col-center">{r.reviewCount ?? "—"}</td>
-                <td className="reports-col-center">{new Date(r.createdAt).toLocaleDateString("en-US")}</td>
+                <td className="reports-col-center">{new Date(r.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}</td>
                 <td className="reports-col-center">
                   <div className="reports-row-actions">
                     <button className="reports-action-btn" onClick={() => router.push(r.href)} aria-label="View">

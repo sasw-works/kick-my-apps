@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 
-export default function AppIcon({ name, size = 40, iconUrl, storeUrl }) {
+export default function AppIcon({ name, size = 40, iconUrl, storeUrl, radius = 10 }) {
   const [fetchedUrl, setFetchedUrl] = useState(null);
   const src = iconUrl || fetchedUrl;
 
@@ -28,7 +28,7 @@ export default function AppIcon({ name, size = 40, iconUrl, storeUrl }) {
         width={size}
         height={size}
         style={{
-          borderRadius: 10,
+          borderRadius: radius,
           flexShrink: 0,
           objectFit: "cover",
           border: "1px solid var(--ink-3)",
@@ -45,7 +45,7 @@ export default function AppIcon({ name, size = 40, iconUrl, storeUrl }) {
       style={{
         width: size,
         height: size,
-        borderRadius: 10,
+        borderRadius: radius,
         flexShrink: 0,
         display: "flex",
         alignItems: "center",

@@ -59,11 +59,11 @@ export default function ProjectTasksPage() {
   };
 
   const css = `
-    .pt-page { padding: 40px 48px 120px; max-width: 980px; margin: 0 auto; }
+    .pt-page { padding: 0 0 120px; max-width: 1120px; margin: 0; }
     .pt-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); text-decoration: none; margin-bottom: 20px; }
     .pt-back:hover { color: var(--chalk); }
     .pt-head { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; flex-wrap: wrap; }
-    .pt-head h1 { margin: 0; font-size: 32px; font-weight: 500; color: var(--chalk); }
+    .pt-head h1 { margin: 0; font-family: Helvetica, Arial, sans-serif; font-size: 40px; line-height: 46px; font-weight: 700; letter-spacing: -1.2px; color: var(--chalk); }
     .pt-meta { font-size: 13px; color: var(--muted); margin-bottom: 24px; display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
     .pt-meta a { color: var(--brand); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
     .pt-export { display: inline-flex; align-items: center; gap: 8px; }
@@ -101,7 +101,7 @@ export default function ProjectTasksPage() {
     .pt-verified p { font-size: 13px; color: var(--muted); margin: 0 0 12px; }
     .pt-ver-row { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--chalk); padding: 10px 14px; border-radius: 8px; background: color-mix(in srgb, var(--teal) 10%, var(--surface)); margin-bottom: 8px; }
     .pt-err { color: var(--kick); font-size: 13px; margin-bottom: 12px; }
-    @media (max-width: 900px) { .pt-page { padding: 28px 20px 96px; } .pt-head h1 { font-size: 26px; } }
+    @media (max-width: 900px) { .pt-page { padding: 0 0 96px; } .pt-head h1 { font-size: 30px; line-height: 36px; } }
   `;
 
   if (error) {

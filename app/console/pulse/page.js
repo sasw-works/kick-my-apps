@@ -149,10 +149,10 @@ export default function ConsolePulsePage() {
   return (
     <main className="pulse-page">
       <style>{`
-        .pulse-page { padding: 48px 48px 120px; max-width: 1240px; margin: 0 auto; }
-        .pulse-header { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 12px; flex-wrap: wrap; }
-        .pulse-title { margin: 0; font-family: var(--font-inter), sans-serif; font-size: 42px; line-height: 57.6px; font-weight: 400; color: var(--chalk); }
-        .pulse-subtitle { margin: 0; font-size: var(--fs-18); line-height: 28px; font-weight: 400; color: var(--muted); white-space: nowrap; }
+        .pulse-page { padding: 0 0 120px; max-width: 1120px; margin: 0; }
+        .pulse-header { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 50px; flex-wrap: wrap; }
+        .pulse-title { margin: 0 0 8px; font-family: Helvetica, Arial, sans-serif; font-size: 48px; line-height: 52px; font-weight: 700; letter-spacing: -1.44px; color: var(--chalk); }
+        .pulse-subtitle { margin: 0; font-size: 15px; line-height: 32px; letter-spacing: -0.2px; font-weight: 400; color: var(--muted); white-space: nowrap; }
         .pulse-add-btn {
           display: flex; align-items: center; gap: 8px; background: var(--brand); color: #fff;
           border: none; border-radius: 999px; padding: 12px 24px; font-size: 14px; font-weight: 600; cursor: pointer;

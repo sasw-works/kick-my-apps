@@ -73,6 +73,30 @@ body:has(> .kma-dark) {
   color: #ffffff;
 }
 
+/* Console (Figma 4240:171 "KMA - Reports"): deeper navy ground, translucent white panels, blue accent.
+   Scoped to .kma-console so the marketing pages keep their own palette. Surfaces are written as the
+   opaque equivalent of white at 3% / 6% / 8% over #0d1117, so anything that sits on top of another
+   surface (menus, sticky bars, modals) never turns see-through. */
+.kma-console.kma-dark {
+  --kma-dark-ink: #0d1117;
+  --ink: #0d1117;
+  --surface: #14181e;
+  --ink-2: #1c1f25;
+  --ink-3: #202429;
+  --chalk: #ffffff;
+  --muted: #a1a1aa;
+  --brand: #2b59ff;
+  --blue-100: #2b59ff;
+  --glass-bg: rgba(38, 53, 64, 0.5);
+  --glass-border: #395c77;
+}
+body:has(.kma-console.kma-dark) { background: #0d1117; }
+/* Inside the Console the report / comparison views sit directly on the page ground (and the radial light), and line up
+   with the content column instead of carrying their own card background and inner gutters. */
+.kma-console .kma-root, .kma-console .cmp-root { background: transparent; }
+.kma-console .kma-root .kma-main { padding-left: 0; padding-right: 0; }
+.kma-console .cmp-root { padding: 0; }
+
 /* Figma 4157:177 "Div [absolute]" — 1728x1558 radial light, centred, top of page */
 .kma-glow {
   position: absolute;

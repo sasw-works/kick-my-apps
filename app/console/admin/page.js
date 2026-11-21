@@ -189,10 +189,10 @@ export default function AdminPage() {
 }
 
 const adminStyles = `
-  .admin-page { padding: 32px 40px; }
-  .admin-header { margin-bottom: 28px; }
-  .admin-title { font-size: 32px; font-weight: 700; color: var(--chalk); }
-  .admin-sub { font-size: 14px; color: var(--muted); margin-top: 6px; }
+  .admin-page { padding: 0 0 80px; max-width: 1120px; }
+  .admin-header { margin-bottom: 50px; }
+  .admin-title { font-family: Helvetica, Arial, sans-serif; font-size: 48px; line-height: 52px; font-weight: 700; letter-spacing: -1.44px; color: var(--chalk); }
+  .admin-sub { font-size: 15px; line-height: 32px; letter-spacing: -0.2px; font-weight: 400; color: var(--muted); margin-top: 8px; }
   .admin-empty { padding: 60px 0; text-align: center; color: var(--muted); font-size: 14px; }
   .admin-denied { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 80px 0; color: var(--muted); font-size: 14px; }
   .admin-list { display: flex; flex-direction: column; gap: 10px; }
@@ -222,7 +222,7 @@ const adminStyles = `
   .admin-scan-score { font-weight: 700; width: 32px; text-align: right; }
   .admin-scan-date { color: var(--muted); width: 110px; text-align: right; }
   @media (max-width: 700px) {
-    .admin-page { padding: 24px 16px; }
+    .admin-page { padding: 0 0 64px; } .admin-title { font-size: 34px; line-height: 40px; letter-spacing: -1px; }
     .admin-user-row { flex-wrap: wrap; row-gap: 34px; }
     /* Delete button moves up beside the avatar/name (order + a forced line break on the meta
        row below), instead of wrapping down on its own -- same technique as the report toolbar's

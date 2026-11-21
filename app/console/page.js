@@ -2,13 +2,11 @@
 
 import AppFlow from "../components/AppFlow";
 
+// The shell already paints the Console's radial light and ground colour (see ConsoleShell), so this page
+// only supplies the content column.
 export default function ConsoleDashboardPage() {
   return (
-    <main
-      className="min-h-screen px-6 py-8"
-      style={{ background: "var(--ink)", position: "relative", isolation: "isolate", overflow: "hidden" }}
-    >
-      <div className="kma-glow" aria-hidden="true" />
+    <main style={{ position: "relative", isolation: "isolate", margin: "-52px -50px 0 -75px", padding: "0 24px 32px" }}>
       <div className="max-w-[1240px] mx-auto" style={{ position: "relative", zIndex: 1 }}>
         <AppFlow showMarketing={false} />
       </div>

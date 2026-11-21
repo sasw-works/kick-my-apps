@@ -339,7 +339,7 @@ export default function PulseMonitorDetailPage() {
 }
 
 const pmdStyles = `
-  .pmd-page { padding: 40px 48px 120px; max-width: 900px; margin: 0 auto; }
+  .pmd-page { padding: 0 0 120px; max-width: 1120px; margin: 0; }
   .pmd-loading, .pmd-error { padding: 80px 0; text-align: center; color: var(--muted); font-size: 14px; }
   .pmd-error { color: var(--kick); }
   .pmd-back { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); text-decoration: none; font-size: 13.5px; margin-bottom: 24px; }
@@ -350,7 +350,7 @@ const pmdStyles = `
   .pmd-icon-fallback { background: var(--brand); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 22px; }
   .pmd-header-main { flex: 1; min-width: 0; }
   .pmd-name-row { display: flex; align-items: center; gap: 10px; }
-  .pmd-name { font-size: 22px; font-weight: 700; color: var(--chalk); }
+  .pmd-name { font-family: Helvetica, Arial, sans-serif; font-size: 32px; line-height: 38px; letter-spacing: -0.96px; font-weight: 700; color: var(--chalk); }
   .pmd-country { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; color: var(--muted); border: 1px solid var(--ink-3); border-radius: 5px; padding: 2px 6px; text-transform: uppercase; }
   .pmd-dev { font-size: 13.5px; color: var(--muted); margin-top: 2px; }
   .pmd-actions { display: flex; gap: 8px; flex-shrink: 0; }
@@ -404,7 +404,7 @@ const pmdStyles = `
   .pmd-show-more:hover { background: var(--ink); color: var(--chalk); }
 
   @media (max-width: 640px) {
-    .pmd-page { padding: 32px 20px 80px; }
+    .pmd-page { padding: 0 0 80px; }
     .pmd-stats { grid-template-columns: 1fr; }
     .pmd-header { flex-wrap: wrap; }
   }

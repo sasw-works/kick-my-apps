@@ -23,9 +23,9 @@ export default function TasksPage() {
   return (
     <main className="tasks-page">
       <style>{`
-        .tasks-page { padding: 48px 48px 120px; max-width: 1240px; margin: 0 auto; }
-        .tasks-page h1 { margin: 0; font-size: 42px; line-height: 57.6px; font-weight: 400; color: var(--chalk); }
-        .tasks-lede { margin: 0 0 32px; font-size: var(--fs-18); line-height: 28px; color: var(--muted); }
+        .tasks-page { padding: 0 0 120px; max-width: 1120px; margin: 0; }
+        .tasks-page h1 { margin: 0 0 8px; font-family: Helvetica, Arial, sans-serif; font-size: 48px; line-height: 52px; font-weight: 700; letter-spacing: -1.44px; color: var(--chalk); }
+        .tasks-lede { margin: 0 0 50px; font-size: 15px; line-height: 32px; letter-spacing: -0.2px; font-weight: 400; color: var(--muted); }
         .tasks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
         .tasks-card { display: block; background: var(--surface); border: 1px solid var(--ink-3); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--chalk); transition: border-color .15s ease; }
         .tasks-card:hover { border-color: var(--brand); }
@@ -40,7 +40,7 @@ export default function TasksPage() {
         .tasks-chip-todo b { color: var(--yellow); }
         .tasks-chip-done b { color: var(--teal); }
         .tasks-empty { text-align: center; padding: 96px 24px; color: var(--muted); border: 1px dashed var(--ink-3); border-radius: 12px; }
-        @media (max-width: 900px) { .tasks-page { padding: 32px 20px 96px; } .tasks-page h1 { font-size: 32px; line-height: 44px; } .tasks-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 900px) { .tasks-page { padding: 0 0 96px; } .tasks-page h1 { font-size: 34px; line-height: 40px; letter-spacing: -1px; } .tasks-grid { grid-template-columns: 1fr; } }
       `}</style>
 
       <h1>Tasks</h1>

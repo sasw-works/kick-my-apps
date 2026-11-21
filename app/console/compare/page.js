@@ -123,10 +123,10 @@ export default function ConsoleComparePage() {
   return (
     <main className="compare-page">
       <style>{`
-        .compare-page { padding: 48px 48px 120px; max-width: 1240px; margin: 0 auto; }
-        .compare-header { text-align: left; margin-bottom: 48px; }
-        .compare-header h1 { margin: 0; font-family: var(--font-inter), sans-serif; font-size: 42px; line-height: 57.6px; font-weight: 400; color: var(--chalk); }
-        .compare-header p { margin: 0; font-size: var(--fs-18); line-height: 28px; font-weight: 400; color: var(--muted); }
+        .compare-page { padding: 0 0 120px; max-width: 1120px; margin: 0; }
+        .compare-header { text-align: left; margin-bottom: 50px; display: flex; flex-direction: column; gap: 8px; }
+        .compare-header h1 { margin: 0; font-family: Helvetica, Arial, sans-serif; font-size: 48px; line-height: 52px; font-weight: 700; letter-spacing: -1.44px; color: var(--chalk); }
+        .compare-header p { margin: 0; font-size: 15px; line-height: 32px; letter-spacing: -0.2px; font-weight: 400; color: var(--muted); }
         .compare-section-label { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 16px; text-transform: uppercase; }
         .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 48px; }
         .compare-card {
@@ -159,7 +159,7 @@ export default function ConsoleComparePage() {
         @media (max-width: 900px) {
           /* Matches the Reports page's own mobile side margin (app/console/reports/page.js) so
              Console pages are consistent with each other. */
-          .compare-page { padding: 48px 24px 120px; }
+          .compare-page { padding: 0 0 96px; } .compare-header h1 { font-size: 34px; line-height: 40px; letter-spacing: -1px; }
           /* Cards were a fixed 2-column grid at every width; on mobile they're full-row-width,
              one per line, like everywhere else in the Console. */
           .compare-grid { grid-template-columns: 1fr; }

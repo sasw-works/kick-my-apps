@@ -50,7 +50,7 @@ export default function ConsoleReportDetailPage() {
   const message = id ? error : "Report not found.";
   if (message) {
     return (
-      <main className="min-h-screen flex items-center justify-center" style={{ background: "var(--ink)" }}>
+      <main className="flex items-center justify-center" style={{ minHeight: "50vh" }}>
         <div style={{ color: "var(--kick)", fontSize: 14 }}>{message}</div>
       </main>
     );
@@ -58,15 +58,15 @@ export default function ConsoleReportDetailPage() {
 
   if (!scan) {
     return (
-      <main className="min-h-screen flex items-center justify-center" style={{ background: "var(--ink)" }}>
+      <main className="flex items-center justify-center" style={{ minHeight: "50vh" }}>
         <Loader2 size={22} className="spin" color="var(--muted)" />
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen max-[700px]:px-4 px-6 py-8" style={{ background: "var(--ink)" }}>
-      <div className="max-w-[1240px] mx-auto">
+    <main className="min-h-screen">
+      <div className="max-w-[1120px]" style={{ marginTop: -24 }}>
         <HealthReport
           data={scan.result_json}
           appLabel={scan.app_name}
