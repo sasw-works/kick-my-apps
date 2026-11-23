@@ -96,6 +96,10 @@ try:
     check("each item names the app, version, age and monitor",js["open"][0]["appName"] and js["open"][0]["monitorId"] in (a1,a2) and isinstance(js["open"][0]["ageDays"],int) and js["watching"]==2 and js["openTotal"]==4)
     s=js["stats"]; check("stats: 7 low reviews with text in 30 days; 2 answered (1 marked, 1 by the store); the skipped one is left out of the rate (2 of 6)",s["windowDays"]==30 and s["lowTotal"]==7 and s["replied"]==2 and s["rate"]==33,str(s))
     check("median time to reply only counts replies she marked herself",s["medianHours"] is not None and s["medianHours"]>=70,str(s))
+    one=req("GET",f"/api/pulse/inbox?monitorId={a1}",cookie=ALICE)[1]
+    check("one app's inbox: only that app's reviews, with its own stats",one["open"] and all(x["monitorId"]==a1 for x in one["open"]) and one["openTotal"]==len(one["open"]) and one["stats"]["lowTotal"]<=js["stats"]["lowTotal"],str(one))
+    check("the full inbox says how many wait per app (they add up)",sum(js["byMonitor"].values())==js["openTotal"] and set(js["byMonitor"])<={str(a1),str(a2)},str(js.get("byMonitor")))
+    check("asking for someone else's app gives nothing",req("GET",f"/api/pulse/inbox?monitorId={b1}",cookie=ALICE)[1]["open"]==[])
     check("bob only sees his own",[x["reviewId"] for x in inbox(BOB)[1]["open"]]==["bob"])
     check("carol (no apps) gets an empty inbox and watching 0",inbox(CAROL)[1]["watching"]==0 and inbox(CAROL)[1]["open"]==[])
     check("anonymous -> 401",req("GET","/api/pulse/inbox")[0]==401 and req("PATCH","/api/pulse/inbox",body={})[0]==401 and req("POST","/api/pulse/inbox/drafts",body={})[0]==401)

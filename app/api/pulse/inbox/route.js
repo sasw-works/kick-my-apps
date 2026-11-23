@@ -10,17 +10,19 @@ export const runtime = "nodejs";
 // The caller's reply inbox: 1-3 star reviews (with text) of their OWN apps that nobody has dealt
 // with yet, worst first. "Dealt with" is the person's own mark (replied / skipped), or the store
 // saying the developer already replied (Google Play). Only kind "mine" monitors count.
-export async function GET() {
+export async function GET(req) {
   try {
     const user = await getCurrentUser();
     if (!user) return unauthorized();
     await ensurePulseSchema();
+    const one = Number.parseInt(new URL(req.url).searchParams.get("monitorId") || "", 10);
+    const only = Number.isInteger(one) ? one : null; // one app's inbox (the box inside its Monitor card)
     const { rows: mine } = await sql`SELECT count(*)::int AS c FROM pulse_monitors WHERE user_email = ${user.email} AND kind = 'mine' AND status = 'active'`;
 
     const { rows: open } = await sql`
       SELECT m.id AS monitor_id, m.app_name, rv.review_id, rv.rating, rv.title, rv.content, rv.version, rv.reviewed_at, rv.first_seen_at
       FROM pulse_reviews rv JOIN pulse_monitors m ON m.id = rv.monitor_id
-      WHERE m.user_email = ${user.email} AND m.kind = 'mine' AND m.status = 'active'
+      WHERE m.user_email = ${user.email} AND m.kind = 'mine' AND m.status = 'active' AND (${only}::int IS NULL OR m.id = ${only}::int)
         AND rv.handled_at IS NULL AND rv.rating BETWEEN 1 AND 3 AND length(trim(coalesce(rv.title,'') || coalesce(rv.content,''))) > 0
         AND coalesce(rv.reviewed_at, rv.first_seen_at) >= now() - (${INBOX_WINDOW_DAYS}::int * interval '1 day')
       ORDER BY rv.rating ASC, coalesce(rv.reviewed_at, rv.first_seen_at) DESC, rv.review_id
@@ -31,12 +33,15 @@ export async function GET() {
              count(*) FILTER (WHERE rv.handled_how = 'skipped')::int AS skipped,
              percentile_cont(0.5) WITHIN GROUP (ORDER BY extract(epoch FROM rv.handled_at - coalesce(rv.reviewed_at, rv.first_seen_at))) FILTER (WHERE rv.handled_how = 'replied') AS median_s
       FROM pulse_reviews rv JOIN pulse_monitors m ON m.id = rv.monitor_id
-      WHERE m.user_email = ${user.email} AND m.kind = 'mine' AND m.status = 'active'
+      WHERE m.user_email = ${user.email} AND m.kind = 'mine' AND m.status = 'active' AND (${only}::int IS NULL OR m.id = ${only}::int)
         AND rv.rating BETWEEN 1 AND 3 AND length(trim(coalesce(rv.title,'') || coalesce(rv.content,''))) > 0
         AND coalesce(rv.reviewed_at, rv.first_seen_at) >= now() - (${STATS_WINDOW_DAYS}::int * interval '1 day')
     `;
     const now = Date.now();
+    const byMonitor = {};
+    for (const r of open) byMonitor[r.monitor_id] = (byMonitor[r.monitor_id] || 0) + 1;
     return Response.json({
+      byMonitor,
       watching: mine[0].c,
       openTotal: open.length,
       open: open.slice(0, MAX_OPEN).map((r) => ({

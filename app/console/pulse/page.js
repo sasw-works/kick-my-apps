@@ -7,7 +7,6 @@ import {
 } from "lucide-react";
 import { SkeletonBlock } from "../../components/Skeleton";
 import RivalChanges from "../../components/RivalChanges";
-import ReplyInbox from "../../components/ReplyInbox";
 import MonitorDetail from "./MonitorDetail";
 
 const COUNTRIES = [
@@ -53,7 +52,13 @@ export default function ConsolePulsePage() {
   const [busyId, setBusyId] = useState(null);
   const [menuId, setMenuId] = useState(null);
 
+  const [waiting, setWaiting] = useState({}); // monitor id -> reviews waiting for a reply
+  const loadWaiting = useCallback(() => {
+    fetch("/api/pulse/inbox").then((r) => r.json()).then((d) => setWaiting(d.byMonitor || {})).catch(() => {});
+  }, []);
+
   const load = useCallback(() => {
+    loadWaiting();
     fetch("/api/pulse/monitors")
       .then((r) => r.json())
       .then((d) => {
@@ -62,7 +67,7 @@ export default function ConsolePulsePage() {
         setLimit(d.limit);
       })
       .catch((err) => setError(err.message));
-  }, []);
+  }, [loadWaiting]);
 
   useEffect(() => {
     load();
@@ -284,8 +289,6 @@ export default function ConsolePulsePage() {
 
       {error && <div style={{ color: "var(--kick)", fontSize: 14, marginBottom: 16 }}>{error}</div>}
 
-      <ReplyInbox />
-
       <RivalChanges />
 
       {monitors === null ? (
@@ -342,6 +345,7 @@ export default function ConsolePulsePage() {
                       <span className="pulse-card-name">{m.app_name}</span>
                       <span className="pulse-country-tag">{m.country}</span>
                       {m.kind === "other" && <span className="pulse-country-tag" title="Someone else's app">other app</span>}
+                      {waiting[m.id] > 0 && <span className="pulse-unread pulse-waiting" title="Low-rated reviews still waiting for your reply">{waiting[m.id]} to reply</span>}
                       {m.unread_alerts > 0 && (
                         <span className="pulse-unread">
                           <Bell size={11} />
@@ -407,7 +411,7 @@ export default function ConsolePulsePage() {
               </div>
               {openId === m.id && (
                 <div className="pulse-expand">
-                  <MonitorDetail key={`${m.id}-${stamp[m.id] || 0}`} id={m.id} embedded onChanged={load} onRemoved={() => { setMonitors((prev) => prev.filter((x) => x.id !== m.id)); setOpenId(null); load(); }} />
+                  <MonitorDetail key={`${m.id}-${stamp[m.id] || 0}`} id={m.id} embedded onChanged={load} onInboxChange={(by) => setWaiting((w) => ({ ...w, [m.id]: by[m.id] || 0 }))} onRemoved={() => { setMonitors((prev) => prev.filter((x) => x.id !== m.id)); setOpenId(null); load(); }} />
                 </div>
               )}
               </div>

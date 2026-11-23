@@ -9,6 +9,7 @@ import FeatureRequests from "../../components/FeatureRequests";
 import ReviewLanguages from "../../components/ReviewLanguages";
 import CategoryBenchmark from "../../components/CategoryBenchmark";
 import ReplyDraft from "../../components/ReplyDraft";
+import ReplyInbox from "../../components/ReplyInbox";
 import ReleaseNotes from "../../components/ReleaseNotes";
 import RivalChanges from "../../components/RivalChanges";
 import {
@@ -73,7 +74,7 @@ const SEVERITY_COLOR = { critical: "var(--kick)", warn: "var(--yellow)", info: "
 // One monitored app's full detail: settings, stats, rating trend, alerts, reviews and the insight panels.
 // Used by the monitor's own page (embedded=false) and, expanded inside its card, by the Monitor list (embedded=true).
 // onChanged: something about the monitor changed (so a list can refresh its card). onRemoved: it was deleted.
-export default function MonitorDetail({ id, embedded = false, onChanged, onRemoved }) {
+export default function MonitorDetail({ id, embedded = false, onChanged, onRemoved, onInboxChange }) {
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -245,6 +246,8 @@ export default function MonitorDetail({ id, embedded = false, onChanged, onRemov
           Alert me about this app
         </label>
       </div>
+
+      {m.kind === "mine" && <ReplyInbox monitorId={m.id} onChange={onInboxChange} />}
 
       <div className="pmd-stats">
         <div className="pmd-stat-card">

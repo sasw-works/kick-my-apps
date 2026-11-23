@@ -9,7 +9,7 @@ const hoursText = (h) => (h == null ? "–" : h < 48 ? `${h}h` : `${Math.round(h
 
 // Reviews of your own apps (1-3 stars, with text) that nobody has dealt with yet. The store doesn't
 // tell us whether you replied (except Google Play), so "Mark replied" is your own tick.
-export default function ReplyInbox() {
+export default function ReplyInbox({ monitorId = null, onChange }) {
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
   const [showAll, setShowAll] = useState(false);
@@ -19,8 +19,8 @@ export default function ReplyInbox() {
   const [copied, setCopied] = useState("");
 
   const load = () =>
-    fetch("/api/pulse/inbox").then((r) => r.json().then((d) => ({ ok: r.ok, d })))
-      .then(({ ok, d }) => { if (!ok) throw new Error(d.error || "Could not load."); setData(d); setError(""); })
+    fetch(monitorId ? `/api/pulse/inbox?monitorId=${monitorId}` : "/api/pulse/inbox").then((r) => r.json().then((d) => ({ ok: r.ok, d })))
+      .then(({ ok, d }) => { if (!ok) throw new Error(d.error || "Could not load."); setData(d); setError(""); if (onChange) onChange(d.byMonitor || {}); })
       .catch((e) => setError(e.message));
   useEffect(() => { load(); }, []);
 
@@ -58,9 +58,9 @@ export default function ReplyInbox() {
   const list = showAll ? data.open : data.open.slice(0, 5);
 
   return (
-    <div className="ri-wrap" data-testid="reply-inbox">
+    <div className={`ri-wrap${monitorId ? " ri-embedded" : ""}`} data-testid="reply-inbox">
       <div className="ri-head">
-        <div className="ri-h"><Inbox size={16} /> Reviews waiting for a reply <span className="ri-count">{data.openTotal}</span></div>
+        <div className="ri-h"><Inbox size={16} /> {monitorId ? "Waiting for a reply" : "Reviews waiting for a reply"} <span className="ri-count">{data.openTotal}</span></div>
         {stats.lowTotal > 0 && (
           <div className="ri-stats" title={`Low-rated reviews with text from the last ${stats.windowDays} days`}>
             Last {stats.windowDays} days: replied to {stats.replied} of {stats.lowTotal}{stats.rate != null ? ` (${stats.rate}%)` : ""} · median time to reply {hoursText(stats.medianHours)}
@@ -101,6 +101,7 @@ export default function ReplyInbox() {
       )}
       <style>{`
         .ri-wrap { background: var(--surface); border: 1px solid var(--ink-3); border-radius: 12px; padding: 18px 20px; margin-bottom: 24px; }
+        .ri-wrap.ri-embedded { margin: 0 0 24px; }
         .ri-head { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
         .ri-h { display: flex; align-items: center; gap: 8px; font-weight: 600; color: var(--chalk); font-size: 15px; }
         .ri-count { background: var(--kick, #f5433a); color: #fff; border-radius: 999px; font-size: 12px; padding: 1px 8px; }
