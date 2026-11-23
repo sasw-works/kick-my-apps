@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import Link from "next/link";
 import {
-  Bell, Plus, MoreHorizontal, X, Loader2, Search, Pause, Play, RefreshCw, Trash2, ChevronRight, ChevronDown,
+  Bell, Plus, MoreHorizontal, Users, X, Loader2, Search, Pause, Play, RefreshCw, Trash2, ChevronRight, ChevronDown,
 } from "lucide-react";
 import { SkeletonBlock } from "../../components/Skeleton";
 import RivalChanges from "../../components/RivalChanges";
@@ -52,6 +52,9 @@ export default function ConsolePulsePage() {
   const [busyId, setBusyId] = useState(null);
   const [menuId, setMenuId] = useState(null);
 
+  const [tab, setTab] = useState("mine"); // which group of apps the list shows
+  const [query, setQuery] = useState("");
+  const tabChosen = useRef(false);
   const [waiting, setWaiting] = useState({}); // monitor id -> reviews waiting for a reply
   const loadWaiting = useCallback(() => {
     fetch("/api/pulse/inbox").then((r) => r.json()).then((d) => setWaiting(d.byMonitor || {})).catch(() => {});
@@ -65,6 +68,7 @@ export default function ConsolePulsePage() {
         if (d.error) throw new Error(d.error);
         setMonitors(d.monitors);
         setLimit(d.limit);
+        if (!tabChosen.current && d.monitors.length && !d.monitors.some((x) => x.kind === "mine")) setTab("other");
       })
       .catch((err) => setError(err.message));
   }, [loadWaiting]);
@@ -119,6 +123,7 @@ export default function ConsolePulsePage() {
       const res = await fetch(`/api/pulse/monitors/${m.id}`, { method: "PATCH", headers: { "content-type": "application/json" }, body: JSON.stringify({ kind }) });
       if (!res.ok) throw new Error("Could not change this. Try again.");
       setMonitors((prev) => prev.map((x) => (x.id === m.id ? { ...x, kind } : x)));
+      setOpenId((o) => (o === m.id ? null : o)); // it moves to the other tab
       loadWaiting();
       bump(m.id);
     } catch (err) {
@@ -175,6 +180,8 @@ export default function ConsolePulsePage() {
   const [stamp, setStamp] = useState({});
   const bump = (id) => setStamp((s) => ({ ...s, [id]: (s[id] || 0) + 1 }));
 
+  const q = query.trim().toLowerCase();
+  const shown = (monitors || []).filter((m) => m.kind === tab && (!q || String(m.app_name || "").toLowerCase().includes(q)));
   const atLimit = limit !== null && monitors && monitors.length >= limit;
 
   return (
@@ -192,6 +199,18 @@ export default function ConsolePulsePage() {
         }
         .pulse-add-btn:disabled { opacity: 0.5; cursor: default; }
         @media (max-width: 900px) { .pulse-header { padding-right: 0; } .pulse-add-btn { height: 48px; } }
+        .pulse-toolbar { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+        .pulse-search { flex: 1; min-width: 0; display: flex; align-items: center; gap: 24px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 114px; padding: 0 42px; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); height: 58px; box-sizing: border-box; }
+        .pulse-search input { flex: 1; min-width: 0; border: none; outline: none; background: transparent; font-size: 15px; letter-spacing: -0.2px; color: var(--chalk); font-family: inherit; }
+        .pulse-search input::placeholder { color: var(--chalk); opacity: 1; }
+        .pulse-search:focus-within { border-color: var(--brand); }
+        .pulse-tabs { display: flex; gap: 16px; flex-shrink: 0; }
+        .pulse-tab { display: flex; align-items: center; justify-content: center; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 114px; font-size: 15px; letter-spacing: -0.2px; color: var(--chalk); cursor: pointer; white-space: nowrap; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); transition: border-color .15s ease, background .15s ease; height: 58px; box-sizing: border-box; width: 175px; padding: 0; font-family: inherit; }
+        .pulse-tab:hover { border-color: var(--brand); }
+        .pulse-tab:focus { outline: none; }
+        .pulse-tab:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+        .pulse-tab-active { background: rgba(43, 89, 255, 0.5); border-color: #2b59ff; }
+        @media (max-width: 900px) { .pulse-toolbar { flex-wrap: wrap; } .pulse-tabs { flex: 1 1 100%; gap: 8px; } .pulse-tab { flex: 1 1 0; width: auto; min-width: 0; font-size: 13px; padding: 0 8px; } }
         .pulse-limit-note { font-size: 13px; color: var(--muted); margin: 0 0 28px; }
         .pulse-limit-note a { color: var(--brand); font-weight: 600; text-decoration: none; }
 
@@ -223,10 +242,6 @@ export default function ConsolePulsePage() {
         .pulse-card-main { flex: 1; min-width: 0; }
         .pulse-card-name-row { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; flex-wrap: wrap; }
         .pulse-card-name { font-size: 16px; font-weight: 600; color: var(--chalk); }
-        .pulse-kind { display: inline-flex; gap: 4px; margin: 6px 0 2px; }
-        .pulse-kind-tab { height: 24px; padding: 0 10px; border-radius: 8px; border: 1px solid var(--ink-3); background: transparent; color: var(--muted); font-size: 11.5px; font-weight: 600; cursor: pointer; font-family: inherit; }
-        .pulse-kind-on { border-color: var(--brand); color: var(--chalk); background: color-mix(in srgb, var(--brand) 12%, transparent); }
-        .pulse-kind-tab:disabled { opacity: .6; cursor: default; }
         .pulse-country-tag { font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em; color: var(--muted); border: 1px solid var(--ink-3); border-radius: 5px; padding: 1px 5px; text-transform: uppercase; }
         .pulse-status-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
         .pulse-status-active { background: var(--teal); }
@@ -295,6 +310,22 @@ export default function ConsolePulsePage() {
         </button>
       </div>
 
+      {monitors && monitors.length > 0 && (
+        <div className="pulse-toolbar">
+          <div className="pulse-search">
+            <img src="/console/search.svg" alt="" width={16} height={16} style={{ display: "block", flexShrink: 0 }} />
+            <input placeholder="Search apps" aria-label="Search apps" value={query} onChange={(e) => setQuery(e.target.value)} />
+          </div>
+          <div className="pulse-tabs" role="group" aria-label="Whose apps">
+            {[["mine", "My Apps"], ["other", "Another Apps"]].map(([k, label]) => (
+              <button key={k} type="button" className={`pulse-tab ${tab === k ? "pulse-tab-active" : ""}`} aria-pressed={tab === k} onClick={() => { tabChosen.current = true; setTab(k); setOpenId(null); }}>
+                {label} ({monitors.filter((x) => x.kind === k).length})
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       {limit !== null && monitors && (
         <p className="pulse-limit-note">
           {`${monitors.length} / ${limit} monitored app${limit === 1 ? "" : "s"} used on your plan (yours and other people's).`}
@@ -336,9 +367,14 @@ export default function ConsolePulsePage() {
           <div className="pulse-empty-title">No apps being watched yet</div>
           Add one to get a daily check for new reviews, rating changes, and version updates.
         </div>
+      ) : shown.length === 0 ? (
+        <div className="pulse-empty">
+          <div className="pulse-empty-title">{query.trim() ? "No apps match your search" : tab === "mine" ? "No apps of yours here yet" : "No other apps here yet"}</div>
+          {query.trim() ? "Try another name." : tab === "mine" ? "Apps you mark as “My app” show up here, with the reviews waiting for your reply." : "Apps you watch for someone else (a rival, say) show up here."}
+        </div>
       ) : (
         <div className="pulse-list">
-          {monitors.map((m) => {
+          {shown.map((m) => {
             const hasError = m.last_check_ok === false;
             const statusClass = m.status === "paused" ? "pulse-status-paused" : hasError ? "pulse-status-error" : "pulse-status-active";
             const lastChecked = timeAgo(m.last_checked_at);
@@ -371,11 +407,6 @@ export default function ConsolePulsePage() {
                           {m.unread_alerts} new
                         </span>
                       )}
-                    </div>
-                    <div className="pulse-kind" role="group" aria-label="Whose app is this" onClick={(e) => e.stopPropagation()} onKeyDown={(e) => e.stopPropagation()}>
-                      {[["mine", "My app"], ["other", "Another app"]].map(([k, label]) => (
-                        <button key={k} type="button" className={`pulse-kind-tab ${m.kind === k ? "pulse-kind-on" : ""}`} aria-pressed={m.kind === k} disabled={busyId === m.id} onClick={() => setKind(m, k)}>{label}</button>
-                      ))}
                     </div>
                     <div className="pulse-card-meta">
                       {m.status === "paused"
@@ -425,6 +456,10 @@ export default function ConsolePulsePage() {
                     <button className="pulse-menu-item" onClick={() => togglePause(m)}>
                       {m.status === "paused" ? <Play size={14} /> : <Pause size={14} />}
                       {m.status === "paused" ? "Resume" : "Pause"}
+                    </button>
+                    <button className="pulse-menu-item" onClick={() => { setMenuId(null); setKind(m, m.kind === "mine" ? "other" : "mine"); }}>
+                      <Users size={14} />
+                      {m.kind === "mine" ? "Move to Another Apps" : "Move to My Apps"}
                     </button>
                     <button className="pulse-menu-item pulse-menu-item-danger" onClick={() => remove(m)}>
                       <Trash2 size={14} />
