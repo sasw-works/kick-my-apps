@@ -112,6 +112,22 @@ export default function ConsolePulsePage() {
     }
   }
 
+  async function setKind(m, kind) {
+    if (m.kind === kind) return;
+    setBusyId(m.id);
+    try {
+      const res = await fetch(`/api/pulse/monitors/${m.id}`, { method: "PATCH", headers: { "content-type": "application/json" }, body: JSON.stringify({ kind }) });
+      if (!res.ok) throw new Error("Could not change this. Try again.");
+      setMonitors((prev) => prev.map((x) => (x.id === m.id ? { ...x, kind } : x)));
+      loadWaiting();
+      bump(m.id);
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setBusyId(null);
+    }
+  }
+
   async function checkNow(m) {
     setBusyId(m.id);
     setMenuId(null);
@@ -207,6 +223,10 @@ export default function ConsolePulsePage() {
         .pulse-card-main { flex: 1; min-width: 0; }
         .pulse-card-name-row { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; flex-wrap: wrap; }
         .pulse-card-name { font-size: 16px; font-weight: 600; color: var(--chalk); }
+        .pulse-kind { display: inline-flex; gap: 4px; margin: 6px 0 2px; }
+        .pulse-kind-tab { height: 24px; padding: 0 10px; border-radius: 8px; border: 1px solid var(--ink-3); background: transparent; color: var(--muted); font-size: 11.5px; font-weight: 600; cursor: pointer; font-family: inherit; }
+        .pulse-kind-on { border-color: var(--brand); color: var(--chalk); background: color-mix(in srgb, var(--brand) 12%, transparent); }
+        .pulse-kind-tab:disabled { opacity: .6; cursor: default; }
         .pulse-country-tag { font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em; color: var(--muted); border: 1px solid var(--ink-3); border-radius: 5px; padding: 1px 5px; text-transform: uppercase; }
         .pulse-status-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
         .pulse-status-active { background: var(--teal); }
@@ -344,7 +364,6 @@ export default function ConsolePulsePage() {
                       <span className={`pulse-status-dot ${statusClass}`} />
                       <span className="pulse-card-name">{m.app_name}</span>
                       <span className="pulse-country-tag">{m.country}</span>
-                      {m.kind === "other" && <span className="pulse-country-tag" title="Someone else's app">other app</span>}
                       {waiting[m.id] > 0 && <span className="pulse-unread pulse-waiting" title="Low-rated reviews still waiting for your reply">{waiting[m.id]} to reply</span>}
                       {m.unread_alerts > 0 && (
                         <span className="pulse-unread">
@@ -352,6 +371,11 @@ export default function ConsolePulsePage() {
                           {m.unread_alerts} new
                         </span>
                       )}
+                    </div>
+                    <div className="pulse-kind" role="group" aria-label="Whose app is this" onClick={(e) => e.stopPropagation()} onKeyDown={(e) => e.stopPropagation()}>
+                      {[["mine", "My app"], ["other", "Another app"]].map(([k, label]) => (
+                        <button key={k} type="button" className={`pulse-kind-tab ${m.kind === k ? "pulse-kind-on" : ""}`} aria-pressed={m.kind === k} disabled={busyId === m.id} onClick={() => setKind(m, k)}>{label}</button>
+                      ))}
                     </div>
                     <div className="pulse-card-meta">
                       {m.status === "paused"

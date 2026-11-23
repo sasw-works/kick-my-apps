@@ -223,6 +223,8 @@ export default function MonitorDetail({ id, embedded = false, onChanged, onRemov
       {hasError && <div className="pmd-banner pmd-banner-error">{m.last_error || "The last check failed."}</div>}
 
       <div className="pmd-settings" data-testid="monitor-settings">
+        {/* In the Monitor list the same choice sits on the card itself */}
+        {!embedded && (
         <div className="pmd-set-group" role="group" aria-label="Whose app is this">
           {[["mine", "My app"], ["other", "Another app"]].map(([k, label]) => (
             <button
@@ -236,6 +238,7 @@ export default function MonitorDetail({ id, embedded = false, onChanged, onRemov
             </button>
           ))}
         </div>
+        )}
         <label className="pmd-set-alerts">
           <input
             type="checkbox"
