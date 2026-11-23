@@ -13,7 +13,8 @@ const TONES = [
 ];
 const defaultTone = (rating) => (rating <= 2 ? "empathetic" : rating === 3 ? "professional" : "friendly");
 
-export default function ReplyDraft({ monitorId, review, initialNote = "" }) {
+// children: extra buttons shown on the same row as "Draft reply" (the reply box opens below the row).
+export default function ReplyDraft({ monitorId, review, initialNote = "", children }) {
   const [open, setOpen] = useState(false);
   const [tone, setTone] = useState(defaultTone(review.rating));
   const [note, setNote] = useState(initialNote);
@@ -43,6 +44,8 @@ export default function ReplyDraft({ monitorId, review, initialNote = "" }) {
     <div className="rd">
       <style>{`
         .rd { margin-top: 8px; }
+        .rd-bar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+        .rd-bar .rd-toggle { padding: 7px 13px; font-size: 12.5px; font-weight: 600; color: var(--chalk); }
         .rd-toggle { display: inline-flex; align-items: center; gap: 6px; background: none; border: 1px solid var(--ink-3); border-radius: 999px; padding: 5px 12px; font-size: 12px; color: var(--muted); cursor: pointer; }
         .rd-toggle:hover { color: var(--chalk); border-color: var(--brand); }
         .rd-box { margin-top: 10px; background: var(--ink); border: 1px solid var(--ink-3); border-radius: 12px; padding: 14px; }
@@ -61,9 +64,12 @@ export default function ReplyDraft({ monitorId, review, initialNote = "" }) {
         .rd-note { font-size: 11.5px; color: var(--muted); margin-top: 10px; line-height: 1.4; }
         .rd-spin { animation: rdspin 1s linear infinite; } @keyframes rdspin { to { transform: rotate(360deg); } }
       `}</style>
-      <button type="button" className="rd-toggle" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
-        <MessageSquareReply size={13} /> {open ? "Hide reply" : "Draft reply"}
-      </button>
+      <div className="rd-bar">
+        <button type="button" className="rd-toggle" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
+          <MessageSquareReply size={13} /> {open ? "Hide reply" : "Draft reply"}
+        </button>
+        {children}
+      </div>
       {open && (
         <div className="rd-box">
           <div className="rd-label">Tone</div>

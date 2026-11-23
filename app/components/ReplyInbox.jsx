@@ -84,15 +84,22 @@ export default function ReplyInbox({ monitorId = null, onChange }) {
                 <div className="ri-meta"><span className="ri-stars">{stars(x.rating)}</span> {x.appName}{x.version ? ` · v${x.version}` : ""} · {x.ageDays === 0 ? "today" : `${x.ageDays}d ago`}</div>
                 <div className="ri-text">{x.title ? <strong>{x.title}. </strong> : null}{String(x.content || "").slice(0, 400)}</div>
                 {drafts[x.reviewId] !== undefined ? (
-                  <div className="ri-draft">
-                    <textarea aria-label="Draft reply" value={drafts[x.reviewId]} onChange={(e) => setDrafts({ ...drafts, [x.reviewId]: e.target.value })} rows={4} />
-                    <button type="button" className="ri-btn ri-ghost" onClick={() => copy(x.reviewId)}>{copied === x.reviewId ? <Check size={14} /> : <Copy size={14} />} {copied === x.reviewId ? "Copied" : "Copy"}</button>
-                  </div>
-                ) : <ReplyDraft monitorId={x.monitorId} review={{ id: x.reviewId, rating: x.rating }} />}
-                <div className="ri-actions">
-                  <button type="button" className="ri-btn" onClick={() => mark(x, "replied")}>Mark replied</button>
-                  <button type="button" className="ri-btn ri-ghost" onClick={() => mark(x, "skipped")}>Skip</button>
-                </div>
+                  <>
+                    <div className="ri-draft">
+                      <textarea aria-label="Draft reply" value={drafts[x.reviewId]} onChange={(e) => setDrafts({ ...drafts, [x.reviewId]: e.target.value })} rows={4} />
+                    </div>
+                    <div className="ri-actions">
+                      <button type="button" className="ri-btn ri-ghost" onClick={() => copy(x.reviewId)}>{copied === x.reviewId ? <Check size={14} /> : <Copy size={14} />} {copied === x.reviewId ? "Copied" : "Copy"}</button>
+                      <button type="button" className="ri-btn" onClick={() => mark(x, "replied")}>Mark replied</button>
+                      <button type="button" className="ri-btn ri-ghost" onClick={() => mark(x, "skipped")}>Skip</button>
+                    </div>
+                  </>
+                ) : (
+                  <ReplyDraft monitorId={x.monitorId} review={{ id: x.reviewId, rating: x.rating }}>
+                    <button type="button" className="ri-btn" onClick={() => mark(x, "replied")}>Mark replied</button>
+                    <button type="button" className="ri-btn ri-ghost" onClick={() => mark(x, "skipped")}>Skip</button>
+                  </ReplyDraft>
+                )}
               </div>
             ))}
           </div>
@@ -107,15 +114,15 @@ export default function ReplyInbox({ monitorId = null, onChange }) {
         .ri-count { background: var(--kick, #f5433a); color: #fff; border-radius: 999px; font-size: 12px; padding: 1px 8px; }
         .ri-stats, .ri-note, .ri-empty { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
         .ri-bar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
-        .ri-list { display: flex; flex-direction: column; gap: 14px; }
-        .ri-item { border-top: 1px solid var(--ink-3); padding-top: 12px; min-width: 0; }
+        .ri-list { display: flex; flex-direction: column; gap: 12px; }
+        .ri-item { background: color-mix(in srgb, var(--chalk) 4%, transparent); border-radius: 12px; padding: 16px 20px; min-width: 0; }
         .ri-meta { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
         .ri-stars { color: #e0a82e; letter-spacing: 1px; }
         .ri-text { font-size: 14px; color: var(--chalk); line-height: 1.5; overflow-wrap: anywhere; }
         .ri-draft { margin-top: 10px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
         .ri-draft textarea { width: 100%; box-sizing: border-box; border: 1px solid var(--ink-3); background: var(--ink); color: var(--chalk); border-radius: 10px; font-size: 13.5px; font-family: inherit; padding: 9px 12px; line-height: 1.5; resize: vertical; }
-        .ri-actions { display: flex; gap: 8px; margin-top: 10px; }
-        .ri-btn { display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 999px; padding: 7px 13px; font-size: 12.5px; font-weight: 600; cursor: pointer; background: var(--brand); color: #fff; font-family: inherit; }
+        .ri-actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+        .ri-btn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid transparent; border-radius: 999px; padding: 7px 13px; font-size: 12.5px; font-weight: 600; cursor: pointer; background: var(--brand); color: #fff; font-family: inherit; }
         .ri-ghost { background: var(--surface); color: var(--chalk); border: 1px solid var(--ink-3); }
         .ri-btn:disabled { opacity: .55; cursor: not-allowed; }
         .ri-more { margin-top: 14px; background: none; border: 0; color: var(--brand); font-size: 13px; cursor: pointer; font-family: inherit; padding: 0; }
