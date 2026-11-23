@@ -198,8 +198,9 @@ export default function ConsolePulsePage() {
           white-space: nowrap;
         }
         .pulse-add-btn:disabled { opacity: 0.5; cursor: default; }
-        @media (max-width: 900px) { .pulse-header { padding-right: 0; } .pulse-add-btn { height: 48px; } }
-        .pulse-toolbar { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+        .pulse-toolbar .pulse-add-btn { flex-shrink: 0; margin-left: auto; }
+        @media (max-width: 900px) { .pulse-header { padding-right: 0; } .pulse-add-btn { height: 48px; } .pulse-toolbar .pulse-add-btn { flex: 1 1 100%; justify-content: center; margin-left: 0; } }
+        .pulse-toolbar { display: flex; align-items: center; gap: 16px; margin-bottom: 50px; }
         .pulse-search { flex: 1; min-width: 0; display: flex; align-items: center; gap: 24px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 114px; padding: 0 42px; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); height: 58px; box-sizing: border-box; }
         .pulse-search input { flex: 1; min-width: 0; border: none; outline: none; background: transparent; font-size: 15px; letter-spacing: -0.2px; color: var(--chalk); font-family: inherit; }
         .pulse-search input::placeholder { color: var(--chalk); opacity: 1; }
@@ -211,7 +212,7 @@ export default function ConsolePulsePage() {
         .pulse-tab:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
         .pulse-tab-active { background: rgba(43, 89, 255, 0.5); border-color: #2b59ff; }
         @media (max-width: 900px) { .pulse-toolbar { flex-wrap: wrap; } .pulse-tabs { flex: 1 1 100%; gap: 8px; } .pulse-tab { flex: 1 1 0; width: auto; min-width: 0; font-size: 13px; padding: 0 8px; } }
-        .pulse-limit-note { font-size: 13px; color: var(--muted); margin: 0 0 28px; }
+        .pulse-limit-note { font-size: 13px; color: var(--muted); margin: 28px 0 0; }
         .pulse-limit-note a { color: var(--brand); font-weight: 600; text-decoration: none; }
 
         .pulse-empty {
@@ -304,39 +305,29 @@ export default function ConsolePulsePage() {
           <div className="pulse-title">Monitor</div>
           <div className="pulse-subtitle">Track new reviews, rating shifts, and version updates — automatically.</div>
         </div>
+      </div>
+
+      <div className="pulse-toolbar">
+        {monitors && monitors.length > 0 && (
+          <>
+            <div className="pulse-search">
+              <img src="/console/search.svg" alt="" width={16} height={16} style={{ display: "block", flexShrink: 0 }} />
+              <input placeholder="Search apps" aria-label="Search apps" value={query} onChange={(e) => setQuery(e.target.value)} />
+            </div>
+            <div className="pulse-tabs" role="group" aria-label="Whose apps">
+              {[["mine", "My Apps"], ["other", "Another Apps"]].map(([k, label]) => (
+                <button key={k} type="button" className={`pulse-tab ${tab === k ? "pulse-tab-active" : ""}`} aria-pressed={tab === k} onClick={() => { tabChosen.current = true; setTab(k); setOpenId(null); }}>
+                  {label} ({monitors.filter((x) => x.kind === k).length})
+                </button>
+              ))}
+            </div>
+          </>
+        )}
         <button className="pulse-add-btn" onClick={() => setShowAdd(true)} disabled={atLimit}>
           <Plus size={16} />
           Add Monitor
         </button>
       </div>
-
-      {monitors && monitors.length > 0 && (
-        <div className="pulse-toolbar">
-          <div className="pulse-search">
-            <img src="/console/search.svg" alt="" width={16} height={16} style={{ display: "block", flexShrink: 0 }} />
-            <input placeholder="Search apps" aria-label="Search apps" value={query} onChange={(e) => setQuery(e.target.value)} />
-          </div>
-          <div className="pulse-tabs" role="group" aria-label="Whose apps">
-            {[["mine", "My Apps"], ["other", "Another Apps"]].map(([k, label]) => (
-              <button key={k} type="button" className={`pulse-tab ${tab === k ? "pulse-tab-active" : ""}`} aria-pressed={tab === k} onClick={() => { tabChosen.current = true; setTab(k); setOpenId(null); }}>
-                {label} ({monitors.filter((x) => x.kind === k).length})
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {limit !== null && monitors && (
-        <p className="pulse-limit-note">
-          {`${monitors.length} / ${limit} monitored app${limit === 1 ? "" : "s"} used on your plan (yours and other people's).`}
-          {atLimit && (
-            <>
-              {" "}
-              <Link href="/console/account">Upgrade</Link> for more.
-            </>
-          )}
-        </p>
-      )}
 
       {error && <div style={{ color: "var(--kick)", fontSize: 14, marginBottom: 16 }}>{error}</div>}
 
@@ -477,6 +468,18 @@ export default function ConsolePulsePage() {
             );
           })}
         </div>
+      )}
+
+      {limit !== null && monitors && (
+        <p className="pulse-limit-note">
+          {`${monitors.length} / ${limit} monitored app${limit === 1 ? "" : "s"} used on your plan (yours and other people's).`}
+          {atLimit && (
+            <>
+              {" "}
+              <Link href="/console/account">Upgrade</Link> for more.
+            </>
+          )}
+        </p>
       )}
 
       {showAdd && <AddMonitorModal onClose={() => setShowAdd(false)} onAdded={handleAdded} />}
