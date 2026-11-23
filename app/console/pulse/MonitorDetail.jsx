@@ -8,7 +8,6 @@ import ReviewTopics from "../../components/ReviewTopics";
 import FeatureRequests from "../../components/FeatureRequests";
 import ReviewLanguages from "../../components/ReviewLanguages";
 import CategoryBenchmark from "../../components/CategoryBenchmark";
-import ReplyDraft from "../../components/ReplyDraft";
 import ReplyInbox from "../../components/ReplyInbox";
 import ReleaseNotes from "../../components/ReleaseNotes";
 import RivalChanges from "../../components/RivalChanges";
@@ -330,7 +329,6 @@ export default function MonitorDetail({ id, embedded = false, onChanged, onRemov
                   </div>
                   {r.title && <div className="pmd-review-title">{r.title}</div>}
                   {r.content && <div className="pmd-review-content">{r.content}</div>}
-                  {m.kind === "mine" && <ReplyDraft monitorId={m.id} review={r} />}
                 </div>
               ))}
             </div>
