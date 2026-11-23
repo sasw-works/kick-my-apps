@@ -8,6 +8,7 @@ import {
 import { SkeletonBlock } from "../../components/Skeleton";
 import RivalChanges from "../../components/RivalChanges";
 import ReplyInbox from "../../components/ReplyInbox";
+import MonitorDetail from "./MonitorDetail";
 
 const COUNTRIES = [
   { code: "tr", label: "Turkey" },
@@ -98,6 +99,7 @@ export default function ConsolePulsePage() {
       const d = await res.json();
       if (d.error) throw new Error(d.error);
       setMonitors((prev) => prev.map((x) => (x.id === m.id ? { ...x, status: nextStatus } : x)));
+      bump(m.id);
     } catch (err) {
       alert(err.message);
     } finally {
@@ -121,6 +123,7 @@ export default function ConsolePulsePage() {
         return;
       }
       load();
+      bump(m.id);
     } catch (err) {
       alert(err.message);
     } finally {
@@ -137,12 +140,19 @@ export default function ConsolePulsePage() {
       const d = await res.json();
       if (d.error) throw new Error(d.error);
       setMonitors((prev) => prev.filter((x) => x.id !== m.id));
+      setOpenId((o) => (o === m.id ? null : o));
     } catch (err) {
       alert(err.message);
     } finally {
       setBusyId(null);
     }
   }
+
+  // Which monitor's card is open (one at a time, like the Admin page's user list), and a counter per monitor that
+  // remounts its detail after something outside it (Check now / Pause in the menu) changed the data.
+  const [openId, setOpenId] = useState(null);
+  const [stamp, setStamp] = useState({});
+  const bump = (id) => setStamp((s) => ({ ...s, [id]: (s[id] || 0) + 1 }));
 
   const atLimit = limit !== null && monitors && monitors.length >= limit;
 
@@ -170,14 +180,21 @@ export default function ConsolePulsePage() {
         .pulse-empty-title { color: var(--chalk); font-weight: 600; font-size: 16px; margin-bottom: 6px; }
 
         .pulse-list { display: flex; flex-direction: column; gap: 12px; }
-        .pulse-card {
-          background: var(--surface); border: 1px solid var(--ink-3); border-radius: 8px; padding: 20px 24px;
-          display: flex; align-items: center; gap: 16px; text-decoration: none; color: inherit; position: relative;
+        /* One monitored app = one box. The row is the header; clicking it opens the app's whole detail inside the box
+           (same pattern as the Admin page's user list). */
+        .pulse-item {
+          background: var(--surface); border: 1px solid var(--ink-3); border-radius: 8px; position: relative;
         }
-        .pulse-card-clickable { cursor: pointer; }
-        .pulse-card-clickable:hover { border-color: color-mix(in srgb, var(--brand) 40%, var(--ink-3)); }
-        .pulse-card-paused { opacity: 0.6; }
-        .pulse-card-busy { opacity: 0.5; pointer-events: none; }
+        .pulse-item-open { border-color: color-mix(in srgb, var(--brand) 40%, var(--ink-3)); }
+        .pulse-item-paused .pulse-card { opacity: 0.6; }
+        .pulse-item-busy { opacity: 0.5; pointer-events: none; }
+        .pulse-card {
+          padding: 20px 24px; display: flex; align-items: center; gap: 16px; color: inherit; cursor: pointer; border-radius: 8px;
+        }
+        .pulse-card:hover { background: rgba(255, 255, 255, 0.03); }
+        .pulse-card:focus-visible { outline: 2px solid var(--brand); outline-offset: -2px; }
+        .pulse-expand { border-top: 1px solid var(--ink-3); padding: 24px; cursor: default; }
+        .pulse-chevron-left { transition: transform 0.15s ease; }
         .pulse-avatar-img, .pulse-avatar {
           width: 42px; height: 42px; border-radius: 10px; color: #fff; font-weight: 700; font-size: 16px;
           display: flex; align-items: center; justify-content: center; flex-shrink: 0; object-fit: cover;
@@ -215,6 +232,7 @@ export default function ConsolePulsePage() {
         .pulse-menu-item-danger { color: var(--kick); }
 
         .pulse-chevron { color: var(--muted); flex-shrink: 0; }
+        .pulse-chevron-open { transform: rotate(90deg); }
 
         .pulse-card-top, .pulse-card-bottom { display: contents; }
         .pulse-chevron-mobile { display: none; }
@@ -302,12 +320,17 @@ export default function ConsolePulsePage() {
             const statusClass = m.status === "paused" ? "pulse-status-paused" : hasError ? "pulse-status-error" : "pulse-status-active";
             const lastChecked = timeAgo(m.last_checked_at);
             return (
-              <Link
-                href={`/console/pulse/${m.id}`}
-                key={m.id}
-                className={`pulse-card pulse-card-clickable ${m.status === "paused" ? "pulse-card-paused" : ""} ${busyId === m.id ? "pulse-card-busy" : ""}`}
+              <div key={m.id} className={`pulse-item ${openId === m.id ? "pulse-item-open" : ""} ${m.status === "paused" ? "pulse-item-paused" : ""} ${busyId === m.id ? "pulse-item-busy" : ""}`}>
+              <div
+                className="pulse-card"
+                role="button"
+                tabIndex={0}
+                aria-expanded={openId === m.id}
+                onClick={() => setOpenId(openId === m.id ? null : m.id)}
+                onKeyDown={(e) => { if ((e.key === "Enter" || e.key === " ") && e.target === e.currentTarget) { e.preventDefault(); setOpenId(openId === m.id ? null : m.id); } }}
               >
                 <div className="pulse-card-top">
+                  <ChevronRight size={18} className={`pulse-chevron pulse-chevron-left ${openId === m.id ? "pulse-chevron-open" : ""}`} />
                   {m.icon_url ? (
                     <img src={m.icon_url} alt="" className="pulse-avatar-img" />
                   ) : (
@@ -336,7 +359,6 @@ export default function ConsolePulsePage() {
                         : "Checking for the first time…"}
                     </div>
                   </div>
-                  <ChevronRight size={18} className="pulse-chevron pulse-chevron-desktop" />
                 </div>
 
                 <div className="pulse-card-bottom">
@@ -352,7 +374,6 @@ export default function ConsolePulsePage() {
                       <div className="pulse-stat-label">New review{m.new_review_count === 1 ? "" : "s"}</div>
                     </div>
                   )}
-                  <ChevronRight size={18} className="pulse-chevron pulse-chevron-mobile" />
                 </div>
 
                 <button
@@ -383,7 +404,13 @@ export default function ConsolePulsePage() {
                     </button>
                   </div>
                 )}
-              </Link>
+              </div>
+              {openId === m.id && (
+                <div className="pulse-expand">
+                  <MonitorDetail key={`${m.id}-${stamp[m.id] || 0}`} id={m.id} embedded onChanged={load} onRemoved={() => { setMonitors((prev) => prev.filter((x) => x.id !== m.id)); setOpenId(null); load(); }} />
+                </div>
+              )}
+              </div>
             );
           })}
         </div>
