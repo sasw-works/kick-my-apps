@@ -150,15 +150,17 @@ export default function ConsolePulsePage() {
     <main className="pulse-page">
       <style>{`
         .pulse-page { padding: 0 0 120px; max-width: 1120px; margin: 0 auto; }
-        .pulse-header { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 50px; flex-wrap: wrap; }
+        /* The bell and theme circles sit in the top-right corner of every page (136px wide, 58px tall), so the button stops 20px short of them and matches their height. */
+        .pulse-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 50px; padding-right: 156px; flex-wrap: wrap; }
         .pulse-title { margin: 0 0 8px; font-family: Helvetica, Arial, sans-serif; font-size: 48px; line-height: 52px; font-weight: 700; letter-spacing: -1.44px; color: var(--chalk); }
         .pulse-subtitle { margin: 0; font-size: 15px; line-height: 32px; letter-spacing: -0.2px; font-weight: 400; color: var(--muted); white-space: nowrap; }
         .pulse-add-btn {
           display: flex; align-items: center; gap: 8px; background: var(--brand); color: #fff;
-          border: none; border-radius: 999px; padding: 12px 24px; font-size: 14px; font-weight: 600; cursor: pointer;
+          border: none; border-radius: 999px; height: 58px; box-sizing: border-box; padding: 0 28px; font-size: 14px; font-weight: 600; cursor: pointer;
           white-space: nowrap;
         }
         .pulse-add-btn:disabled { opacity: 0.5; cursor: default; }
+        @media (max-width: 900px) { .pulse-header { padding-right: 0; } .pulse-add-btn { height: 48px; } }
         .pulse-limit-note { font-size: 13px; color: var(--muted); margin: 0 0 28px; }
         .pulse-limit-note a { color: var(--brand); font-weight: 600; text-decoration: none; }
 
