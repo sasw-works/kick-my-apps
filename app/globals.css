@@ -101,7 +101,6 @@ body:has(.kma-console.kma-dark) { background: #0d1117; }
    sticky bars deliberately keep their opaque --surface so they never turn see-through. */
 .kma-console.kma-dark .panel,
 .kma-console.kma-dark .upload-panel,
-.kma-console.kma-dark .kma-toolbar-card,
 .kma-console.kma-dark .finding-row,
 .kma-console.kma-dark .as-card,
 .kma-console.kma-dark .cmp-score-card,

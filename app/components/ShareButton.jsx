@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Link2, Check, Loader2 } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
 
 // Toolbar button + small popover for a report's public read-only link. Anyone with the link can
 // view the report (no account needed); "Stop sharing" revokes it immediately.
@@ -52,20 +52,15 @@ export default function ShareButton({ scanId }) {
   }
 
   return (
-    <div ref={boxRef} style={{ position: "relative" }}>
+    <div ref={boxRef} style={{ position: "relative", minWidth: 0 }}>
       {/* On phones the button can sit anywhere in a wrapped toolbar, so pin the popover to the screen instead. */}
       <style>{`@media (max-width: 640px) { .kma-share-pop { position: fixed !important; left: 16px !important; right: 16px !important; top: 84px !important; width: auto !important; } }`}</style>
       <button
-        className="kma-toolbar-btn"
+        className="rh-btn"
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
-        style={{
-          display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-          background: "var(--ink-2)", border: "1px solid var(--ink-3)", borderRadius: 999,
-          padding: "0 14px", fontSize: 13.5, color: "var(--chalk)", height: 44, boxSizing: "border-box",
-        }}
       >
-        <Link2 size={15} /> Share
+        Share Report
       </button>
       {open && (
         <div

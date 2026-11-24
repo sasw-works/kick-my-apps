@@ -21,7 +21,6 @@ import {
   TrendingDown,
   MessageSquare,
   ChevronDown,
-  X,
   CheckCircle2,
   AlertTriangle,
   XCircle,
@@ -564,7 +563,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
   });
 
   const dialCaption = `${badCount} critical, ${warnCount} need attention, out of ${findings.length} findings`;
-  const reportDateLabel = new Date().toLocaleDateString("en-US", { weekday: "long", day: "numeric", month: "long" }) +
+  const reportDateLabel = new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" }) +
     " · " + new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
 
   const IMPACT_RANK = { bad: 2, warn: 1, good: 0 };
@@ -628,13 +627,6 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
           background: var(--surface); border: 1px solid var(--ink-3);
           padding: 8px 12px; border-radius: 8px;
         }
-        .kma-close-btn {
-          width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--ink-3);
-          background: var(--surface); color: var(--chalk); display: flex; align-items: center; justify-content: center;
-          cursor: pointer; transition: background 0.15s ease, border-color 0.15s ease;
-        }
-        .kma-close-btn:hover { background: var(--ink-3); border-color: var(--brand); color: var(--brand); }
-
         .kma-main { padding: 24px 32px 32px; display: flex; flex-direction: column; gap: 32px; }
         @media (max-width: 700px) {
           /* The page wrapper (page.js) already contributes 16px of its own on mobile; this is the
@@ -661,50 +653,50 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
           padding: 8px 16px; font-size: 12px; color: var(--muted);
         }
         .upload-slot strong { color: var(--chalk); font-weight: 600; }
-        .kma-toolbar-btn {
-          border: none; cursor: pointer; white-space: nowrap; font-family: inherit; font-size: inherit;
-          margin: 0; box-sizing: border-box; line-height: normal; min-width: 125px;
-          transition: transform 0.15s ease, opacity 0.15s ease;
-        }
-        .kma-toolbar-btn:hover { transform: translateY(-2px); }
-        .kma-toolbar-btn:active { transform: translateY(0); }
-
         .panel { background: var(--surface); border: 1px solid var(--ink-3); border-radius: 16px; padding: 24px; box-shadow: var(--shadow); }
         .panel-title { font-family: var(--font-display); font-size: 16px; letter-spacing: 0; font-weight: 600; color: var(--chalk); margin-bottom: 4px; }
         .panel-subtitle { font-size: 12px; color: var(--muted); margin-bottom: 32px; }
         .panel-divider { height: 1px; background: var(--ink-3); margin-bottom: 16px; }
 
-        .kma-toolbar-card {
-          display: flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--ink-3);
-          border-radius: 16px; padding: 24px; margin-bottom: 24px; flex-wrap: wrap;
+        /* Figma 4271:568: big round app icon + 48px title, then one row of five equal 58px pills. */
+        .rh-head { margin-bottom: 18px; } /* + the 32px gap of .kma-main = the 50px of the design */
+        .rh-app { display: flex; align-items: center; gap: 20px; min-width: 0; }
+        .kma-toolbar-app-icon { width: 82px; height: 82px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+        .kma-toolbar-app-icon-fallback {
+          background: #2b59ff; color: #fff; display: flex; align-items: center; justify-content: center;
+          font-weight: 700; font-size: 32px;
+        }
+        .rh-app-text { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+        .rh-app-name { margin: 0; font-family: Helvetica, Arial, sans-serif; font-size: 48px; line-height: 52px; font-weight: 700; letter-spacing: -1.44px; color: var(--chalk); overflow-wrap: anywhere; }
+        .rh-app-date { font-size: 15px; line-height: 32px; letter-spacing: -0.2px; color: var(--muted); }
+        .rh-actions { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 16px; margin-bottom: 18px; }
+        .rh-btn {
+          display: flex; align-items: center; justify-content: center; gap: 24px; width: 100%; height: 58px; box-sizing: border-box;
+          padding: 0 16px; margin: 0; background: var(--glass-bg, var(--ink-2)); border: 1px solid var(--glass-border, var(--ink-3));
+          border-radius: 114px; font-family: inherit; font-size: 15px; letter-spacing: -0.2px; color: var(--chalk);
+          cursor: pointer; white-space: nowrap; text-decoration: none;
+          backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+          transition: border-color 0.15s ease, background 0.15s ease, opacity 0.15s ease;
+        }
+        .rh-btn:hover { border-color: var(--brand); }
+        .rh-btn:disabled { opacity: 0.6; cursor: default; }
+        .rh-btn:focus { outline: none; }
+        .rh-btn:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+        .rh-btn-primary { background: rgba(43, 89, 255, 0.5); border-color: #2b59ff; color: #fff; }
+        .rh-back-arrow {
+          width: 14px; height: 14px; flex-shrink: 0; background: currentColor;
+          -webkit-mask: url(/console/back-arrow.svg) center / 11.4px 11.4px no-repeat; mask: url(/console/back-arrow.svg) center / 11.4px 11.4px no-repeat;
+          transform: rotate(45deg);
         }
         @media (max-width: 900px) {
-          /* Reordered so the close button sits beside the app name/icon (top line) instead of
-             getting wrapped down with the action buttons, and the three action buttons share
-             their own full-width row below with extra breathing room above them. Achieved with
-             flex order + the spacer forcing a line break, not a DOM/JSX restructure, so desktop
-             (where this block doesn't apply) keeps its exact original single-row layout. */
-          .kma-toolbar-app { order: 1; max-width: calc(100% - 68px); }
-          .kma-toolbar-app-text { min-width: 0; overflow: hidden; }
-          .kma-toolbar-app-name, .kma-toolbar-app-date { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-          .kma-toolbar-spacer { order: 2; }
-          .kma-close-btn { order: 3; flex-shrink: 0; }
-          .kma-toolbar-btn {
-            order: 4; flex: 1 1 0; min-width: 0; padding-left: 8px !important; padding-right: 8px !important;
-            overflow: hidden; text-overflow: ellipsis;
-          }
-          /* 12px base gap (unchanged, still the spacing between the three buttons) + 20px more
-             between the app/close row and the button row below it, as asked for. */
-          .kma-toolbar-card { row-gap: 32px; }
+          .rh-head, .rh-actions { margin-bottom: 0; }
+          .rh-app { gap: 14px; }
+          .kma-toolbar-app-icon { width: 56px; height: 56px; }
+          .rh-app-name { font-size: 28px; line-height: 32px; letter-spacing: -0.8px; }
+          .rh-app-date { font-size: 13px; line-height: 20px; }
+          .rh-actions { grid-auto-flow: row; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-columns: auto; gap: 8px; }
+          .rh-btn { gap: 12px; height: 50px; font-size: 14px; }
         }
-        .kma-toolbar-app { display: flex; align-items: center; gap: 12px; }
-        .kma-toolbar-app-icon { width: 46px; height: 46px; border-radius: 8px; object-fit: cover; border: 1px solid var(--ink-3); }
-        .kma-toolbar-app-icon-fallback {
-          background: var(--brand); color: #fff; display: flex; align-items: center; justify-content: center;
-          font-weight: 700; font-size: 16px;
-        }
-        .kma-toolbar-app-name { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--chalk); }
-        .kma-toolbar-app-date { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
         .summary-badge-list { display: flex; flex-direction: column; gap: 16px; }
         .summary-badge-row { display: flex; align-items: center; gap: 12px; }
@@ -1010,68 +1002,33 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
       `}</style>
 
       <div className="kma-main">
-        <div className="kma-toolbar-card no-print">
-          <div className="kma-toolbar-app">
+        <div className="rh-head no-print">
+          <div className="rh-app">
             <ToolbarAppIcon name={appLabel} storeUrl={storeUrl} />
-            <div className="kma-toolbar-app-text">
-              <div className="kma-toolbar-app-name">{appLabel}</div>
-              <div className="kma-toolbar-app-date" suppressHydrationWarning>{reportDateLabel}</div>
+            <div className="rh-app-text">
+              <h1 className="rh-app-name">{appLabel}</h1>
+              <div className="rh-app-date" suppressHydrationWarning>{reportDateLabel}</div>
             </div>
           </div>
-          <div style={{ flex: 1 }} className="kma-toolbar-spacer" />
-          <button
-            className="kma-toolbar-btn"
-            onClick={handleExportPdf}
-            disabled={exporting}
-            style={{
-              display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-              background: "var(--ink-2)", border: "1px solid var(--ink-3)", borderRadius: 999,
-              padding: "0 14px", fontSize: 13.5, color: "var(--chalk)", height: 44, boxSizing: "border-box",
-              opacity: exporting ? 0.6 : 1,
-            }}
-          >
+        </div>
+        <div className="rh-actions no-print">
+          {onClose && (
+            <button className="rh-btn" onClick={onClose} data-testid="back-to-reports">
+              <span className="rh-back-arrow" aria-hidden="true" />
+              Back to Reports
+            </button>
+          )}
+          <button className="rh-btn" onClick={handleExportPdf} disabled={exporting}>
             {exporting ? "Preparing…" : "Download PDF"}
           </button>
           {scanId && !readOnly && <ShareButton scanId={scanId} />}
           {scanId && !readOnly && (
-            <Link
-              href={`/history?preselect=${scanId}`}
-              className="kma-toolbar-btn"
-              style={{
-                display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-                background: "var(--ink-2)", border: "1px solid var(--ink-3)", borderRadius: 999,
-                padding: "0 14px", fontSize: 13.5, color: "var(--chalk)", height: 44, boxSizing: "border-box",
-                textDecoration: "none",
-              }}
-            >
-              Compare
-            </Link>
+            <Link href={`/history?preselect=${scanId}`} className="rh-btn">Compare</Link>
           )}
-          <button
-            className="kma-toolbar-btn"
-            onClick={onReset}
-            style={{
-              display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-              background: "var(--brand)", border: "1px solid var(--brand)", borderRadius: 999,
-              padding: "0 16px", fontSize: 12.5, fontWeight: 600, color: "#fff", height: 44, boxSizing: "border-box",
-            }}
-          >
-            {onReset ? (
-              "New Analysis"
-            ) : readOnly ? (
-              <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>
-                Analyze your own app
-              </Link>
-            ) : (
-              <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>
-                New Analysis
-              </Link>
-            )}
-          </button>
-          {onClose && (
-            <button className="kma-close-btn" onClick={onClose} aria-label="Close">
-              <X size={18} />
-            </button>
+          {onReset ? (
+            <button className="rh-btn rh-btn-primary" onClick={onReset}>New Analysis</button>
+          ) : (
+            <Link href="/" className="rh-btn rh-btn-primary">{readOnly ? "Analyze your own app" : "New Analysis"}</Link>
           )}
         </div>
 
