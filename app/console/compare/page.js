@@ -133,6 +133,7 @@ export default function ConsoleComparePage() {
           display: flex; align-items: center; gap: 16px; background: var(--surface); border: 2px solid var(--ink-3);
           border-radius: 8px; padding: 16px; cursor: pointer; transition: border-color 0.15s ease, background 0.15s ease;
         }
+        .compare-card:focus-visible, .compare-recent-row:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
         .compare-card:hover { border-color: color-mix(in srgb, var(--brand) 40%, var(--ink-3)); }
         .compare-card-selected { border-color: var(--brand); background: color-mix(in srgb, var(--brand) 6%, var(--surface)); }
         .compare-card-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
@@ -200,6 +201,10 @@ export default function ConsoleComparePage() {
                     key={s.id}
                     className={`compare-card ${isSelected ? "compare-card-selected" : ""}`}
                     onClick={() => toggleSelect(s.id)}
+                    role="button"
+                    tabIndex={0}
+                    aria-pressed={isSelected}
+                    onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleSelect(s.id); } }}
                   >
                     <AppIcon name={s.app_name} iconUrl={s.icon_url} storeUrl={s.store_url} />
                     <div>

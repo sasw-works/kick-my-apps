@@ -131,6 +131,19 @@ body:has(.kma-console.kma-dark) { background: #0d1117; }
   box-shadow: none;
 }
 
+/* Compare page states on top of the 3% fill above (that rule's specificity would otherwise hide them):
+   hover = a lighter fill and a faint blue edge; selected = the same blue as the active sidebar item. */
+.kma-console.kma-dark .compare-card:hover,
+.kma-console.kma-dark .compare-recent-row:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(43, 89, 255, 0.35);
+}
+.kma-console.kma-dark .compare-card.compare-card-selected,
+.kma-console.kma-dark .compare-card.compare-card-selected:hover {
+  background: rgba(43, 89, 255, 0.25);
+  border-color: rgba(43, 89, 255, 0.5);
+}
+
 /* Figma 4157:177 "Div [absolute]" — 1728x1558 radial light, centred, top of page */
 .kma-glow {
   position: absolute;
