@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
-import { Sun } from "lucide-react";
 import { useTheme } from "../components/ThemeProvider";
 
 // Top-right of every Console page, after Figma 4262:2481: two 58px glass circles, the bell (with a red
@@ -254,11 +253,14 @@ export default function ConsoleHeaderActions() {
 
         <div className="kma-hdr-slot">
           <button type="button" className="kma-hdr-btn" aria-label={theme === "light" ? "Switch to dark mode" : "Switch to light mode"} onClick={toggleTheme}>
+            {/* Like the home page, the icon shows the mode a click switches TO: a sun while dark, a moon while light. */}
             {theme === "light" ? (
-              <Sun size={18} strokeWidth={1} />
-            ) : (
               <svg className="kma-hdr-glyph" width="58" height="58" viewBox="0 0 58 58" fill="none" aria-hidden="true" style={{ position: "absolute", inset: 0 }}>
                 <path d="M29.22 24.2095C29.22 22.9826 29.4941 21.8229 29.9723 20.7772C29.7939 20.7651 29.6159 20.75 29.4345 20.75C25.0525 20.75 21.5 24.3318 21.5 28.75C21.5 33.1682 25.0525 36.75 29.4345 36.75C32.5199 36.75 35.1876 34.9705 36.5 32.3777C32.4084 31.9401 29.22 28.4512 29.22 24.2095Z" stroke="currentColor" strokeMiterlimit="10" strokeLinejoin="round" />
+              </svg>
+            ) : (
+              <svg className="kma-hdr-glyph" width="58" height="58" viewBox="0 0 58 58" fill="none" aria-hidden="true" style={{ position: "absolute", inset: 0 }}>
+                <path transform="translate(1 1)" d="M28.5 18V20M28.5 36V38M21.43 20.93L22.84 22.34M34.16 33.66L35.57 35.07M18.5 28H20.5M36.5 28H38.5M22.84 33.66L21.43 35.07M35.57 20.93L34.16 22.34M32.5 28C32.5 30.2091 30.7091 32 28.5 32C26.2909 32 24.5 30.2091 24.5 28C24.5 25.7909 26.2909 24 28.5 24C30.7091 24 32.5 25.7909 32.5 28Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             )}
           </button>
