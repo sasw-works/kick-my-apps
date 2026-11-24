@@ -6,24 +6,43 @@ import { STORES, checkSubmission } from "../../lib/submissionCheck";
 import ListingTranslate from "../../components/ListingTranslate";
 import AppChecklist from "./AppChecklist";
 
-const KEY = "kma-submission-draft-v1";
+const KEY = "kma-submission-draft-v1"; // before: one draft for everyone; now one per app (KEY:<project key>)
+const APP_KEY = "kma-checklist-app-v1";
 const ICON = { pass: CheckCircle2, warn: AlertTriangle, fail: XCircle, todo: Circle, info: Circle };
 
 export default function ChecklistPage() {
   const [draft, setDraft] = useState({ store: "apple", fields: {}, screenshots: "", confirms: {} });
   const [loaded, setLoaded] = useState(false);
+  const [projects, setProjects] = useState(null); // the person's apps (one per app they made a report of)
+  const [pk, setPk] = useState("");
 
   useEffect(() => {
-    try {
-      const saved = JSON.parse(localStorage.getItem(KEY) || "null");
-      if (saved && typeof saved === "object") setDraft((d) => ({ ...d, ...saved }));
-    } catch {}
-    setLoaded(true);
+    fetch("/api/checklist").then((r) => r.json()).then((d) => {
+      const list = Array.isArray(d.projects) ? d.projects : [];
+      setProjects(list);
+      let saved = "";
+      try { saved = localStorage.getItem(APP_KEY) || ""; } catch {}
+      setPk(list.some((p) => p.key === saved) ? saved : list[0]?.key || "");
+    }).catch(() => setProjects([]));
   }, []);
+  const pick = (k) => { setPk(k); try { localStorage.setItem(APP_KEY, k); } catch {} };
+
+  // Each app has its own draft, kept in this browser. The one old shared draft goes to the first app that opens.
   useEffect(() => {
-    if (!loaded) return;
-    try { localStorage.setItem(KEY, JSON.stringify(draft)); } catch {}
-  }, [draft, loaded]);
+    if (!pk) return;
+    setLoaded(false);
+    try {
+      let raw = localStorage.getItem(`${KEY}:${pk}`);
+      if (raw === null && localStorage.getItem(KEY) !== null) { raw = localStorage.getItem(KEY); localStorage.removeItem(KEY); }
+      const saved = JSON.parse(raw || "null");
+      setDraft({ store: "apple", fields: {}, screenshots: "", confirms: {}, ...(saved && typeof saved === "object" ? saved : {}) });
+    } catch { setDraft({ store: "apple", fields: {}, screenshots: "", confirms: {} }); }
+    setLoaded(true);
+  }, [pk]);
+  useEffect(() => {
+    if (!loaded || !pk) return;
+    try { localStorage.setItem(`${KEY}:${pk}`, JSON.stringify(draft)); } catch {}
+  }, [draft, loaded, pk]);
 
   const spec = STORES[draft.store] || STORES.apple;
   const result = useMemo(() => checkSubmission({ ...draft, screenshots: draft.screenshots === "" ? 0 : Number(draft.screenshots) }), [draft]);
@@ -62,10 +81,12 @@ export default function ChecklistPage() {
         @media (max-width: 900px) { .cl-page { padding: 0 0 96px; } .cl-page h1 { font-size: 34px; line-height: 40px; letter-spacing: -1px; } .cl-grid { grid-template-columns: 1fr; } }
       `}</style>
       <h1>Pre-submission checklist</h1>
-      <p className="cl-lede">Pick your app to see what still blocks a release, then fill in your store listing draft and tick what you have confirmed. It checks field limits, common rejection causes and what people forget, before the store does. The listing draft below stays in this browser; pinned and your own items are saved to your account.</p>
+      <p className="cl-lede">Every app you made a report of has its own checklist. Pick one to see what still blocks a release, then fill in its store listing draft and tick what you have confirmed. It checks field limits, common rejection causes and what people forget, before the store does. Each app's listing draft stays in this browser; pinned and your own items are saved to your account.</p>
 
-      <AppChecklist />
+      <AppChecklist projects={projects} projectKey={pk} onPick={pick} />
 
+      {projects && projects.length > 0 && pk && (
+      <>
       <div className="cl-grid">
         <section className="cl-card" aria-label="Draft">
           <div className="cl-tabs">
@@ -129,6 +150,8 @@ export default function ChecklistPage() {
         </section>
       </div>
       <ListingTranslate store={draft.store} fields={draft.fields} />
+      </>
+      )}
     </main>
   );
 }

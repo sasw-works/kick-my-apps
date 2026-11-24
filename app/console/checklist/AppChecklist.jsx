@@ -8,25 +8,11 @@ import { CheckCircle2, Circle, MinusCircle, Plus, X, ListChecks } from "lucide-r
 //  - Critical issues: open critical tasks, read live from Tasks (tick them there and they leave this list).
 //  - From your reports: findings you pinned with "Add to Checklist" on a report, with their state from Tasks.
 //  - Your own items: anything you want to remember before submitting.
-const APP_KEY = "kma-checklist-app-v1";
-
-export default function AppChecklist() {
-  const [projects, setProjects] = useState(null);
-  const [key, setKey] = useState("");
+export default function AppChecklist({ projects, projectKey: key, onPick }) {
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
   const [title, setTitle] = useState("");
   const [busy, setBusy] = useState(false);
-
-  useEffect(() => {
-    fetch("/api/checklist").then((r) => r.json().then((d) => ({ ok: r.ok, d }))).then(({ ok, d }) => {
-      if (!ok) throw new Error(d.error || "Could not load your apps.");
-      setProjects(d.projects);
-      let saved = "";
-      try { saved = localStorage.getItem(APP_KEY) || ""; } catch {}
-      setKey(d.projects.some((p) => p.key === saved) ? saved : d.projects[0]?.key || "");
-    }).catch((e) => { setError(e.message); setProjects([]); });
-  }, []);
 
   const load = useCallback((k) => {
     if (!k) return;
@@ -59,7 +45,6 @@ export default function AppChecklist() {
   }
 
   if (projects === null) return null;
-  const pick = (k) => { setKey(k); try { localStorage.setItem(APP_KEY, k); } catch {} };
   const open = data ? data.critical.length + data.pinned.filter((p) => p.status === "todo").length + data.custom.filter((c) => !c.checked).length : 0;
 
   return (
@@ -92,13 +77,13 @@ export default function AppChecklist() {
       <div className="cl-app-head">
         <div className="cl-app-title"><ListChecks size={17} /> Your app</div>
         {projects.length > 0 && (
-          <select className="cl-app-select" aria-label="App" value={key} onChange={(e) => pick(e.target.value)}>
+          <select className="cl-app-select" aria-label="App" value={key} onChange={(e) => onPick(e.target.value)}>
             {projects.map((p) => <option key={p.key} value={p.key}>{p.appName}{p.openCritical ? ` (${p.openCritical} critical open)` : ""}</option>)}
           </select>
         )}
       </div>
       {projects.length === 0 ? (
-        <p className="cl-empty">Make a report of your app and its critical issues show up here, ready to tick off before you submit. <Link href="/console" className="cl-link">Make a report</Link></p>
+        <p className="cl-empty">Every app you make a report of gets its own checklist: its critical issues, the findings you pin and a store listing check. Make a report first, then come back here. <Link href="/console" className="cl-link">Make a report</Link></p>
       ) : !data ? (
         error ? <div className="cl-err" role="alert">{error}</div> : null
       ) : (
