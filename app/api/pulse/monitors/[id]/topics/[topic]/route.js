@@ -27,7 +27,7 @@ export async function GET(req, { params }) {
     const { rows: st } = await sql`
       SELECT updated_at FROM task_status WHERE user_email = ${user.email} AND project_key = ${pk} AND finding_key = ${"rev:" + key} AND status = 'done'
     `;
-    if (!st[0]) return Response.json({ error: "Mark this task as done in Tasks first.", code: "NOT_FIXED" }, { status: 409 });
+    if (!st[0]) return Response.json({ error: "Mark this item as done in your Checklist first.", code: "NOT_FIXED" }, { status: 409 });
 
     const { rows } = await sql`
       SELECT review_id, rating, title, content, version, reviewed_at FROM pulse_reviews

@@ -61,7 +61,7 @@ export async function buildBrief(email, now = Date.now()) {
   const todos = [];
   for (const p of (await loadProjects(email)).slice(0, 20)) {
     const { tasks } = computeProjectTasks(p.scans, await loadStatusMap(email, p.key), await loadCustomTasks(email, p.key));
-    for (const t of tasks) if (t.status === "todo") todos.push({ app: p.appName, title: t.title, severity: t.severity });
+    for (const t of tasks) if (t.status === "todo" || t.status === "inprogress") todos.push({ app: p.appName, title: t.title, severity: t.severity });
   }
   todos.sort((a, b) => (a.severity === b.severity ? 0 : a.severity === "bad" ? -1 : 1));
 

@@ -13,10 +13,9 @@ import { SkeletonBlock } from "./Skeleton";
 const NAV_ITEMS = [
   { href: "/console", label: "Dashboard", icon: "/console/nav-dashboard.svg", size: 18 },
   { href: "/console/reports", label: "Reports", icon: "/console/nav-reports.svg", size: 16 },
-  { href: "/console/tasks", label: "Tasks", icon: "/console/nav-tasks.svg", size: 17 },
+  { href: "/console/checklist", label: "Checklist", icon: "/console/nav-checklist.svg", size: 16 },
   { href: "/console/compare", label: "Compare", icon: "/console/nav-compare.svg", size: 18 },
   { href: "/console/pulse", label: "Monitor", icon: "/console/nav-monitor.svg", size: 17 },
-  { href: "/console/checklist", label: "Checklist", icon: "/console/nav-checklist.svg", size: 16 },
 ];
 const ADMIN_ITEM = { href: "/console/admin", label: "Admin", icon: "/console/nav-admin.svg", size: 15 };
 

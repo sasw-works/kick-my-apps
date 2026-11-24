@@ -14,7 +14,7 @@ export function projectKey(appName, storeUrl) {
   return `name:${String(appName || "").trim().toLowerCase().slice(0, 120)}`;
 }
 
-export const TASK_STATUSES = ["todo", "done", "wontdo"];
+export const TASK_STATUSES = ["todo", "inprogress", "done", "wontdo"];
 
 // scansNewestFirst: one project's reports, [{ id, created_at, findings }]. statusByKey: what the
 // user has recorded, { findingKey: { status: "done"|"wontdo", updated_at } }.
@@ -28,7 +28,7 @@ export const TASK_STATUSES = ["todo", "done", "wontdo"];
 //    whatever status the user gave them; there is no scan to say they "came back".
 export function computeProjectTasks(scansNewestFirst, statusByKey = {}, extraTasks = []) {
   const [latest, prev] = scansNewestFirst;
-  if (!latest) return { tasks: [], verified: [], counts: { todo: 0, done: 0, wontdo: 0, verified: 0 } };
+  if (!latest) return { tasks: [], verified: [], counts: { todo: 0, inprogress: 0, done: 0, wontdo: 0, verified: 0 } };
 
   const index = (scan) => {
     const m = new Map();
@@ -44,7 +44,7 @@ export function computeProjectTasks(scansNewestFirst, statusByKey = {}, extraTas
   for (const [key, f] of cur) {
     const stored = statusByKey[key];
     if (isOpen(f.status)) {
-      let status = stored?.status === "done" || stored?.status === "wontdo" ? stored.status : "todo";
+      let status = stored?.status === "done" || stored?.status === "wontdo" || stored?.status === "inprogress" ? stored.status : "todo";
       let reappeared = false;
       if (status === "done" && new Date(stored.updated_at).getTime() < latestAt) {
         status = "todo";
@@ -77,7 +77,7 @@ export function computeProjectTasks(scansNewestFirst, statusByKey = {}, extraTas
       severity: x.severity === "bad" ? "bad" : "warn",
       finding: String(x.finding || "").slice(0, 600),
       suggestion: String(x.suggestion || "").slice(0, 600),
-      status: stored === "done" || stored === "wontdo" ? stored : "todo",
+      status: stored === "done" || stored === "wontdo" || stored === "inprogress" ? stored : "todo",
       isNew: false,
       reappeared: false,
       source: x.source || "review",
@@ -85,7 +85,7 @@ export function computeProjectTasks(scansNewestFirst, statusByKey = {}, extraTas
   }
   tasks.sort((a, b) => (a.severity === b.severity ? 0 : a.severity === "bad" ? -1 : 1));
 
-  const counts = { todo: 0, done: 0, wontdo: 0, verified: verified.length };
+  const counts = { todo: 0, inprogress: 0, done: 0, wontdo: 0, verified: verified.length };
   for (const t of tasks) counts[t.status] += 1;
   return { tasks, verified, counts };
 }

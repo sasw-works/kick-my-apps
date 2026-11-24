@@ -1,6 +1,6 @@
 // Turns a project's tasks into a Markdown checklist or a CSV. Pure functions (no database).
 
-const STATUS_LABEL = { todo: "To do", done: "Done", wontdo: "Won't do" };
+const STATUS_LABEL = { todo: "To do", inprogress: "In progress", done: "Done", wontdo: "Won't do" };
 const SEVERITY_LABEL = { bad: "Critical", warn: "Attention" };
 
 export function exportFileName(appName, ext, suffix = "tasks") {
@@ -51,6 +51,7 @@ export function tasksToMarkdown(appName, tasks, verified = [], generatedAt = new
     lines.push("");
   };
   section("To do", tasks.filter((t) => t.status === "todo"), false);
+  section("In progress", tasks.filter((t) => t.status === "inprogress"), false);
   section("Done", tasks.filter((t) => t.status === "done"), true);
   section("Won't do", tasks.filter((t) => t.status === "wontdo"), false);
   if (verified.length) {
@@ -68,7 +69,7 @@ const PRIORITY = {
   linear: { bad: "High", warn: "Medium" },
   jira: { bad: "High", warn: "Medium" },
 };
-const openTasks = (tasks) => tasks.filter((t) => t.status === "todo");
+const openTasks = (tasks) => tasks.filter((t) => t.status === "todo" || t.status === "inprogress"); // not finished yet
 const description = (t) =>
   [t.finding && `What we found: ${t.finding}`, t.suggestion && `Suggested fix: ${t.suggestion}`, t.source === "review" ? "Source: user reviews (Kick My Apps)" : "Source: Kick My Apps report"].filter(Boolean).join("\n\n");
 

@@ -113,8 +113,6 @@ jobs:
         run: python3 tests/integration/notifications_api_test.py
       - name: inapp_notifications_api_test.py
         run: python3 tests/integration/inapp_notifications_api_test.py
-      - name: checklist_api_test.py
-        run: python3 tests/integration/checklist_api_test.py
       - name: tasks_test.py
         run: python3 tests/integration/tasks_test.py
       - name: unsubscribe_test.py

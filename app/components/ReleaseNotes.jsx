@@ -49,12 +49,12 @@ export default function ReleaseNotes({ monitorId }) {
     <div className="pmd-panel" data-testid="release-notes">
       <div className="pmd-panel-title">Write my release notes</div>
       <div className="rn-sub">
-        Built from the tasks you marked done in Tasks since {data?.lastVersion ? `version ${data.lastVersion} was released` : "the last 30 days"}. Pick what to include, add anything else, and get store-ready text.
+        Built from the items you marked done in your Checklist since {data?.lastVersion ? `version ${data.lastVersion} was released` : "the last 30 days"}. Pick what to include, add anything else, and get store-ready text.
       </div>
       {!data && !error ? <Loader2 size={16} className="rn-spin" /> : data && (
         <>
           {data.tasks.length === 0 ? (
-            <div className="rn-empty">No finished tasks since then. Mark tasks done in Tasks as you ship them, or just describe the changes below.</div>
+            <div className="rn-empty">Nothing marked done since then. Mark items done in your Checklist as you ship them, or just describe the changes below.</div>
           ) : (
             <div className="rn-list">
               {data.tasks.map((t) => (

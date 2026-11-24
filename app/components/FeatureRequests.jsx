@@ -69,10 +69,10 @@ export default function FeatureRequests({ monitorId }) {
               {t.examples[0] && <div className="fr-quote">{"★".repeat(t.examples[0].rating)} “{t.examples[0].text}”</div>}
               <div className="fr-actions">
                 {t.added ? (
-                  <Link href="/console/tasks" className="fr-added"><Check size={13} /> In Tasks</Link>
+                  <Link href="/console/checklist" className="fr-added"><Check size={13} /> In Checklist</Link>
                 ) : (
                   <button className="fr-btn" onClick={() => post({ key: t.key }, t.key)} disabled={!t.canAdd || busy === t.key || !data.hasReports} title={!t.canAdd ? "At least 3 reviews need to ask for it" : !data.hasReports ? "Make a report of this app first" : undefined}>
-                    {busy === t.key ? <Loader2 size={13} className="fr-spin" /> : <Plus size={13} />} Add to Tasks
+                    {busy === t.key ? <Loader2 size={13} className="fr-spin" /> : <Plus size={13} />} Add to Checklist
                   </button>
                 )}
                 {!t.canAdd && !t.added && <span className="fr-note">needs 3+ requests</span>}
@@ -89,7 +89,7 @@ export default function FeatureRequests({ monitorId }) {
         </div>
       )}
       {data && !data.hasReports && topics.length > 0 && (
-        <div className="fr-note" style={{ marginTop: 10 }}>To add requests to Tasks, make a report of this app from its store link first.</div>
+        <div className="fr-note" style={{ marginTop: 10 }}>To add requests to the Checklist, make a report of this app from its store link first.</div>
       )}
       {msg && <div className="fr-err" role="alert">{msg}</div>}
       <style>{`

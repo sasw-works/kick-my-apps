@@ -99,7 +99,7 @@ export default function ReviewTopics({ monitorId }) {
       <div className="pmd-panel-title">What users complain about</div>
       <div className="rt-sub">
         Counted from the {data ? data.sample : "…"} most recent written 1–3★ reviews Pulse has stored for this app. Exact counts,
-        not a guess. Put a topic in Tasks to work on it like any other issue.
+        not a guess. Add a topic to your Checklist to work on it like any other issue.
       </div>
       {error ? (
         <div className="pmd-empty" role="alert">{error}</div>
@@ -122,10 +122,10 @@ export default function ReviewTopics({ monitorId }) {
               {t.examples[0] && <div className="rt-quote">{"★".repeat(t.examples[0].rating)} “{t.examples[0].text}”</div>}
               <div className="rt-actions">
                 {t.added ? (
-                  <Link href="/console/tasks" className="rt-added"><Check size={13} /> In Tasks</Link>
+                  <Link href="/console/checklist" className="rt-added"><Check size={13} /> In Checklist</Link>
                 ) : (
                   <button className="rt-btn" onClick={() => add(t)} disabled={!t.canAdd || busy === t.key || !data.hasReports} title={!t.canAdd ? "At least 3 reviews need to mention it" : !data.hasReports ? "Make a report of this app first" : undefined}>
-                    {busy === t.key ? <Loader2 size={13} className="rt-spin" /> : <Plus size={13} />} Add to Tasks
+                    {busy === t.key ? <Loader2 size={13} className="rt-spin" /> : <Plus size={13} />} Add to Checklist
                   </button>
                 )}
                 {!t.canAdd && !t.added && <span className="rt-note">needs 3+ mentions</span>}
@@ -137,7 +137,7 @@ export default function ReviewTopics({ monitorId }) {
       )}
       {data && !data.hasReports && topics.length > 0 && (
         <div className="rt-note" style={{ marginTop: 10 }}>
-          To add topics to Tasks, make a report of this app from its store link first. Tasks are kept per app, and the report gives them a home.
+          To add topics to the Checklist, make a report of this app from its store link first. Checklists are kept per app, and the report gives them a home.
         </div>
       )}
       {msg && <div className="rt-err" role="alert">{msg}</div>}

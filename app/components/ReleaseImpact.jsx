@@ -111,7 +111,7 @@ export default function ReleaseImpact({ monitorId }) {
       )}
       {data && !data.hasReports && (
         <div className="ri-meta" style={{ marginTop: 10 }}>
-          Make a report of this app from its store link and mark fixes done in <Link href="/console/tasks">Tasks</Link>: they&apos;ll show up next to the release they shipped with.
+          Make a report of this app from its store link and mark fixes done in your <Link href="/console/checklist">Checklist</Link>: they&apos;ll show up next to the release they shipped with.
         </div>
       )}
       <style>{`

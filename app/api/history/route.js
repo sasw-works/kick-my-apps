@@ -175,7 +175,7 @@ export async function GET(req) {
         await migrateLegacyTracking(row.user_email, legacy);
         const map = await loadStatusMap(row.user_email, projectKey(row.app_name, row.store_url));
         for (const [k, v] of Object.entries(map)) {
-          if (v.status === "wontdo" || new Date(v.updated_at) >= new Date(row.created_at)) taskStatus[k] = v.status;
+          if (v.status === "wontdo" || v.status === "inprogress" || new Date(v.updated_at) >= new Date(row.created_at)) taskStatus[k] = v.status;
         }
       } catch (e) {
         console.error("task status lookup failed:", errorText(e));

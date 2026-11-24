@@ -36,8 +36,6 @@ import {
   BadgeCheck,
   GitCompare,
   Mail,
-  Check,
-  Plus,
 } from "lucide-react";
 
 // ---------------------------------------------------------------------------
@@ -314,8 +312,7 @@ function AnnotatedScreenshot({ url, index, findings }) {
   );
 }
 
-// pin: undefined = no button (public view); { inList, onAdd, href } = "Add to Checklist" for the owner.
-function FindingRow({ f, track, pin }) {
+function FindingRow({ f, track }) {
   const meta = STATUS_META[f.status];
   const closed = track === "done" || track === "wontdo";
   return (
@@ -325,8 +322,9 @@ function FindingRow({ f, track, pin }) {
       </span>
       <div className="finding-row-top">
         <span className="finding-title">{f.title}</span>
+        {track === "inprogress" && <span className="finding-track-pill">In progress</span>}
         {track === "done" && <span className="finding-track-pill finding-track-done">Done</span>}
-        {track === "wontdo" && <span className="finding-track-pill">Won't do</span>}
+        {track === "wontdo" && <span className="finding-track-pill">Skipped</span>}
         {f.screenshotIndex && <span className="finding-shot-ref">Ekran #{f.screenshotIndex}</span>}
       </div>
       <p className="finding-text">{f.finding}</p>
@@ -334,13 +332,6 @@ function FindingRow({ f, track, pin }) {
         <div className="finding-suggestion">
           <Lightbulb size={12} strokeWidth={2.2} color="var(--yellow)" />
           <span>{f.suggestion}</span>
-        </div>
-      )}
-      {pin && f.status !== "good" && (
-        <div className="finding-pin">
-          {pin.inList
-            ? <Link href={pin.href} className="finding-pin-btn finding-pin-on"><Check size={12} strokeWidth={2.4} /> In Checklist</Link>
-            : <button type="button" className="finding-pin-btn" onClick={pin.onAdd} disabled={pin.busy}><Plus size={12} strokeWidth={2.4} /> Add to Checklist</button>}
         </div>
       )}
       {f.codeSnippet?.code && (
@@ -496,7 +487,7 @@ const EFFORT_MAP = {
 // Main
 // ---------------------------------------------------------------------------
 
-export default function KickMyAppsHealthReport({ data, appLabel = "Your App", onReset, history = [], onViewHistory, scanId, storeUrl, screenshots = [], onClose, readOnly = false, taskStatus, progress, tasksHref, topExtra = null, checklist = null }) {
+export default function KickMyAppsHealthReport({ data, appLabel = "Your App", onReset, history = [], onViewHistory, scanId, storeUrl, screenshots = [], onClose, readOnly = false, taskStatus, progress, tasksHref, topExtra = null }) {
   const usingRealData = Boolean(data);
   const reportRef = useRef(null);
   const [exporting, setExporting] = useState(false);
@@ -965,11 +956,6 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
 
         .finding-row-closed .finding-title, .finding-row-closed .finding-text { opacity: 0.6; }
         .finding-row-closed .finding-title { text-decoration: line-through; }
-        .finding-pin { margin-top: 10px; }
-        .finding-pin-btn { display: inline-flex; align-items: center; gap: 6px; background: none; border: 1px solid var(--ink-3); border-radius: 999px; padding: 5px 12px; font: inherit; font-size: 12px; font-weight: 600; color: var(--chalk); cursor: pointer; text-decoration: none; }
-        .finding-pin-btn:hover { border-color: var(--brand); }
-        .finding-pin-btn:disabled { opacity: .6; cursor: default; }
-        .finding-pin-on { color: var(--teal); border-color: transparent; cursor: pointer; }
         .finding-track-pill { font-size: 11px; font-family: var(--font-mono); color: var(--muted); background: var(--ink-3); border-radius: 999px; padding: 2px 8px; }
         .finding-track-done { color: var(--teal); background: color-mix(in srgb, var(--teal) 15%, transparent); }
         .track-summary { margin-bottom: 20px; }
@@ -1337,7 +1323,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
             <div className="track-summary" data-testid="track-summary">
               <div className="track-summary-text">
                 {doneN > 0 ? <><strong>{doneN}</strong> of {openFindings.length} issues done · </> : null}
-                <Link href={tasksHref} className="track-link">Manage in Tasks</Link>
+                <Link href={tasksHref} className="track-link">Manage in Checklist</Link>
               </div>
             </div>
           )}
@@ -1355,7 +1341,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
                   <div className="lens-group-caption">{items.length} findings · {LENS_SUBTITLE[lens]}</div>
                   <div className="finding-list">
                     {items.map((f) => (
-                      <FindingRow key={f.key} f={f} track={f.status !== "good" ? taskStatus?.[f.key] : undefined} pin={checklist && !readOnly ? { inList: checklist.pinned.includes(f.key), onAdd: () => checklist.onAdd(f.key), href: "/console/checklist", busy: checklist.busy } : undefined} />
+                      <FindingRow key={f.key} f={f} track={f.status !== "good" ? taskStatus?.[f.key] : undefined} />
                     ))}
                   </div>
                 </div>
