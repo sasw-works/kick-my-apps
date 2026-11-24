@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { CheckCircle2, AlertTriangle, XCircle, Circle } from "lucide-react";
 import { STORES, checkSubmission } from "../../lib/submissionCheck";
 import ListingTranslate from "../../components/ListingTranslate";
+import AppChecklist from "./AppChecklist";
 
 const KEY = "kma-submission-draft-v1";
 const ICON = { pass: CheckCircle2, warn: AlertTriangle, fail: XCircle, todo: Circle, info: Circle };
@@ -61,7 +62,9 @@ export default function ChecklistPage() {
         @media (max-width: 900px) { .cl-page { padding: 0 0 96px; } .cl-page h1 { font-size: 34px; line-height: 40px; letter-spacing: -1px; } .cl-grid { grid-template-columns: 1fr; } }
       `}</style>
       <h1>Pre-submission checklist</h1>
-      <p className="cl-lede">Fill in your store listing draft and tick what you have confirmed. It checks field limits, common rejection causes and what people forget, before the store does. Nothing here is saved on our servers.</p>
+      <p className="cl-lede">Pick your app to see what still blocks a release, then fill in your store listing draft and tick what you have confirmed. It checks field limits, common rejection causes and what people forget, before the store does. The listing draft below stays in this browser; pinned and your own items are saved to your account.</p>
+
+      <AppChecklist />
 
       <div className="cl-grid">
         <section className="cl-card" aria-label="Draft">

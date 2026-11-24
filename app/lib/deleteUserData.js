@@ -29,6 +29,7 @@ export async function deleteUserData({ id, email }) {
   await ignoreMissingTable(() => sql`DELETE FROM custom_tasks WHERE user_email = ${email}`);
   await ignoreMissingTable(() => sql`DELETE FROM notification_channels WHERE user_email = ${email}`);
   await ignoreMissingTable(() => sql`DELETE FROM app_notifications WHERE user_email = ${email}`);
+  await ignoreMissingTable(() => sql`DELETE FROM checklist_items WHERE user_email = ${email}`);
   await ignoreMissingTable(() => sql`DELETE FROM brief_settings WHERE user_email = ${email}`);
   await ignoreMissingTable(() => sql`DELETE FROM subscriptions WHERE email = ${email}`);
   // Cascades to that monitor's own pulse_snapshots/pulse_reviews/pulse_alerts rows (all three

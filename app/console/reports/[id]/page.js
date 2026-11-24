@@ -19,6 +19,8 @@ export default function ConsoleReportDetailPage() {
   const [reload, setReload] = useState(0);
   const [isOwner, setIsOwner] = useState(true);
   const [error, setError] = useState("");
+  const [pinned, setPinned] = useState([]); // finding keys of this app already on the Checklist
+  const [pinBusy, setPinBusy] = useState(false);
   // "43-instagram" -> 43. Only the number is ever looked up; the name part is cosmetic.
   const id = parseReportId(idParam);
 
@@ -45,6 +47,19 @@ export default function ConsoleReportDetailPage() {
     if (!id) return;
     fetch(`/api/history/screens?id=${id}`).then((r) => r.json()).then((d) => setScreens(Array.isArray(d.screens) ? d.screens : [])).catch(() => setScreens([]));
   }, [id, reload]);
+
+  const pk = scan ? projectKey(scan.app_name, scan.store_url) : null;
+  useEffect(() => {
+    if (!pk || !isOwner) return;
+    fetch(`/api/checklist?project=${encodeURIComponent(pk)}`).then((r) => r.json()).then((d) => setPinned((d.pinned || []).map((p) => p.key))).catch(() => {});
+  }, [pk, isOwner, reload]);
+  async function addToChecklist(findingKey) {
+    setPinBusy(true);
+    try {
+      const res = await fetch("/api/checklist", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ projectKey: pk, findingKey }) });
+      if (res.ok) setPinned((p) => (p.includes(findingKey) ? p : [...p, findingKey]));
+    } finally { setPinBusy(false); }
+  }
 
   // An address that isn't a report number at all (/reports/abc) is a "not found" we can tell without asking the server.
   const message = id ? error : "Report not found.";
@@ -78,6 +93,7 @@ export default function ConsoleReportDetailPage() {
           taskStatus={taskStatus}
           tasksHref={`/console/tasks/${encodeURIComponent(projectKey(scan.app_name, scan.store_url))}`}
           progress={progress}
+          checklist={isOwner ? { pinned, onAdd: addToChecklist, busy: pinBusy } : null}
           screenshots={screens}
           onClose={() => router.push("/console/reports")}
           topExtra={isOwner && scan.result_json && (
