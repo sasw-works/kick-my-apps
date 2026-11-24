@@ -160,6 +160,47 @@ function ToolbarAppIcon({ name, storeUrl }) {
 }
 
 
+// "Add to Monitor" on a report: start watching this app's store reviews without retyping it on the Monitor page.
+// Reports are mostly of someone else's app, so it is added as "Another App" (the ⋯ menu on Monitor moves it).
+function MonitorButton({ storeUrl }) {
+  const [st, setSt] = useState({ phase: "loading", monitor: null, full: false, error: "" });
+  React.useEffect(() => {
+    let off = false;
+    fetch(`/api/pulse/monitors?storeUrl=${encodeURIComponent(storeUrl)}`)
+      .then((r) => r.json())
+      .then((d) => { if (!off) setSt({ phase: d.supported === false ? "hidden" : "ready", monitor: d.monitor || null, full: !!d.full, error: "" }); })
+      .catch(() => { if (!off) setSt({ phase: "hidden", monitor: null, full: false, error: "" }); });
+    return () => { off = true; };
+  }, [storeUrl]);
+
+  async function add() {
+    setSt((x) => ({ ...x, phase: "adding", error: "" }));
+    try {
+      const res = await fetch("/api/pulse/monitors", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ storeUrl, kind: "other" }) });
+      const d = await res.json();
+      if (res.status === 409) { const g = await (await fetch(`/api/pulse/monitors?storeUrl=${encodeURIComponent(storeUrl)}`)).json(); setSt({ phase: "ready", monitor: g.monitor, full: false, error: "" }); return; }
+      if (d.error) throw new Error(d.error);
+      setSt({ phase: "ready", monitor: d.monitor, full: false, error: "" });
+    } catch (err) {
+      setSt((x) => ({ ...x, phase: "ready", error: err.message }));
+    }
+  }
+
+  if (st.phase === "hidden") return null;
+  if (st.monitor) {
+    return <Link href={`/console/pulse?open=${st.monitor.id}`} className="rh-btn" data-testid="monitoring-btn">Monitoring ✓</Link>;
+  }
+  return (
+    <button
+      className="rh-btn" data-testid="add-monitor-btn" onClick={add}
+      disabled={st.phase !== "ready" || st.full}
+      title={st.error || (st.full ? "Your plan's monitor limit is reached. Remove one on the Monitor page to add another." : "")}
+    >
+      {st.phase === "adding" ? "Adding…" : st.error ? "Couldn't add, retry" : "Add to Monitor"}
+    </button>
+  );
+}
+
 function QueriedAppBadge({ name, storeUrl }) {
   const [iconUrl, setIconUrl] = useState(null);
 
@@ -1022,9 +1063,7 @@ export default function KickMyAppsHealthReport({ data, appLabel = "Your App", on
             {exporting ? "Preparing…" : "Download PDF"}
           </button>
           {scanId && !readOnly && <ShareButton scanId={scanId} />}
-          {scanId && !readOnly && (
-            <Link href={`/history?preselect=${scanId}`} className="rh-btn">Compare</Link>
-          )}
+          {scanId && !readOnly && storeUrl && <MonitorButton storeUrl={storeUrl} />}
           {onReset ? (
             <button className="rh-btn rh-btn-primary" onClick={onReset}>New Analysis</button>
           ) : (

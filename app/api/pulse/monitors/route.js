@@ -8,10 +8,29 @@ import { rateLimit, tooManyRequests } from "../../../lib/rateLimit";
 
 export const runtime = "nodejs";
 
-export async function GET() {
+export async function GET(req) {
   const user = await getCurrentUser();
   if (!user) return unauthorized();
   await ensurePulseSchema();
+
+  // ?storeUrl=...: "do I already monitor this app, and is there room for one more?" -- what a report page
+  // needs to decide between "Add to Monitor", "Monitoring" and a disabled button. Not a store lookup.
+  const storeUrl = new URL(req.url).searchParams.get("storeUrl");
+  if (storeUrl) {
+    const appId = appIdFromStoreUrl(storeUrl);
+    if (!appId) return Response.json({ supported: false, monitor: null, full: false });
+    const country = countryFromStoreUrl(storeUrl) || "us";
+    const { rows } = await sql`
+      SELECT id, kind FROM pulse_monitors WHERE user_email = ${user.email} AND app_id = ${appId} AND country = ${country} AND status != 'deleted' LIMIT 1
+    `;
+    const limit = pulseLimit(user);
+    let full = false;
+    if (limit !== null) {
+      const { rows: c } = await sql`SELECT COUNT(*)::int AS n FROM pulse_monitors WHERE user_email = ${user.email} AND status != 'deleted'`;
+      full = c[0].n >= limit;
+    }
+    return Response.json({ supported: true, monitor: rows[0] || null, full, limit });
+  }
 
   const { rows } = await sql`
     SELECT

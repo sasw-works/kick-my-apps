@@ -68,7 +68,11 @@ export default function ConsolePulsePage() {
         if (d.error) throw new Error(d.error);
         setMonitors(d.monitors);
         setLimit(d.limit);
-        if (!tabChosen.current && d.monitors.length && !d.monitors.some((x) => x.kind === "mine")) setTab("other");
+        // /console/pulse?open=<id> (from a report's "Monitoring" button): show that app's tab and open its box.
+        const want = !tabChosen.current && typeof window !== "undefined" ? Number(new URLSearchParams(window.location.search).get("open")) : 0;
+        const target = want ? d.monitors.find((x) => x.id === want) : null;
+        if (target) { tabChosen.current = true; setTab(target.kind === "mine" ? "mine" : "other"); setOpenId(target.id); }
+        else if (!tabChosen.current && d.monitors.length && !d.monitors.some((x) => x.kind === "mine")) setTab("other");
       })
       .catch((err) => setError(err.message));
   }, [loadWaiting]);
