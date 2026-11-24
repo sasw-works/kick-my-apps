@@ -1,12 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { Sun } from "lucide-react";
 import { useTheme } from "../components/ThemeProvider";
 
 // Top-right of every Console page, after Figma 4262:2481: two 58px glass circles, the bell (with a red
-// count badge) and the light/dark switch. The bell opens the notification panel.
+// count badge) and the light/dark switch. The bell opens the notifications as a side panel (Figma 4271:672):
+// a dimmed, slightly blurred page and a full-height window sliding in from the right.
 
 const KIND = {
   report: { color: "#2b59ff", label: "R" },
@@ -55,14 +57,22 @@ export default function ConsoleHeaderActions() {
     return () => { clearInterval(t); window.removeEventListener("focus", onFocus); };
   }, [load]);
 
+  const bell = useRef(null);
+  const closeBtn = useRef(null);
   useEffect(() => {
     if (!open) return;
     load();
-    const onDown = (e) => { if (wrap.current && !wrap.current.contains(e.target)) setOpen(false); };
     const onKey = (e) => { if (e.key === "Escape") setOpen(false); };
-    document.addEventListener("mousedown", onDown);
     document.addEventListener("keydown", onKey);
-    return () => { document.removeEventListener("mousedown", onDown); document.removeEventListener("keydown", onKey); };
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    closeBtn.current?.focus();
+    const bellEl = bell.current;
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+      bellEl?.focus();
+    };
   }, [open, load]);
 
   async function markRead(body) {
@@ -111,35 +121,58 @@ export default function ConsoleHeaderActions() {
           border-radius: 1000px; background: #ff5050; color: #fff; font-size: 13px; line-height: 20px; font-weight: 500;
           text-align: center; pointer-events: none;
         }
-        .kma-np {
-          position: absolute; top: 70px; right: 0; width: 420px; max-width: calc(100vw - 32px); max-height: min(560px, calc(100vh - 220px));
-          display: flex; flex-direction: column; overflow: hidden; border-radius: 16px;
-          background: var(--surface); border: 1px solid var(--glass-border);
-          box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45); font-family: var(--font-inter), sans-serif; letter-spacing: -0.2px;
+        .kma-np-overlay {
+          position: fixed; inset: 0; z-index: 60; background: rgba(0, 0, 0, 0.6);
+          backdrop-filter: blur(2.5px); -webkit-backdrop-filter: blur(2.5px); animation: kma-np-fade 0.2s ease;
         }
-        .kma-np-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 20px 24px 16px; }
-        .kma-np-title { font-size: 18px; font-weight: 600; color: var(--chalk); }
-        .kma-np-link { background: none; border: 0; padding: 4px 0; cursor: pointer; font-size: 13px; color: #2b59ff; font-family: inherit; }
+        .kma-np {
+          position: fixed; top: 0; right: 0; bottom: 0; z-index: 61; width: min(631px, 100vw); box-sizing: border-box;
+          display: flex; flex-direction: column; background: var(--surface); animation: kma-np-slide 0.25s ease;
+          font-family: var(--font-inter), sans-serif; letter-spacing: -0.2px; box-shadow: -24px 0 60px rgba(0, 0, 0, 0.35);
+        }
+        .kma-console.kma-dark .kma-np { background: #0d1117; }
+        @keyframes kma-np-fade { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes kma-np-slide { from { transform: translateX(100%); } to { transform: translateX(0); } }
+        @media (prefers-reduced-motion: reduce) { .kma-np-overlay, .kma-np { animation: none; } }
+        .kma-np-close {
+          position: absolute; top: 100px; right: 75px; width: 58px; height: 58px; border-radius: 50%; padding: 0; cursor: pointer;
+          display: flex; align-items: center; justify-content: center; color: var(--chalk);
+          background: var(--glass-bg); border: 1px solid var(--glass-border);
+          backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); transition: border-color 0.15s ease;
+        }
+        .kma-np-close:hover { border-color: #2b59ff; }
+        .kma-np-close:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+        .kma-np-close-x {
+          width: 15px; height: 15px; background: currentColor;
+          -webkit-mask: url(/console/close.svg) center / 15px 15px no-repeat; mask: url(/console/close.svg) center / 15px 15px no-repeat;
+        }
+        .kma-np-head { padding: 100px 150px 24px 50px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+        .kma-np-title { margin: 0; font-family: Helvetica, Arial, sans-serif; font-size: 48px; line-height: 52px; font-weight: 700; letter-spacing: -1.44px; color: var(--chalk); }
+        .kma-np-link { background: none; border: 0; padding: 4px 0; cursor: pointer; font-size: 15px; line-height: 24px; color: #5b8cff; font-family: inherit; letter-spacing: -0.2px; }
         .kma-np-link:hover { text-decoration: underline; }
         .kma-np-link:disabled { color: var(--muted); cursor: default; text-decoration: none; }
-        .kma-np-list { overflow-y: auto; padding: 0 12px 12px; display: flex; flex-direction: column; gap: 2px; }
+        .kma-np-list { flex: 1; min-height: 0; overflow-y: auto; padding: 8px 50px 24px; display: flex; flex-direction: column; gap: 8px; }
         .kma-np-item {
-          display: flex; gap: 14px; align-items: flex-start; width: 100%; text-align: left; cursor: pointer; font-family: inherit;
-          padding: 14px 12px; border: 0; border-radius: 12px; background: transparent; color: var(--chalk);
+          display: flex; gap: 16px; align-items: flex-start; width: 100%; text-align: left; cursor: pointer; font-family: inherit;
+          padding: 16px 20px; border: 1px solid transparent; border-radius: 8px; background: var(--surface); color: var(--chalk);
+          transition: background 0.15s ease, border-color 0.15s ease;
         }
-        .kma-np-item:hover, .kma-np-item:focus-visible { background: rgba(255, 255, 255, 0.05); outline: none; }
-        .kma-console:not(.kma-dark) .kma-np-item:hover { background: var(--ink); }
-        .kma-np-ico { flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; font-weight: 600; }
+        .kma-console.kma-dark .kma-np-item { background: rgba(255, 255, 255, 0.03); }
+        .kma-console:not(.kma-dark) .kma-np-item { border-color: var(--ink-3); }
+        .kma-console.kma-dark .kma-np-item:hover, .kma-console.kma-dark .kma-np-item:focus-visible { background: rgba(255, 255, 255, 0.06); border-color: rgba(43, 89, 255, 0.35); }
+        .kma-console:not(.kma-dark) .kma-np-item:hover, .kma-np-item:focus-visible { border-color: var(--brand); }
+        .kma-np-item:focus-visible { outline: none; }
+        .kma-np-ico { flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 15px; font-weight: 600; }
         .kma-np-text { flex: 1; min-width: 0; }
-        .kma-np-row { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
-        .kma-np-name { font-size: 14px; line-height: 20px; font-weight: 500; }
+        .kma-np-row { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+        .kma-np-name { font-size: 15px; line-height: 22px; font-weight: 500; }
         .kma-np-item.unread .kma-np-name { font-weight: 600; }
-        .kma-np-time { font-size: 12px; color: var(--muted); white-space: nowrap; }
-        .kma-np-body { margin-top: 2px; font-size: 13px; line-height: 19px; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .kma-np-dot { flex-shrink: 0; width: 8px; height: 8px; margin-top: 7px; border-radius: 50%; background: #2b59ff; }
-        .kma-np-empty { padding: 36px 24px 44px; text-align: center; color: var(--muted); font-size: 14px; line-height: 21px; }
-        .kma-np-empty b { display: block; color: var(--chalk); font-size: 15px; margin-bottom: 4px; font-weight: 600; }
-        .kma-np-foot { border-top: 1px solid var(--ink-3); padding: 10px 24px; display: flex; justify-content: center; }
+        .kma-np-time { font-size: 13px; color: var(--muted); white-space: nowrap; }
+        .kma-np-body { margin-top: 2px; font-size: 14px; line-height: 21px; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .kma-np-dot { flex-shrink: 0; width: 8px; height: 8px; margin-top: 8px; border-radius: 50%; background: #2b59ff; }
+        .kma-np-empty { padding: 24px 50px; color: var(--muted); font-size: 15px; line-height: 24px; }
+        .kma-np-empty b { display: block; color: var(--chalk); font-size: 17px; margin-bottom: 4px; font-weight: 600; }
+        .kma-np-foot { padding: 12px 50px 24px; display: flex; justify-content: flex-start; }
 
         @media (max-width: 900px) {
           .kma-hdr { position: fixed; top: 6px; left: auto; right: 12px; z-index: 46; }
@@ -147,13 +180,20 @@ export default function ConsoleHeaderActions() {
           .kma-hdr-btn { width: 44px; height: 44px; }
           .kma-hdr-btn svg.kma-hdr-glyph { width: 44px; height: 44px; }
           .kma-hdr-badge { left: 30px; top: -4px; }
-          .kma-np { position: fixed; top: 60px; right: 12px; left: 12px; width: auto; max-width: none; max-height: calc(100dvh - 76px); }
+          .kma-np-close { top: 12px; right: 12px; width: 44px; height: 44px; }
+          .kma-np-head { padding: 20px 68px 12px 20px; }
+          .kma-np-title { font-size: 28px; line-height: 32px; letter-spacing: -0.8px; }
+          .kma-np-list { padding: 8px 16px 16px; }
+          .kma-np-empty { padding: 16px 20px; }
+          .kma-np-foot { padding: 8px 20px 20px; }
+          .kma-np-item { padding: 14px 16px; gap: 12px; }
         }
       `}</style>
       <div className="kma-hdr-inner">
         <div className="kma-hdr-slot">
           <button
             type="button"
+            ref={bell}
             className="kma-hdr-btn"
             aria-label={unread ? `Notifications, ${unread} unread` : "Notifications"}
             aria-haspopup="dialog"
@@ -166,42 +206,49 @@ export default function ConsoleHeaderActions() {
           </button>
           {unread > 0 && <span className="kma-hdr-badge" aria-hidden="true">{unread > 9 ? "9+" : unread}</span>}
 
-          {open && (
-            <div className="kma-np" role="dialog" aria-label="Notifications">
-              <div className="kma-np-head">
-                <span className="kma-np-title">Notifications</span>
-                <button type="button" className="kma-np-link" onClick={markAll} disabled={unread === 0}>Mark all as read</button>
-              </div>
-              {!loaded ? (
-                <div className="kma-np-empty">Loading…</div>
-              ) : items.length === 0 ? (
-                <div className="kma-np-empty"><b>You’re all caught up</b>New reports, monitor alerts and rival changes will show up here.</div>
-              ) : (
-                <>
-                  <div className="kma-np-list">
-                    {items.map((n) => {
-                      const k = KIND[n.kind] || { color: "#2b59ff", label: "•" };
-                      return (
-                        <button key={n.id} type="button" className={`kma-np-item ${n.read ? "" : "unread"}`} onClick={() => openItem(n)}>
-                          <span className="kma-np-ico" style={{ background: k.color }}>{k.label}</span>
-                          <span className="kma-np-text">
-                            <span className="kma-np-row">
-                              <span className="kma-np-name">{n.title}</span>
-                              <span className="kma-np-time">{ago(n.createdAt)}</span>
+          {open && createPortal(
+            <>
+              <div className="kma-np-overlay" onClick={() => setOpen(false)} aria-hidden="true" />
+              <div className="kma-np" role="dialog" aria-modal="true" aria-label="Notifications">
+                <button type="button" ref={closeBtn} className="kma-np-close" aria-label="Close notifications" onClick={() => setOpen(false)}>
+                  <span className="kma-np-close-x" aria-hidden="true" />
+                </button>
+                <div className="kma-np-head">
+                  <h2 className="kma-np-title">Notifications</h2>
+                  <button type="button" className="kma-np-link" onClick={markAll} disabled={unread === 0}>Mark all as read</button>
+                </div>
+                {!loaded ? (
+                  <div className="kma-np-empty">Loading…</div>
+                ) : items.length === 0 ? (
+                  <div className="kma-np-empty"><b>You’re all caught up</b>New reports, monitor alerts and rival changes will show up here.</div>
+                ) : (
+                  <>
+                    <div className="kma-np-list">
+                      {items.map((n) => {
+                        const k = KIND[n.kind] || { color: "#2b59ff", label: "•" };
+                        return (
+                          <button key={n.id} type="button" className={`kma-np-item ${n.read ? "" : "unread"}`} onClick={() => openItem(n)}>
+                            <span className="kma-np-ico" style={{ background: k.color }}>{k.label}</span>
+                            <span className="kma-np-text">
+                              <span className="kma-np-row">
+                                <span className="kma-np-name">{n.title}</span>
+                                <span className="kma-np-time">{ago(n.createdAt)}</span>
+                              </span>
+                              {n.body && <span className="kma-np-body" style={{ display: "-webkit-box" }}>{n.body}</span>}
                             </span>
-                            {n.body && <span className="kma-np-body" style={{ display: "-webkit-box" }}>{n.body}</span>}
-                          </span>
-                          {!n.read && <span className="kma-np-dot" aria-label="Unread" />}
-                        </button>
-                      );
-                    })}
-                  </div>
-                  <div className="kma-np-foot">
-                    <button type="button" className="kma-np-link" onClick={clearAll}>Clear all</button>
-                  </div>
-                </>
-              )}
-            </div>
+                            {!n.read && <span className="kma-np-dot" aria-label="Unread" />}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    <div className="kma-np-foot">
+                      <button type="button" className="kma-np-link" onClick={clearAll}>Clear all</button>
+                    </div>
+                  </>
+                )}
+              </div>
+            </>,
+            wrap.current?.closest(".kma-console") || document.body
           )}
         </div>
 
