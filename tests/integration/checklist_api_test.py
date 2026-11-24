@@ -63,7 +63,7 @@ try:
     s,js,_=req("POST","/api/history",A,{"appName":"Spotify","storeUrl":URL,"healthScore":60,"badCount":1,"warnCount":1,"goodCount":1,"resultJson":{"healthScore":60,"findings":FIND}})
     check("report saved",s==200,str(js))
     s,js,_=req("GET","/api/checklist",A); pk=js["projects"][0]["key"] if js["projects"] else ""
-    check("the app is listed with its open critical count",pk=="app:324684580" and js["projects"][0]["openCritical"]==1,str(js))
+    check("the app is listed with its open critical count and open total",pk=="app:324684580" and js["projects"][0]["openCritical"]==1 and js["projects"][0]["open"]==1 and js["projects"][0]["appName"]=="Spotify",str(js))
     check("another user sees none of it",req("GET","/api/checklist",B)[1]["projects"]==[])
     s,js,_=req("GET",f"/api/checklist?project={pk}",A)
     check("critical issues come from Tasks (only the critical one)",s==200 and [c["key"] for c in js["critical"]]==["contrast"] and js["pinned"]==[] and js["custom"]==[],str(js))
@@ -78,6 +78,7 @@ try:
     # pin the critical one: it moves from the live list to pinned (no duplicate)
     req("POST","/api/checklist",A,{"projectKey":pk,"findingKey":"contrast"})
     js=req("GET",f"/api/checklist?project={pk}",A)[1]
+    check("open total counts pinned open findings once",req("GET","/api/checklist",A)[1]["projects"][0]["open"]==2,str(req("GET","/api/checklist",A)[1]))
     check("a pinned critical issue is not listed twice",js["critical"]==[] and sorted(p["key"] for p in js["pinned"])==["contrast","cta"],str(js))
     # tick in Tasks -> Checklist follows
     s,_,_=req("PATCH","/api/tasks",A,{"project":pk,"key":"contrast","status":"done"}); check("tick it in Tasks",s==200)
@@ -96,6 +97,7 @@ try:
     s,js,_=req("POST","/api/checklist",A,{"projectKey":pk,"title":"Re-record the onboarding screenshots"}); cid=js.get("id"); check("add your own item",s==200 and cid)
     js=req("GET",f"/api/checklist?project={pk}",A)[1]
     check("it is listed, unticked",[(c["title"],c["checked"]) for c in js["custom"]]==[("Re-record the onboarding screenshots",False)],str(js))
+    check("open total counts unticked own items",req("GET","/api/checklist",A)[1]["projects"][0]["open"]==1,str(req("GET","/api/checklist",A)[1]))
     check("tick it",req("PATCH","/api/checklist",A,{"id":cid,"checked":True})[0]==200 and req("GET",f"/api/checklist?project={pk}",A)[1]["custom"][0]["checked"] is True)
     check("bad PATCH body is 400",req("PATCH","/api/checklist",A,{"id":cid,"checked":"yes"})[0]==400)
     check("someone else cannot tick it",req("PATCH","/api/checklist",B,{"id":cid,"checked":False})[0]==404)

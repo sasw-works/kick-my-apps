@@ -34,10 +34,17 @@ export async function GET(req) {
     const wanted = new URL(req.url).searchParams.get("project");
 
     if (!wanted) {
+      const { rows: items } = await sql`SELECT project_key, kind, finding_key, checked FROM checklist_items WHERE user_email = ${user.email}`;
       const out = [];
       for (const p of projects) {
         const { tasks } = await projectState(user.email, p);
-        out.push({ key: p.key, appName: p.appName, openCritical: tasks.filter((t) => t.severity === "bad" && t.status === "todo").length });
+        const mine = items.filter((i) => i.project_key === p.key);
+        const pinned = new Set(mine.filter((i) => i.kind === "pin").map((i) => i.finding_key));
+        const status = new Map(tasks.map((t) => [t.key, t.status]));
+        const critical = tasks.filter((t) => t.severity === "bad" && t.status === "todo" && !pinned.has(t.key)).length;
+        // same count the open box shows: open critical issues + pinned findings still open + own items not ticked
+        const open = critical + [...pinned].filter((k) => (status.get(k) ?? "done") === "todo").length + mine.filter((i) => i.kind === "custom" && !i.checked).length;
+        out.push({ key: p.key, appName: p.appName, storeUrl: p.storeUrl, iconUrl: p.scans.find((s) => s.icon_url)?.icon_url || null, openCritical: tasks.filter((t) => t.severity === "bad" && t.status === "todo").length, open });
       }
       return Response.json({ projects: out });
     }

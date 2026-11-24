@@ -5,7 +5,7 @@ import { ensureScansSchema } from "./ensureScansSchema.js";
 // All of one user's reports, newest first, with only the parts the task views need.
 export async function loadUserScans(email) {
   const { rows } = await sql`
-    SELECT id, app_name, store_url, created_at, health_score, result_json->'findings' AS findings, finding_status
+    SELECT id, app_name, store_url, icon_url, created_at, health_score, result_json->'findings' AS findings, finding_status
     FROM scans WHERE user_email = ${email}
     ORDER BY created_at DESC, id DESC LIMIT 500;
   `;

@@ -2,13 +2,13 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { CheckCircle2, Circle, MinusCircle, Plus, X, ListChecks } from "lucide-react";
+import { CheckCircle2, Circle, MinusCircle, Plus, X } from "lucide-react";
 
 // The per-app part of the Checklist: what still blocks a release for the app you pick.
 //  - Critical issues: open critical tasks, read live from Tasks (tick them there and they leave this list).
 //  - From your reports: findings you pinned with "Add to Checklist" on a report, with their state from Tasks.
 //  - Your own items: anything you want to remember before submitting.
-export default function AppChecklist({ projects, projectKey: key, onPick }) {
+export default function AppChecklist({ projectKey: key, onCount }) {
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
   const [title, setTitle] = useState("");
@@ -44,8 +44,9 @@ export default function AppChecklist({ projects, projectKey: key, onPick }) {
     if (await call("POST", { projectKey: key, title })) setTitle("");
   }
 
-  if (projects === null) return null;
   const open = data ? data.critical.length + data.pinned.filter((p) => p.status === "todo").length + data.custom.filter((c) => !c.checked).length : 0;
+
+  useEffect(() => { if (data && onCount) onCount(open); }, [data, open, onCount]);
 
   return (
     <section className="cl-card cl-app" aria-label="Your app" data-testid="app-checklist">
@@ -74,22 +75,11 @@ export default function AppChecklist({ projects, projectKey: key, onPick }) {
         .cl-err { color: var(--kick); font-size: 13px; margin-top: 8px; }
         .cl-empty { font-size: 13.5px; color: var(--muted); line-height: 1.5; }
       `}</style>
-      <div className="cl-app-head">
-        <div className="cl-app-title"><ListChecks size={17} /> Your app</div>
-        {projects.length > 0 && (
-          <select className="cl-app-select" aria-label="App" value={key} onChange={(e) => onPick(e.target.value)}>
-            {projects.map((p) => <option key={p.key} value={p.key}>{p.appName}{p.openCritical ? ` (${p.openCritical} critical open)` : ""}</option>)}
-          </select>
-        )}
-      </div>
-      {projects.length === 0 ? (
-        <p className="cl-empty">Every app you make a report of gets its own checklist: its critical issues, the findings you pin and a store listing check. Make a report first, then come back here. <Link href="/console" className="cl-link">Make a report</Link></p>
-      ) : !data ? (
+      {!data ? (
         error ? <div className="cl-err" role="alert">{error}</div> : null
       ) : (
         <>
           <p className="cl-app-sub">Critical issues from your latest report, findings you pinned, and your own items. Tick issues off in Tasks and they update here.</p>
-          <div className="cl-app-sum" data-testid="app-checklist-summary">{open === 0 ? <><b>All clear</b> for {data.project.appName}: nothing open here.</> : <><b>{open}</b> still open for {data.project.appName}.</>}</div>
 
           <div className="cl-group">Critical issues still open</div>
           {data.critical.length === 0 ? <div className="cl-empty" data-testid="critical-none">{data.criticalTotal > 0 ? "All critical issues are dealt with in Tasks." : "No critical issues in the latest report."}</div> : data.critical.map((c) => (
