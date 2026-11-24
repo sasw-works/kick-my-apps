@@ -179,6 +179,12 @@ export default function CompareView({ scans, onBack }) {
           width: 14px; height: 14px; flex-shrink: 0; background: currentColor; transform: rotate(45deg);
           -webkit-mask: url(/console/back-arrow.svg) center / 11.4px 11.4px no-repeat; mask: url(/console/back-arrow.svg) center / 11.4px 11.4px no-repeat;
         }
+        /* In the Console, on wide screens the Back pill sits in the top-right row, just left of the bell (the bell and the
+           theme switch are 58px circles 20px apart, so 156px from the right edge). Narrower than that it stays under the headline. */
+        @media (min-width: 1251px) {
+          .kma-console .cmp-root { position: relative; }
+          .kma-console .cmp-root > .back-btn { position: absolute; top: 0; right: 156px; margin-bottom: 0; }
+        }
         @media (max-width: 900px) { .cmp-title { font-size: 34px; line-height: 40px; letter-spacing: -1px; } .cmp-head, .back-btn { margin-bottom: 32px; } }
 
         .cmp-score-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: center; margin-bottom: 16px; }
@@ -266,7 +272,7 @@ export default function CompareView({ scans, onBack }) {
             {delta >= 0 ? "+" : ""}
             {delta}
           </div>
-          <div className="cmp-delta-label">FARK</div>
+          <div className="cmp-delta-label">DIFF</div>
         </div>
 
         <div className="cmp-score-card">
