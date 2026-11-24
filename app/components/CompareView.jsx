@@ -2,7 +2,6 @@
 
 import React from "react";
 import {
-  ArrowLeft,
   CheckCircle2,
   AlertTriangle,
   XCircle,
@@ -163,13 +162,24 @@ export default function CompareView({ scans, onBack }) {
         }
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
-        .cmp-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
-        .cmp-title { font-family: var(--font-display); font-size: 24px; font-weight: 600; letter-spacing: -0.01em; }
+        /* Same headline as the other Console pages (Reports, Compare Apps): 48px title, 15px subtitle, then the back pill. */
+        .cmp-head { text-align: left; margin-bottom: 50px; display: flex; flex-direction: column; gap: 8px; }
+        .cmp-title { margin: 0; font-family: Helvetica, Arial, sans-serif; font-size: 48px; line-height: 52px; font-weight: 700; letter-spacing: -1.44px; color: var(--chalk); overflow-wrap: anywhere; }
+        .cmp-sub { margin: 0; font-size: 15px; line-height: 32px; letter-spacing: -0.2px; font-weight: 400; color: var(--muted); }
         .back-btn {
-          display: flex; align-items: center; gap: 8px;
-          background: var(--ink-2); border: 1px solid var(--ink-3); color: var(--chalk);
-          font-size: 14px; padding: 8px 16px; border-radius: 8px; cursor: pointer;
+          display: flex; align-items: center; justify-content: center; gap: 24px; width: 211px; max-width: 100%; height: 58px; box-sizing: border-box;
+          margin-bottom: 50px; padding: 0 16px; background: var(--glass-bg, var(--ink-2)); border: 1px solid var(--glass-border, var(--ink-3));
+          border-radius: 114px; font-family: inherit; font-size: 15px; letter-spacing: -0.2px; color: var(--chalk); cursor: pointer;
+          backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); transition: border-color 0.15s ease;
         }
+        .back-btn:hover { border-color: var(--brand); }
+        .back-btn:focus { outline: none; }
+        .back-btn:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+        .cmp-back-arrow {
+          width: 14px; height: 14px; flex-shrink: 0; background: currentColor; transform: rotate(45deg);
+          -webkit-mask: url(/console/back-arrow.svg) center / 11.4px 11.4px no-repeat; mask: url(/console/back-arrow.svg) center / 11.4px 11.4px no-repeat;
+        }
+        @media (max-width: 900px) { .cmp-title { font-size: 34px; line-height: 40px; letter-spacing: -1px; } .cmp-head, .back-btn { margin-bottom: 32px; } }
 
         .cmp-score-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: center; margin-bottom: 16px; }
         .cmp-score-card { background: var(--ink-2); border: 1px solid var(--ink-3); border-radius: 8px; padding: 24px; text-align: center; }
@@ -233,13 +243,14 @@ export default function CompareView({ scans, onBack }) {
         }
       `}</style>
 
-      <div className="cmp-header">
-        <div className="cmp-title">Comparison</div>
-        <button className="back-btn" onClick={onBack}>
-          <ArrowLeft size={15} />
-          Back
-        </button>
+      <div className="cmp-head">
+        <h1 className="cmp-title">Comparison</h1>
+        <p className="cmp-sub">{a.app_name} vs {b.app_name}: a head-to-head benchmark of your two reports.</p>
       </div>
+      <button className="back-btn" onClick={onBack}>
+        <span className="cmp-back-arrow" aria-hidden="true" />
+        Back
+      </button>
 
       <div className="cmp-score-grid">
         <div className="cmp-score-card">
